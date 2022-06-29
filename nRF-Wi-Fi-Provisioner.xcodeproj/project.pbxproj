@@ -17,6 +17,7 @@
 		01481ABD2852093000925FAB /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01481A932852092F00925FAB /* ContentView.swift */; };
 		01481ABE2852093000925FAB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 01481A942852093000925FAB /* Assets.xcassets */; };
 		01481ABF2852093000925FAB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 01481A942852093000925FAB /* Assets.xcassets */; };
+		019A5D8C286C7586002D03F0 /* Algorithms in Frameworks */ = {isa = PBXBuildFile; productRef = 019A5D8B286C7586002D03F0 /* Algorithms */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +50,7 @@
 		01481AB22852093000925FAB /* Tests macOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Tests macOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		01481AB62852093000925FAB /* Tests_macOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests_macOS.swift; sourceTree = "<group>"; };
 		01481AB82852093000925FAB /* Tests_macOSLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests_macOSLaunchTests.swift; sourceTree = "<group>"; };
+		019A5D8D286C77CE002D03F0 /* NordicStyle */ = {isa = PBXFileReference; lastKnownFileType = text; path = NordicStyle; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +58,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				019A5D8C286C7586002D03F0 /* Algorithms in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -86,6 +89,7 @@
 		01481A8C2852092F00925FAB = {
 			isa = PBXGroup;
 			children = (
+				019A5D8D286C77CE002D03F0 /* NordicStyle */,
 				01481A912852092F00925FAB /* Shared */,
 				01481AA02852093000925FAB /* macOS */,
 				01481AA92852093000925FAB /* Tests iOS */,
@@ -157,6 +161,9 @@
 			dependencies = (
 			);
 			name = "nRF-Wi-Fi-Provisioner (iOS)";
+			packageProductDependencies = (
+				019A5D8B286C7586002D03F0 /* Algorithms */,
+			);
 			productName = "nRF-Wi-Fi-Provisioner (iOS)";
 			productReference = 01481A992852093000925FAB /* nRF-Wi-Fi-Provisioner.app */;
 			productType = "com.apple.product-type.application";
@@ -249,6 +256,9 @@
 				Base,
 			);
 			mainGroup = 01481A8C2852092F00925FAB;
+			packageReferences = (
+				019A5D8A286C7586002D03F0 /* XCRemoteSwiftPackageReference "swift-algorithms" */,
+			);
 			productRefGroup = 01481A9A2852093000925FAB /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -473,7 +483,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -503,7 +513,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -537,7 +547,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 12.1;
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.nordicsemi.nRF-Wi-Fi-Provisioner";
 				PRODUCT_NAME = "nRF-Wi-Fi-Provisioner";
@@ -565,7 +575,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 12.1;
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.nordicsemi.nRF-Wi-Fi-Provisioner";
 				PRODUCT_NAME = "nRF-Wi-Fi-Provisioner";
@@ -703,6 +713,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		019A5D8A286C7586002D03F0 /* XCRemoteSwiftPackageReference "swift-algorithms" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apple/swift-algorithms.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		019A5D8B286C7586002D03F0 /* Algorithms */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 019A5D8A286C7586002D03F0 /* XCRemoteSwiftPackageReference "swift-algorithms" */;
+			productName = Algorithms;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 01481A8D2852092F00925FAB /* Project object */;
 }
