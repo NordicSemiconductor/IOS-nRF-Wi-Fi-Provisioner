@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+public
 extension ShapeStyle where Self == Color {
     static var nordicBlue: Color { .init(rgba: 0x00a9ce) }
     static var nordicSky: Color { .init(rgba: 0x6ad1e3) }
