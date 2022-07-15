@@ -11,7 +11,7 @@ import SwiftUI
 struct nRF_Wi_Fi_ProvisionerApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ScannerView(viewModel: ScannerViewModel())
         }
     }
 }
