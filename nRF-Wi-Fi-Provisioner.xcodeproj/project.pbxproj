@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		011A2613287CAF890004A5C4 /* BluetoothManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011A2612287CAF890004A5C4 /* BluetoothManager.swift */; };
+		011A2614287CAF890004A5C4 /* BluetoothManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011A2612287CAF890004A5C4 /* BluetoothManager.swift */; };
 		01481AAB2852093000925FAB /* Tests_iOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01481AAA2852093000925FAB /* Tests_iOS.swift */; };
 		01481AAD2852093000925FAB /* Tests_iOSLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01481AAC2852093000925FAB /* Tests_iOSLaunchTests.swift */; };
 		01481AB72852093000925FAB /* Tests_macOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01481AB62852093000925FAB /* Tests_macOS.swift */; };
@@ -20,7 +22,17 @@
 		015D60A12875A0640048F065 /* NordicStyle in Frameworks */ = {isa = PBXBuildFile; productRef = 015D60A02875A0640048F065 /* NordicStyle */; };
 		015D60A32875A1530048F065 /* ScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 015D60A22875A1530048F065 /* ScannerView.swift */; };
 		015D60A42875A1530048F065 /* ScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 015D60A22875A1530048F065 /* ScannerView.swift */; };
+		015D60A92875AF890048F065 /* nRF-BLE in Frameworks */ = {isa = PBXBuildFile; productRef = 015D60A82875AF890048F065 /* nRF-BLE */; };
+		015D60AB2875AF910048F065 /* nRF-BLE in Frameworks */ = {isa = PBXBuildFile; productRef = 015D60AA2875AF910048F065 /* nRF-BLE */; };
+		0168261A287F16CD0040C97E /* Array+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01682619287F16CD0040C97E /* Array+Ext.swift */; };
+		0168261B287F16CD0040C97E /* Array+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01682619287F16CD0040C97E /* Array+Ext.swift */; };
+		019262E4288039F100A69D04 /* Counter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019262E3288039F100A69D04 /* Counter.swift */; };
+		019262E5288039F100A69D04 /* Counter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019262E3288039F100A69D04 /* Counter.swift */; };
 		019A5D93286C8F30002D03F0 /* NordicStyle in Frameworks */ = {isa = PBXBuildFile; productRef = 019A5D92286C8F30002D03F0 /* NordicStyle */; };
+		01C0F0FA287DE864008BBE46 /* ScannerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C0F0F9287DE864008BBE46 /* ScannerViewModel.swift */; };
+		01C0F0FB287DE864008BBE46 /* ScannerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C0F0F9287DE864008BBE46 /* ScannerViewModel.swift */; };
+		01C0F0FD287DE926008BBE46 /* ScanResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C0F0FC287DE926008BBE46 /* ScanResult.swift */; };
+		01C0F0FE287DE926008BBE46 /* ScanResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C0F0FC287DE926008BBE46 /* ScanResult.swift */; };
 		01D26B56286DA3D400FD069D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 01D26B55286DA3D400FD069D /* Localizable.strings */; };
 		01D26B57286DA3D400FD069D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 01D26B55286DA3D400FD069D /* Localizable.strings */; };
 		01D26B5B286DAE9800FD069D /* LocalizationKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D26B5A286DAE9800FD069D /* LocalizationKey.swift */; };
@@ -45,6 +57,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		011A2612287CAF890004A5C4 /* BluetoothManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BluetoothManager.swift; sourceTree = "<group>"; };
 		01481A922852092F00925FAB /* nRF_Wi_Fi_ProvisionerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = nRF_Wi_Fi_ProvisionerApp.swift; sourceTree = "<group>"; };
 		01481A932852092F00925FAB /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		01481A942852093000925FAB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -58,7 +71,12 @@
 		01481AB62852093000925FAB /* Tests_macOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests_macOS.swift; sourceTree = "<group>"; };
 		01481AB82852093000925FAB /* Tests_macOSLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests_macOSLaunchTests.swift; sourceTree = "<group>"; };
 		015D60A22875A1530048F065 /* ScannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerView.swift; sourceTree = "<group>"; };
+		015D60A72875AADA0048F065 /* nRF-BLE */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = "nRF-BLE"; sourceTree = "<group>"; };
+		01682619287F16CD0040C97E /* Array+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Ext.swift"; sourceTree = "<group>"; };
+		019262E3288039F100A69D04 /* Counter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Counter.swift; sourceTree = "<group>"; };
 		019A5D8D286C77CE002D03F0 /* NordicStyle */ = {isa = PBXFileReference; lastKnownFileType = text; path = NordicStyle; sourceTree = SOURCE_ROOT; };
+		01C0F0F9287DE864008BBE46 /* ScannerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerViewModel.swift; sourceTree = "<group>"; };
+		01C0F0FC287DE926008BBE46 /* ScanResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanResult.swift; sourceTree = "<group>"; };
 		01D26B55286DA3D400FD069D /* Localizable.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
 		01D26B5A286DAE9800FD069D /* LocalizationKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizationKey.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -69,6 +87,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				019A5D93286C8F30002D03F0 /* NordicStyle in Frameworks */,
+				015D60AB2875AF910048F065 /* nRF-BLE in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -77,6 +96,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				015D60A12875A0640048F065 /* NordicStyle in Frameworks */,
+				015D60A92875AF890048F065 /* nRF-BLE in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -97,9 +117,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		011A2611287CAF780004A5C4 /* Bluetooth */ = {
+			isa = PBXGroup;
+			children = (
+				011A2612287CAF890004A5C4 /* BluetoothManager.swift */,
+			);
+			path = Bluetooth;
+			sourceTree = "<group>";
+		};
 		01481A8C2852092F00925FAB = {
 			isa = PBXGroup;
 			children = (
+				015D60A72875AADA0048F065 /* nRF-BLE */,
 				019A5D8D286C77CE002D03F0 /* NordicStyle */,
 				01481A912852092F00925FAB /* Shared */,
 				01481AA02852093000925FAB /* macOS */,
@@ -113,10 +142,10 @@
 		01481A912852092F00925FAB /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				01C0F0F8287DE856008BBE46 /* Scanner */,
 				01D26B58286DAE6A00FD069D /* Utils */,
 				01481A922852092F00925FAB /* nRF_Wi_Fi_ProvisionerApp.swift */,
 				01481A932852092F00925FAB /* ContentView.swift */,
-				015D60A22875A1530048F065 /* ScannerView.swift */,
 				01481A942852093000925FAB /* Assets.xcassets */,
 				01D26B55286DA3D400FD069D /* Localizable.strings */,
 			);
@@ -160,6 +189,14 @@
 			path = "Tests macOS";
 			sourceTree = "<group>";
 		};
+		01682618287F16B20040C97E /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				01682619287F16CD0040C97E /* Array+Ext.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		019A5D91286C8F30002D03F0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -167,10 +204,23 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		01C0F0F8287DE856008BBE46 /* Scanner */ = {
+			isa = PBXGroup;
+			children = (
+				015D60A22875A1530048F065 /* ScannerView.swift */,
+				01C0F0F9287DE864008BBE46 /* ScannerViewModel.swift */,
+				01C0F0FC287DE926008BBE46 /* ScanResult.swift */,
+			);
+			path = Scanner;
+			sourceTree = "<group>";
+		};
 		01D26B58286DAE6A00FD069D /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				01682618287F16B20040C97E /* Extensions */,
+				011A2611287CAF780004A5C4 /* Bluetooth */,
 				01D26B59286DAE7000FD069D /* Localization */,
+				019262E3288039F100A69D04 /* Counter.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -201,6 +251,7 @@
 			name = "nRF-Wi-Fi-Provisioner (iOS)";
 			packageProductDependencies = (
 				019A5D92286C8F30002D03F0 /* NordicStyle */,
+				015D60AA2875AF910048F065 /* nRF-BLE */,
 			);
 			productName = "nRF-Wi-Fi-Provisioner (iOS)";
 			productReference = 01481A992852093000925FAB /* nRF-Wi-Fi-Provisioner.app */;
@@ -221,6 +272,7 @@
 			name = "nRF-Wi-Fi-Provisioner (macOS)";
 			packageProductDependencies = (
 				015D60A02875A0640048F065 /* NordicStyle */,
+				015D60A82875AF890048F065 /* nRF-BLE */,
 			);
 			productName = "nRF-Wi-Fi-Provisioner (macOS)";
 			productReference = 01481A9F2852093000925FAB /* nRF-Wi-Fi-Provisioner.app */;
@@ -298,6 +350,7 @@
 			);
 			mainGroup = 01481A8C2852092F00925FAB;
 			packageReferences = (
+				011A260E287CAF5D0004A5C4 /* XCRemoteSwiftPackageReference "AsyncBluetooth" */,
 			);
 			productRefGroup = 01481A9A2852093000925FAB /* Products */;
 			projectDirPath = "";
@@ -352,9 +405,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				01481ABC2852093000925FAB /* ContentView.swift in Sources */,
+				01C0F0FA287DE864008BBE46 /* ScannerViewModel.swift in Sources */,
 				015D60A32875A1530048F065 /* ScannerView.swift in Sources */,
+				01C0F0FD287DE926008BBE46 /* ScanResult.swift in Sources */,
 				01481ABA2852093000925FAB /* nRF_Wi_Fi_ProvisionerApp.swift in Sources */,
+				019262E4288039F100A69D04 /* Counter.swift in Sources */,
+				0168261A287F16CD0040C97E /* Array+Ext.swift in Sources */,
 				01D26B5B286DAE9800FD069D /* LocalizationKey.swift in Sources */,
+				011A2613287CAF890004A5C4 /* BluetoothManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -363,9 +421,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				01481ABD2852093000925FAB /* ContentView.swift in Sources */,
+				01C0F0FB287DE864008BBE46 /* ScannerViewModel.swift in Sources */,
 				015D60A42875A1530048F065 /* ScannerView.swift in Sources */,
+				01C0F0FE287DE926008BBE46 /* ScanResult.swift in Sources */,
 				01481ABB2852093000925FAB /* nRF_Wi_Fi_ProvisionerApp.swift in Sources */,
+				019262E5288039F100A69D04 /* Counter.swift in Sources */,
+				0168261B287F16CD0040C97E /* Array+Ext.swift in Sources */,
 				01D26B5C286DAE9800FD069D /* LocalizationKey.swift in Sources */,
+				011A2614287CAF890004A5C4 /* BluetoothManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -524,6 +587,7 @@
 				DEVELOPMENT_TEAM = P3R8YQEV4L;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "Permission Required";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -554,6 +618,7 @@
 				DEVELOPMENT_TEAM = P3R8YQEV4L;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "Permission Required";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -589,6 +654,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "Permission Required";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -618,6 +684,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "Permission Required";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -762,10 +829,29 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCRemoteSwiftPackageReference section */
+		011A260E287CAF5D0004A5C4 /* XCRemoteSwiftPackageReference "AsyncBluetooth" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/manolofdez/AsyncBluetooth.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
 /* Begin XCSwiftPackageProductDependency section */
 		015D60A02875A0640048F065 /* NordicStyle */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = NordicStyle;
+		};
+		015D60A82875AF890048F065 /* nRF-BLE */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = "nRF-BLE";
+		};
+		015D60AA2875AF910048F065 /* nRF-BLE */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = "nRF-BLE";
 		};
 		019A5D92286C8F30002D03F0 /* NordicStyle */ = {
 			isa = XCSwiftPackageProductDependency;
