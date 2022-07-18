@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import nRF_BLE
 
 public
 struct RSSIView: View {

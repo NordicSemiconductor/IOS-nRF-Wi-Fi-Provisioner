@@ -6,7 +6,7 @@
 //
 
 import XCTest
-import NordicStyle
+import nRF_BLE
 
 class TestRSSI: XCTestCase {
     func testSignalLevel() {
