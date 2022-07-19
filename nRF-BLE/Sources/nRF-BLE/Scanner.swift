@@ -20,14 +20,20 @@ class Scanner {
         self.centralManager = CentralManager()
     }
     
+    open 
+    var isScanning: Bool {
+        return centralManager.isScanning
+    }
+    
     open
     func scanForPeripherals(
-        withServices serviceUUIDs: [CBMUUID]?,
+        withServices serviceUUIDs: [UUID]?,
         options: [String : Any]? = nil
     ) async throws -> AsyncStream<ScanResult> {
-        // TODO: Remove it later
-        let serviceUUID = CBMUUID(string: "14387800-130c-49e7-b877-2881c89cb258")
-        var iterator = try await centralManager.scanForPeripherals(withServices: [serviceUUID], options: options).makeAsyncIterator()
+        var iterator = try await centralManager.scanForPeripherals(
+            withServices: serviceUUIDs.map { $0.map { CBMUUID(nsuuid: $0) } },
+            options: options
+        ).makeAsyncIterator()
         
         return AsyncStream<ScanResult> {
             do {
@@ -42,6 +48,10 @@ class Scanner {
             
             return nil
         }
+    }
+    
+    open func stopScan() async {
+        await centralManager.stopScan()
     }
     
     open

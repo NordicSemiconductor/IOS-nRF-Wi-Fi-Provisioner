@@ -18,7 +18,15 @@ class ScannerViewModel: ObservableObject {
     
     @Published var uuidFilter = false {
         didSet {
-            scanResults.removeAll()
+            if scanner.isScanning {
+                Task {
+                    await scanner.stopScan()
+                    DispatchQueue.main.async { [weak self] in
+                        self?.scanResults.removeAll()
+                    }
+                    startScan()
+                }
+            }
         }
     }
     @Published var nearbyFilter = false {
@@ -42,7 +50,12 @@ class ScannerViewModel: ObservableObject {
         Task {
             do {
                 try await scanner.getReady()
-                let scanResultStream = try await scanner.scanForPeripherals(withServices: nil)
+                
+                let scanResultStream = try await scanner.scanForPeripherals(
+                    withServices: uuidFilter
+                        ? UUID(uuidString: "14387800-130c-49e7-b877-2881c89cb258").map { [$0] }
+                        : nil
+                )
                 
                 for try await scanResult in scanResultStream {
                     DispatchQueue.main.async { [weak self] in
