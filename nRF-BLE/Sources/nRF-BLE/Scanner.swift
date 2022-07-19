@@ -7,8 +7,8 @@
 
 import Foundation
 import AsyncBluetooth
-//import CoreBluetoothMock
-import CoreBluetooth
+import CoreBluetoothMock
+//import CoreBluetooth
 import Combine
 
 open
@@ -22,16 +22,18 @@ class Scanner {
     
     open
     func scanForPeripherals(
-        withServices serviceUUIDs: [CBUUID]?,
+        withServices serviceUUIDs: [CBMUUID]?,
         options: [String : Any]? = nil
     ) async throws -> AsyncStream<ScanResult> {
-        var iterator = try await centralManager.scanForPeripherals(withServices: serviceUUIDs, options: options).makeAsyncIterator()
+        // TODO: Remove it later
+        let serviceUUID = CBMUUID(string: "14387800-130c-49e7-b877-2881c89cb258")
+        var iterator = try await centralManager.scanForPeripherals(withServices: [serviceUUID], options: options).makeAsyncIterator()
         
         return AsyncStream<ScanResult> {
             do {
                 if let scanData = await iterator.next() {
                     return ScanResult(
-                        name: scanData.peripheral.name ?? scanData.advertisementData[CBAdvertisementDataLocalNameKey] as? String,
+                        name: scanData.peripheral.name ?? scanData.advertisementData[CBMAdvertisementDataLocalNameKey] as? String,
                         id: scanData.peripheral.identifier,
                         rssi: RSSI(level: scanData.rssi.intValue)
                     )
