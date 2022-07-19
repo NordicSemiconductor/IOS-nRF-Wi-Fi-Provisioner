@@ -12,7 +12,13 @@ public
 struct RSSIView: View {
     let rssi: RSSI
     
-    public var body: some View {
+    public
+    init(rssi: RSSI) {
+        self.rssi = rssi
+    }
+    
+    public
+    var body: some View {
         RSSIShape(
             filledBarCount: rssi.numberOfBars, totalBarCount: 4
         )

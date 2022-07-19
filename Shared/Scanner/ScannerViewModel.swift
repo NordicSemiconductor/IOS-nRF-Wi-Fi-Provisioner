@@ -16,6 +16,22 @@ class ScannerViewModel: ObservableObject {
     @Published private (set) var state: State = .waiting
     @Published private (set) var scanResults: [ScanResult] = []
     
+    @Published var uuidFilter = false {
+        didSet {
+            scanResults.removeAll()
+        }
+    }
+    @Published var nearbyFilter = false {
+        didSet {
+            scanResults.removeAll()
+        }
+    }
+    @Published var nameFilter = false {
+        didSet {
+            scanResults.removeAll()
+        }
+    }
+    
     private let scanner: nRF_BLE.Scanner
     
     init(scanner: nRF_BLE.Scanner = nRF_BLE.Scanner()) {
@@ -30,7 +46,22 @@ class ScannerViewModel: ObservableObject {
                 
                 for try await scanResult in scanResultStream {
                     DispatchQueue.main.async { [weak self] in
-                        self?.scanResults.insertIfNotContains(ScanResult(name: scanResult.name ?? "n/a", id: scanResult.id))
+                        guard let `self` = self else { return }
+                        if self.nameFilter, case .none = scanResult.name {
+                            return
+                        }
+                        
+                        if self.nearbyFilter, !scanResult.rssi.isNearby {
+                            return 
+                        }
+
+                        self.scanResults.insertIfNotContains(
+                            ScanResult(
+                                name: scanResult.name ?? "n/a",
+                                id: scanResult.id,
+                                rssi: scanResult.rssi
+                            )
+                        )
                     }
                 }
             } catch let e {

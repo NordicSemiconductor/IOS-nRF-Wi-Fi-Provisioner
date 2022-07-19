@@ -31,4 +31,9 @@ struct RSSI {
         }
     }
     
+    public
+    var isNearby: Bool {
+        level > -90
+    }
+    
 }

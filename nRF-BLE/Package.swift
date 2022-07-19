@@ -15,8 +15,6 @@ let package = Package(
             targets: ["nRF-BLE"]),
     ],
     dependencies: [
-        // Dependencies declare other packages that this package depends on.
-        // .package(url: /* package url */, from: "1.0.0"),
         .package(url: "https://github.com/NickKibish/AsyncBluetooth.git", branch: "main"),
     ],
     targets: [

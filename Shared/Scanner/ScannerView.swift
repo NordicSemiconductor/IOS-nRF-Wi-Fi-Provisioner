@@ -6,10 +6,10 @@
 //
 
 import SwiftUI
-#if DEBUG
 import nRF_BLE
+import NordicStyle
+#if DEBUG
 import CoreBluetoothMock
-import Combine
 #endif
 
 struct ScannerView: View {
@@ -18,9 +18,23 @@ struct ScannerView: View {
     var body: some View {
         NavigationView {
             List {
-                ForEach(viewModel.scanResults) { scanResult in
-                    Label(scanResult.name, systemImage: "cpu")
-                        .padding()
+                Section {
+                    FilterList(uuid: $viewModel.uuidFilter, nearby: $viewModel.nearbyFilter, named: $viewModel.nameFilter)
+                }
+                Section("Scan Results") {
+                    ForEach(viewModel.scanResults) { scanResult in
+                        NavigationLink {
+                            Text("")
+                        } label: {
+                            Label {
+                                Text(scanResult.name)
+                                    .lineLimit(1)
+                            } icon: {
+                                RSSIView(rssi: scanResult.rssi)
+                            }
+                            .padding()
+                        }
+                    }
                 }
             }
             .navigationTitle("Scanning")
@@ -41,7 +55,7 @@ struct ScannerView_Previews: PreviewProvider {
         
         override var scanResults: [ScanResult] {
             return (0...3).map {
-                ScanResult(name: "Device \($0)", id: UUID())
+                ScanResult(name: "Device \($0)", id: UUID(), rssi: RSSI(level: -90))
             }
         }
     }

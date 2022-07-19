@@ -12,9 +12,13 @@ public
 struct ScanResult: Identifiable {
     public let name: String?
     public let id: UUID
+    public let rssi: RSSI
     
-    public init(name: String?, id: UUID) {
+    /*
+    public init(name: String?, id: UUID, rssi: RSSI) {
         self.name = name
-        self.id = id 
+        self.id = id
+        self.rssi = rssi
     }
+     */
 }

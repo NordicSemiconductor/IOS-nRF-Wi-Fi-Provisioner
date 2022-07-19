@@ -1,6 +1,15 @@
 {
   "pins" : [
     {
+      "identity" : "asyncbluetooth",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/NickKibish/AsyncBluetooth.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "5dfbbd45b185d99bfe64b5a0483635ddf195c7d3"
+      }
+    },
+    {
       "identity" : "ios-corebluetooth-mock",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/NordicSemiconductor/IOS-CoreBluetooth-Mock.git",

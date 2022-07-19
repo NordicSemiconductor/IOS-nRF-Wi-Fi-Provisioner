@@ -5,6 +5,7 @@
 //  Created by Nick Kibysh on 18/07/2022.
 //
 
+#if !os(macOS)
 import UIKit
 
 extension CGRect {
@@ -24,3 +25,5 @@ extension CGRect {
         CGPoint(x: maxX, y: maxY)
     }
 }
+#endif
+

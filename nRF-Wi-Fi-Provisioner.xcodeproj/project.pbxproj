@@ -31,6 +31,8 @@
 		019A5D93286C8F30002D03F0 /* NordicStyle in Frameworks */ = {isa = PBXBuildFile; productRef = 019A5D92286C8F30002D03F0 /* NordicStyle */; };
 		019DCE25288553E700E16E9F /* CGRect+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019DCE24288553E700E16E9F /* CGRect+Ext.swift */; };
 		019DCE26288553E700E16E9F /* CGRect+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019DCE24288553E700E16E9F /* CGRect+Ext.swift */; };
+		019DCE292885A15100E16E9F /* FilterList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019DCE282885A15100E16E9F /* FilterList.swift */; };
+		019DCE2A2885A15100E16E9F /* FilterList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019DCE282885A15100E16E9F /* FilterList.swift */; };
 		01C0F0FA287DE864008BBE46 /* ScannerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C0F0F9287DE864008BBE46 /* ScannerViewModel.swift */; };
 		01C0F0FB287DE864008BBE46 /* ScannerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C0F0F9287DE864008BBE46 /* ScannerViewModel.swift */; };
 		01C0F0FD287DE926008BBE46 /* ScanResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C0F0FC287DE926008BBE46 /* ScanResult.swift */; };
@@ -78,6 +80,7 @@
 		019262E3288039F100A69D04 /* Counter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Counter.swift; sourceTree = "<group>"; };
 		019A5D8D286C77CE002D03F0 /* NordicStyle */ = {isa = PBXFileReference; lastKnownFileType = text; path = NordicStyle; sourceTree = SOURCE_ROOT; };
 		019DCE24288553E700E16E9F /* CGRect+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGRect+Ext.swift"; sourceTree = "<group>"; };
+		019DCE282885A15100E16E9F /* FilterList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterList.swift; sourceTree = "<group>"; };
 		01C0F0F9287DE864008BBE46 /* ScannerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerViewModel.swift; sourceTree = "<group>"; };
 		01C0F0FC287DE926008BBE46 /* ScanResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanResult.swift; sourceTree = "<group>"; };
 		01D26B55286DA3D400FD069D /* Localizable.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
@@ -208,9 +211,18 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		019DCE272885A13300E16E9F /* AditionalViews */ = {
+			isa = PBXGroup;
+			children = (
+				019DCE282885A15100E16E9F /* FilterList.swift */,
+			);
+			path = AditionalViews;
+			sourceTree = "<group>";
+		};
 		01C0F0F8287DE856008BBE46 /* Scanner */ = {
 			isa = PBXGroup;
 			children = (
+				019DCE272885A13300E16E9F /* AditionalViews */,
 				015D60A22875A1530048F065 /* ScannerView.swift */,
 				01C0F0F9287DE864008BBE46 /* ScannerViewModel.swift */,
 				01C0F0FC287DE926008BBE46 /* ScanResult.swift */,
@@ -354,7 +366,6 @@
 			);
 			mainGroup = 01481A8C2852092F00925FAB;
 			packageReferences = (
-				011A260E287CAF5D0004A5C4 /* XCRemoteSwiftPackageReference "AsyncBluetooth" */,
 			);
 			productRefGroup = 01481A9A2852093000925FAB /* Products */;
 			projectDirPath = "";
@@ -410,6 +421,7 @@
 			files = (
 				01481ABC2852093000925FAB /* ContentView.swift in Sources */,
 				01C0F0FA287DE864008BBE46 /* ScannerViewModel.swift in Sources */,
+				019DCE292885A15100E16E9F /* FilterList.swift in Sources */,
 				015D60A32875A1530048F065 /* ScannerView.swift in Sources */,
 				019DCE25288553E700E16E9F /* CGRect+Ext.swift in Sources */,
 				01C0F0FD287DE926008BBE46 /* ScanResult.swift in Sources */,
@@ -427,6 +439,7 @@
 			files = (
 				01481ABD2852093000925FAB /* ContentView.swift in Sources */,
 				01C0F0FB287DE864008BBE46 /* ScannerViewModel.swift in Sources */,
+				019DCE2A2885A15100E16E9F /* FilterList.swift in Sources */,
 				015D60A42875A1530048F065 /* ScannerView.swift in Sources */,
 				019DCE26288553E700E16E9F /* CGRect+Ext.swift in Sources */,
 				01C0F0FE287DE926008BBE46 /* ScanResult.swift in Sources */,
@@ -834,17 +847,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		011A260E287CAF5D0004A5C4 /* XCRemoteSwiftPackageReference "AsyncBluetooth" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/manolofdez/AsyncBluetooth.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.0.0;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
 		015D60A02875A0640048F065 /* NordicStyle */ = {
