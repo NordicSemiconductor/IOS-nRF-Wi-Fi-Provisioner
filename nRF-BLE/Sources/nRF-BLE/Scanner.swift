@@ -28,7 +28,8 @@ class Scanner {
     open
     func scanForPeripherals(
         withServices serviceUUIDs: [UUID]?,
-        options: [String : Any]? = nil
+        options: [String : Any]? = nil,
+        onlyConnectable: Bool = true
     ) async throws -> AsyncStream<ScanResult> {
         var iterator = try await centralManager.scanForPeripherals(
             withServices: serviceUUIDs.map { $0.map { CBMUUID(nsuuid: $0) } },

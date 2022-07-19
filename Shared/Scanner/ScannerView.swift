@@ -24,7 +24,7 @@ struct ScannerView: View {
                 Section("Scan Results") {
                     ForEach(viewModel.scanResults) { scanResult in
                         NavigationLink {
-                            Text("")
+                            DeviceView(viewModel: MockViewModel(index: 0))
                         } label: {
                             Label {
                                 Text(scanResult.name)

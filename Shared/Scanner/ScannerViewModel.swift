@@ -58,15 +58,16 @@ class ScannerViewModel: ObservableObject {
                 )
                 
                 for try await scanResult in scanResultStream {
+                    if self.nameFilter, case .none = scanResult.name {
+                        return
+                    }
+                    
+                    if self.nearbyFilter, !scanResult.rssi.isNearby {
+                        return
+                    }
+                    
                     DispatchQueue.main.async { [weak self] in
                         guard let `self` = self else { return }
-                        if self.nameFilter, case .none = scanResult.name {
-                            return
-                        }
-                        
-                        if self.nearbyFilter, !scanResult.rssi.isNearby {
-                            return 
-                        }
 
                         self.scanResults.insertIfNotContains(
                             ScanResult(
