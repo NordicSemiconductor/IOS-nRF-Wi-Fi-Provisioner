@@ -5,8 +5,8 @@
 //  Created by Nick Kibysh on 12/07/2022.
 //
 
+import AsyncBluetooth
 import Foundation
-import nRF_BLE
 import Provisioner
 
 class ScannerViewModel: ObservableObject {
@@ -33,16 +33,16 @@ class ScannerViewModel: ObservableObject {
         }
     }
     
-    private let scanner: nRF_BLE.Scanner
+    private let scanner: CentralManager
     
-    init(scanner: nRF_BLE.Scanner = nRF_BLE.Scanner()) {
+    init(scanner: CentralManager = CentralManager()) {
         self.scanner = scanner
     }
     
     func startScan() {
         Task {
             do {
-                try await scanner.getReady()
+                try await scanner.waitUntilReady()
                 
                 let scanResultStream = try await scanner.scanForPeripherals(
                     withServices: uuidFilter
@@ -50,8 +50,12 @@ class ScannerViewModel: ObservableObject {
                         : nil
                 )
                 
+                DispatchQueue.main.async { [weak self] in
+                    self?.state = .scanning
+                }
+                
                 for try await scanResult in scanResultStream {
-                    if self.nameFilter, case .none = scanResult.name {
+                    if self.nameFilter, case .none = scanResult.peripheral.name {
                         return
                     }
                     
@@ -64,8 +68,8 @@ class ScannerViewModel: ObservableObject {
 
                         self.scanResults.insertIfNotContains(
                             ScanResult(
-                                name: scanResult.name ?? "n/a",
-                                id: scanResult.id,
+                                name: scanResult.peripheral.name ?? "n/a",
+                                id: scanResult.peripheral.identifier,
                                 rssi: scanResult.rssi
                             )
                         )
@@ -80,6 +84,9 @@ class ScannerViewModel: ObservableObject {
     
     private func reset() {
         Task {
+            DispatchQueue.main.async { [weak self] in
+                self?.state = .waiting
+            }
             await scanner.stopScan()
             DispatchQueue.main.async { [weak self] in
                 self?.scanResults.removeAll()

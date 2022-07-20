@@ -11,3 +11,5 @@
 If needed the device can be provision to one of the available Wifi’s which are visible from Sheliak. ";
  
 "START_PROVISIONING_BTN"="Start Provisioning";
+
+"Bluetooth permission denied"="Bluetooth permission is denied";

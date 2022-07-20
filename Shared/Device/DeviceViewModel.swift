@@ -12,7 +12,7 @@ class DeviceViewModel: ObservableObject {
         case connecting, failed(ReadableError), connected
     }
     
-    @Published private (set) var state: State = .connecting
+    @Published private (set) var state: State = .connected
     
     let peripheral: UUID
     

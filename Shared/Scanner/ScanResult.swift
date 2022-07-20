@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import nRF_BLE
+import AsyncBluetooth
 
 struct ScanResult: Identifiable, Hashable {
     let name: String

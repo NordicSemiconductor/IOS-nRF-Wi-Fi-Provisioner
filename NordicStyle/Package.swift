@@ -15,19 +15,17 @@ let package = Package(
             targets: ["NordicStyle"]),
     ],
     dependencies: [
-        // Dependencies declare other packages that this package depends on.
-         .package(url: "../nRF-BLE", from: "1.0.0"),
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
         // Targets can depend on other targets in this package, and on products in packages this package depends on.
         .target(
             name: "NordicStyle",
-            dependencies: [
-                .product(name: "nRF-BLE", package: "nRF-BLE")
-            ]),
+            dependencies: []
+        ),
         .testTarget(
             name: "NordicStyleTests",
-            dependencies: ["NordicStyle"]),
+            dependencies: ["NordicStyle"]
+        ),
     ]
 )
