@@ -47,6 +47,8 @@
 		01D26B5C286DAE9800FD069D /* LocalizationKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D26B5A286DAE9800FD069D /* LocalizationKey.swift */; };
 		01FA5912288713860008AF88 /* ReadableError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01FA5911288713860008AF88 /* ReadableError.swift */; };
 		01FA5913288713860008AF88 /* ReadableError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01FA5911288713860008AF88 /* ReadableError.swift */; };
+		01FA5915288809220008AF88 /* Provisioner in Frameworks */ = {isa = PBXBuildFile; productRef = 01FA5914288809220008AF88 /* Provisioner */; };
+		01FA5917288809390008AF88 /* Provisioner in Frameworks */ = {isa = PBXBuildFile; productRef = 01FA5916288809390008AF88 /* Provisioner */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -104,6 +106,7 @@
 			files = (
 				019A5D93286C8F30002D03F0 /* NordicStyle in Frameworks */,
 				015D60AB2875AF910048F065 /* nRF-BLE in Frameworks */,
+				01FA5917288809390008AF88 /* Provisioner in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -113,6 +116,7 @@
 			files = (
 				015D60A12875A0640048F065 /* NordicStyle in Frameworks */,
 				015D60A92875AF890048F065 /* nRF-BLE in Frameworks */,
+				01FA5915288809220008AF88 /* Provisioner in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -298,6 +302,7 @@
 			packageProductDependencies = (
 				019A5D92286C8F30002D03F0 /* NordicStyle */,
 				015D60AA2875AF910048F065 /* nRF-BLE */,
+				01FA5916288809390008AF88 /* Provisioner */,
 			);
 			productName = "nRF-Wi-Fi-Provisioner (iOS)";
 			productReference = 01481A992852093000925FAB /* nRF-Wi-Fi-Provisioner.app */;
@@ -319,6 +324,7 @@
 			packageProductDependencies = (
 				015D60A02875A0640048F065 /* NordicStyle */,
 				015D60A82875AF890048F065 /* nRF-BLE */,
+				01FA5914288809220008AF88 /* Provisioner */,
 			);
 			productName = "nRF-Wi-Fi-Provisioner (macOS)";
 			productReference = 01481A9F2852093000925FAB /* nRF-Wi-Fi-Provisioner.app */;
@@ -900,6 +906,14 @@
 		019A5D92286C8F30002D03F0 /* NordicStyle */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = NordicStyle;
+		};
+		01FA5914288809220008AF88 /* Provisioner */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Provisioner;
+		};
+		01FA5916288809390008AF88 /* Provisioner */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Provisioner;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

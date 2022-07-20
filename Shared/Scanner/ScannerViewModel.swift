@@ -7,6 +7,7 @@
 
 import Foundation
 import nRF_BLE
+import Provisioner
 
 class ScannerViewModel: ObservableObject {
     enum State {
@@ -16,27 +17,19 @@ class ScannerViewModel: ObservableObject {
     @Published private (set) var state: State = .waiting
     @Published private (set) var scanResults: [ScanResult] = []
     
-    @Published var uuidFilter = false {
+    @Published var uuidFilter = true {
         didSet {
-            if scanner.isScanning {
-                Task {
-                    await scanner.stopScan()
-                    DispatchQueue.main.async { [weak self] in
-                        self?.scanResults.removeAll()
-                    }
-                    startScan()
-                }
-            }
+            reset()
         }
     }
     @Published var nearbyFilter = false {
         didSet {
-            scanResults.removeAll()
+            reset()
         }
     }
-    @Published var nameFilter = false {
+    @Published var nameFilter = true {
         didSet {
-            scanResults.removeAll()
+            reset()
         }
     }
     
@@ -53,7 +46,7 @@ class ScannerViewModel: ObservableObject {
                 
                 let scanResultStream = try await scanner.scanForPeripherals(
                     withServices: uuidFilter
-                        ? UUID(uuidString: "14387800-130c-49e7-b877-2881c89cb258").map { [$0] }
+                    ? UUID(uuidString: Provisioner.WiFi_Provision_Service).map { [$0] }
                         : nil
                 )
                 
@@ -82,6 +75,16 @@ class ScannerViewModel: ObservableObject {
                 print(e.localizedDescription)
             }
             
+        }
+    }
+    
+    private func reset() {
+        Task {
+            await scanner.stopScan()
+            DispatchQueue.main.async { [weak self] in
+                self?.scanResults.removeAll()
+            }
+            startScan()
         }
     }
 }

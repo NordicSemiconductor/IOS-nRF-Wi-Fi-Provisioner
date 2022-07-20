@@ -19,7 +19,11 @@ struct ScannerView: View {
         NavigationView {
             List {
                 Section {
-                    FilterList(uuid: $viewModel.uuidFilter, nearby: $viewModel.nearbyFilter, named: $viewModel.nameFilter)
+                    FilterList(
+                        uuid: $viewModel.uuidFilter,
+                        nearby: $viewModel.nearbyFilter,
+                        named: $viewModel.nameFilter
+                    )
                 }
                 Section("Scan Results") {
                     ForEach(viewModel.scanResults) { scanResult in
