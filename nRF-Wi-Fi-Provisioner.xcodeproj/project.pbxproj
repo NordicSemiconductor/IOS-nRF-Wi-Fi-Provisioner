@@ -94,6 +94,7 @@
 		01A43DED2886FED80025A5C4 /* DeviceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceViewModel.swift; sourceTree = "<group>"; };
 		01C0F0F9287DE864008BBE46 /* ScannerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerViewModel.swift; sourceTree = "<group>"; };
 		01C0F0FC287DE926008BBE46 /* ScanResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanResult.swift; sourceTree = "<group>"; };
+		01CC13C728880D8800426601 /* AsyncBluetooth */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = AsyncBluetooth; path = ../AsyncBluetooth; sourceTree = "<group>"; };
 		01D26B55286DA3D400FD069D /* Localizable.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
 		01D26B5A286DAE9800FD069D /* LocalizationKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizationKey.swift; sourceTree = "<group>"; };
 		01FA5911288713860008AF88 /* ReadableError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadableError.swift; sourceTree = "<group>"; };
@@ -148,6 +149,7 @@
 		01481A8C2852092F00925FAB = {
 			isa = PBXGroup;
 			children = (
+				01CC13C728880D8800426601 /* AsyncBluetooth */,
 				01A43DE82886CC080025A5C4 /* Provisioner */,
 				015D60A72875AADA0048F065 /* nRF-BLE */,
 				019A5D8D286C77CE002D03F0 /* NordicStyle */,

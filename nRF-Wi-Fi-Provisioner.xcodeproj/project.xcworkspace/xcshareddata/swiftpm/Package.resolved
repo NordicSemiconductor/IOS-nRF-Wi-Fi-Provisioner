@@ -1,23 +1,16 @@
 {
-  "pins" : [
-    {
-      "identity" : "asyncbluetooth",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/NickKibish/AsyncBluetooth.git",
-      "state" : {
-        "branch" : "main",
-        "revision" : "5dfbbd45b185d99bfe64b5a0483635ddf195c7d3"
+  "object": {
+    "pins": [
+      {
+        "package": "CoreBluetoothMock",
+        "repositoryURL": "https://github.com/NordicSemiconductor/IOS-CoreBluetooth-Mock.git",
+        "state": {
+          "branch": null,
+          "revision": "48c09148e73e4ab7520e21a1d6f6fec8fc2764df",
+          "version": "0.14.0"
+        }
       }
-    },
-    {
-      "identity" : "ios-corebluetooth-mock",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/NordicSemiconductor/IOS-CoreBluetooth-Mock.git",
-      "state" : {
-        "revision" : "48c09148e73e4ab7520e21a1d6f6fec8fc2764df",
-        "version" : "0.14.0"
-      }
-    }
-  ],
-  "version" : 2
+    ]
+  },
+  "version": 1
 }
