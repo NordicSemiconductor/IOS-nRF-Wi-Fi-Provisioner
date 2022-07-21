@@ -35,6 +35,8 @@
 		01A0C28F28885452000AA135 /* AsyncBluetooth in Frameworks */ = {isa = PBXBuildFile; productRef = 01A0C28E28885452000AA135 /* AsyncBluetooth */; };
 		01A0C2912888547E000AA135 /* RSSIUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A0C2902888547E000AA135 /* RSSIUtil.swift */; };
 		01A0C2922888547E000AA135 /* RSSIUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A0C2902888547E000AA135 /* RSSIUtil.swift */; };
+		01A0C29528896343000AA135 /* DeviceViewModelFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A0C29428896343000AA135 /* DeviceViewModelFactory.swift */; };
+		01A0C29628896343000AA135 /* DeviceViewModelFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A0C29428896343000AA135 /* DeviceViewModelFactory.swift */; };
 		01A43DEB2886FECB0025A5C4 /* DeviceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A43DEA2886FECB0025A5C4 /* DeviceView.swift */; };
 		01A43DEC2886FECB0025A5C4 /* DeviceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A43DEA2886FECB0025A5C4 /* DeviceView.swift */; };
 		01A43DEE2886FED80025A5C4 /* DeviceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A43DED2886FED80025A5C4 /* DeviceViewModel.swift */; };
@@ -91,6 +93,7 @@
 		019DCE24288553E700E16E9F /* CGRect+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGRect+Ext.swift"; sourceTree = "<group>"; };
 		019DCE282885A15100E16E9F /* FilterList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterList.swift; sourceTree = "<group>"; };
 		01A0C2902888547E000AA135 /* RSSIUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSSIUtil.swift; sourceTree = "<group>"; };
+		01A0C29428896343000AA135 /* DeviceViewModelFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceViewModelFactory.swift; sourceTree = "<group>"; };
 		01A43DE82886CC080025A5C4 /* Provisioner */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Provisioner; sourceTree = "<group>"; };
 		01A43DEA2886FECB0025A5C4 /* DeviceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceView.swift; sourceTree = "<group>"; };
 		01A43DED2886FED80025A5C4 /* DeviceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceViewModel.swift; sourceTree = "<group>"; };
@@ -166,6 +169,7 @@
 		01481A912852092F00925FAB /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				01A0C29328896321000AA135 /* Environment */,
 				01FA59102887136F0008AF88 /* Models */,
 				01A43DE92886FEB80025A5C4 /* Device */,
 				01C0F0F8287DE856008BBE46 /* Scanner */,
@@ -237,6 +241,14 @@
 				019DCE282885A15100E16E9F /* FilterList.swift */,
 			);
 			path = AditionalViews;
+			sourceTree = "<group>";
+		};
+		01A0C29328896321000AA135 /* Environment */ = {
+			isa = PBXGroup;
+			children = (
+				01A0C29428896343000AA135 /* DeviceViewModelFactory.swift */,
+			);
+			path = Environment;
 			sourceTree = "<group>";
 		};
 		01A43DE92886FEB80025A5C4 /* Device */ = {
@@ -470,6 +482,7 @@
 				01C0F0FD287DE926008BBE46 /* ScanResult.swift in Sources */,
 				01481ABA2852093000925FAB /* nRF_Wi_Fi_ProvisionerApp.swift in Sources */,
 				019262E4288039F100A69D04 /* Counter.swift in Sources */,
+				01A0C29528896343000AA135 /* DeviceViewModelFactory.swift in Sources */,
 				0168261A287F16CD0040C97E /* Array+Ext.swift in Sources */,
 				01D26B5B286DAE9800FD069D /* LocalizationKey.swift in Sources */,
 				01FA5912288713860008AF88 /* ReadableError.swift in Sources */,
@@ -492,6 +505,7 @@
 				01C0F0FE287DE926008BBE46 /* ScanResult.swift in Sources */,
 				01481ABB2852093000925FAB /* nRF_Wi_Fi_ProvisionerApp.swift in Sources */,
 				019262E5288039F100A69D04 /* Counter.swift in Sources */,
+				01A0C29628896343000AA135 /* DeviceViewModelFactory.swift in Sources */,
 				0168261B287F16CD0040C97E /* Array+Ext.swift in Sources */,
 				01D26B5C286DAE9800FD069D /* LocalizationKey.swift in Sources */,
 				01FA5913288713860008AF88 /* ReadableError.swift in Sources */,

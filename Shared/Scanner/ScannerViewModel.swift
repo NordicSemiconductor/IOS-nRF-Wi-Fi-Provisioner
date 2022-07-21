@@ -45,9 +45,7 @@ class ScannerViewModel: ObservableObject {
                 try await scanner.waitUntilReady()
                 
                 let scanResultStream = try await scanner.scanForPeripherals(
-                    withServices: uuidFilter
-                    ? UUID(uuidString: Provisioner.WiFi_Provision_Service).map { [$0] }
-                        : nil
+                    withServices: uuidFilter ? [Provisioner.WiFi_Provision_Service] : nil
                 )
                 
                 DispatchQueue.main.async { [weak self] in
@@ -66,7 +64,7 @@ class ScannerViewModel: ObservableObject {
                     DispatchQueue.main.async { [weak self] in
                         guard let `self` = self else { return }
 
-                        self.scanResults.insertIfNotContains(
+                        self.scanResults.appendIfNotContains(
                             ScanResult(
                                 name: scanResult.peripheral.name ?? "n/a",
                                 id: scanResult.peripheral.identifier,

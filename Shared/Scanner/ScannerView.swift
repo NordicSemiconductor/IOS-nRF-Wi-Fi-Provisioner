@@ -14,6 +14,7 @@ import SwiftUI
 
 struct ScannerView: View {
 	@ObservedObject var viewModel: ScannerViewModel
+    @EnvironmentObject var deviceViewModelFactory: DeviceViewModelFactory
 
 	var body: some View {
 		NavigationView {
@@ -57,7 +58,9 @@ struct ScannerView: View {
             Section("Scan Results") {
                 ForEach(viewModel.scanResults) { scanResult in
                     NavigationLink {
-                        DeviceView(viewModel: MockViewModel(index: 1))
+                        DeviceView(
+                            viewModel: deviceViewModelFactory.viewModel(for: scanResult.id)
+                        )
                     } label: {
                         Label {
                             Text(scanResult.name)

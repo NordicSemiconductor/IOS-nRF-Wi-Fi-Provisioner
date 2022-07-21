@@ -20,12 +20,24 @@ struct DeviceView: View {
                     image: "bluetooth"
                 )
             case .failed(let e):
-                Placeholder(text: e.message, image: "bluetooth")
+                Placeholder(text: e.message, image: "bluetooth_disabled")
             case .connected:
                 devieceInfo
             }
         }
         .navigationTitle("Device Info")
+        .onAppear {
+            Task {
+                do {
+                    try await viewModel.connect()
+                }
+            }
+        }
+        .alert(viewModel.errorTitle ?? "", isPresented: $viewModel.showErrorAlert) {
+            Button("OK", role: .cancel) {
+                
+            }
+        }
     }
     
     @ViewBuilder
@@ -37,7 +49,10 @@ struct DeviceView: View {
             }
             
             Section("Device Status") {
-                Label("Version", systemImage: "wrench.and.screwdriver")
+                HStack {
+                    Label("Version", systemImage: "wrench.and.screwdriver")
+                    
+                }
                 
                 Label("Wi-Fi Status", systemImage: "wifi")
                     .tint(.nordicBlue)
@@ -48,26 +63,11 @@ struct DeviceView: View {
 }
 
 #if DEBUG
-class MockViewModel: DeviceViewModel {
-    var i: Int = 0
-    
-    override var state: DeviceViewModel.State {
-        let states: [State] = [.connecting, .connected, .failed(TitleMessageError(message: "Failed to retreive required services"))]
-        
-        return states[i % 3]
-    }
-    
-    init(index: Int) {
-        super.init(peripheralId: UUID())
-        self.i = index
-    }
-}
-
 struct DeviceView_Previews: PreviewProvider {
     
     static var previews: some View {
         NavigationView {
-            DeviceView(viewModel: MockViewModel(index: 2))
+            DeviceView(viewModel: MockDeviceViewModel(index: 2))
         }
     }
 }

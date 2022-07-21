@@ -8,7 +8,7 @@
 import Foundation
 
 /// Error with readable title and message ready to show for user
-protocol ReadableError: Error {
+protocol ReadableError: LocalizedError {
     var title: String? { get }
     var message: String { get }
 }
