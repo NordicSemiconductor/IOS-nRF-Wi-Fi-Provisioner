@@ -21,29 +21,24 @@ class DeviceViewModel: ObservableObject {
 	}
     
     enum Error: ReadableError {
-        case peripheralNotFound
         case canNotConnect
         case serviceNotFound
         
         var title: String? {
             switch self {
-            case .peripheralNotFound:
-                return "Peripheral not found"
             case .canNotConnect:
                 return "Connection failed"
             case .serviceNotFound:
-                return "Service not found"
+                return "Wi-Fi Service not found"
             }
         }
         
         var message: String {
             switch self {
-            case .peripheralNotFound:
-                return "Peripheral can not be found"
             case .canNotConnect:
                 return "Can not connect the peripheral"
             case .serviceNotFound:
-                return "Wi-Fi service not found"
+                return "You can not provision this device as there's no Wi-Fi service found."
             }
         }
         
@@ -68,42 +63,35 @@ class DeviceViewModel: ObservableObject {
 
 	@Published private(set) var wifiState: WiFiStatus? = nil
 	@Published private(set) var versien: String? = nil
-
-    private let centralManager: CentralManager
+    
+    let provisioner: Provisioner
 
 	init(peripheralId: UUID, centralManager: CentralManager = CentralManager()) {
 		self.peripheralId = peripheralId
-		self.centralManager = centralManager
+        self.provisioner = Provisioner(deviceID: peripheralId)
 	}
 
 	func connect() async throws {
-        guard let peripheral = centralManager.retrievePeripherals(withIdentifiers: [peripheralId]).first else {
-            try rethrowError(Error.peripheralNotFound)
-        }
-        
         do {
-            try await centralManager.connect(peripheral)
+            try await self.provisioner.connect()
+            DispatchQueue.main.async {
+                self.state = .connected
+            }
+        } catch let e as Provisioner.Error {
+            switch e {
+            case .canNotConnect:
+                try rethrowError(Error.canNotConnect)
+            case .versionCharacteristicNotFound:
+                fallthrough
+            case .controlCharacteristicPointNotFound:
+                fallthrough
+            case .dataOutCharacteristicNotFoind:
+                fallthrough
+            case .wifiServiceNotFound:
+                try rethrowError(Error.serviceNotFound)
+            }
         } catch {
             try rethrowError(Error.canNotConnect)
-        }
-        
-        // Discover WiFi service
-        do {
-            try await peripheral.discoverServices([Provisioner.WiFi_Provision_Service])
-            guard let wifiService = peripheral.discoveredServices?.first(where: {
-                $0.identifier == Provisioner.WiFi_Provision_Service
-            }) else {
-                throw Error.serviceNotFound
-            }
-            
-            print("WIFI service found: \(wifiService.identifier)")
-        } catch {
-            try await centralManager.cancelPeripheralConnection(peripheral)
-            try rethrowError(Error.serviceNotFound)
-        }
-        
-        DispatchQueue.main.async {
-            self.state = .connected
         }
 	}
     

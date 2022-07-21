@@ -45,7 +45,7 @@ class ScannerViewModel: ObservableObject {
                 try await scanner.waitUntilReady()
                 
                 let scanResultStream = try await scanner.scanForPeripherals(
-                    withServices: uuidFilter ? [Provisioner.WiFi_Provision_Service] : nil
+                    withServices: uuidFilter ? [Provisioner.Service.wifi] : nil
                 )
                 
                 DispatchQueue.main.async { [weak self] in
