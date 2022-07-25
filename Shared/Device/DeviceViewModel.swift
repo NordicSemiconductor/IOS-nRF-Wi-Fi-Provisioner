@@ -10,7 +10,19 @@ import Foundation
 import Provisioner
 
 class DeviceViewModel: ObservableObject {
-	enum State {
+    enum State: CustomStringConvertible {
+        var description: String {
+            switch self {
+                
+            case .connecting:
+                return "Connecting ..."
+            case .failed(let e):
+                return e.message
+            case .connected:
+                return "Connected"
+            }
+        }
+        
 		case connecting
 		case failed(ReadableError)
 		case connected
@@ -23,6 +35,7 @@ class DeviceViewModel: ObservableObject {
     enum Error: ReadableError {
         case canNotConnect
         case serviceNotFound
+        case noResponse
         
         var title: String? {
             switch self {
@@ -30,6 +43,8 @@ class DeviceViewModel: ObservableObject {
                 return "Connection failed"
             case .serviceNotFound:
                 return "Wi-Fi Service not found"
+            case .noResponse:
+                return "No response"
             }
         }
         
@@ -39,6 +54,8 @@ class DeviceViewModel: ObservableObject {
                 return "Can not connect the peripheral"
             case .serviceNotFound:
                 return "You can not provision this device as there's no Wi-Fi service found."
+            case .noResponse:
+                return "Can not get response from the device"
             }
         }
         
@@ -62,7 +79,7 @@ class DeviceViewModel: ObservableObject {
     @Published private(set) var state: State = .connecting
 
 	@Published private(set) var wifiState: WiFiStatus? = nil
-	@Published private(set) var versien: String? = nil
+	@Published private(set) var versien: String = "Unknown"
     
     let provisioner: Provisioner
 
@@ -89,11 +106,35 @@ class DeviceViewModel: ObservableObject {
                 fallthrough
             case .wifiServiceNotFound:
                 try rethrowError(Error.serviceNotFound)
+            case .noResponse:
+                try rethrowError(Error.noResponse)
+            case .unknownDeviceStatus:
+                fatalError()
             }
         } catch {
             try rethrowError(Error.canNotConnect)
         }
 	}
+    
+    func readInformaten() async throws {
+        let v = try await provisioner.readVersien() ?? "Unknown"
+        DispatchQueue.main.async {
+            self.versien = v
+        }
+        
+        let status = try await provisioner.getStatus()
+        
+        DispatchQueue.main.async {
+            switch status {
+            case .disconnected, .authentication, .association, .obtainingIp:
+                self.state = .connecting
+            case .connected:
+                self.state = .connected
+            case .connectionFailed(_):
+                self.state = .failed(Error.canNotConnect)
+            }
+        }
+    }
     
     private func rethrowError(_ error: ReadableError) throws -> Never {
         DispatchQueue.main.async {

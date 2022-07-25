@@ -30,6 +30,7 @@ struct DeviceView: View {
             Task {
                 do {
                     try await viewModel.connect()
+                    try await viewModel.readInformaten()
                 }
             }
         }
@@ -51,11 +52,16 @@ struct DeviceView: View {
             Section("Device Status") {
                 HStack {
                     Label("Version", systemImage: "wrench.and.screwdriver")
-                    
+                    Spacer()
+                    Text(viewModel.versien)
                 }
                 
-                Label("Wi-Fi Status", systemImage: "wifi")
-                    .tint(.nordicBlue)
+                HStack {
+                    Label("Wi-Fi Status", systemImage: "wifi")
+                        .tint(.nordicBlue)
+                    Spacer()
+                    Text(viewModel.state.description)
+                }
             }
         }
         
