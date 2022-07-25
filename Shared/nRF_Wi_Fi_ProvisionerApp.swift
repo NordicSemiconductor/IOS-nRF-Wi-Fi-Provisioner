@@ -12,6 +12,7 @@ struct nRF_Wi_Fi_ProvisionerApp: App {
     var body: some Scene {
         WindowGroup {
             ScannerView(viewModel: ScannerViewModel())
+                .environmentObject(DeviceViewModelFactory())
         }
     }
 }

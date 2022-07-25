@@ -5,8 +5,9 @@
 //  Created by Nick Kibysh on 12/07/2022.
 //
 
+import AsyncBluetooth
 import Foundation
-import nRF_BLE
+import Provisioner
 
 class ScannerViewModel: ObservableObject {
     enum State {
@@ -16,62 +17,57 @@ class ScannerViewModel: ObservableObject {
     @Published private (set) var state: State = .waiting
     @Published private (set) var scanResults: [ScanResult] = []
     
-    @Published var uuidFilter = false {
+    @Published var uuidFilter = true {
         didSet {
-            if scanner.isScanning {
-                Task {
-                    await scanner.stopScan()
-                    DispatchQueue.main.async { [weak self] in
-                        self?.scanResults.removeAll()
-                    }
-                    startScan()
-                }
-            }
+            reset()
         }
     }
     @Published var nearbyFilter = false {
         didSet {
-            scanResults.removeAll()
+            reset()
         }
     }
-    @Published var nameFilter = false {
+    @Published var nameFilter = true {
         didSet {
-            scanResults.removeAll()
+            reset()
         }
     }
     
-    private let scanner: nRF_BLE.Scanner
+    private let scanner: CentralManager
     
-    init(scanner: nRF_BLE.Scanner = nRF_BLE.Scanner()) {
+    init(scanner: CentralManager = CentralManager()) {
         self.scanner = scanner
     }
     
     func startScan() {
         Task {
             do {
-                try await scanner.getReady()
+                try await scanner.waitUntilReady()
                 
                 let scanResultStream = try await scanner.scanForPeripherals(
-                    withServices: uuidFilter
-                        ? UUID(uuidString: "14387800-130c-49e7-b877-2881c89cb258").map { [$0] }
-                        : nil
+                    withServices: uuidFilter ? [Provisioner.Service.wifi] : nil
                 )
                 
+                DispatchQueue.main.async { [weak self] in
+                    self?.state = .scanning
+                }
+                
                 for try await scanResult in scanResultStream {
+                    if self.nameFilter, case .none = scanResult.peripheral.name {
+                        return
+                    }
+                    
+                    if self.nearbyFilter, !scanResult.rssi.isNearby {
+                        return
+                    }
+                    
                     DispatchQueue.main.async { [weak self] in
                         guard let `self` = self else { return }
-                        if self.nameFilter, case .none = scanResult.name {
-                            return
-                        }
-                        
-                        if self.nearbyFilter, !scanResult.rssi.isNearby {
-                            return 
-                        }
 
-                        self.scanResults.insertIfNotContains(
+                        self.scanResults.appendIfNotContains(
                             ScanResult(
-                                name: scanResult.name ?? "n/a",
-                                id: scanResult.id,
+                                name: scanResult.peripheral.name ?? "n/a",
+                                id: scanResult.peripheral.identifier,
                                 rssi: scanResult.rssi
                             )
                         )
@@ -81,6 +77,19 @@ class ScannerViewModel: ObservableObject {
                 print(e.localizedDescription)
             }
             
+        }
+    }
+    
+    private func reset() {
+        Task {
+            DispatchQueue.main.async { [weak self] in
+                self?.state = .waiting
+            }
+            await scanner.stopScan()
+            DispatchQueue.main.async { [weak self] in
+                self?.scanResults.removeAll()
+            }
+            startScan()
         }
     }
 }

@@ -4,29 +4,31 @@
 import PackageDescription
 
 let package = Package(
-    name: "nRF-BLE",
+    name: "Provisioner",
     platforms: [
             .macOS(.v11), .iOS(.v14)
         ],
     products: [
         // Products define the executables and libraries a package produces, and make them visible to other packages.
         .library(
-            name: "nRF-BLE",
-            targets: ["nRF-BLE"]),
+            name: "Provisioner",
+            targets: ["Provisioner"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/NickKibish/AsyncBluetooth.git", branch: "main"),
+        .package(url: "https://github.com/apple/swift-protobuf.git", from: "1.6.0"),
+        .package(path: "../AsyncBluetooth")
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
         // Targets can depend on other targets in this package, and on products in packages this package depends on.
         .target(
-            name: "nRF-BLE",
-            dependencies: [.product(name: "AsyncBluetooth", package: "AsyncBluetooth")]
-        ),
-        
+            name: "Provisioner",
+            dependencies: [
+                .product(name: "SwiftProtobuf", package: "swift-protobuf"),
+                .product(name: "AsyncBluetooth", package: "AsyncBluetooth")
+            ]),
         .testTarget(
-            name: "nRF-BLETests",
-            dependencies: ["nRF-BLE"]),
+            name: "ProvisionerTests",
+            dependencies: ["Provisioner"]),
     ]
 )

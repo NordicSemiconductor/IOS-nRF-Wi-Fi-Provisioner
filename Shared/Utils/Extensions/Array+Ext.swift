@@ -11,7 +11,7 @@ extension Array where Element : Hashable {
     
     @discardableResult
     mutating
-    func insertIfNotContains(_ element: Element) -> Bool {
+    func appendIfNotContains(_ element: Element) -> Bool {
         if contains(element) {
             return false
         } else {

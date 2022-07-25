@@ -1,3 +1,3 @@
-# nRF-BLE
+# Provisioner
 
 A description of this package.
