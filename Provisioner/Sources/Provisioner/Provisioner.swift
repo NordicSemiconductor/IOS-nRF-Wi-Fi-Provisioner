@@ -3,6 +3,7 @@ import AsyncBluetooth
 import os
 import SwiftProtobuf
 import CoreBluetoothMock
+import Combine
 
 public class Provisioner {
     public enum Error: Swift.Error {
@@ -64,11 +65,11 @@ public class Provisioner {
 }
 
 extension Provisioner {
-    public func parseScanData(_ scanData: ScanData) -> ScanDataInfo {
-        let advData = AdvertisementData(scanData.advertisementData)
-        print(advData)
-        return ScanDataInfo()
-    }
+//    public func parseScanData(_ scanData: ScanData) -> ScanDataInfo {
+//        let advData = AdvertisementData(scanData.advertisementData)
+//        print(advData)
+//        return ScanDataInfo()
+//    }
     
     public func connect() async throws {
         guard let peripheral = centralManager.retrievePeripherals(withIdentifiers: [deviceID]).first else {
@@ -144,6 +145,9 @@ extension Provisioner {
         }
         
         let response = try Response(serializedData: responseData)
+        guard response.status == .success else {
+            throw Error.unknownDeviceStatus
+        }
         guard response.hasDeviceStatus else {
             throw Error.unknownDeviceStatus
         }
@@ -151,8 +155,39 @@ extension Provisioner {
         return response.deviceStatus.toPublicStatus()
     }
     
-    public func startScan() {
+    public func startScan() async throws -> AnyPublisher<ScanDataInfo, Swift.Error> {
+        var request = Request()
+        request.opCode = .startScan
         
+        let data = try request.serializedData()
+        
+        let valueReceiver = peripheral.characteristicValueUpdatedPublisher
+            .filter { $0.identifier == self.controlPointCharacteristic.identifier }
+            .map(\.value)
+            .first()
+            .eraseToAnyPublisher()
+            
+        try await peripheral.writeValue(data, for: controlPointCharacteristic, type: .withResponse)
+        
+        let ap = peripheral.characteristicValueUpdatedPublisher
+            .filter { $0.identifier == self.dataOutCharacteristic.identifier }
+            .map(\.value)
+            .tryMap { resp -> ScanDataInfo in
+                guard let responseData = resp as Data? else {
+                    // TODO: Change Error
+                    throw Error.canNotConnect
+                }
+                
+                let response = try Result(serializedData: responseData)
+                let wifiName = String(data: response.scanRecord.wifi.ssid, encoding: .utf8)
+                
+                return ScanDataInfo(name: wifiName ?? "n/a")
+            }
+            .eraseToAnyPublisher()
+        
+        try await peripheral.setNotifyValue(true, for: dataOutCharacteristic)
+        
+        return ap
     }
 }
  

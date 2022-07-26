@@ -43,25 +43,54 @@ struct DeviceView: View {
     
     @ViewBuilder
     var devieceInfo: some View {
-        Form {
-            Section() {
-                Label("Device Name", image: "bluetooth")
-                    .tint(.nordicBlue)
-            }
-            
-            Section("Device Status") {
-                HStack {
-                    Label("Version", systemImage: "wrench.and.screwdriver")
-                    Spacer()
-                    Text(viewModel.versien)
+        VStack {
+            Form {
+                Section() {
+                    Label("Device Name", image: "bluetooth")
+                        .tint(.nordicBlue)
                 }
                 
-                HStack {
-                    Label("Wi-Fi Status", systemImage: "wifi")
-                        .tint(.nordicBlue)
-                    Spacer()
-                    Text(viewModel.state.description)
+                Section("Device Status") {
+                    HStack {
+                        Label("Version", systemImage: "wrench.and.screwdriver")
+                        Spacer()
+                        Text(viewModel.versien)
+                    }
+                    
+                    HStack {
+                        Label("Wi-Fi Status", systemImage: "wifi")
+                            .tint(.nordicBlue)
+                        Spacer()
+                        Text(viewModel.state.description)
+                    }
                 }
+                
+                Section("Access Point") {
+                    NavigationLink(isActive: $viewModel.activeScan) {
+                        AccessPointList(viewModel: viewModel)
+                    } label: {
+                        HStack {
+                            Label("Access Point", systemImage: "wifi.circle")
+                            Spacer()
+                            Text(viewModel.selectedAccessPoint?.name ?? "Not Selected")
+                        }
+                    }
+                    
+                    if viewModel.passwordRequired {
+                        SecureField("Password", text: $viewModel.password)
+                    }
+                }
+                
+                
+            }
+            if viewModel.selectedAccessPoint != nil {
+                Spacer()
+                Button("START_PROVISIONING_BTN") {
+                    
+                }
+                .disabled(viewModel.password.count < 6)
+                .buttonStyle(NordicButtonStyle())
+                .padding()
             }
         }
         

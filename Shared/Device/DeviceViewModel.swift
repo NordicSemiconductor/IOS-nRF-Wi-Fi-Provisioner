@@ -74,12 +74,36 @@ class DeviceViewModel: ObservableObject {
     }
     @Published private(set) var errorTitle: String?
     @Published private(set) var errorMessage: String?
+    
     @Published var showErrorAlert: Bool = false
+    @Published var showAccessPointList: Bool = false
 
     @Published private(set) var state: State = .connecting
 
 	@Published private(set) var wifiState: WiFiStatus? = nil
 	@Published private(set) var versien: String = "Unknown"
+    
+    @Published private(set) var accessPoints: [ScanDataInfo] = []
+    @Published var selectedAccessPoint: ScanDataInfo? {
+        didSet {
+            self.passwordRequired = self.selectedAccessPoint != nil
+        }
+    }
+    @Published var activeScan = false {
+        didSet {
+            if activeScan {
+                Task {
+                    await startScan()
+                }
+            } else {
+                Task {
+                    await stopScan()
+                }
+            }
+        }
+    }
+    @Published private(set) var passwordRequired: Bool = false
+    @Published var password: String = ""
     
     let provisioner: Provisioner
 
@@ -134,6 +158,26 @@ class DeviceViewModel: ObservableObject {
                 self.state = .failed(Error.canNotConnect)
             }
         }
+    }
+    
+    func startScan() async {
+        DispatchQueue.main.async {
+            self.accessPoints.removeAll()
+        }
+        do {
+            for try await scanResult in try await provisioner.startScan().values {
+                print(scanResult.name)
+                DispatchQueue.main.async {
+                    self.accessPoints.append(scanResult)                    
+                }
+            }
+        } catch let e {
+            print(e.localizedDescription)
+        }
+    }
+    
+    func stopScan() async {
+        
     }
     
     private func rethrowError(_ error: ReadableError) throws -> Never {

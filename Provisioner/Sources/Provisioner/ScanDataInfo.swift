@@ -7,6 +7,12 @@
 
 import Foundation
 
-public struct ScanDataInfo {
+public struct ScanDataInfo: Identifiable {
+    public var name: String
+    public var id: UUID
     
+    init(name: String) {
+        self.name = name
+        self.id = UUID()
+    }
 }

@@ -10,6 +10,7 @@ import SwiftUI
 @available(iOS 15.0, *)
 // button style with nordicBlue color and rounded corners
 public struct NordicButtonStyle: ButtonStyle {
+    @Environment(\.isEnabled) var isEnabled
     
     public init() { }
     
@@ -18,7 +19,7 @@ public struct NordicButtonStyle: ButtonStyle {
         configuration.label
             .padding()
             .frame(maxWidth: .infinity)
-            .background(.nordicLake)
+            .background(isEnabled ? .nordicLake : .secondary)
             .foregroundColor(configuration.isPressed ? .init(white: 0.95) : .white)
             .cornerRadius(4)
             .shadow(radius: 2)

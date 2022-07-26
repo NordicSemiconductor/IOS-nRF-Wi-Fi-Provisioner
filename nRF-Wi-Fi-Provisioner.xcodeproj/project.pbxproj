@@ -19,6 +19,8 @@
 		01481ABD2852093000925FAB /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01481A932852092F00925FAB /* ContentView.swift */; };
 		01481ABE2852093000925FAB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 01481A942852093000925FAB /* Assets.xcassets */; };
 		01481ABF2852093000925FAB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 01481A942852093000925FAB /* Assets.xcassets */; };
+		015845CC288FD5A900C7E4B7 /* AccessPointList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 015845CB288FD5A900C7E4B7 /* AccessPointList.swift */; };
+		015845CD288FD5A900C7E4B7 /* AccessPointList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 015845CB288FD5A900C7E4B7 /* AccessPointList.swift */; };
 		015D60A32875A1530048F065 /* ScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 015D60A22875A1530048F065 /* ScannerView.swift */; };
 		015D60A42875A1530048F065 /* ScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 015D60A22875A1530048F065 /* ScannerView.swift */; };
 		0168261A287F16CD0040C97E /* Array+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01682619287F16CD0040C97E /* Array+Ext.swift */; };
@@ -86,6 +88,7 @@
 		01481AB22852093000925FAB /* Tests macOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Tests macOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		01481AB62852093000925FAB /* Tests_macOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests_macOS.swift; sourceTree = "<group>"; };
 		01481AB82852093000925FAB /* Tests_macOSLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests_macOSLaunchTests.swift; sourceTree = "<group>"; };
+		015845CB288FD5A900C7E4B7 /* AccessPointList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessPointList.swift; sourceTree = "<group>"; };
 		015D60A22875A1530048F065 /* ScannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerView.swift; sourceTree = "<group>"; };
 		01682619287F16CD0040C97E /* Array+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Ext.swift"; sourceTree = "<group>"; };
 		019262E3288039F100A69D04 /* Counter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Counter.swift; sourceTree = "<group>"; };
@@ -219,6 +222,14 @@
 			path = "Tests macOS";
 			sourceTree = "<group>";
 		};
+		015845CA288FD54500C7E4B7 /* Scan */ = {
+			isa = PBXGroup;
+			children = (
+				015845CB288FD5A900C7E4B7 /* AccessPointList.swift */,
+			);
+			path = Scan;
+			sourceTree = "<group>";
+		};
 		01682618287F16B20040C97E /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -254,6 +265,7 @@
 		01A43DE92886FEB80025A5C4 /* Device */ = {
 			isa = PBXGroup;
 			children = (
+				015845CA288FD54500C7E4B7 /* Scan */,
 				01A43DEA2886FECB0025A5C4 /* DeviceView.swift */,
 				01A43DED2886FED80025A5C4 /* DeviceViewModel.swift */,
 			);
@@ -481,6 +493,7 @@
 				019DCE25288553E700E16E9F /* CGRect+Ext.swift in Sources */,
 				01C0F0FD287DE926008BBE46 /* ScanResult.swift in Sources */,
 				01481ABA2852093000925FAB /* nRF_Wi_Fi_ProvisionerApp.swift in Sources */,
+				015845CC288FD5A900C7E4B7 /* AccessPointList.swift in Sources */,
 				019262E4288039F100A69D04 /* Counter.swift in Sources */,
 				01A0C29528896343000AA135 /* DeviceViewModelFactory.swift in Sources */,
 				0168261A287F16CD0040C97E /* Array+Ext.swift in Sources */,
@@ -504,6 +517,7 @@
 				019DCE26288553E700E16E9F /* CGRect+Ext.swift in Sources */,
 				01C0F0FE287DE926008BBE46 /* ScanResult.swift in Sources */,
 				01481ABB2852093000925FAB /* nRF_Wi_Fi_ProvisionerApp.swift in Sources */,
+				015845CD288FD5A900C7E4B7 /* AccessPointList.swift in Sources */,
 				019262E5288039F100A69D04 /* Counter.swift in Sources */,
 				01A0C29628896343000AA135 /* DeviceViewModelFactory.swift in Sources */,
 				0168261B287F16CD0040C97E /* Array+Ext.swift in Sources */,
