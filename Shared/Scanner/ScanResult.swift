@@ -11,7 +11,7 @@ import AsyncBluetooth
 struct ScanResult: Identifiable, Hashable {
     let name: String
     let id: UUID
-    let rssi: RSSI
+    let rssi: Int
     
     func hash(into hasher: inout Hasher) {
         hasher.combine(id)

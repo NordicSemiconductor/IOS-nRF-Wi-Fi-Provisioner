@@ -16,6 +16,7 @@ class ScannerViewModel: ObservableObject {
     
     @Published private (set) var state: State = .waiting
     @Published private (set) var scanResults: [ScanResult] = []
+    private var allScanResults: [ScanData] = []
     
     @Published var uuidFilter = true {
         didSet {
@@ -44,33 +45,34 @@ class ScannerViewModel: ObservableObject {
             do {
                 try await scanner.waitUntilReady()
                 
-                let scanResultStream = try await scanner.scanForPeripherals(
-                    withServices: uuidFilter ? [Provisioner.Service.wifi] : nil
-                )
+                let scanResultStream = try await scanner.scanForPeripherals(withServices: nil as [UUID]?)
                 
                 DispatchQueue.main.async { [weak self] in
                     self?.state = .scanning
                 }
                 
                 for try await scanResult in scanResultStream {
-                    if self.nameFilter, case .none = scanResult.peripheral.name {
-                        return
-                    }
+                    self.allScanResults.appendIfNotContains(scanResult)
                     
-                    if self.nearbyFilter, !scanResult.rssi.isNearby {
-                        return
-                    }
-                    
-                    DispatchQueue.main.async { [weak self] in
-                        guard let `self` = self else { return }
-
-                        self.scanResults.appendIfNotContains(
-                            ScanResult(
-                                name: scanResult.peripheral.name ?? "n/a",
-                                id: scanResult.peripheral.identifier,
-                                rssi: scanResult.rssi
-                            )
-                        )
+                    DispatchQueue.main.async {
+                        self.scanResults = self.allScanResults.filter { sr in
+                            if self.nameFilter && sr.peripheral.name?.isEmpty != false {
+                                return false
+                            }
+                            
+                            if self.nearbyFilter && !BluetoothRSSI(level: sr.rssi).isNearby {
+                                return false
+                            }
+                            
+                            if self.uuidFilter && !sr.containsService(Provisioner.Service.wifi) {
+                                return false
+                            }
+                            
+                            return true
+                        }
+                        .map {
+                            ScanResult(name: $0.peripheral.name ?? "n/a", id: $0.peripheral.identifier, rssi: $0.rssi)
+                        }
                     }
                 }
             } catch let e {

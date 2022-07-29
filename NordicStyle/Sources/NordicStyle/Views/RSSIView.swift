@@ -8,11 +8,11 @@
 import SwiftUI
 
 public
-struct RSSIView: View {
-    let rssi: RSSI
+struct RSSIView<R: RSSI>: View {
+    let rssi: R
     
     public
-    init(rssi: RSSI) {
+    init(rssi: R) {
         self.rssi = rssi
     }
     
@@ -25,9 +25,25 @@ struct RSSIView: View {
     }
 }
 
-struct RSSIView_Previews: PreviewProvider {
+#if DEBUG
+class RSSIView_Previews: PreviewProvider {
+    private enum PreviewRSSI: RSSI {
+        case good
+        case ok
+        case bad
+        case outOfRange
+        case practicalWorst
+    }
+
+    @objc class func injected() {
+        let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
+        windowScene?.windows.first?.rootViewController =
+                UIHostingController(rootView: RSSIView<PreviewRSSI>(rssi: .good))
+    }
+
     static var previews: some View {
-        RSSIView(rssi: RSSI.good)
+        RSSIView<PreviewRSSI>(rssi: .good)
             .padding()
     }
 }
+#endif

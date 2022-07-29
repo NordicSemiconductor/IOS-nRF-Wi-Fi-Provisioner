@@ -66,7 +66,7 @@ struct ScannerView: View {
                             Text(scanResult.name)
                                 .lineLimit(1)
                         } icon: {
-                            RSSIView(rssi: NordicRSSI(signal: scanResult.rssi))
+                            RSSIView<BluetoothRSSI>(rssi: BluetoothRSSI(level: scanResult.rssi))
                         }
                         .padding()
                     }
@@ -86,7 +86,7 @@ struct ScannerView: View {
 
 			override var scanResults: [ScanResult] {
 				return (0...3).map {
-                    ScanResult(name: "Device \($0)", id: UUID(), rssi: BluetoothRSSI(level: -90))
+                    ScanResult(name: "Device \($0)", id: UUID(), rssi: -90)
 				}
 			}
 		}

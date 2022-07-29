@@ -36,6 +36,7 @@ class DeviceViewModel: ObservableObject {
         case canNotConnect
         case serviceNotFound
         case noResponse
+        case canNotStopScan
         
         var title: String? {
             switch self {
@@ -45,6 +46,8 @@ class DeviceViewModel: ObservableObject {
                 return "Wi-Fi Service not found"
             case .noResponse:
                 return "No response"
+            case .canNotStopScan:
+                return "Can not stop scanning"
             }
         }
         
@@ -56,6 +59,8 @@ class DeviceViewModel: ObservableObject {
                 return "You can not provision this device as there's no Wi-Fi service found."
             case .noResponse:
                 return "Can not get response from the device"
+            case .canNotStopScan:
+                return "Can not stop scanning"
             }
         }
         
@@ -63,6 +68,8 @@ class DeviceViewModel: ObservableObject {
     }
 
 	let peripheralId: UUID
+    
+    @Published private (set) var deviceName: String = ""
     
     @Published fileprivate(set) var error: ReadableError? {
         didSet {
@@ -83,8 +90,8 @@ class DeviceViewModel: ObservableObject {
 	@Published private(set) var wifiState: WiFiStatus? = nil
 	@Published private(set) var versien: String = "Unknown"
     
-    @Published private(set) var accessPoints: [ScanDataInfo] = []
-    @Published var selectedAccessPoint: ScanDataInfo? {
+    @Published private(set) var accessPoints: [AccessPoint] = []
+    @Published var selectedAccessPoint: AccessPoint? {
         didSet {
             self.passwordRequired = self.selectedAccessPoint != nil
         }
@@ -97,7 +104,7 @@ class DeviceViewModel: ObservableObject {
                 }
             } else {
                 Task {
-                    await stopScan()
+                    try? await stopScan()
                 }
             }
         }
@@ -110,6 +117,8 @@ class DeviceViewModel: ObservableObject {
 	init(peripheralId: UUID, centralManager: CentralManager = CentralManager()) {
 		self.peripheralId = peripheralId
         self.provisioner = Provisioner(deviceID: peripheralId)
+        
+        self.deviceName = CentralManager().retrievePeripherals(withIdentifiers: [self.peripheralId]).first?.name ?? "Prov"
 	}
 
 	func connect() async throws {
@@ -126,7 +135,7 @@ class DeviceViewModel: ObservableObject {
                 fallthrough
             case .controlCharacteristicPointNotFound:
                 fallthrough
-            case .dataOutCharacteristicNotFoind:
+            case .dataOutCharacteristicNotFound:
                 fallthrough
             case .wifiServiceNotFound:
                 try rethrowError(Error.serviceNotFound)
@@ -140,8 +149,8 @@ class DeviceViewModel: ObservableObject {
         }
 	}
     
-    func readInformaten() async throws {
-        let v = try await provisioner.readVersien() ?? "Unknown"
+    func readInformation() async throws {
+        let v = try await provisioner.readVersion() ?? "Unknown"
         DispatchQueue.main.async {
             self.versien = v
         }
@@ -176,8 +185,12 @@ class DeviceViewModel: ObservableObject {
         }
     }
     
-    func stopScan() async {
-        
+    func stopScan() async throws {
+        do {
+            try await provisioner.stopScan()
+        } catch {
+            try rethrowError(Error.canNotStopScan)
+        }
     }
     
     private func rethrowError(_ error: ReadableError) throws -> Never {

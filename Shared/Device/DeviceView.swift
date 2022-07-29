@@ -22,7 +22,7 @@ struct DeviceView: View {
             case .failed(let e):
                 Placeholder(text: e.message, image: "bluetooth_disabled")
             case .connected:
-                devieceInfo
+                deviceInfo
             }
         }
         .navigationTitle("Device Info")
@@ -30,7 +30,7 @@ struct DeviceView: View {
             Task {
                 do {
                     try await viewModel.connect()
-                    try await viewModel.readInformaten()
+                    try await viewModel.readInformation()
                 }
             }
         }
@@ -42,12 +42,16 @@ struct DeviceView: View {
     }
     
     @ViewBuilder
-    var devieceInfo: some View {
+    var deviceInfo: some View {
         VStack {
             Form {
                 Section() {
-                    Label("Device Name", image: "bluetooth")
-                        .tint(.nordicBlue)
+                    HStack {
+                        Label("Device Name", image: "bluetooth")
+                            .tint(.nordicBlue)
+                        Spacer()
+                        Text(viewModel.deviceName)
+                    }
                 }
                 
                 Section("Device Status") {

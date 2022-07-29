@@ -7,10 +7,23 @@
 
 import SwiftUI
 
-public enum RSSI {
-    case good, ok, bad, practicalWorst, outOfRange
+public
+protocol RSSI: CaseIterable, Equatable {
+    static var good: Self { get }
+    static var ok: Self { get }
+    static var bad: Self { get }
+    static var outOfRange: Self { get }
+    static var practicalWorst: Self { get }
 }
 
+public
+extension RSSI {
+    static var allCases: [Self] {
+        [.good, .ok, .bad, .outOfRange, .practicalWorst]
+    }
+}
+
+public
 extension RSSI {
     var color: Color {
         switch self {
@@ -24,6 +37,8 @@ extension RSSI {
             return .red
         case .practicalWorst:
             return .red
+        default:
+            fatalError("Unknown RSSI value")
         }
     }
     
@@ -39,6 +54,8 @@ extension RSSI {
             return 0
         case .practicalWorst:
             return 1
+        default:
+            fatalError("Unknown RSSI value")
         }
     }
 }
