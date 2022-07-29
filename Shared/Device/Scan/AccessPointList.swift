@@ -20,7 +20,7 @@ struct AccessPointList: View {
                     viewModel.selectedAccessPoint = ap
                 } label: {
                     HStack {
-                        Label(ap.name, systemImage: ap.isOpen ? "lock" : "lock.open")
+                        Label(ap.name, systemImage: ap.isOpen ? "lock.open" : "lock")
                                 .tint(.white)
                         Spacer()
                         RSSIView<WiFiRSSI>(rssi: WiFiRSSI(level: ap.rssi))

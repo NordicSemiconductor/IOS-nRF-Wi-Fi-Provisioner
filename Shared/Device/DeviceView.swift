@@ -92,7 +92,7 @@ struct DeviceView: View {
                 Button("START_PROVISIONING_BTN") {
                     
                 }
-                .disabled(viewModel.password.count < 6)
+                .disabled(viewModel.password.count < 6 && viewModel.selectedAccessPoint?.isOpen == false)
                 .buttonStyle(NordicButtonStyle())
                 .padding()
             }
