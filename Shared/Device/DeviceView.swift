@@ -34,7 +34,7 @@ struct DeviceView: View {
                 }
             }
         }
-        .alert(viewModel.errorTitle ?? "", isPresented: $viewModel.showErrorAlert) {
+        .alert(viewModel.error?.title ?? "", isPresented: $viewModel.showErrorAlert) {
             Button("OK", role: .cancel) {
                 
             }
@@ -58,7 +58,7 @@ struct DeviceView: View {
                     HStack {
                         Label("Version", systemImage: "wrench.and.screwdriver")
                         Spacer()
-                        Text(viewModel.versien)
+                        Text(viewModel.version)
                     }
                     
                     HStack {
@@ -70,7 +70,7 @@ struct DeviceView: View {
                 }
                 
                 Section("Access Point") {
-                    NavigationLink(isActive: $viewModel.activeScan) {
+                    NavigationLink {
                         AccessPointList(viewModel: viewModel)
                     } label: {
                         HStack {
@@ -106,8 +106,10 @@ struct DeviceView_Previews: PreviewProvider {
     
     static var previews: some View {
         NavigationView {
-            DeviceView(viewModel: MockDeviceViewModel(index: 2))
+            DeviceView(viewModel: MockDeviceViewModel(index: 1))
         }
     }
+    
+    
 }
 #endif

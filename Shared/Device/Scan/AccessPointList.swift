@@ -6,22 +6,42 @@
 //
 
 import SwiftUI
+import NordicStyle
 
 struct AccessPointList: View {
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @ObservedObject var viewModel: DeviceViewModel
     
     var body: some View {
         List {
             ForEach(viewModel.accessPoints) { ap in
                 Button {
+                    self.presentationMode.wrappedValue.dismiss()
                     viewModel.selectedAccessPoint = ap
-                    viewModel.activeScan = false 
                 } label: {
-                    Label(ap.name, systemImage: "lock")
+                    HStack {
+                        Label(ap.name, systemImage: ap.isOpen ? "lock" : "lock.open")
+                                .tint(.white)
+                        Spacer()
+                        RSSIView<WiFiRSSI>(rssi: WiFiRSSI(level: ap.rssi))
+                                .frame(maxWidth: 30, maxHeight: 20)
+                    }
                 }
             }
         }
         .navigationTitle("Wi-Fi")
+                .onAppear {
+                    Task {
+                        await viewModel.startScan()
+                    }
+                }
+                .onDisappear {
+                    Task {
+                        do {
+                            try await viewModel.stopScan()
+                        }
+                    }
+                }
     }
 }
 

@@ -145,12 +145,6 @@ extension Provisioner {
         request.opCode = .startScan
         
         let data = try request.serializedData()
-        
-//        let valueReceiver = peripheral.characteristicValueUpdatedPublisher
-//            .filter { $0.identifier == self.controlPointCharacteristic.identifier }
-//            .map(\.value)
-//            .first()
-//            .eraseToAnyPublisher()
             
         try await peripheral.writeValue(data, for: controlPointCharacteristic, type: .withResponse)
         
@@ -160,8 +154,7 @@ extension Provisioner {
             .tryMap { resp -> AccessPoint in
                 guard let responseData = resp as Data? else {
                     self.logger.error("No response data in wifi scan")
-                    // TODO: Change Error
-                    throw Error.canNotConnect
+                    throw Error.noResponse
                 }
                 
                 let response = try Result(serializedData: responseData)

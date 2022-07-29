@@ -54,6 +54,8 @@
 		01FA5915288809220008AF88 /* Provisioner in Frameworks */ = {isa = PBXBuildFile; productRef = 01FA5914288809220008AF88 /* Provisioner */; };
 		01FA5917288809390008AF88 /* Provisioner in Frameworks */ = {isa = PBXBuildFile; productRef = 01FA5916288809390008AF88 /* Provisioner */; };
 		3397680D2FE5FBB193E7A5EE /* BluetoothRSSI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 339762F1507DAF6B903DF4D1 /* BluetoothRSSI.swift */; };
+		3397689B2FD60C49322F3E29 /* WiFiRSSI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33976EF9849513130301C930 /* WiFiRSSI.swift */; };
+		33976EBA0FF55A009B0C55ED /* WiFiRSSI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33976EF9849513130301C930 /* WiFiRSSI.swift */; };
 		33976EFC0D92E4D7C58060E1 /* BluetoothRSSI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 339762F1507DAF6B903DF4D1 /* BluetoothRSSI.swift */; };
 /* End PBXBuildFile section */
 
@@ -106,6 +108,7 @@
 		01D26B5A286DAE9800FD069D /* LocalizationKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizationKey.swift; sourceTree = "<group>"; };
 		01FA5911288713860008AF88 /* ReadableError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadableError.swift; sourceTree = "<group>"; };
 		339762F1507DAF6B903DF4D1 /* BluetoothRSSI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BluetoothRSSI.swift; sourceTree = "<group>"; };
+		33976EF9849513130301C930 /* WiFiRSSI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WiFiRSSI.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -307,6 +310,7 @@
 			isa = PBXGroup;
 			children = (
 				339762F1507DAF6B903DF4D1 /* BluetoothRSSI.swift */,
+				33976EF9849513130301C930 /* WiFiRSSI.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -500,6 +504,7 @@
 				01FA5912288713860008AF88 /* ReadableError.swift in Sources */,
 				011A2613287CAF890004A5C4 /* BluetoothManager.swift in Sources */,
 				3397680D2FE5FBB193E7A5EE /* BluetoothRSSI.swift in Sources */,
+				3397689B2FD60C49322F3E29 /* WiFiRSSI.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -524,6 +529,7 @@
 				01FA5913288713860008AF88 /* ReadableError.swift in Sources */,
 				011A2614287CAF890004A5C4 /* BluetoothManager.swift in Sources */,
 				33976EFC0D92E4D7C58060E1 /* BluetoothRSSI.swift in Sources */,
+				33976EBA0FF55A009B0C55ED /* WiFiRSSI.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -615,9 +621,7 @@
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				OTHER_LDFLAGS = (
-					"\"-Xlinker -interposable\"",
-				);
+				OTHER_LDFLAGS = "\"-Xlinker -interposable\"";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};

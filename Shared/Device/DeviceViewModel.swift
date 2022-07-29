@@ -66,62 +66,41 @@ class DeviceViewModel: ObservableObject {
         
         
     }
-
-	let peripheralId: UUID
-    
-    @Published private (set) var deviceName: String = ""
-    
+    // MARK: - Error
+    @Published var showErrorAlert: Bool = false
     @Published fileprivate(set) var error: ReadableError? {
         didSet {
-            errorTitle = error?.title
-            errorMessage = error?.message
             showErrorAlert = true
             error.map { self.state = .failed($0) }
         }
     }
-    @Published private(set) var errorTitle: String?
-    @Published private(set) var errorMessage: String?
-    
-    @Published var showErrorAlert: Bool = false
+    @Published private (set) var deviceName: String = ""
+
+    @Published fileprivate(set) var state: State = .connecting
+
+	@Published fileprivate(set) var wifiState: WiFiStatus? = nil
+	@Published fileprivate(set) var version: String = "Unknown"
+
     @Published var showAccessPointList: Bool = false
-
-    @Published private(set) var state: State = .connecting
-
-	@Published private(set) var wifiState: WiFiStatus? = nil
-	@Published private(set) var versien: String = "Unknown"
-    
-    @Published private(set) var accessPoints: [AccessPoint] = []
+    @Published fileprivate(set) var accessPoints: [AccessPoint] = []
     @Published var selectedAccessPoint: AccessPoint? {
         didSet {
-            self.passwordRequired = self.selectedAccessPoint != nil
-        }
-    }
-    @Published var activeScan = false {
-        didSet {
-            if activeScan {
-                Task {
-                    await startScan()
-                }
-            } else {
-                Task {
-                    try? await stopScan()
-                }
-            }
+            passwordRequired = selectedAccessPoint?.isOpen == false
         }
     }
     @Published private(set) var passwordRequired: Bool = false
     @Published var password: String = ""
     
     let provisioner: Provisioner
+    let peripheralId: UUID
 
 	init(peripheralId: UUID, centralManager: CentralManager = CentralManager()) {
 		self.peripheralId = peripheralId
         self.provisioner = Provisioner(deviceID: peripheralId)
-        
         self.deviceName = CentralManager().retrievePeripherals(withIdentifiers: [self.peripheralId]).first?.name ?? "Prov"
 	}
 
-	func connect() async throws {
+    func connect() async throws {
         do {
             try await self.provisioner.connect()
             DispatchQueue.main.async {
@@ -147,16 +126,18 @@ class DeviceViewModel: ObservableObject {
         } catch {
             try rethrowError(Error.canNotConnect)
         }
-	}
-    
+    }
+}
+
+extension DeviceViewModel {
     func readInformation() async throws {
         let v = try await provisioner.readVersion() ?? "Unknown"
         DispatchQueue.main.async {
-            self.versien = v
+            self.version = v
         }
-        
+
         let status = try await provisioner.getStatus()
-        
+
         DispatchQueue.main.async {
             switch status {
             case .disconnected, .authentication, .association, .obtainingIp:
@@ -168,7 +149,7 @@ class DeviceViewModel: ObservableObject {
             }
         }
     }
-    
+
     func startScan() async {
         DispatchQueue.main.async {
             self.accessPoints.removeAll()
@@ -177,14 +158,14 @@ class DeviceViewModel: ObservableObject {
             for try await scanResult in try await provisioner.startScan().values {
                 print(scanResult.name)
                 DispatchQueue.main.async {
-                    self.accessPoints.append(scanResult)                    
+                    self.accessPoints.append(scanResult)
                 }
             }
         } catch let e {
             print(e.localizedDescription)
         }
     }
-    
+
     func stopScan() async throws {
         do {
             try await provisioner.stopScan()
@@ -192,32 +173,28 @@ class DeviceViewModel: ObservableObject {
             try rethrowError(Error.canNotStopScan)
         }
     }
-    
+}
+
+extension DeviceViewModel {
     private func rethrowError(_ error: ReadableError) throws -> Never {
         DispatchQueue.main.async {
             self.error = error
         }
         throw error
     }
-
 }
 
 #if DEBUG
 class MockDeviceViewModel: DeviceViewModel {
     var i: Int? = 0
     
-    override var state: DeviceViewModel.State {
-        guard let index = i else {
-            return .connected
-        }
-        let states: [State] = [.connecting, .connected, .failed(TitleMessageError(message: "Failed to retreive required services"))]
-        
-        return states[index % 3]
-    }
-    
     init(index: Int) {
         super.init(peripheralId: UUID())
         self.i = index
+        
+        let states: [State] = [.connecting, .connected, .failed(TitleMessageError(message: "Failed to retreive required services"))]
+        
+        self.state = states[index % 3]
     }
     
     override init(peripheralId: UUID, centralManager: CentralManager = CentralManager()) {
@@ -225,8 +202,16 @@ class MockDeviceViewModel: DeviceViewModel {
     }
     
     override func connect() async throws {
-        self.error = Error.canNotConnect
-        throw Error.canNotConnect
+        if self.i == 2 {
+            self.error = Error.canNotConnect
+            throw Error.canNotConnect            
+        } else {
+            await Task {
+                self.wifiState = .notConnected
+                self.error = nil
+                
+            }
+        }
     }
 }
 #endif
