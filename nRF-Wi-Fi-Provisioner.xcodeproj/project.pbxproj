@@ -25,6 +25,10 @@
 		015D60A42875A1530048F065 /* ScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 015D60A22875A1530048F065 /* ScannerView.swift */; };
 		0168261A287F16CD0040C97E /* Array+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01682619287F16CD0040C97E /* Array+Ext.swift */; };
 		0168261B287F16CD0040C97E /* Array+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01682619287F16CD0040C97E /* Array+Ext.swift */; };
+		0183EFC92897C196002E79A5 /* Status.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0183EFC82897C196002E79A5 /* Status.swift */; };
+		0183EFCA2897C196002E79A5 /* Status.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0183EFC82897C196002E79A5 /* Status.swift */; };
+		0183EFCD2897C446002E79A5 /* ReversedLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0183EFCC2897C446002E79A5 /* ReversedLabel.swift */; };
+		0183EFCE2897C446002E79A5 /* ReversedLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0183EFCC2897C446002E79A5 /* ReversedLabel.swift */; };
 		019262E4288039F100A69D04 /* Counter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019262E3288039F100A69D04 /* Counter.swift */; };
 		019262E5288039F100A69D04 /* Counter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019262E3288039F100A69D04 /* Counter.swift */; };
 		019DCE25288553E700E16E9F /* CGRect+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019DCE24288553E700E16E9F /* CGRect+Ext.swift */; };
@@ -93,6 +97,8 @@
 		015845CB288FD5A900C7E4B7 /* AccessPointList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessPointList.swift; sourceTree = "<group>"; };
 		015D60A22875A1530048F065 /* ScannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerView.swift; sourceTree = "<group>"; };
 		01682619287F16CD0040C97E /* Array+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Ext.swift"; sourceTree = "<group>"; };
+		0183EFC82897C196002E79A5 /* Status.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Status.swift; sourceTree = "<group>"; };
+		0183EFCC2897C446002E79A5 /* ReversedLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReversedLabel.swift; sourceTree = "<group>"; };
 		019262E3288039F100A69D04 /* Counter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Counter.swift; sourceTree = "<group>"; };
 		019A5D8D286C77CE002D03F0 /* NordicStyle */ = {isa = PBXFileReference; lastKnownFileType = text; path = NordicStyle; sourceTree = SOURCE_ROOT; };
 		019DCE24288553E700E16E9F /* CGRect+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGRect+Ext.swift"; sourceTree = "<group>"; };
@@ -242,6 +248,22 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
+		0183EFC72897C17E002E79A5 /* Modifiers */ = {
+			isa = PBXGroup;
+			children = (
+				0183EFC82897C196002E79A5 /* Status.swift */,
+			);
+			path = Modifiers;
+			sourceTree = "<group>";
+		};
+		0183EFCB2897C42E002E79A5 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				0183EFCC2897C446002E79A5 /* ReversedLabel.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		019A5D91286C8F30002D03F0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -268,6 +290,7 @@
 		01A43DE92886FEB80025A5C4 /* Device */ = {
 			isa = PBXGroup;
 			children = (
+				0183EFC72897C17E002E79A5 /* Modifiers */,
 				015845CA288FD54500C7E4B7 /* Scan */,
 				01A43DEA2886FECB0025A5C4 /* DeviceView.swift */,
 				01A43DED2886FED80025A5C4 /* DeviceViewModel.swift */,
@@ -289,6 +312,7 @@
 		01D26B58286DAE6A00FD069D /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				0183EFCB2897C42E002E79A5 /* Views */,
 				01682618287F16B20040C97E /* Extensions */,
 				011A2611287CAF780004A5C4 /* Bluetooth */,
 				01D26B59286DAE7000FD069D /* Localization */,
@@ -497,6 +521,7 @@
 				01C0F0FD287DE926008BBE46 /* ScanResult.swift in Sources */,
 				01481ABA2852093000925FAB /* nRF_Wi_Fi_ProvisionerApp.swift in Sources */,
 				015845CC288FD5A900C7E4B7 /* AccessPointList.swift in Sources */,
+				0183EFCD2897C446002E79A5 /* ReversedLabel.swift in Sources */,
 				019262E4288039F100A69D04 /* Counter.swift in Sources */,
 				01A0C29528896343000AA135 /* DeviceViewModelFactory.swift in Sources */,
 				0168261A287F16CD0040C97E /* Array+Ext.swift in Sources */,
@@ -504,6 +529,7 @@
 				01FA5912288713860008AF88 /* ReadableError.swift in Sources */,
 				011A2613287CAF890004A5C4 /* BluetoothManager.swift in Sources */,
 				3397680D2FE5FBB193E7A5EE /* BluetoothRSSI.swift in Sources */,
+				0183EFC92897C196002E79A5 /* Status.swift in Sources */,
 				3397689B2FD60C49322F3E29 /* WiFiRSSI.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -522,6 +548,7 @@
 				01C0F0FE287DE926008BBE46 /* ScanResult.swift in Sources */,
 				01481ABB2852093000925FAB /* nRF_Wi_Fi_ProvisionerApp.swift in Sources */,
 				015845CD288FD5A900C7E4B7 /* AccessPointList.swift in Sources */,
+				0183EFCE2897C446002E79A5 /* ReversedLabel.swift in Sources */,
 				019262E5288039F100A69D04 /* Counter.swift in Sources */,
 				01A0C29628896343000AA135 /* DeviceViewModelFactory.swift in Sources */,
 				0168261B287F16CD0040C97E /* Array+Ext.swift in Sources */,
@@ -529,6 +556,7 @@
 				01FA5913288713860008AF88 /* ReadableError.swift in Sources */,
 				011A2614287CAF890004A5C4 /* BluetoothManager.swift in Sources */,
 				33976EFC0D92E4D7C58060E1 /* BluetoothRSSI.swift in Sources */,
+				0183EFCA2897C196002E79A5 /* Status.swift in Sources */,
 				33976EBA0FF55A009B0C55ED /* WiFiRSSI.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

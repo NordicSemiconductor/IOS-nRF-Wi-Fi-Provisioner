@@ -35,9 +35,7 @@ struct DeviceView: View {
             }
         }
         .alert(viewModel.error?.title ?? "", isPresented: $viewModel.showErrorAlert) {
-            Button("OK", role: .cancel) {
-                
-            }
+            Button("OK", role: .cancel) { }
         }
     }
     
@@ -50,7 +48,7 @@ struct DeviceView: View {
                         Label("Device Name", image: "bluetooth")
                             .tint(.nordicBlue)
                         Spacer()
-                        Text(viewModel.deviceName)
+                        Text(viewModel.deviceName).foregroundColor(.secondary)
                     }
                 }
                 
@@ -58,14 +56,20 @@ struct DeviceView: View {
                     HStack {
                         Label("Version", systemImage: "wrench.and.screwdriver")
                         Spacer()
-                        Text(viewModel.version)
+                        Text(viewModel.version).foregroundColor(.secondary)
                     }
                     
                     HStack {
                         Label("Wi-Fi Status", systemImage: "wifi")
                             .tint(.nordicBlue)
                         Spacer()
-                        Text(viewModel.state.description)
+                        ReversedLabel {
+                            Text(viewModel.wifiState?.description ?? "Unprovisioned")
+                        } image: {
+                            StatusIndicatorView(status: viewModel.wifiState)
+                        }
+                        .status(viewModel.wifiState ?? .disconnected)
+
                     }
                 }
                 
@@ -76,7 +80,8 @@ struct DeviceView: View {
                         HStack {
                             Label("Access Point", systemImage: "wifi.circle")
                             Spacer()
-                            Text(viewModel.selectedAccessPoint?.name ?? "Not Selected")
+                            Text(viewModel.selectedAccessPoint?.ssid ?? "Not Selected")
+                                .foregroundColor(.secondary)
                         }
                     }
                     
@@ -90,7 +95,11 @@ struct DeviceView: View {
             if viewModel.selectedAccessPoint != nil {
                 Spacer()
                 Button("START_PROVISIONING_BTN") {
-                    
+                    Task {
+                        do {
+                            try await viewModel.startProvision()
+                        }
+                    }
                 }
                 .disabled(viewModel.password.count < 6 && viewModel.selectedAccessPoint?.isOpen == false)
                 .buttonStyle(NordicButtonStyle())
@@ -101,9 +110,25 @@ struct DeviceView: View {
     }
 }
 
+struct StatusIndicatorView: View {
+    let status: DeviceViewModel.WiFiStatus?
+    
+    var body: some View {
+        switch status {
+        case .connected?:
+            Image(systemName: "checkmark")
+        case .failed(_)?:
+            Image(systemName: "info.circle")
+        case .association?, .authentication?, .connecting?, .obtainingIp?:
+            ProgressView()
+        default:
+            Image("")
+        }
+    }
+}
+
 #if DEBUG
 struct DeviceView_Previews: PreviewProvider {
-    
     static var previews: some View {
         NavigationView {
             DeviceView(viewModel: MockDeviceViewModel(index: 1))

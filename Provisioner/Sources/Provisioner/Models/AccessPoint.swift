@@ -8,17 +8,21 @@
 import Foundation
 
 public struct AccessPoint: Identifiable {
-    public var name: String
+    let wifiInfo: WifiInfo
+
+    public var ssid: String
     public var id: UUID
     public var isOpen: Bool
     public var channel: Int
     public var rssi: Int
 
-    init(name: String, id: UUID = UUID(), isOpen: Bool, channel: Int, rssi: Int) {
-        self.name = name
-        self.id = id
-        self.isOpen = isOpen
-        self.channel = channel
-        self.rssi = rssi
+    init(wifiInfo: WifiInfo, RSSI: Int32) {
+        self.wifiInfo = wifiInfo
+        ssid = String(data: wifiInfo.ssid, encoding: .utf8) ?? "n/a"
+        id = UUID()
+        isOpen = wifiInfo.auth.isOpen
+        channel = Int(wifiInfo.channel)
+        rssi = Int(RSSI)
     }
+
 }

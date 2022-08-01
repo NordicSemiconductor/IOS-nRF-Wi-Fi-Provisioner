@@ -12,12 +12,13 @@ public class Provisioner {
         case versionCharacteristicNotFound
         case controlCharacteristicPointNotFound
         case dataOutCharacteristicNotFound
+        case requestFailed
         
         case noResponse
         case unknownDeviceStatus
     }
     
-    public enum WiFiStatus {
+    public enum WiFiStatus: CustomDebugStringConvertible {
         case disconnected
         case authentication
         case association
@@ -31,6 +32,18 @@ public class Provisioner {
             case timeout
             case failIp
             case failConn
+            case unknown
+        }
+
+        public var debugDescription: String {
+            switch self {
+            case .disconnected: return "disconnected"
+            case .authentication: return "authentication"
+            case .association: return "association"
+            case .obtainingIp: return "obtainingIp"
+            case .connected: return "connected"
+            case .connectionFailed(let reason): return "connectionFailed: \(reason)"
+            }
         }
     }
     
@@ -102,9 +115,9 @@ extension Provisioner {
                 for: wifiService
             )
         
-        self.versionCharacteristic = try lookUpCharacteristic(Service.Characteristic.version, in: wifiService, peripheral: peripheral, throwIfNotFound: .versionCharacteristicNotFound)
-        self.controlPointCharacteristic = try lookUpCharacteristic(Service.Characteristic.controlPoint, in: wifiService, peripheral: peripheral, throwIfNotFound: .controlCharacteristicPointNotFound)
-        self.dataOutCharacteristic = try lookUpCharacteristic(Service.Characteristic.dataOut, in: wifiService, peripheral: peripheral, throwIfNotFound: .dataOutCharacteristicNotFound)
+        versionCharacteristic = try lookUpCharacteristic(Service.Characteristic.version, in: wifiService, peripheral: peripheral, throwIfNotFound: .versionCharacteristicNotFound)
+        controlPointCharacteristic = try lookUpCharacteristic(Service.Characteristic.controlPoint, in: wifiService, peripheral: peripheral, throwIfNotFound: .controlCharacteristicPointNotFound)
+        dataOutCharacteristic = try lookUpCharacteristic(Service.Characteristic.dataOut, in: wifiService, peripheral: peripheral, throwIfNotFound: .dataOutCharacteristicNotFound)
         
         try await peripheral.setNotifyValue(true, for: dataOutCharacteristic)
     }
@@ -123,21 +136,17 @@ extension Provisioner {
     }
     
     public func getStatus() async throws -> WiFiStatus {
-        guard let responseData = try await sendRequestToDataPoint(opCode: .getStatus) else {
-            throw Error.noResponse
+        let response = try await sendRequestToDataPoint(opCode: .getStatus)
+        guard case .success = response.status else {
+            throw Error.requestFailed
         }
-        
-        let response = try Response(serializedData: responseData)
-        guard response.status == .success else {
-            logger.error("No response in for .getStatus")
-            throw Error.unknownDeviceStatus
-        }
+
         guard response.hasDeviceStatus else {
             logger.error("Response has no device status")
             throw Error.unknownDeviceStatus
         }
         
-        return response.deviceStatus.toPublicStatus()
+        return response.deviceStatus.state.toPublicStatus(withReason: response.deviceStatus.reason)
     }
     
     public func startScan() async throws -> AnyPublisher<AccessPoint, Swift.Error> {
@@ -148,7 +157,7 @@ extension Provisioner {
             
         try await peripheral.writeValue(data, for: controlPointCharacteristic, type: .withResponse)
         
-        let ap = peripheral.characteristicValueUpdatedPublisher
+        let accessPointPublisher = peripheral.characteristicValueUpdatedPublisher
             .filter { $0.identifier == self.dataOutCharacteristic.identifier }
             .map(\.value)
             .tryMap { resp -> AccessPoint in
@@ -159,24 +168,61 @@ extension Provisioner {
                 
                 let response = try Result(serializedData: responseData)
                 let wifiInfo = response.scanRecord.wifi
-                let wifiName = String(data: wifiInfo.ssid, encoding: .utf8)
-                let isOpen = wifiInfo.auth.isOpen
-                let channel = Int(wifiInfo.channel)
-                let rssi = Int(response.scanRecord.rssi)
 
                 self.logger.debug("Wifi ap response received: \(response.scanRecord.wifi.debugDescription)")
                 
-                return AccessPoint(name: wifiName ?? "n/a", isOpen: isOpen, channel: channel, rssi: rssi)
+                return AccessPoint(wifiInfo: wifiInfo, RSSI: response.scanRecord.rssi)
             }
             .eraseToAnyPublisher()
 
         try await peripheral.setNotifyValue(true, for: dataOutCharacteristic)
         
-        return ap
+        return accessPointPublisher
     }
     
     public func stopScan() async throws {
         try await sendRequestToDataPoint(opCode: .stopScan)
+    }
+
+    public func startProvision(accessPoint: AccessPoint, passphrase: String?) async throws -> AnyPublisher<WiFiStatus, Swift.Error> {
+        var wifiConfig = WifiConfig()
+        wifiConfig.wifi = accessPoint.wifiInfo
+        if let passphraseData = passphrase?.data(using: .utf8) {
+            wifiConfig.passphrase = passphraseData
+        }
+        
+        var request = Request()
+        request.opCode = .setConfig
+        request.config = wifiConfig
+        
+        let data = try request.serializedData()
+        try await peripheral.writeValue(data, for: controlPointCharacteristic, type: .withResponse)
+
+        let statePublisher = peripheral.characteristicValueUpdatedPublisher
+                .filter { $0.identifier == self.dataOutCharacteristic.identifier }
+                .map(\.value)
+                .tryMap { data -> WiFiStatus in
+                    guard let responseData = data as Data? else {
+                        self.logger.error("No response data in wifi scan")
+                        throw Error.noResponse
+                    }
+
+                    let result = try Result(serializedData: responseData)
+                    let state = result.state.toPublicStatus()
+                    self.logger.debug("Wifi state response received: \(state.debugDescription)")
+                    return state
+                }
+        
+        try await peripheral.setNotifyValue(true, for: dataOutCharacteristic)
+
+//        let response = try await sendRequestToDataPoint(opCode: OpCode.setConfig, config: wifiConfig)
+//
+//        guard response.status == .success else {
+//            logger.error("Failed to set wifi config")
+//            throw Error.unknownDeviceStatus
+//        }
+
+        return statePublisher.eraseToAnyPublisher()
     }
 }
  
@@ -194,22 +240,36 @@ extension Provisioner {
     }
     
     @discardableResult
-    private func sendRequestToDataPoint(opCode: OpCode) async throws -> Data? {
+    private func sendRequestToDataPoint(opCode: OpCode, config: WifiConfig? = nil) async throws -> Response {
         logger.debug("Sending command \(opCode.debugDescription)")
         var request = Request()
         request.opCode = opCode
+        if let config = config {
+            request.config = config
+        }
         
         do {
             let data = try request.serializedData()
-            
-            try await peripheral.writeValue(data, for: controlPointCharacteristic, type: .withResponse)
-            
+            logger.debug("Sending command \(opCode.debugDescription) with data: \(try! request.jsonString())")
+
             let valueReceiver = peripheral.characteristicValueUpdatedPublisher
                 .filter { $0.identifier == self.controlPointCharacteristic.identifier }
                 .map(\.value)
             
-            try await peripheral.writeValue(data, for: controlPointCharacteristic, type: .withResponse)
-            return await valueReceiver.values.first(where: {_ in true }) ?? nil
+//            try await peripheral.writeValue(data, forCharacteristicWithUUID: controlPointCharacteristic.identifier, ofServiceWithUUID: wifiService.identifier, type: .withResponse)
+            
+            try await centralManager.retrieveConnectedPeripherals(withServices: [CBMUUID(nsuuid: peripheral.identifier)]).first?.writeValue(data, forCharacteristicWithUUID: controlPointCharacteristic.identifier, ofServiceWithUUID: wifiService.identifier, type: .withResponse)
+            
+            guard let responseData = await valueReceiver.values.first(where: {_ in true }) ?? nil else {
+                logger.error("No response data")
+                throw Error.noResponse
+            }
+            logger.debug("Command \(opCode.debugDescription) sent")
+
+            let response = try Response(serializedData: responseData)
+
+            logger.debug("Command \(opCode.debugDescription) response received: \(try! response.jsonString())")
+            return response
         } catch let e {
             logger.error("Error while sending command: \(e.localizedDescription)")
             throw e

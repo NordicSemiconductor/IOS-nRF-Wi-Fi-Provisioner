@@ -8,12 +8,77 @@
 import AsyncBluetooth
 import Foundation
 import Provisioner
+import Combine
 
 class DeviceViewModel: ObservableObject {
-    enum State: CustomStringConvertible {
+    enum WiFiStatus: CustomStringConvertible, Equatable {
+        init(wifiState: Provisioner.WiFiStatus) {
+            switch wifiState {
+            case .connected: self = .connected
+            case .association: self = .association
+            case .authentication: self = .authentication
+                    // TODO: Change Error
+            case .connectionFailed(let reason): self = .failed(Error.canNotConnect)
+            case .disconnected: self = .disconnected
+            case .obtainingIp: self = .obtainingIp
+            }
+        }
+        
         var description: String {
             switch self {
-                
+            case .connecting:
+                return "Connecting ..."
+            case .failed(let e):
+                return e.message
+            case .connected:
+                return "Connected"
+            case .disconnected:
+                return "Disconnected"
+            case .authentication:
+                return "Authentication"
+            case .association:
+                return "Association"
+            case .obtainingIp:
+                return "Obtaining IP"
+            }
+        }
+
+        static func == (lhs: WiFiStatus, rhs: WiFiStatus) -> Bool {
+            switch (lhs, rhs) {
+            case (.connecting, .connecting):
+                return true
+            case (.failed(let l), .failed(let r)):
+                return true
+            case (.connected, .connected):
+                return true
+            case (.disconnected, .disconnected):
+                return true
+            case (.authentication, .authentication):
+                return true
+            case (.association, .association):
+                return true
+            case (.obtainingIp, .obtainingIp):
+                return true
+            default:
+                return false
+            }
+        }
+        
+		case connecting
+		case failed(ReadableError)
+		case connected
+        case disconnected
+        case authentication
+        case association
+        case obtainingIp
+	}
+    enum State: CustomStringConvertible {
+        case connecting
+        case failed(ReadableError)
+        case connected
+
+        var description: String {
+            switch self {
             case .connecting:
                 return "Connecting ..."
             case .failed(let e):
@@ -22,21 +87,14 @@ class DeviceViewModel: ObservableObject {
                 return "Connected"
             }
         }
-        
-		case connecting
-		case failed(ReadableError)
-		case connected
-	}
+    }
 
-	enum WiFiStatus {
-		case connected, notConnected
-	}
-    
     enum Error: ReadableError {
         case canNotConnect
         case serviceNotFound
         case noResponse
         case canNotStopScan
+        case canNotProvision
         
         var title: String? {
             switch self {
@@ -48,6 +106,8 @@ class DeviceViewModel: ObservableObject {
                 return "No response"
             case .canNotStopScan:
                 return "Can not stop scanning"
+            case .canNotProvision:
+                return "Can not provision"
             }
         }
         
@@ -61,11 +121,12 @@ class DeviceViewModel: ObservableObject {
                 return "Can not get response from the device"
             case .canNotStopScan:
                 return "Can not stop scanning"
+            case .canNotProvision:
+                return "Provision failed"
             }
         }
-        
-        
     }
+
     // MARK: - Error
     @Published var showErrorAlert: Bool = false
     @Published fileprivate(set) var error: ReadableError? {
@@ -90,19 +151,21 @@ class DeviceViewModel: ObservableObject {
     }
     @Published private(set) var passwordRequired: Bool = false
     @Published var password: String = ""
-    
+
+    private var cancellables: Set<AnyCancellable> = []
+
     let provisioner: Provisioner
     let peripheralId: UUID
 
 	init(peripheralId: UUID, centralManager: CentralManager = CentralManager()) {
 		self.peripheralId = peripheralId
-        self.provisioner = Provisioner(deviceID: peripheralId)
-        self.deviceName = CentralManager().retrievePeripherals(withIdentifiers: [self.peripheralId]).first?.name ?? "Prov"
+        provisioner = Provisioner(deviceID: peripheralId)
+        deviceName = CentralManager().retrievePeripherals(withIdentifiers: [self.peripheralId]).first?.name ?? "Prov"
 	}
 
     func connect() async throws {
         do {
-            try await self.provisioner.connect()
+            try await provisioner.connect()
             DispatchQueue.main.async {
                 self.state = .connected
             }
@@ -122,6 +185,8 @@ class DeviceViewModel: ObservableObject {
                 try rethrowError(Error.noResponse)
             case .unknownDeviceStatus:
                 fatalError()
+            case .requestFailed:
+                try rethrowError(Error.noResponse)
             }
         } catch {
             try rethrowError(Error.canNotConnect)
@@ -156,7 +221,7 @@ extension DeviceViewModel {
         }
         do {
             for try await scanResult in try await provisioner.startScan().values {
-                print(scanResult.name)
+                print(scanResult.ssid)
                 DispatchQueue.main.async {
                     self.accessPoints.append(scanResult)
                 }
@@ -171,6 +236,16 @@ extension DeviceViewModel {
             try await provisioner.stopScan()
         } catch {
             try rethrowError(Error.canNotStopScan)
+        }
+    }
+
+    func startProvision() async throws {
+        let statePublisher = try await provisioner.startProvision(accessPoint: selectedAccessPoint!, passphrase: password.isEmpty ? nil : password)
+
+        for try await state in statePublisher.values {
+            DispatchQueue.main.async {
+                self.wifiState = WiFiStatus(wifiState: state)
+            }
         }
     }
 }
@@ -202,14 +277,12 @@ class MockDeviceViewModel: DeviceViewModel {
     }
     
     override func connect() async throws {
-        if self.i == 2 {
-            self.error = Error.canNotConnect
+        if i == 2 {
+            error = Error.canNotConnect
             throw Error.canNotConnect            
         } else {
-            await Task {
-                self.wifiState = .notConnected
+            Task {
                 self.error = nil
-                
             }
         }
     }

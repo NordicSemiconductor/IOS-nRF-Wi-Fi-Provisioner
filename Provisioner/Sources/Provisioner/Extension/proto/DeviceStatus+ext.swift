@@ -7,13 +7,13 @@
 
 import Foundation
 
-extension DeviceStatus {
-    func toPublicStatus() -> Provisioner.WiFiStatus {
-        switch self.state {
+extension ConnectionState {
+    func toPublicStatus(withReason reason: ConnectionFailureReason? = nil) -> Provisioner.WiFiStatus {
+        switch self {
         case .connected: return .connected
         case .association: return .association
         case .authentication: return .authentication
-        case .connectionFailed: return .connectionFailed(self.reason.toPublicStatus())
+        case .connectionFailed: return .connectionFailed(reason?.toPublicStatus() ?? .unknown)
         case .disconnected: return .disconnected
         case .obtainingIp: return .obtainingIp
         }
