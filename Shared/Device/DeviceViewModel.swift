@@ -137,9 +137,20 @@ class DeviceViewModel: ObservableObject {
     }
     @Published private (set) var deviceName: String = ""
 
+    /// The current bluetooth state of the device.
     @Published fileprivate(set) var state: State = .connecting
 
-	@Published fileprivate(set) var wifiState: WiFiStatus? = nil
+    @Published private (set) var provisioningInProgress: Bool = false
+	@Published fileprivate(set) var wifiState: WiFiStatus? = nil {
+        didSet {
+            switch wifiState {
+            case .connected, .disconnected, .failed(_):
+                provisioningInProgress = false
+            default:
+                provisioningInProgress = true
+            }
+        }
+    }
 	@Published fileprivate(set) var version: String = "Unknown"
 
     @Published var showAccessPointList: Bool = false

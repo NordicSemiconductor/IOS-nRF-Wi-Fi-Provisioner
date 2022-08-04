@@ -78,7 +78,7 @@ public class Provisioner {
 }
 
 extension Provisioner {
-    public func connect() async throws {
+    open func connect() async throws {
         guard let peripheral = centralManager.retrievePeripherals(withIdentifiers: [deviceID]).first else {
             throw Error.canNotConnect
         }
@@ -122,7 +122,7 @@ extension Provisioner {
         try await peripheral.setNotifyValue(true, for: dataOutCharacteristic)
     }
     
-    public func readVersion() async throws -> String? {
+    open func readVersion() async throws -> String? {
         let versionData: Data? = try await peripheral.readValue(
             forCharacteristicWithUUID: versionCharacteristic.identifier,
             ofServiceWithUUID: wifiService.identifier
@@ -130,12 +130,13 @@ extension Provisioner {
         
         let version = try Info(serializedData: versionData!).version
         
-        logger.debug("Read version: \(version, privacy: .public)")
+        logger.info("Read version: \(version, privacy: .public)")
         
         return "\(version)"
     }
     
-    public func getStatus() async throws -> WiFiStatus {
+    open func getStatus() async throws -> WiFiStatus {
+
         let response = try await sendRequestToDataPoint(opCode: .getStatus)
         guard case .success = response.status else {
             throw Error.requestFailed
@@ -149,7 +150,7 @@ extension Provisioner {
         return response.deviceStatus.state.toPublicStatus(withReason: response.deviceStatus.reason)
     }
     
-    public func startScan() async throws -> AnyPublisher<AccessPoint, Swift.Error> {
+    open func startScan() async throws -> AnyPublisher<AccessPoint, Swift.Error> {
         var request = Request()
         request.opCode = .startScan
         
@@ -169,7 +170,7 @@ extension Provisioner {
                 let response = try Result(serializedData: responseData)
                 let wifiInfo = response.scanRecord.wifi
 
-                self.logger.debug("Wifi ap response received: \(response.scanRecord.wifi.debugDescription)")
+                self.logger.info("Wifi ap response received: \(response.scanRecord.wifi.debugDescription)")
                 
                 return AccessPoint(wifiInfo: wifiInfo, RSSI: response.scanRecord.rssi)
             }
@@ -180,11 +181,11 @@ extension Provisioner {
         return accessPointPublisher
     }
     
-    public func stopScan() async throws {
+    open func stopScan() async throws {
         try await sendRequestToDataPoint(opCode: .stopScan)
     }
 
-    public func startProvision(accessPoint: AccessPoint, passphrase: String?) async throws -> AnyPublisher<WiFiStatus, Swift.Error> {
+    open func startProvision(accessPoint: AccessPoint, passphrase: String?) async throws -> AnyPublisher<WiFiStatus, Swift.Error> {
         var wifiConfig = WifiConfig()
         wifiConfig.wifi = accessPoint.wifiInfo
         if let passphraseData = passphrase?.data(using: .utf8) {
@@ -209,7 +210,7 @@ extension Provisioner {
 
                     let result = try Result(serializedData: responseData)
                     let state = result.state.toPublicStatus()
-                    self.logger.debug("Wifi state response received: \(state.debugDescription)")
+                    self.logger.info("Wifi state response received: \(state.debugDescription)")
                     return state
                 }
         
@@ -241,7 +242,7 @@ extension Provisioner {
     
     @discardableResult
     private func sendRequestToDataPoint(opCode: OpCode, config: WifiConfig? = nil) async throws -> Response {
-        logger.debug("Sending command \(opCode.debugDescription)")
+        logger.info("Sending command \(opCode.debugDescription, privacy: .public), config: \(config?.debugDescription ?? "nil", privacy: .public)")
         var request = Request()
         request.opCode = opCode
         if let config = config {
@@ -250,28 +251,40 @@ extension Provisioner {
         
         do {
             let data = try request.serializedData()
-            logger.debug("Sending command \(opCode.debugDescription) with data: \(try! request.jsonString())")
+            logger.info("Sending command \(opCode.debugDescription) with data: \(try! request.jsonString(), privacy: .public)")
 
             let valueReceiver = peripheral.characteristicValueUpdatedPublisher
-                .filter { $0.identifier == self.controlPointCharacteristic.identifier }
-                .map(\.value)
-            
+                    .filter {
+                        self.logger.debug("Received value for characteristic: \($0.identifier, privacy: .public)")
+                        return $0.identifier == self.controlPointCharacteristic.identifier
+                    }
+                    .map(\.value)
+                    .tryMap { (data: Data?) -> Response in
+                        // Log data
+                        self.logger.debug("Received response data: \(data?.debugDescription ?? "nil", privacy: .public)")
+                        guard let data = data else {
+                            throw Error.noResponse
+                        }
+                        return try Response(serializedData: data)
+                    }
+                    .first { $0.requestOpCode == opCode }
+
+            try await peripheral.setNotifyValue(true, for: controlPointCharacteristic)
+            try await peripheral.writeValue(data, for: controlPointCharacteristic, type: .withoutResponse)
 //            try await peripheral.writeValue(data, forCharacteristicWithUUID: controlPointCharacteristic.identifier, ofServiceWithUUID: wifiService.identifier, type: .withResponse)
-            
-            try await centralManager.retrieveConnectedPeripherals(withServices: [CBMUUID(nsuuid: peripheral.identifier)]).first?.writeValue(data, forCharacteristicWithUUID: controlPointCharacteristic.identifier, ofServiceWithUUID: wifiService.identifier, type: .withResponse)
-            
-            guard let responseData = await valueReceiver.values.first(where: {_ in true }) ?? nil else {
+
+            for try await value in valueReceiver.values {
+                logger.debug("Received response in a loop: \(try! value.jsonString(), privacy: .public)")
+            }
+
+            guard let response = try await valueReceiver.values.first(where: { _ in true }) else {
                 logger.error("No response data")
                 throw Error.noResponse
             }
-            logger.debug("Command \(opCode.debugDescription) sent")
-
-            let response = try Response(serializedData: responseData)
-
-            logger.debug("Command \(opCode.debugDescription) response received: \(try! response.jsonString())")
+            logger.info("Response received: \(try! response.jsonString(), privacy: .public)")
             return response
         } catch let e {
-            logger.error("Error while sending command: \(e.localizedDescription)")
+            logger.error("Error while sending command: \(e.localizedDescription, privacy: .public)")
             throw e
         }
     }
