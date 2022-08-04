@@ -1,5 +1,4 @@
 import Foundation
-import AsyncBluetooth
 import os
 import SwiftProtobuf
 import CoreBluetoothMock
@@ -63,13 +62,7 @@ public class Provisioner {
     )
     
     private let centralManager = CentralManager()
-    
-    private var peripheral: Peripheral!
-    private var wifiService: AsyncBluetooth.Service!
-    private var versionCharacteristic: Characteristic!
-    private var controlPointCharacteristic: Characteristic!
-    private var dataOutCharacteristic: Characteristic!
-    
+
     public let deviceID: UUID
     
     public init(deviceID: UUID) {
@@ -79,54 +72,11 @@ public class Provisioner {
 
 extension Provisioner {
     open func connect() async throws {
-        guard let peripheral = centralManager.retrievePeripherals(withIdentifiers: [deviceID]).first else {
-            throw Error.canNotConnect
-        }
-        
-        self.peripheral = peripheral
-        
-        do {
-            try await centralManager.connect(peripheral)
-        } catch {
-            logger.error("")
-            throw Error.canNotConnect
-        }
-        
-        // Discover WiFi service
-        do {
-            try await peripheral.discoverServices([Service.wifi])
-        } catch {
-            try await centralManager.cancelPeripheralConnection(peripheral)
-            throw Error.wifiServiceNotFound
-        }
-        
-        guard let wifiService = peripheral.discoveredServices?.first(where: {
-            $0.identifier == Service.wifi
-        }) else {
-            throw Error.wifiServiceNotFound
-        }
-        
-        self.wifiService = wifiService
-        
-        let characteristicIds: [UUID] = [Service.Characteristic.version, Service.Characteristic.controlPoint, Service.Characteristic.dataOut]
-        try await peripheral
-            .discover(
-                characteristics: characteristicIds,
-                for: wifiService
-            )
-        
-        versionCharacteristic = try lookUpCharacteristic(Service.Characteristic.version, in: wifiService, peripheral: peripheral, throwIfNotFound: .versionCharacteristicNotFound)
-        controlPointCharacteristic = try lookUpCharacteristic(Service.Characteristic.controlPoint, in: wifiService, peripheral: peripheral, throwIfNotFound: .controlCharacteristicPointNotFound)
-        dataOutCharacteristic = try lookUpCharacteristic(Service.Characteristic.dataOut, in: wifiService, peripheral: peripheral, throwIfNotFound: .dataOutCharacteristicNotFound)
-        
-        try await peripheral.setNotifyValue(true, for: dataOutCharacteristic)
+        _ = try await centralManager.connectPeripheral(deviceID)
     }
     
     open func readVersion() async throws -> String? {
-        let versionData: Data? = try await peripheral.readValue(
-            forCharacteristicWithUUID: versionCharacteristic.identifier,
-            ofServiceWithUUID: wifiService.identifier
-        )
+        let versionData: Data? = try await centralManager.readValue(for: centralManager.versionCharacteristic)
         
         let version = try Info(serializedData: versionData!).version
         
@@ -151,6 +101,13 @@ extension Provisioner {
     }
     
     open func startScan() async throws -> AnyPublisher<AccessPoint, Swift.Error> {
+        var wfInfo = WifiInfo()
+        wfInfo.ssid = "test".data(using: .utf8)!
+
+        return Just(AccessPoint(wifiInfo: wfInfo, RSSI: -90))
+                .mapError { $0 as! Error }
+                .eraseToAnyPublisher()
+        /*
         var request = Request()
         request.opCode = .startScan
         
@@ -179,6 +136,8 @@ extension Provisioner {
         try await peripheral.setNotifyValue(true, for: dataOutCharacteristic)
         
         return accessPointPublisher
+
+         */
     }
     
     open func stopScan() async throws {
@@ -228,18 +187,6 @@ extension Provisioner {
 }
  
 extension Provisioner {
-    private func lookUpCharacteristic(_ characteristicId: UUID, in service: AsyncBluetooth.Service, peripheral: Peripheral, throwIfNotFound error: Error) throws -> Characteristic {
-        
-        guard let service = peripheral.discoveredServices?.first(where: { $0.identifier == service.identifier }) else {
-            throw error
-        }
-        
-        guard let characteristic = service.discoveredCharacteristics?.first(where: { $0.identifier == characteristicId }) else {
-            throw error
-        }
-        return characteristic
-    }
-    
     @discardableResult
     private func sendRequestToDataPoint(opCode: OpCode, config: WifiConfig? = nil) async throws -> Response {
         logger.info("Sending command \(opCode.debugDescription, privacy: .public), config: \(config?.debugDescription ?? "nil", privacy: .public)")

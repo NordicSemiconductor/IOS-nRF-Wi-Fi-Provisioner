@@ -3,6 +3,7 @@
 //
 
 import Foundation
+import os
 
 struct TimeoutError: Error {}
 
@@ -18,6 +19,10 @@ func asyncOperation<T>(
         group.addTask {
             try await Task.sleep(nanoseconds: nanoseconds)
             try Task.checkCancellation()
+            Logger(
+                    subsystem: Bundle(for: Provisioner.self).bundleIdentifier ?? "",
+                    category: "provisioner-global"
+                ).error("Timeout error")
             throw TimeoutError()
         }
 
