@@ -59,6 +59,8 @@
 		01FA5917288809390008AF88 /* Provisioner in Frameworks */ = {isa = PBXBuildFile; productRef = 01FA5916288809390008AF88 /* Provisioner */; };
 		3397680D2FE5FBB193E7A5EE /* BluetoothRSSI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 339762F1507DAF6B903DF4D1 /* BluetoothRSSI.swift */; };
 		3397689B2FD60C49322F3E29 /* WiFiRSSI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33976EF9849513130301C930 /* WiFiRSSI.swift */; };
+		339768F56D7C8EC8A0DD8B25 /* WiFiStatus+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33976AAF8A53D43BC33F0ED9 /* WiFiStatus+Ext.swift */; };
+		33976B5960D8927917CD726E /* WiFiStatus+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33976AAF8A53D43BC33F0ED9 /* WiFiStatus+Ext.swift */; };
 		33976EBA0FF55A009B0C55ED /* WiFiRSSI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33976EF9849513130301C930 /* WiFiRSSI.swift */; };
 		33976EFC0D92E4D7C58060E1 /* BluetoothRSSI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 339762F1507DAF6B903DF4D1 /* BluetoothRSSI.swift */; };
 /* End PBXBuildFile section */
@@ -114,6 +116,7 @@
 		01D26B5A286DAE9800FD069D /* LocalizationKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizationKey.swift; sourceTree = "<group>"; };
 		01FA5911288713860008AF88 /* ReadableError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadableError.swift; sourceTree = "<group>"; };
 		339762F1507DAF6B903DF4D1 /* BluetoothRSSI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BluetoothRSSI.swift; sourceTree = "<group>"; };
+		33976AAF8A53D43BC33F0ED9 /* WiFiStatus+Ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "WiFiStatus+Ext.swift"; sourceTree = "<group>"; };
 		33976EF9849513130301C930 /* WiFiRSSI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WiFiRSSI.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -244,6 +247,7 @@
 			children = (
 				01682619287F16CD0040C97E /* Array+Ext.swift */,
 				019DCE24288553E700E16E9F /* CGRect+Ext.swift */,
+				33976AAF8A53D43BC33F0ED9 /* WiFiStatus+Ext.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -531,6 +535,7 @@
 				3397680D2FE5FBB193E7A5EE /* BluetoothRSSI.swift in Sources */,
 				0183EFC92897C196002E79A5 /* Status.swift in Sources */,
 				3397689B2FD60C49322F3E29 /* WiFiRSSI.swift in Sources */,
+				33976B5960D8927917CD726E /* WiFiStatus+Ext.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -558,6 +563,7 @@
 				33976EFC0D92E4D7C58060E1 /* BluetoothRSSI.swift in Sources */,
 				0183EFCA2897C196002E79A5 /* Status.swift in Sources */,
 				33976EBA0FF55A009B0C55ED /* WiFiRSSI.swift in Sources */,
+				339768F56D7C8EC8A0DD8B25 /* WiFiStatus+Ext.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
