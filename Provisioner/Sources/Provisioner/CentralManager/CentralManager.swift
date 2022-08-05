@@ -63,9 +63,9 @@ class CentralManager {
     private var controlPointCharacteristic: CBMCharacteristic!
     private var dataOutCharacteristic: CBMCharacteristic!
 
-    private var readValueContinuations: Set<CharacteristicValueContinuation> = []
-    private var identifiableContinuations: Set<CharacteristicValueContinuation> = []
-    private var valueStreams: [CBMCharacteristic: PassthroughSubject<Data?, Swift.Error>] = [:]
+    private var readValueContinuation: CharacteristicValueContinuation?
+    private var identifiableContinuation: CharacteristicValueContinuation?
+    private var valueStreams = PassthroughSubject<Data, Swift.Error>()
 
     init(centralManager: CBMCentralManager = CBMCentralManagerFactory.instance()) {
         self.centralManager = centralManager
@@ -104,8 +104,7 @@ extension CentralManager {
 
         return try await withTimeout(seconds: 5) { () -> Data in
             try await withCheckedThrowingContinuation { [weak self] continuation in
-                let readValueContinuation = CharacteristicValueContinuation(continuation: continuation, characteristic: cbmCharacteristic)
-                self?.readValueContinuations.insert(readValueContinuation)
+                self?.readValueContinuation = CharacteristicValueContinuation(continuation: continuation, characteristic: cbmCharacteristic)
                 peripheral.readValue(for: cbmCharacteristic)
             }
         }
@@ -121,9 +120,7 @@ extension CentralManager {
         do {
             return try await withTimeout(seconds: 5) { () -> Data in
                 try await withCheckedThrowingContinuation { [weak self] continuation in
-                    self?.identifiableContinuations.insert(
-                            CharacteristicValueContinuation(continuation: continuation, characteristic: cbmCharacteristic)
-                    )
+                    self?.identifiableContinuation = CharacteristicValueContinuation(continuation: continuation, characteristic: cbmCharacteristic)
                     peripheral.writeValue(data, for: cbmCharacteristic, type: .withResponse)
                 }
             }
@@ -131,6 +128,11 @@ extension CentralManager {
             logger.error("Failed to write value to characteristic \(cbmCharacteristic.debugDescription): \(e.localizedDescription)")
             throw e
         }
+    }
+
+    func notifications(for characteristic: Characteristic) -> AnyPublisher<Data, Swift.Error> {
+        return valueStreams
+                .eraseToAnyPublisher()
     }
 }
 
@@ -246,17 +248,17 @@ extension CentralManager: CBMPeripheralDelegate {
             }
         }
 
-        if let continuation = readValueContinuations.first(where: { $0.characteristic == characteristic }) {
-            handleData(characteristic, error, continuation)
-            readValueContinuations.remove(continuation)
-        } else if let continuation = identifiableContinuations.first(where: { $0.characteristic == characteristic }) {
-            handleData(characteristic, error, continuation)
-            identifiableContinuations.remove(continuation)
-        } else if let publisher = valueStreams[characteristic] {
-            if let e = error {
-                publisher.send(completion: .failure(e))
-            } else {
-                publisher.send(characteristic.value)
+        if let c = identifiableContinuation, c.characteristic == characteristic {
+            handleData(characteristic, error, c)
+            identifiableContinuation = nil // reset
+        } else if let c = readValueContinuation, c.characteristic == characteristic {
+            handleData(characteristic, error, c)
+            readValueContinuation = nil // reset
+        } else if characteristic.uuid == Service.Characteristic.dataOut {
+            if let data = characteristic.value {
+                valueStreams.send(data)
+            } else if let e = error {
+                valueStreams.send(completion: .failure(e))
             }
         }
     }
