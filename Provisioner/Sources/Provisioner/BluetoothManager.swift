@@ -43,6 +43,12 @@ private struct CharacteristicValueContinuation: Identifiable, Hashable {
 }
 
 class CentralManager {
+    enum Characteristic {
+        case version
+        case controlPoint
+        case dataOut
+    }
+
     let centralManager: CBMCentralManager
     private let logger = Logger(
             subsystem: Bundle(for: Provisioner.self).bundleIdentifier ?? "",
@@ -53,9 +59,9 @@ class CentralManager {
     private var connectionContinuation: CheckedContinuation<CBMPeripheral, Swift.Error>?
 
     private var wifiService: CBMService!
-    private (set) var versionCharacteristic: CBMCharacteristic!
-    private (set) var controlPointCharacteristic: CBMCharacteristic!
-    private (set) var dataOutCharacteristic: CBMCharacteristic!
+    private var versionCharacteristic: CBMCharacteristic!
+    private var controlPointCharacteristic: CBMCharacteristic!
+    private var dataOutCharacteristic: CBMCharacteristic!
 
     private var readValueContinuations: Set<CharacteristicValueContinuation> = []
     private var identifiableContinuations: Set<CharacteristicValueContinuation> = []
@@ -63,42 +69,87 @@ class CentralManager {
 
     init(centralManager: CBMCentralManager = CBMCentralManagerFactory.instance()) {
         self.centralManager = centralManager
+        centralManager.delegate = self
     }
 }
 
 extension CentralManager {
     func connectPeripheral(_ identifier: UUID, timeout nanoseconds: UInt64 = 10_000_000_000) async throws -> CBMPeripheral {
-        try await asyncOperation { () -> CBMPeripheral in
-            try await withCheckedThrowingContinuation { [weak self] continuation in
-                guard let peripheral = self?.centralManager.retrievePeripherals(withIdentifiers: [identifier]).first else {
-                    continuation.resume(throwing: CentralManager.Error.peripheralNotFound)
-                    self?.logger.error("Peripheral not found")
-                    return
-                }
+        do {
+            return try await withTimeout(seconds: 5) { () -> CBMPeripheral in
+                try await withCheckedThrowingContinuation { [weak self] continuation in
+                    guard let peripheral = self?.centralManager.retrievePeripherals(withIdentifiers: [identifier]).first else {
+                        continuation.resume(throwing: CentralManager.Error.peripheralNotFound)
+                        self?.logger.error("Peripheral not found")
+                        return
+                    }
 
-                self?.connectionContinuation = continuation
-                self?.centralManager.connect(peripheral)
-                self?.logger.log("Connecting to peripheral \(identifier)")
+                    self?.connectionContinuation = continuation
+                    self?.centralManager.connect(peripheral)
+                    self?.logger.log("Connecting to peripheral \(identifier)")
+                }
+            }
+        } catch let e {
+            logger.error("Failed to connect to peripheral \(identifier): \(e.localizedDescription)")
+            throw e
+        }
+    }
+
+    /// Reads the value of the characteristic.
+    func readValue(for characteristic: Characteristic) async throws -> Data {
+        let cbmCharacteristic = cbmCharacteristic(for: characteristic)
+        guard let peripheral = connectedPeripheral else {
+            throw CentralManager.Error.peripheralNotFound
+        }
+
+        return try await withTimeout(seconds: 5) { () -> Data in
+            try await withCheckedThrowingContinuation { [weak self] continuation in
+                let readValueContinuation = CharacteristicValueContinuation(continuation: continuation, characteristic: cbmCharacteristic)
+                self?.readValueContinuations.insert(readValueContinuation)
+                peripheral.readValue(for: cbmCharacteristic)
             }
         }
     }
 
-    func readValue(for characteristic: CBMCharacteristic) async throws -> Data {
-        try await asyncOperation { () -> Data in
-            try await withCheckedThrowingContinuation { [weak self] continuation in
-                guard case .some = self?.connectedPeripheral else {
-                    continuation.resume(throwing: CentralManager.Error.peripheralNotFound)
-                    return
-                }
+    /// Writes data to the characteristic and waits for the response.
+    func writeValue(_ data: Data, for characteristic: Characteristic) async throws -> Data {
+        let cbmCharacteristic = cbmCharacteristic(for: characteristic)
+        guard let peripheral = connectedPeripheral else {
+            throw CentralManager.Error.peripheralNotFound
+        }
 
-                let readValueContinuation = CharacteristicValueContinuation(continuation: continuation, characteristic: characteristic)
-                self?.readValueContinuations.insert(readValueContinuation)
-                self?.connectedPeripheral?.readValue(for: characteristic)
+        do {
+            return try await withTimeout(seconds: 5) { () -> Data in
+                try await withCheckedThrowingContinuation { [weak self] continuation in
+                    self?.identifiableContinuations.insert(
+                            CharacteristicValueContinuation(continuation: continuation, characteristic: cbmCharacteristic)
+                    )
+                    peripheral.writeValue(data, for: cbmCharacteristic, type: .withResponse)
+                }
             }
+        } catch let e {
+            logger.error("Failed to write value to characteristic \(cbmCharacteristic.debugDescription): \(e.localizedDescription)")
+            throw e
         }
     }
 }
 
+// MARK: - Private methods
+extension CentralManager {
+    // Convert Characteristic to CBMCharacteristic
+    private func cbmCharacteristic(for characteristic: Characteristic) -> CBMCharacteristic {
+        switch characteristic {
+        case .version:
+            return versionCharacteristic
+        case .controlPoint:
+            return controlPointCharacteristic
+        case .dataOut:
+            return dataOutCharacteristic
+        }
+    }
+}
+
+// MARK: - CBMPeripheralDelegate
 extension CentralManager: CBMCentralManagerDelegate {
     func centralManagerDidUpdateState(_ central: CBMCentralManager) {
         print("centralManagerDidUpdateState")
@@ -114,7 +165,7 @@ extension CentralManager: CBMCentralManagerDelegate {
 
     func centralManager(_ central: CBMCentralManager, didDisconnectPeripheral peripheral: CBMPeripheral, error: Swift.Error?) {
         if let e = error {
-            logger.error("didDisconnectPeripheral peripheral \(peripheral.identifier.uuidString) error: \(e)")
+            logger.error("didDisconnectPeripheral peripheral \(peripheral.identifier.uuidString) error: \(e.localizedDescription)")
         } else {
             logger.debug("didDisconnectPeripheral peripheral \(peripheral.identifier.uuidString)")
         }
@@ -126,6 +177,7 @@ extension CentralManager: CBMCentralManagerDelegate {
     }
 }
 
+// MARK: - CBMPeripheralDelegate
 extension CentralManager: CBMPeripheralDelegate {
     func peripheral(_ peripheral: CBMPeripheral, didDiscoverServices error: Swift.Error?) {
         if let e = error {
@@ -163,9 +215,11 @@ extension CentralManager: CBMPeripheralDelegate {
             case Service.Characteristic.controlPoint:
                 logger.debug("found controlPoint characteristic")
                 controlPointCharacteristic = ch
+                peripheral.setNotifyValue(true, for: controlPointCharacteristic)
             case Service.Characteristic.dataOut:
                 logger.debug("found dataOut characteristic")
                 dataOutCharacteristic = ch
+                peripheral.setNotifyValue(true, for: dataOutCharacteristic)
             default:
                 break
             }

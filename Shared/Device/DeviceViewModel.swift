@@ -72,7 +72,7 @@ class DeviceViewModel: ObservableObject {
         case association
         case obtainingIp
 	}
-    enum State: CustomStringConvertible {
+    enum ConnectionState: CustomStringConvertible {
         case connecting
         case failed(ReadableError)
         case connected
@@ -129,16 +129,16 @@ class DeviceViewModel: ObservableObject {
 
     // MARK: - Error
     @Published var showErrorAlert: Bool = false
-    @Published fileprivate(set) var error: ReadableError? {
+    @Published fileprivate(set) var connectionError: ReadableError? {
         didSet {
             showErrorAlert = true
-            error.map { self.state = .failed($0) }
+            connectionError.map { self.connectionStatus = .failed($0) }
         }
     }
     @Published private (set) var deviceName: String = ""
 
     /// The current bluetooth state of the device.
-    @Published fileprivate(set) var state: State = .connecting
+    @Published fileprivate(set) var connectionStatus: ConnectionState = .connecting
 
     @Published private (set) var provisioningInProgress: Bool = false
 	@Published fileprivate(set) var wifiState: WiFiStatus? = nil {
@@ -178,7 +178,7 @@ class DeviceViewModel: ObservableObject {
         do {
             try await provisioner.connect()
             DispatchQueue.main.async {
-                self.state = .connected
+                self.connectionStatus = .connected
             }
         } catch let e as Provisioner.Error {
             switch e {
@@ -215,14 +215,7 @@ extension DeviceViewModel {
         let status = try await provisioner.getStatus()
 
         DispatchQueue.main.async {
-            switch status {
-            case .disconnected, .authentication, .association, .obtainingIp:
-                self.state = .connecting
-            case .connected:
-                self.state = .connected
-            case .connectionFailed(_):
-                self.state = .failed(Error.canNotConnect)
-            }
+            self.wifiState = WiFiStatus(wifiState: status)
         }
     }
 
@@ -264,7 +257,7 @@ extension DeviceViewModel {
 extension DeviceViewModel {
     private func rethrowError(_ error: ReadableError) throws -> Never {
         DispatchQueue.main.async {
-            self.error = error
+            self.connectionError = error
         }
         throw error
     }
@@ -278,9 +271,9 @@ class MockDeviceViewModel: DeviceViewModel {
         super.init(peripheralId: UUID())
         self.i = index
         
-        let states: [State] = [.connecting, .connected, .failed(TitleMessageError(message: "Failed to retreive required services"))]
+        let states: [ConnectionState] = [.connecting, .connected, .failed(TitleMessageError(message: "Failed to retreive required services"))]
         
-        self.state = states[index % 3]
+        self.connectionStatus = states[index % 3]
     }
     
     override init(peripheralId: UUID, centralManager: CentralManager = CentralManager()) {
@@ -289,11 +282,11 @@ class MockDeviceViewModel: DeviceViewModel {
     
     override func connect() async throws {
         if i == 2 {
-            error = Error.canNotConnect
+            connectionError = Error.canNotConnect
             throw Error.canNotConnect            
         } else {
             Task {
-                self.error = nil
+                self.connectionError = nil
             }
         }
     }

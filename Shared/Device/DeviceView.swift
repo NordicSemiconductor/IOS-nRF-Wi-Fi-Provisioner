@@ -13,7 +13,7 @@ struct DeviceView: View {
     
     var body: some View {
         VStack {
-            switch viewModel.state {
+            switch viewModel.connectionStatus {
             case .connecting:
                 Placeholder(
                     text: "Connecting",
@@ -34,7 +34,7 @@ struct DeviceView: View {
                 }
             }
         }
-        .alert(viewModel.error?.title ?? "", isPresented: $viewModel.showErrorAlert) {
+        .alert(viewModel.connectionError?.title ?? "", isPresented: $viewModel.showErrorAlert) {
             Button("OK", role: .cancel) { }
         }
     }
