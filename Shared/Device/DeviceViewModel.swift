@@ -9,69 +9,15 @@ import AsyncBluetooth
 import Foundation
 import Provisioner
 import Combine
+import NordicStyle
 
 class DeviceViewModel: ObservableObject {
-    enum WiFiStatus: CustomStringConvertible, Equatable {
-        init(wifiState: Provisioner.WiFiStatus) {
-            switch wifiState {
-            case .connected: self = .connected
-            case .association: self = .association
-            case .authentication: self = .authentication
-                    // TODO: Change Error
-            case .connectionFailed(let reason): self = .failed(Error.canNotConnect)
-            case .disconnected: self = .disconnected
-            case .obtainingIp: self = .obtainingIp
-            }
-        }
-        
-        var description: String {
-            switch self {
-            case .connecting:
-                return "Connecting ..."
-            case .failed(let e):
-                return e.message
-            case .connected:
-                return "Connected"
-            case .disconnected:
-                return "Disconnected"
-            case .authentication:
-                return "Authentication"
-            case .association:
-                return "Association"
-            case .obtainingIp:
-                return "Obtaining IP"
-            }
-        }
+    struct ButtonState {
+        var isEnabled: Bool
+        var title: String
+        var style: NordicButtonStyle
+    }
 
-        static func == (lhs: WiFiStatus, rhs: WiFiStatus) -> Bool {
-            switch (lhs, rhs) {
-            case (.connecting, .connecting):
-                return true
-            case (.failed(let l), .failed(let r)):
-                return true
-            case (.connected, .connected):
-                return true
-            case (.disconnected, .disconnected):
-                return true
-            case (.authentication, .authentication):
-                return true
-            case (.association, .association):
-                return true
-            case (.obtainingIp, .obtainingIp):
-                return true
-            default:
-                return false
-            }
-        }
-        
-		case connecting
-		case failed(ReadableError)
-		case connected
-        case disconnected
-        case authentication
-        case association
-        case obtainingIp
-	}
     enum ConnectionState: CustomStringConvertible {
         case connecting
         case failed(ReadableError)
@@ -141,14 +87,10 @@ class DeviceViewModel: ObservableObject {
     @Published fileprivate(set) var connectionStatus: ConnectionState = .connecting
 
     @Published private (set) var provisioningInProgress: Bool = false
-	@Published fileprivate(set) var wifiState: WiFiStatus? = nil {
+	@Published fileprivate(set) var wifiState: Provisioner.WiFiStatus? = nil {
         didSet {
-            switch wifiState {
-            case .connected, .disconnected, .failed(_):
-                provisioningInProgress = false
-            default:
-                provisioningInProgress = true
-            }
+            provisioningInProgress = wifiState?.isInProgress ?? false
+            updateButtonState()
         }
     }
 	@Published fileprivate(set) var version: String = "Unknown"
@@ -158,12 +100,18 @@ class DeviceViewModel: ObservableObject {
     @Published var selectedAccessPoint: AccessPoint? {
         didSet {
             passwordRequired = selectedAccessPoint?.isOpen == false
+            updateButtonState()
         }
     }
     @Published private(set) var passwordRequired: Bool = false
-    @Published var password: String = ""
+    @Published var password: String = "" {
+        didSet {
+            updateButtonState()
+        }
+    }
+    @Published var buttonState: ButtonState = ButtonState(isEnabled: false, title: "Connect", style: NordicButtonStyle())
 
-    private var cancellables: Set<AnyCancellable> = []
+    private var cancellable: Set<AnyCancellable> = []
 
     let provisioner: Provisioner
     let peripheralId: UUID
@@ -215,7 +163,7 @@ extension DeviceViewModel {
         let status = try await provisioner.getStatus()
 
         DispatchQueue.main.async {
-            self.wifiState = WiFiStatus(wifiState: status)
+            self.wifiState = status
         }
     }
 
@@ -238,6 +186,7 @@ extension DeviceViewModel {
     func stopScan() async throws {
         do {
             try await provisioner.stopScan()
+            accessPoints.removeAll()
         } catch {
             try rethrowError(Error.canNotStopScan)
         }
@@ -248,7 +197,7 @@ extension DeviceViewModel {
 
         for try await state in statePublisher.values {
             DispatchQueue.main.async {
-                self.wifiState = WiFiStatus(wifiState: state)
+                self.wifiState = state
             }
         }
     }
@@ -260,6 +209,34 @@ extension DeviceViewModel {
             self.connectionError = error
         }
         throw error
+    }
+
+    private func updateButtonState() {
+        let enabled = wifiState?.isInProgress != true
+                && selectedAccessPoint != nil
+                && (password.count >= 6 || !passwordRequired)
+
+        buttonState.isEnabled = enabled
+
+        let title = { () -> String in
+            let oldTitle = buttonState.title
+            let state = wifiState ?? .disconnected
+            if state.isInProgress {
+                return oldTitle
+            }
+            switch state {
+            case .disconnected:
+                return "Provision"
+            case .connectionFailed(_):
+                return "Try Again"
+            case .connected:
+                return "Re-provision"
+            default:
+                return oldTitle
+            }
+        }()
+
+        buttonState.title = title
     }
 }
 

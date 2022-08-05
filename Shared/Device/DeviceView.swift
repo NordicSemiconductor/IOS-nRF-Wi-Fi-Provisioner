@@ -7,6 +7,7 @@
 
 import SwiftUI
 import NordicStyle
+import Provisioner
 
 struct DeviceView: View {
     @ObservedObject var viewModel: DeviceViewModel
@@ -94,15 +95,15 @@ struct DeviceView: View {
             }
             if viewModel.selectedAccessPoint != nil {
                 Spacer()
-                Button("START_PROVISIONING_BTN") {
+                Button(viewModel.buttonState.title) {
                     Task {
                         do {
                             try await viewModel.startProvision()
                         }
                     }
                 }
-                .disabled(viewModel.password.count < 6 && viewModel.selectedAccessPoint?.isOpen == false)
-                .buttonStyle(NordicButtonStyle())
+                .disabled(!viewModel.buttonState.isEnabled)
+                .buttonStyle(viewModel.buttonState.style)
                 .padding()
             }
         }
@@ -111,15 +112,15 @@ struct DeviceView: View {
 }
 
 struct StatusIndicatorView: View {
-    let status: DeviceViewModel.WiFiStatus?
+    let status: Provisioner.WiFiStatus?
     
     var body: some View {
         switch status {
         case .connected?:
             Image(systemName: "checkmark")
-        case .failed(_)?:
+        case .connectionFailed(_)?:
             Image(systemName: "info.circle")
-        case .association?, .authentication?, .connecting?, .obtainingIp?:
+        case .association?, .authentication?, .obtainingIp?:
             ProgressView()
         default:
             Image("")

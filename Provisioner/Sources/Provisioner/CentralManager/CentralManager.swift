@@ -74,24 +74,17 @@ class CentralManager {
 }
 
 extension CentralManager {
-    func connectPeripheral(_ identifier: UUID, timeout nanoseconds: UInt64 = 10_000_000_000) async throws -> CBMPeripheral {
-        do {
-            return try await withTimeout(seconds: 5) { () -> CBMPeripheral in
-                try await withCheckedThrowingContinuation { [weak self] continuation in
-                    guard let peripheral = self?.centralManager.retrievePeripherals(withIdentifiers: [identifier]).first else {
-                        continuation.resume(throwing: CentralManager.Error.peripheralNotFound)
-                        self?.logger.error("Peripheral not found")
-                        return
-                    }
-
-                    self?.connectionContinuation = continuation
-                    self?.centralManager.connect(peripheral)
-                    self?.logger.log("Connecting to peripheral \(identifier)")
-                }
+    func connectPeripheral(_ identifier: UUID) async throws -> CBMPeripheral {
+        try await withCheckedThrowingContinuation { [weak self] continuation in
+            guard let peripheral = self?.centralManager.retrievePeripherals(withIdentifiers: [identifier]).first else {
+                continuation.resume(throwing: CentralManager.Error.peripheralNotFound)
+                self?.logger.error("Peripheral not found")
+                return
             }
-        } catch let e {
-            logger.error("Failed to connect to peripheral \(identifier): \(e.localizedDescription)")
-            throw e
+
+            self?.connectionContinuation = continuation
+            self?.centralManager.connect(peripheral)
+            self?.logger.log("Connecting to peripheral \(identifier)")
         }
     }
 
