@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import NordicStyle
 
 struct ReversedLabel<T: View, I: View>: View {
     var text: () -> T
@@ -35,11 +36,45 @@ struct ReversedLabel<T: View, I: View>: View {
     }
 }
 
+/// Label with 'nordicBlue' colored icon
+struct NordicLabel: View {
+    private var title: String
+    private var systemImage: String?
+    private var image: String?
+    
+    init(_ title: String, image: String) {
+        self.title = title
+        self.image = image
+    }
+    
+    init(_ title: String, systemImage: String) {
+        self.title = title
+        self.systemImage = systemImage
+    }
+    
+    var body: some View {
+        Label {
+            Text(title)
+        } icon: {
+            image.map {
+                Image($0)
+                    .foregroundColor(.nordicBlue)
+            } ??
+            systemImage.map {
+                Image(systemName: $0)
+                    .foregroundColor(.nordicBlue)
+            }
+        }
+    }
+}
+
 #if DEBUG
 struct ReversedLabel_Previews: PreviewProvider {
     static var previews: some View {
         Group {
             VStack {
+                NordicLabel("Image", image: "bluetooth")
+                NordicLabel("System Image", systemImage: "wifi")
                 ReversedLabel(text: {
                     Text("Text from closure")
                 }, image: {

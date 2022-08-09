@@ -22,5 +22,5 @@ public extension ShapeStyle where Self == Color {
 }
 
 public extension Color {
-    static var navigationBarBackground: Color { Color(light: 0x00a9ce, dark: RGBA(0)) }
+    static var navigationBarBackground: Color { Color(light: 0x00a9ce, dark: RGBA(0x333F48)) }
 }

@@ -44,10 +44,10 @@ struct DeviceView: View {
     var deviceInfo: some View {
         VStack {
             Form {
-                Section() {
+                Section("Device") {
                     HStack {
-                        Label("Device Name", image: "bluetooth")
-                            .tint(.nordicBlue)
+                        NordicLabel("Device Name", image: "bluetooth")
+                            
                         Spacer()
                         Text(viewModel.deviceName).foregroundColor(.secondary)
                     }
@@ -55,13 +55,13 @@ struct DeviceView: View {
                 
                 Section("Device Status") {
                     HStack {
-                        Label("Version", systemImage: "wrench.and.screwdriver")
+                        NordicLabel("Version", systemImage: "wrench.and.screwdriver")
                         Spacer()
                         Text(viewModel.version).foregroundColor(.secondary)
                     }
                     
                     HStack {
-                        Label("Wi-Fi Status", systemImage: "wifi")
+                        NordicLabel("Wi-Fi Status", systemImage: "wifi")
                             .tint(.nordicBlue)
                         Spacer()
                         ReversedLabel {
@@ -78,7 +78,7 @@ struct DeviceView: View {
                         AccessPointList(viewModel: viewModel)
                     } label: {
                         HStack {
-                            Label("Access Point", systemImage: "wifi.circle")
+                            NordicLabel("Access Point", systemImage: "wifi.circle")
                             Spacer()
                             Text(viewModel.selectedAccessPoint?.ssid ?? "Not Selected")
                                     .foregroundColor(.secondary)
@@ -130,8 +130,9 @@ struct StatusIndicatorView: View {
 struct DeviceView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
-            DeviceView(viewModel: MockDeviceViewModel(index: 0))
+            DeviceView(viewModel: MockDeviceViewModel(index: 1))
         }
+        .setupNavBarBackground()
     }
     
     

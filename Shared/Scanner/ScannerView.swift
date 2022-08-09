@@ -35,6 +35,7 @@ struct ScannerView: View {
                     .navigationTitle("Scanning")
         }
         .setupNavBarBackground()
+        .accentColor(.white)
 		.onAppear {
             viewModel.startScan()
         }
