@@ -5,7 +5,6 @@
 //  Created by Nick Kibysh on 19/07/2022.
 //
 
-import AsyncBluetooth
 import Foundation
 import Provisioner
 import Combine
@@ -115,11 +114,17 @@ class DeviceViewModel: ObservableObject {
 
     let provisioner: Provisioner
     let peripheralId: UUID
+    
+    init(peripheralId: UUID) {
+        self.peripheralId = peripheralId
+        self.provisioner = Provisioner(deviceID: peripheralId)
+        deviceName = "Wi-Fi Device"
+    }
 
-	init(peripheralId: UUID, centralManager: CentralManager = CentralManager()) {
-		self.peripheralId = peripheralId
-        provisioner = Provisioner(deviceID: peripheralId)
-        deviceName = CentralManager().retrievePeripherals(withIdentifiers: [self.peripheralId]).first?.name ?? "Prov"
+    init(provisioner: Provisioner) {
+        self.peripheralId = provisioner.deviceID
+        self.provisioner = provisioner
+        deviceName = "Wi-Fi Device"
 	}
 
     func connect() async throws {
@@ -186,7 +191,9 @@ extension DeviceViewModel {
     func stopScan() async throws {
         do {
             try await provisioner.stopScan()
-            accessPoints.removeAll()
+            DispatchQueue.main.async {
+                self.accessPoints.removeAll()
+            }
         } catch {
             try rethrowError(Error.canNotStopScan)
         }
@@ -241,11 +248,25 @@ extension DeviceViewModel {
 }
 
 #if DEBUG
+class MockProvisioner: Provisioner {
+    init() {
+        super.init(deviceID: UUID())
+    }
+
+    override func readVersion() async throws -> String? {
+        return "14"
+    }
+
+    override func getStatus() async throws -> Provisioner.WiFiStatus {
+        return .disconnected
+    }
+}
+
 class MockDeviceViewModel: DeviceViewModel {
     var i: Int? = 0
     
     init(index: Int) {
-        super.init(peripheralId: UUID())
+        super.init(provisioner: MockProvisioner())
         self.i = index
         
         let states: [ConnectionState] = [.connecting, .connected, .failed(TitleMessageError(message: "Failed to retreive required services"))]
@@ -253,19 +274,11 @@ class MockDeviceViewModel: DeviceViewModel {
         self.connectionStatus = states[index % 3]
     }
     
-    override init(peripheralId: UUID, centralManager: CentralManager = CentralManager()) {
-        super.init(peripheralId: peripheralId, centralManager: centralManager)
-    }
-    
     override func connect() async throws {
-        if i == 2 {
-            connectionError = Error.canNotConnect
-            throw Error.canNotConnect            
-        } else {
-            Task {
-                self.connectionError = nil
-            }
-        }
+        self.connectionStatus = .connected
+        self.wifiState = .disconnected
+        self.version = "14"
+        
     }
 }
 #endif

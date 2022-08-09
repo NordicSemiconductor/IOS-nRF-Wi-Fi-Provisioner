@@ -130,7 +130,7 @@ struct StatusIndicatorView: View {
 struct DeviceView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
-            DeviceView(viewModel: MockDeviceViewModel(index: 1))
+            DeviceView(viewModel: MockDeviceViewModel(index: 0))
         }
     }
     

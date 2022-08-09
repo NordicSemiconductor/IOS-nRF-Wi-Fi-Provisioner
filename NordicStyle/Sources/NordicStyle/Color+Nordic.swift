@@ -7,8 +7,7 @@
 
 import SwiftUI
 
-public
-extension ShapeStyle where Self == Color {
+public extension ShapeStyle where Self == Color {
     static var nordicBlue: Color { .init(rgba: 0x00a9ce) }
     static var nordicSky: Color { .init(rgba: 0x6ad1e3) }
     static var nordicBlueslate: Color { .init(rgba: 0x0033a0) }
@@ -20,4 +19,8 @@ extension ShapeStyle where Self == Color {
     static var nordicLightGrey: Color { .init(rgba: 0xd9e1e2) }
     static var nordicMiddleGrey: Color { .init(rgba: 0x768692) }
     static var nordicDarkGrey: Color { .init(rgba: 0x333f48) }
+}
+
+public extension Color {
+    static var navigationBarBackground: Color { Color(light: 0x00a9ce, dark: RGBA(0)) }
 }

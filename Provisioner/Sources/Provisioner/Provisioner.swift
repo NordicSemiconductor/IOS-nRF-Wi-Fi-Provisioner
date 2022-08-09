@@ -4,7 +4,7 @@ import SwiftProtobuf
 import CoreBluetoothMock
 import Combine
 
-public class Provisioner {
+open class Provisioner {
     public enum Error: Swift.Error {
         case canNotConnect
         case wifiServiceNotFound
@@ -68,9 +68,7 @@ public class Provisioner {
     public init(deviceID: UUID) {
         self.deviceID = deviceID
     }
-}
 
-extension Provisioner {
     open func connect() async throws {
         do {
             _ = try await centralManager.connectPeripheral(deviceID)

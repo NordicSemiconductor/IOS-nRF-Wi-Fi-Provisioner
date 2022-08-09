@@ -16,7 +16,7 @@ extension Provisioner.WiFiStatus: CustomStringConvertible {
 
     public var description: String {
         switch self {
-        case .connectionFailed(let e):
+        case .connectionFailed(_):
             return "Error"
         case .connected:
             return "Connected"
