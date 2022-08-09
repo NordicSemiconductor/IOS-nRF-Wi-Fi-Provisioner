@@ -34,10 +34,13 @@ struct ScannerView: View {
             }
                     .navigationTitle("Scanning")
         }
+        .setupNavBarBackground()
+        .accentColor(.white)
 		.onAppear {
             viewModel.startScan()
         }
         .sheet(isPresented: $viewModel.showStartInfo) { ContentView(show: $viewModel.showStartInfo, dontShowAgain: $viewModel.dontShowAgain) }
+
     }
     
     @ViewBuilder
@@ -49,7 +52,7 @@ struct ScannerView: View {
 	@ViewBuilder
 	private func listView() -> some View {
         List {
-            Section {
+            Section("Filters") {
                 FilterList(
                     uuid: $viewModel.uuidFilter,
                     nearby: $viewModel.nearbyFilter,
