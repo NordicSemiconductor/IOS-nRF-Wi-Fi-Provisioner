@@ -70,7 +70,6 @@ struct DeviceView: View {
                             StatusIndicatorView(status: viewModel.wifiState)
                         }
                         .status(viewModel.wifiState ?? .disconnected)
-
                     }
                 }
                 
@@ -82,16 +81,16 @@ struct DeviceView: View {
                             Label("Access Point", systemImage: "wifi.circle")
                             Spacer()
                             Text(viewModel.selectedAccessPoint?.ssid ?? "Not Selected")
-                                .foregroundColor(.secondary)
+                                    .foregroundColor(.secondary)
                         }
+                        .disabled(viewModel.wifiState?.isInProgress ?? false)
                     }
-                    
+                    .disabled(viewModel.wifiState?.isInProgress ?? false)
+
                     if viewModel.passwordRequired {
                         SecureField("Password", text: $viewModel.password)
                     }
                 }
-                
-                
             }
             if viewModel.selectedAccessPoint != nil {
                 Spacer()
@@ -107,7 +106,6 @@ struct DeviceView: View {
                 .padding()
             }
         }
-        
     }
 }
 

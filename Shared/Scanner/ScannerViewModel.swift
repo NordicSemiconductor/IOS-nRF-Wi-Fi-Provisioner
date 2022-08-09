@@ -8,11 +8,16 @@
 import AsyncBluetooth
 import Foundation
 import Provisioner
+import SwiftUI
 
 class ScannerViewModel: ObservableObject {
     enum State {
         case waiting, scanning, noPermission, turnedOff
     }
+
+    // Show start info on first launch
+    @AppStorage("dontShowAgain") var dontShowAgain: Bool = false
+    @Published var showStartInfo: Bool = false
     
     @Published private (set) var state: State = .waiting
     @Published private (set) var scanResults: [ScanResult] = []
@@ -38,6 +43,7 @@ class ScannerViewModel: ObservableObject {
     
     init(scanner: CentralManager = CentralManager()) {
         self.scanner = scanner
+        showStartInfo = !dontShowAgain
     }
     
     func startScan() {

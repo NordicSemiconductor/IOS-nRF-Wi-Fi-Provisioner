@@ -17,27 +17,28 @@ struct ScannerView: View {
     @EnvironmentObject var deviceViewModelFactory: DeviceViewModelFactory
 
 	var body: some View {
-		NavigationView {
+        NavigationView {
             Group {
                 switch viewModel.state {
                 case .noPermission:
                     Placeholder(text: "Bluetooth permission denied", image: "bluetooth_disabled")
-                        .padding()
+                            .padding()
                 case .scanning:
                     listView()
                 case .waiting:
                     scanningPlaceholder
                 case .turnedOff:
                     Placeholder(text: "Bluetooth permission denied", image: "bluetooth_disabled")
-                        .padding()
+                            .padding()
                 }
             }
-			.navigationTitle("Scanning")
-		}
+                    .navigationTitle("Scanning")
+        }
 		.onAppear {
-			viewModel.startScan()
-		}
-	}
+            viewModel.startScan()
+        }
+        .sheet(isPresented: $viewModel.showStartInfo) { ContentView(show: $viewModel.showStartInfo, dontShowAgain: $viewModel.dontShowAgain) }
+    }
     
     @ViewBuilder
     private var scanningPlaceholder: some View {
@@ -74,7 +75,6 @@ struct ScannerView: View {
             }
         }
 	}
-
 }
 
 #if DEBUG
@@ -92,7 +92,7 @@ struct ScannerView: View {
 		}
 
 		static var previews: some View {
-			ScannerView(viewModel: DummyScanViewModel())
+            ScannerView(viewModel: DummyScanViewModel())
 		}
 	}
 #endif
