@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<testsuites name='Tests iOS.xctest' tests='6' failures='0'>
+  <testsuite name='Tests_iOS.Tests_iOS' tests='2' failures='0'>
+    <testcase classname='Tests_iOS.Tests_iOS' name='testExample' time='2.765'/>
+    <testcase classname='Tests_iOS.Tests_iOS' name='testLaunchPerformance' time='75.253'/>
+  </testsuite>
+  <testsuite name='Tests_iOS.Tests_iOSLaunchTests' tests='4' failures='0'>
+    <testcase classname='Tests_iOS.Tests_iOSLaunchTests' name='testLaunch' time='4.790'/>
+    <testcase classname='Tests_iOS.Tests_iOSLaunchTests' name='testLaunch' time='4.834'/>
+    <testcase classname='Tests_iOS.Tests_iOSLaunchTests' name='testLaunch' time='3.074'/>
+    <testcase classname='Tests_iOS.Tests_iOSLaunchTests' name='testLaunch' time='5.123'/>
+  </testsuite>
+</testsuites>

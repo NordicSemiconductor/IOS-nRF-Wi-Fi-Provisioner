@@ -16,7 +16,7 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-protobuf.git", from: "1.6.0"),
-        .package(path: "../AsyncBluetooth")
+        .package(url: "https://github.com/NordicSemiconductor/IOS-CoreBluetooth-Mock.git", from: "0.14.0")
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
@@ -25,7 +25,7 @@ let package = Package(
             name: "Provisioner",
             dependencies: [
                 .product(name: "SwiftProtobuf", package: "swift-protobuf"),
-                .product(name: "AsyncBluetooth", package: "AsyncBluetooth")
+                .product(name: "CoreBluetoothMock", package: "IOS-CoreBluetooth-Mock")
             ]),
         .testTarget(
             name: "ProvisionerTests",
