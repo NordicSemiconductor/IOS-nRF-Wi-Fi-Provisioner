@@ -1,0 +1,54 @@
+name: CD
+on:
+  push:
+    branches: [ "main", "develop", "feature/ci" ]
+  pull_request:
+    branches: [ "main" ]
+
+  # Allows you to run this workflow manually from the Actions a tab
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Deploying to Testflight
+    runs-on: self-hosted
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: "Setup Ruby version"
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '2.6'
+          bundler-cache: true
+        env:
+          ImageOS: macos12
+
+      - name: Deploy iOS Beta to TestFlight via Fastlane
+        uses: maierj/fastlane-action@v2.2.0
+        with:
+          lane: 'beta'
+        env:
+          APP_STORE_CONNECT_TEAM_ID: '${{ secrets.APP_STORE_CONNECT_TEAM_ID }}'
+          ASC_ISSUER_ID: '${{ secrets.ASC_ISSUER_ID }}'
+          ASC_KEY_ID: '${{ secrets.ASC_KEY_ID }}'
+          ASC_PRIVATE_KEY: '${{ secrets.ASC_PRIVATE_KEY }}'
+          DEVELOPER_APP_ID: '${{ secrets.DEVELOPER_APP_ID }}'
+          DEVELOPER_APP_IDENTIFIER: '${{ secrets.DEVELOPER_APP_IDENTIFIER }}'
+          FASTLANE_APPLE_ID: '${{ secrets.FASTLANE_APPLE_ID }}'
+          GIT_URL: '${{ secrets.GIT_URL }}'
+          MATCH_PASSWORD: '${{ secrets.MATCH_PASSWORD }}'
+          PROVISIONING_PROFILE_SPECIFIER: '${{ secrets.PROVISIONING_PROFILE_SPECIFIER }}'
+          TEMP_KEYCHAIN_USER: '${{ secrets.TEMP_KEYCHAIN_USER }}'
+          TEMP_KEYCHAIN_PASSWORD: '${{ secrets.TEMP_KEYCHAIN_PASSWORD }}'
+          DEVELOPER_PORTAL_TEAM_ID: '${{ secrets.DEVELOPER_PORTAL_TEAM_ID }}'
+          USERNAME: '${{ secrets.USERNAME }}'
+
+      # - name: Commit changed build number
+      #   uses: EndBug/add-and-commit@v9.0.1
+      #   with:
+      #     add: 'nRF-Wi-Fi-Provisioner.xcodeproj/project.pbxproj'
+      #     message: Incremented build number
+      #     pathspec_error_handling: exitAtEnd
+

@@ -93,3 +93,5 @@ iOSInjectionProject/
 
 #vscode
 .vscode/
+
+fastlane/.env 

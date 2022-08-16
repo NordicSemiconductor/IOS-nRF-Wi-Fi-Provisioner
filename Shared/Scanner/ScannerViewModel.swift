@@ -51,7 +51,7 @@ class ScannerViewModel: ObservableObject {
             do {
                 try await scanner.waitUntilReady()
                 
-                let scanResultStream = try await scanner.scanForPeripherals(withServices: nil as [UUID]?)
+                let scanResultStream = try await scanner.scanForPeripherals(withServices: nil)
                 
                 DispatchQueue.main.async { [weak self] in
                     self?.state = .scanning
@@ -66,7 +66,7 @@ class ScannerViewModel: ObservableObject {
                                 return false
                             }
                             
-                            if self.nearbyFilter && !BluetoothRSSI(level: sr.rssi).isNearby {
+                            if self.nearbyFilter && !BluetoothRSSI(level: sr.rssi.intValue).isNearby {
                                 return false
                             }
                             
@@ -77,7 +77,7 @@ class ScannerViewModel: ObservableObject {
                             return true
                         }
                         .map {
-                            ScanResult(name: $0.peripheral.name ?? "n/a", id: $0.peripheral.identifier, rssi: $0.rssi)
+                            ScanResult(name: $0.peripheral.name ?? "n/a", id: $0.peripheral.identifier, rssi: $0.rssi.intValue)
                         }
                     }
                 }
