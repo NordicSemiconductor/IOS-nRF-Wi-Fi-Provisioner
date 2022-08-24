@@ -44,6 +44,7 @@ struct DeviceView: View {
     var deviceInfo: some View {
         VStack {
             Form {
+                // MARK: Device Name
                 Section("Device") {
                     HStack {
                         NordicLabel("Device Name", image: "bluetooth")
@@ -52,7 +53,8 @@ struct DeviceView: View {
                         Text(viewModel.deviceName).foregroundColor(.secondary)
                     }
                 }
-                
+
+                // MARK: Device Info
                 Section("Device Status") {
                     HStack {
                         NordicLabel("Version", systemImage: "wrench.and.screwdriver")
@@ -67,12 +69,13 @@ struct DeviceView: View {
                         ReversedLabel {
                             Text(viewModel.wifiState?.description ?? "Unprovisioned")
                         } image: {
-                            StatusIndicatorView(status: viewModel.wifiState)
+                            StatusIndicatorView(status: viewModel.wifiState, forceProgress: viewModel.forceShowProvisionInProgress)
                         }
                         .status(viewModel.wifiState ?? .disconnected)
                     }
                 }
-                
+
+                // MARK: Access Points
                 Section("Access Point") {
                     NavigationLink {
                         AccessPointList(viewModel: viewModel)
@@ -111,17 +114,20 @@ struct DeviceView: View {
 
 struct StatusIndicatorView: View {
     let status: Provisioner.WiFiStatus?
+    var forceProgress: Bool = false
     
     var body: some View {
-        switch status {
-        case .connected?:
-            Image(systemName: "checkmark")
-        case .connectionFailed(_)?:
-            Image(systemName: "info.circle")
-        case .association?, .authentication?, .obtainingIp?:
+        switch (status, forceProgress) {
+        case (_, true):
             ProgressView()
-        default:
-            Image("")
+        case (.connected?, _):
+            Image(systemName: "checkmark")
+        case (.association?, false): ProgressView()
+        case (.authentication?, false):  ProgressView()
+        case (.obtainingIp?, false):  ProgressView()
+        case (.connectionFailed(_)?, _):
+            Image(systemName: "info.circle")
+        default: Text("")
         }
     }
 }

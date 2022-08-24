@@ -109,6 +109,7 @@ class DeviceViewModel: ObservableObject {
         }
     }
     @Published var buttonState: ButtonState = ButtonState(isEnabled: false, title: "Connect", style: NordicButtonStyle())
+    @Published var forceShowProvisionInProgress: Bool = false
 
     private var cancellable: Set<AnyCancellable> = []
 
@@ -201,10 +202,17 @@ extension DeviceViewModel {
 
     func startProvision() async throws {
         let statePublisher = try await provisioner.startProvision(accessPoint: selectedAccessPoint!, passphrase: password.isEmpty ? nil : password)
+        DispatchQueue.main.async {
+            self.buttonState.isEnabled = false
+            self.forceShowProvisionInProgress = true
+        }
 
         for try await state in statePublisher.values {
-            DispatchQueue.main.async {
-                self.wifiState = state
+            DispatchQueue.main.async { [weak self] in
+                self?.wifiState = state
+                // turn off provisioning in progress when we get first state
+                // then progress indicator will depend on state
+                self?.forceShowProvisionInProgress = false
             }
         }
     }
