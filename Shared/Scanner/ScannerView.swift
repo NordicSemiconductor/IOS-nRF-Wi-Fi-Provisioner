@@ -32,7 +32,11 @@ struct ScannerView: View {
                             .padding()
                 }
             }
-                    .navigationTitle("Scanning")
+            .navigationTitle("Scanning")
+            .toolbar {
+                ProgressView()
+                    .isHidden((viewModel.state != .scanning), remove: true)
+            }
         }
         .setupNavBarBackground()
         .accentColor(.white)
@@ -96,6 +100,7 @@ struct ScannerView: View {
 
 		static var previews: some View {
             ScannerView(viewModel: DummyScanViewModel())
+                .previewDisplayName("iPhone 13")
 		}
 	}
 #endif

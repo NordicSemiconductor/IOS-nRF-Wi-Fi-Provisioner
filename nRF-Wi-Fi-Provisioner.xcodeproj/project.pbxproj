@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		01062ADA28B6592700BB41FD /* View+Mod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01062AD928B6592700BB41FD /* View+Mod.swift */; };
+		01062ADB28B6592700BB41FD /* View+Mod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01062AD928B6592700BB41FD /* View+Mod.swift */; };
 		011A2613287CAF890004A5C4 /* BluetoothManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011A2612287CAF890004A5C4 /* BluetoothManager.swift */; };
 		011A2614287CAF890004A5C4 /* BluetoothManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011A2612287CAF890004A5C4 /* BluetoothManager.swift */; };
 		0144816228A4616F00907C3F /* AsyncBluetooth in Frameworks */ = {isa = PBXBuildFile; productRef = 0144816128A4616F00907C3F /* AsyncBluetooth */; };
@@ -88,6 +90,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		01062AD928B6592700BB41FD /* View+Mod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Mod.swift"; sourceTree = "<group>"; };
 		011A2612287CAF890004A5C4 /* BluetoothManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BluetoothManager.swift; sourceTree = "<group>"; };
 		0144816328A4626600907C3F /* ScanData+Hash.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ScanData+Hash.swift"; sourceTree = "<group>"; };
 		01481A922852092F00925FAB /* nRF_Wi_Fi_ProvisionerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = nRF_Wi_Fi_ProvisionerApp.swift; sourceTree = "<group>"; };
@@ -255,6 +258,7 @@
 				33976AAF8A53D43BC33F0ED9 /* WiFiStatus+Ext.swift */,
 				01922CBF28A2A48300492E87 /* Label+Ext.swift */,
 				0144816328A4626600907C3F /* ScanData+Hash.swift */,
+				01062AD928B6592700BB41FD /* View+Mod.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -534,6 +538,7 @@
 				01A43DEE2886FED80025A5C4 /* DeviceViewModel.swift in Sources */,
 				01922CBD28A2713100492E87 /* NavigationView.swift in Sources */,
 				01C0F0FA287DE864008BBE46 /* ScannerViewModel.swift in Sources */,
+				01062ADA28B6592700BB41FD /* View+Mod.swift in Sources */,
 				01A43DEB2886FECB0025A5C4 /* DeviceView.swift in Sources */,
 				019DCE292885A15100E16E9F /* FilterList.swift in Sources */,
 				015D60A32875A1530048F065 /* ScannerView.swift in Sources */,
@@ -565,6 +570,7 @@
 				01A43DEF2886FED80025A5C4 /* DeviceViewModel.swift in Sources */,
 				01922CBE28A2713100492E87 /* NavigationView.swift in Sources */,
 				01C0F0FB287DE864008BBE46 /* ScannerViewModel.swift in Sources */,
+				01062ADB28B6592700BB41FD /* View+Mod.swift in Sources */,
 				01A43DEC2886FECB0025A5C4 /* DeviceView.swift in Sources */,
 				019DCE2A2885A15100E16E9F /* FilterList.swift in Sources */,
 				015D60A42875A1530048F065 /* ScannerView.swift in Sources */,

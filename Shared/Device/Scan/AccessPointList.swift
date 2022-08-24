@@ -21,7 +21,7 @@ struct AccessPointList: View {
                 } label: {
                     HStack {
                         Label(ap.ssid, systemImage: ap.isOpen ? "lock.open" : "lock")
-                            .tint(Color.accentColor)
+                                .tint(Color.accentColor)
                         Spacer()
                         RSSIView<WiFiRSSI>(rssi: WiFiRSSI(level: ap.rssi))
                                 .frame(maxWidth: 30, maxHeight: 20)
@@ -41,6 +41,10 @@ struct AccessPointList: View {
                             try await viewModel.stopScan()
                         }
                     }
+                }
+                .toolbar {
+                    ProgressView()
+                        .isHidden(!viewModel.isScanning, remove: true)
                 }
     }
 }
