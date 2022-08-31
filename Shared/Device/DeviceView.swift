@@ -16,12 +16,12 @@ struct DeviceView: View {
         VStack {
             switch viewModel.connectionStatus {
             case .connecting:
-                Placeholder(
+                Placeholder<EmptyView>(
                     text: "Connecting",
                     image: "bluetooth"
                 )
             case .failed(let e):
-                Placeholder(text: e.message, image: "bluetooth_disabled")
+                Placeholder<EmptyView>(text: e.message, image: "bluetooth_disabled")
             case .connected:
                 deviceInfo
             }

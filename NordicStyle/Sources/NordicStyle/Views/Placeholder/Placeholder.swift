@@ -7,19 +7,47 @@
 
 import SwiftUI
 
+struct EmptyViewContainer: View {
+    var body: some View {
+        EmptyView()
+    }
+}
+
 public
-struct Placeholder: View {
+struct Placeholder<Action>: View where Action: View {
     public let text: String?
     public let image: Image
+    public let message: String?
+    public let action: Action?
     
-    public init(text: String? = nil, image: String) {
+    public init(text: String? = nil, message: String? = nil, image: String) {
         self.text = text
+        self.message = message
         self.image = Image(image)
+
+        typealias Action = EmptyViewContainer
+        self.action = nil
     }
     
-    public init(text: String? = nil, systemImage: String) {
+    public init(text: String? = nil, message: String? = nil, systemImage: String) {
         self.text = text
+        self.message = message
         self.image = Image(systemName: systemImage)
+        self.action = EmptyView() as! Action
+    }
+
+    public init(text: String? = nil, message: String? = nil, image: String, action: () -> Action) {
+        self.text = text
+        self.message = message
+        self.image = Image(image)
+        self.action = action()
+    }
+
+    public init(text: String? = nil, message: String? = nil, image: Image, action: () -> Action) {
+        self.text = text
+        self.message = message
+        self.image = image
+        self.action = action()
     }
     
     public var body: some View {
@@ -28,7 +56,7 @@ struct Placeholder: View {
                 image
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                    .foregroundColor(.secondary)
+                    .foregroundColor(.nordicBlue)
                     .frame(maxWidth: 250, maxHeight: 300)
             } else {
                 // Fallback on earlier versions
@@ -42,9 +70,24 @@ struct Placeholder: View {
                     .multilineTextAlignment(.center)
                     .font(.title)
                     .foregroundColor(.secondary)
+                    .frame(maxWidth: 250)
+            }
+
+            if let m = message {
+                Spacer()
+                    .frame(height: 24)
+                Text(m)
+                    .multilineTextAlignment(.center)
+                    .font(.body)
+                    .foregroundColor(.secondary)
                     .frame(maxWidth: 300)
             }
-            
+
+            if let actionView = action {
+                Spacer()
+                    .frame(height: 24)
+                actionView
+            }
         }
     }
 }
@@ -53,7 +96,7 @@ struct SwiftUIView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
             NavigationView {
-                Placeholder(
+                Placeholder<AnyView>(
                     text: "Here's some message we want to show to the user",
                     systemImage: "wifi"
                 )
@@ -63,7 +106,7 @@ struct SwiftUIView_Previews: PreviewProvider {
             }
             
             NavigationView {
-                Placeholder(systemImage: "wifi")
+                Placeholder<AnyView>(systemImage: "wifi")
                     .padding()
                     .previewDisplayName("Text only")
                     .navigationTitle("Application")

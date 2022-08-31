@@ -110,6 +110,7 @@ class DeviceViewModel: ObservableObject {
     }
     @Published var buttonState: ButtonState = ButtonState(isEnabled: false, title: "Connect", style: NordicButtonStyle())
     @Published var forceShowProvisionInProgress: Bool = false
+    @Published var isScanning: Bool = false
 
     private var cancellable: Set<AnyCancellable> = []
 
@@ -176,6 +177,7 @@ extension DeviceViewModel {
     func startScan() async {
         DispatchQueue.main.async {
             self.accessPoints.removeAll()
+            self.isScanning = true
         }
         do {
             for try await scanResult in try await provisioner.startScan().values {
@@ -184,8 +186,14 @@ extension DeviceViewModel {
                     self.accessPoints.append(scanResult)
                 }
             }
+            DispatchQueue.main.async {
+                self.isScanning = false
+            }
         } catch let e {
             print(e.localizedDescription)
+            DispatchQueue.main.async {
+                self.isScanning = false
+            }
         }
     }
 
@@ -193,6 +201,7 @@ extension DeviceViewModel {
         do {
             try await provisioner.stopScan()
             DispatchQueue.main.async {
+                self.isScanning = false
                 self.accessPoints.removeAll()
             }
         } catch {
