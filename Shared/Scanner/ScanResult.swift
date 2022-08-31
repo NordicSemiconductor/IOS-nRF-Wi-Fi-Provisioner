@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import AsyncBluetooth
 
 struct ScanResult: Identifiable, Hashable {
     let name: String

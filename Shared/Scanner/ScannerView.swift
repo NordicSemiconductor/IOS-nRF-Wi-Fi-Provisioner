@@ -7,10 +7,7 @@
 
 import NordicStyle
 import SwiftUI
-
-#if DEBUG
-	import CoreBluetoothMock
-#endif
+import CoreBluetoothMock
 
 struct ScannerView: View {
 	@ObservedObject var viewModel: ScannerViewModel
@@ -21,21 +18,52 @@ struct ScannerView: View {
             Group {
                 switch viewModel.state {
                 case .noPermission:
-                    Placeholder(text: "Bluetooth permission denied", image: "bluetooth_disabled")
+                    Placeholder(
+                            text: "Bluetooth permission denied",
+                            message: "Please, enable Bluetooth in Settings",
+                            image: "bluetooth_disabled",
+                            action: {
+                                Button(action: {
+                                    UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
+                                }) {
+                                    Text("Open Settings")
+                                }
+                                        .buttonStyle(NordicButtonStyle())
+                            }
+                    )
                             .padding()
                 case .scanning:
-                    listView()
+                    if viewModel.scanResults.isEmpty {
+                        scanningPlaceholder
+                    } else {
+                        listView()
+                    }
                 case .waiting:
                     scanningPlaceholder
                 case .turnedOff:
-                    Placeholder(text: "Bluetooth permission denied", image: "bluetooth_disabled")
-                            .padding()
+                    Placeholder(
+                            text: "Bluetooth is turned off",
+                            message: "Please, enable Bluetooth in Settings",
+                            image: "bluetooth_disabled",
+                            action: {
+                                Button(action: {
+                                    UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
+                                }) {
+                                    Text("Open Settings")
+                                }
+                                        .buttonStyle(NordicButtonStyle())
+                            }
+                    )
                 }
             }
-            .navigationTitle("Scanning")
+            .navigationTitle("Scanner")
             .toolbar {
-                ProgressView()
-                    .isHidden((viewModel.state != .scanning), remove: true)
+                // Filter Button
+                Button(action: {
+                    viewModel.onlyUnprovisioned.toggle()
+                }) {
+                    Image(systemName: viewModel.onlyUnprovisioned ? "lightbulb.fill" : "lightbulb")
+                }
             }
         }
         .setupNavBarBackground()
@@ -49,51 +77,54 @@ struct ScannerView: View {
     
     @ViewBuilder
     private var scanningPlaceholder: some View {
-        Placeholder(image: "bluetooth_searching")
+        Placeholder<EmptyView>(
+                text: "Scanning for devices",
+                message: "If you don't see your device check if it is turned on",
+                image: "bluetooth_searching"
+        )
             .padding()
     }
 
 	@ViewBuilder
 	private func listView() -> some View {
         List {
-            Section("Filters") {
-                FilterList(
-                    uuid: $viewModel.uuidFilter,
-                    nearby: $viewModel.nearbyFilter,
-                    named: $viewModel.nameFilter
-                )
-            }
-            Section("Scan Results") {
+            Section {
                 ForEach(viewModel.scanResults) { scanResult in
                     NavigationLink {
                         DeviceView(
-                            viewModel: deviceViewModelFactory.viewModel(for: scanResult.id)
+                                viewModel: deviceViewModelFactory.viewModel(for: scanResult.id)
                         )
                     } label: {
                         Label {
                             Text(scanResult.name)
-                                .lineLimit(1)
+                                    .lineLimit(1)
                         } icon: {
                             RSSIView<BluetoothRSSI>(rssi: BluetoothRSSI(level: scanResult.rssi))
                         }
-                        .padding()
+                                .padding()
                     }
+                }
+            } header: {
+                HStack {
+                    Text("Devices")
+                    Spacer()
+                    ProgressView()
+                        .isHidden((viewModel.state != .scanning), remove: true)
                 }
             }
         }
+        
+        
 	}
 }
 
 #if DEBUG
 	struct ScannerView_Previews: PreviewProvider {
 		class DummyScanViewModel: ScannerViewModel {
-			override func startScan() {
-
-			}
 
 			override var scanResults: [ScanResult] {
-				return (0...3).map {
-                    ScanResult(name: "Device \($0)", id: UUID(), rssi: -90)
+				(0...3).map { i in
+                    ScanResult(name: "Device \(i)", rssi: -90 + i * 10, id: UUID())
 				}
 			}
 		}
