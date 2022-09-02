@@ -77,7 +77,7 @@ struct ScannerView: View {
     
     @ViewBuilder
     private var scanningPlaceholder: some View {
-        Placeholder<EmptyView>(
+        Placeholder(
                 text: "Scanning for devices",
                 message: "If you don't see your device check if it is turned on",
                 image: "bluetooth_searching"

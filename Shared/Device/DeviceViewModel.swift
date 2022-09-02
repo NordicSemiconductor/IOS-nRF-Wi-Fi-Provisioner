@@ -9,77 +9,9 @@ import Foundation
 import Provisioner
 import Combine
 import NordicStyle
+import os
 
 class DeviceViewModel: ObservableObject {
-    struct ButtonState {
-        var isEnabled: Bool
-        var title: String
-        var style: NordicButtonStyle
-    }
-
-    enum ConnectionState: CustomStringConvertible {
-        case connecting
-        case failed(ReadableError)
-        case connected
-
-        var description: String {
-            switch self {
-            case .connecting:
-                return "Connecting ..."
-            case .failed(let e):
-                return e.message
-            case .connected:
-                return "Connected"
-            }
-        }
-    }
-
-    enum Error: ReadableError {
-        case canNotConnect
-        case serviceNotFound
-        case noResponse
-        case canNotStopScan
-        case canNotProvision
-        
-        var title: String? {
-            switch self {
-            case .canNotConnect:
-                return "Connection failed"
-            case .serviceNotFound:
-                return "Wi-Fi Service not found"
-            case .noResponse:
-                return "No response"
-            case .canNotStopScan:
-                return "Can not stop scanning"
-            case .canNotProvision:
-                return "Can not provision"
-            }
-        }
-        
-        var message: String {
-            switch self {
-            case .canNotConnect:
-                return "Can not connect the peripheral"
-            case .serviceNotFound:
-                return "You can not provision this device as there's no Wi-Fi service found."
-            case .noResponse:
-                return "Can not get response from the device"
-            case .canNotStopScan:
-                return "Can not stop scanning"
-            case .canNotProvision:
-                return "Provision failed"
-            }
-        }
-    }
-
-    // MARK: - Error
-    @Published var showErrorAlert: Bool = false
-    @Published fileprivate(set) var connectionError: ReadableError? {
-        didSet {
-            showErrorAlert = true
-            connectionError.map { self.connectionStatus = .failed($0) }
-        }
-    }
     @Published private (set) var deviceName: String = ""
 
     /// The current bluetooth state of the device.
@@ -108,7 +40,7 @@ class DeviceViewModel: ObservableObject {
             updateButtonState()
         }
     }
-    @Published var buttonState: ButtonState = ButtonState(isEnabled: false, title: "Connect", style: NordicButtonStyle())
+    @Published var buttonState: ProvisionButtonState = ProvisionButtonState(isEnabled: false, title: "Connect", style: NordicButtonStyle())
     @Published var forceShowProvisionInProgress: Bool = false
     @Published var isScanning: Bool = false
 
@@ -116,6 +48,7 @@ class DeviceViewModel: ObservableObject {
 
     let provisioner: Provisioner
     let peripheralId: UUID
+    let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "nordic", category: "DeviceViewModel")
     
     init(peripheralId: UUID) {
         self.peripheralId = peripheralId
@@ -130,32 +63,45 @@ class DeviceViewModel: ObservableObject {
 	}
 
     func connect() async throws {
+        provisioner.bluetoothConnectionStates.sink { [weak self] state in
+            self?.connectionStatus = state.toConnectionState()
+                    self?.logger.info("Bluetooth connection state: \(state)")
+                    if case .connected = state {
+
+                    } else {
+                        // reset
+                        self?.wifiState = nil
+                        self?.accessPoints = []
+                        self?.selectedAccessPoint = nil
+                        self?.password = ""
+                        self?.version = "Unknown"
+                    }
+        }.store(in: &cancellable)
+
         do {
             try await provisioner.connect()
             DispatchQueue.main.async {
                 self.connectionStatus = .connected
             }
-        } catch let e as Provisioner.Error {
+        } catch let e as BluetoothConnectionError {
             switch e {
             case .canNotConnect:
-                try rethrowError(Error.canNotConnect)
+                try rethrowError(TitleMessageError(title: "Can not connect", message: "Please check if your device is turned on and in range."))
             case .versionCharacteristicNotFound:
-                fallthrough
+                try rethrowError(TitleMessageError(title: "Version Characteristic Not Found", message: "Please check if your device has the correct firmware installed."))
             case .controlCharacteristicPointNotFound:
-                fallthrough
+                try rethrowError(TitleMessageError(title: "Control Characteristic Not Found", message: "Please check if your device has the correct firmware installed."))
             case .dataOutCharacteristicNotFound:
-                fallthrough
+                try rethrowError(TitleMessageError(title: "Data Out Characteristic Not Found", message: "Please check if your device has the correct firmware installed."))
             case .wifiServiceNotFound:
-                try rethrowError(Error.serviceNotFound)
-            case .noResponse:
-                try rethrowError(Error.noResponse)
-            case .unknownDeviceStatus:
-                fatalError()
-            case .requestFailed:
-                try rethrowError(Error.noResponse)
+                try rethrowError(TitleMessageError(title: "Wi-Fi Service Not Found", message: "Please check if your device has the correct firmware installed."))
+            case .unknownError:
+                try rethrowError(TitleMessageError(title: "Unknown Error", message: "Something went wrong."))
+            case .commonError(let e):
+                try rethrowError(TitleMessageError(title: "Error", message: e.localizedDescription))
             }
         } catch {
-            try rethrowError(Error.canNotConnect)
+            try rethrowError(TitleMessageError(title: "Unknown Error", message: "Something went wrong."))
         }
     }
 }
@@ -205,7 +151,8 @@ extension DeviceViewModel {
                 self.accessPoints.removeAll()
             }
         } catch {
-            try rethrowError(Error.canNotStopScan)
+            // TODO: Show error HUD
+            try rethrowError(TitleMessageError(title: "Error", message: "Something went wrong."))
         }
     }
 
@@ -230,7 +177,7 @@ extension DeviceViewModel {
 extension DeviceViewModel {
     private func rethrowError(_ error: ReadableError) throws -> Never {
         DispatchQueue.main.async {
-            self.connectionError = error
+            // TODO: Show error placeholder
         }
         throw error
     }
