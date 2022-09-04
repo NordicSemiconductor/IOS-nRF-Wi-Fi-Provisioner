@@ -79,7 +79,7 @@ struct DeviceView: View {
                             } image: {
                                 StatusIndicatorView(status: viewModel.wifiState, forceProgress: viewModel.forceShowProvisionInProgress)
                             }
-                                    .status(viewModel.wifiState ?? .disconnected)
+                            .status(viewModel.wifiState ?? .disconnected)
                         }
                         if let e = viewModel.provisioningError {
                             HStack {
@@ -94,7 +94,7 @@ struct DeviceView: View {
                 // MARK: Access Points
                 Section("Access Point") {
                     NavigationLink {
-                        AccessPointList(viewModel: viewModel)
+                        AccessPointList(viewModel: viewModel.accessPointListViewModel)
                     } label: {
                         HStack {
                             NordicLabel("Access Point", systemImage: "wifi.circle")
@@ -108,6 +108,7 @@ struct DeviceView: View {
 
                     if viewModel.passwordRequired {
                         SecureField("Password", text: $viewModel.password)
+                            .disabled(viewModel.wifiState?.isInProgress ?? false)
                     }
                 }
             }

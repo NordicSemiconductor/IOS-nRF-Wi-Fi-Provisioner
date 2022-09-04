@@ -36,11 +36,16 @@ class DeviceViewModel: ObservableObject {
 	@Published(initialValue: "Unknown") fileprivate(set) var version: String
 
     @Published(initialValue: false) var showAccessPointList: Bool
-    @Published(initialValue: []) fileprivate(set) var accessPoints: [AccessPoint]
+    @Published(initialValue: [:]) fileprivate(set) var accessPoints: [String : AccessPoint]
     @Published var selectedAccessPoint: AccessPoint? {
         didSet {
             passwordRequired = selectedAccessPoint?.isOpen == false
             updateButtonState()
+
+            Task {
+                try? await activeAccessPointVM?.stopScan()
+                activeAccessPointVM = nil
+            }
         }
     }
     @Published(initialValue: false) private(set) var passwordRequired: Bool
@@ -58,6 +63,22 @@ class DeviceViewModel: ObservableObject {
     let provisioner: Provisioner
     let peripheralId: UUID
     let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "nordic", category: "DeviceViewModel")
+
+    private var activeAccessPointVM: AccessPointListViewModel?
+    var accessPointListViewModel: AccessPointListViewModel {
+        let vm = AccessPointListViewModel(provisioner: provisioner)
+        Task {
+            if let active = activeAccessPointVM {
+                try? await active.stopScan()
+            }
+            await vm.startScan()
+        }
+        activeAccessPointVM = vm
+        vm.$selectedAccessPoint.sink { [weak self] ap in
+            self?.selectedAccessPoint = ap
+        }.store(in: &cancellable)
+        return vm
+    }
     
     init(peripheralId: UUID) {
         self.peripheralId = peripheralId
@@ -128,29 +149,6 @@ extension DeviceViewModel {
 
         DispatchQueue.main.async {
             self.wifiState = status
-        }
-    }
-
-    func startScan() async {
-        DispatchQueue.main.async {
-            self.accessPoints.removeAll()
-            self.isScanning = true
-        }
-        do {
-            for try await scanResult in try await provisioner.startScan().values {
-                print(scanResult.ssid)
-                DispatchQueue.main.async {
-                    self.accessPoints.append(scanResult)
-                }
-            }
-            DispatchQueue.main.async {
-                self.isScanning = false
-            }
-        } catch let e {
-            print(e.localizedDescription)
-            DispatchQueue.main.async {
-                self.isScanning = false
-            }
         }
     }
 

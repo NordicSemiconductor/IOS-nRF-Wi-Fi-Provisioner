@@ -10,11 +10,35 @@ import NordicStyle
 
 struct AccessPointList: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-    @ObservedObject var viewModel: DeviceViewModel
+    @ObservedObject var viewModel: AccessPointListViewModel
     
     var body: some View {
         List {
             ForEach(viewModel.accessPoints) { ap in
+                Picker(selection: $viewModel.selectedAccessPoint, content: {
+                    ForEach(viewModel.allChannels(for: ap)) { accessPoint in
+                        HStack {
+                            Label {
+                                Text("\(accessPoint.channel)")
+                            } icon: {
+                                RSSIView<WiFiRSSI>(rssi: WiFiRSSI(level: ap.rssi))
+                                        .frame(maxWidth: 30, maxHeight: 20)
+                            }
+                        }
+                    }
+                            .navigationBarTitle("Select Channel")
+                }, label: {
+                    HStack {
+                        Label(ap.ssid, systemImage: ap.isOpen ? "lock.open" : "lock")
+                                .tint(Color.accentColor)
+                        Spacer()
+                        RSSIView<WiFiRSSI>(rssi: WiFiRSSI(level: ap.rssi))
+                                .frame(maxWidth: 30, maxHeight: 20)
+                    }
+                })
+                        .navigationBarTitle("Select Access Point")
+
+                /*
                 Button {
                     self.presentationMode.wrappedValue.dismiss()
                     viewModel.selectedAccessPoint = ap
@@ -27,19 +51,18 @@ struct AccessPointList: View {
                                 .frame(maxWidth: 30, maxHeight: 20)
                     }
                 }
+                 */
             }
         }
         .navigationTitle("Wi-Fi")
                 .onAppear {
                     Task {
-                        await viewModel.startScan()
+//                        await viewModel.startScan()
                     }
                 }
                 .onDisappear {
                     Task {
-                        do {
-                            try await viewModel.stopScan()
-                        }
+//                        try? await viewModel.stopScan()
                     }
                 }
                 .toolbar {
@@ -51,6 +74,6 @@ struct AccessPointList: View {
 
 struct AccessPointList_Previews: PreviewProvider {
     static var previews: some View {
-        AccessPointList(viewModel: DeviceViewModel(peripheralId: UUID()))
+        AccessPointList(viewModel: AccessPointListViewModel(provisioner: MockProvisioner()))
     }
 }
