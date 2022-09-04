@@ -19,22 +19,6 @@ struct Placeholder<Action>: View where Action: View {
     public let image: Image
     public let message: String?
     public let action: Action?
-    
-    public init(text: String? = nil, message: String? = nil, image: String) {
-        self.text = text
-        self.message = message
-        self.image = Image(image)
-
-        typealias Action = EmptyViewContainer
-        self.action = nil
-    }
-    
-    public init(text: String? = nil, message: String? = nil, systemImage: String) {
-        self.text = text
-        self.message = message
-        self.image = Image(systemName: systemImage)
-        self.action = EmptyView() as! Action
-    }
 
     public init(text: String? = nil, message: String? = nil, image: String, action: () -> Action) {
         self.text = text
@@ -92,11 +76,27 @@ struct Placeholder<Action>: View where Action: View {
     }
 }
 
+extension Placeholder where Action == EmptyView {
+    public init(text: String? = nil, message: String? = nil, image: String) {
+        self.text = text
+        self.message = message
+        self.image = Image(image)
+        self.action = nil
+    }
+
+    public init(text: String? = nil, message: String? = nil, systemImage: String) {
+        self.text = text
+        self.message = message
+        self.image = Image(systemName: systemImage)
+        self.action = nil
+    }
+}
+
 struct SwiftUIView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
             NavigationView {
-                Placeholder<AnyView>(
+                Placeholder(
                     text: "Here's some message we want to show to the user",
                     systemImage: "wifi"
                 )
@@ -106,7 +106,7 @@ struct SwiftUIView_Previews: PreviewProvider {
             }
             
             NavigationView {
-                Placeholder<AnyView>(systemImage: "wifi")
+                Placeholder(systemImage: "wifi")
                     .padding()
                     .previewDisplayName("Text only")
                     .navigationTitle("Application")

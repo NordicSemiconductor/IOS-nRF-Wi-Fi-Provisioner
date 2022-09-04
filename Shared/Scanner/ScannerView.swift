@@ -77,7 +77,7 @@ struct ScannerView: View {
     
     @ViewBuilder
     private var scanningPlaceholder: some View {
-        Placeholder<EmptyView>(
+        Placeholder(
                 text: "Scanning for devices",
                 message: "If you don't see your device check if it is turned on",
                 image: "bluetooth_searching"
@@ -90,10 +90,9 @@ struct ScannerView: View {
         List {
             Section {
                 ForEach(viewModel.scanResults) { scanResult in
+
                     NavigationLink {
-                        DeviceView(
-                                viewModel: deviceViewModelFactory.viewModel(for: scanResult.id)
-                        )
+                        DeviceView(viewModel: deviceViewModelFactory.viewModel(for: scanResult.id))
                     } label: {
                         Label {
                             Text(scanResult.name)

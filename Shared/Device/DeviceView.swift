@@ -16,14 +16,24 @@ struct DeviceView: View {
         VStack {
             switch viewModel.connectionStatus {
             case .connecting:
-                Placeholder<EmptyView>(
+                Placeholder(
                     text: "Connecting",
                     image: "bluetooth"
                 )
             case .failed(let e):
-                Placeholder<EmptyView>(text: e.message, image: "bluetooth_disabled")
+                Placeholder(text: e.message, image: "bluetooth_disabled", action: {
+                    Button("Reconnect") {
+                        Task {
+                            try await self.viewModel.connect()
+                        }
+                    }
+                            .buttonStyle(NordicButtonStyle())
+                })
+                        .padding()
             case .connected:
                 deviceInfo
+            case .disconnected:
+                Placeholder(text: "Disconnected", image: "bluetooth_disabled")
             }
         }
         .navigationTitle("Device Info")
@@ -34,9 +44,6 @@ struct DeviceView: View {
                     try await viewModel.readInformation()
                 }
             }
-        }
-        .alert(viewModel.connectionError?.title ?? "", isPresented: $viewModel.showErrorAlert) {
-            Button("OK", role: .cancel) { }
         }
     }
     
@@ -61,17 +68,26 @@ struct DeviceView: View {
                         Spacer()
                         Text(viewModel.version).foregroundColor(.secondary)
                     }
-                    
-                    HStack {
-                        NordicLabel("Wi-Fi Status", systemImage: "wifi")
-                            .tint(.nordicBlue)
-                        Spacer()
-                        ReversedLabel {
-                            Text(viewModel.wifiState?.description ?? "Unprovisioned")
-                        } image: {
-                            StatusIndicatorView(status: viewModel.wifiState, forceProgress: viewModel.forceShowProvisionInProgress)
+
+                    VStack {
+                        HStack {
+                            NordicLabel("Wi-Fi Status", systemImage: "wifi")
+                                    .tint(.nordicBlue)
+                            Spacer()
+                            ReversedLabel {
+                                Text(viewModel.wifiState?.description ?? "Unprovisioned")
+                            } image: {
+                                StatusIndicatorView(status: viewModel.wifiState, forceProgress: viewModel.forceShowProvisionInProgress)
+                            }
+                                    .status(viewModel.wifiState ?? .disconnected)
                         }
-                        .status(viewModel.wifiState ?? .disconnected)
+                        if let e = viewModel.provisioningError {
+                            HStack {
+                                Text(e.message)
+                                        .foregroundColor(.red)
+                                Spacer()
+                            }
+                        }
                     }
                 }
 
