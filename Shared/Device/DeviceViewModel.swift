@@ -12,29 +12,38 @@ import NordicStyle
 import os
 
 class DeviceViewModel: ObservableObject {
-    @Published private (set) var deviceName: String = ""
+    @Published(initialValue: "") private (set) var deviceName: String
 
     /// The current bluetooth state of the device.
-    @Published fileprivate(set) var connectionStatus: ConnectionState = .connecting
+    @Published(initialValue: .connecting) fileprivate(set) var connectionStatus: ConnectionState
 
-    @Published private (set) var provisioningInProgress: Bool = false
-	@Published fileprivate(set) var wifiState: Provisioner.WiFiStatus? = nil {
+    @Published(initialValue: false) private (set) var provisioningInProgress: Bool
+	@Published(initialValue: nil) fileprivate(set) var wifiState: Provisioner.WiFiStatus? {
         didSet {
             provisioningInProgress = wifiState?.isInProgress ?? false
             updateButtonState()
+
+            switch wifiState {
+            case .connectionFailed(let e):
+                provisioningError = conventConnectionFailure(e)
+            default:
+                provisioningError = nil
+            }
         }
     }
-	@Published fileprivate(set) var version: String = "Unknown"
+    @Published(initialValue: nil) private (set) var provisioningError: ReadableError?
 
-    @Published var showAccessPointList: Bool = false
-    @Published fileprivate(set) var accessPoints: [AccessPoint] = []
+	@Published(initialValue: "Unknown") fileprivate(set) var version: String
+
+    @Published(initialValue: false) var showAccessPointList: Bool
+    @Published(initialValue: []) fileprivate(set) var accessPoints: [AccessPoint]
     @Published var selectedAccessPoint: AccessPoint? {
         didSet {
             passwordRequired = selectedAccessPoint?.isOpen == false
             updateButtonState()
         }
     }
-    @Published private(set) var passwordRequired: Bool = false
+    @Published(initialValue: false) private(set) var passwordRequired: Bool
     @Published var password: String = "" {
         didSet {
             updateButtonState()
@@ -70,11 +79,13 @@ class DeviceViewModel: ObservableObject {
 
                     } else {
                         // reset
+                        /*
                         self?.wifiState = nil
                         self?.accessPoints = []
                         self?.selectedAccessPoint = nil
                         self?.password = ""
                         self?.version = "Unknown"
+                         */
                     }
         }.store(in: &cancellable)
 
@@ -208,6 +219,23 @@ extension DeviceViewModel {
         }()
 
         buttonState.title = title
+    }
+
+    private func conventConnectionFailure(_ reason: Provisioner.WiFiStatus.ConnectionFailure) -> ReadableError {
+        switch reason {
+        case .authError:
+            return TitleMessageError(title: "Authentication Error", message: "Please check your password.")
+        case .networkNotFound:
+            return TitleMessageError(title: "Network Not Found", message: "Please check your network name.")
+        case .timeout:
+            return TitleMessageError(title: "Timeout", message: "Timeout while connecting to the network.")
+        case .failIp:
+            return TitleMessageError(title: "IP Error", message: "Error obtaining IP address.")
+        case .failConn:
+            return TitleMessageError(title: "Connection Error", message: "Please check your network name and password.")
+        case .unknown:
+            return TitleMessageError(title: "Unknown Error", message: "Something went wrong.")
+        }
     }
 }
 

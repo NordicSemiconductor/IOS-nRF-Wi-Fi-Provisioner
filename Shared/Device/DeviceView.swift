@@ -68,17 +68,26 @@ struct DeviceView: View {
                         Spacer()
                         Text(viewModel.version).foregroundColor(.secondary)
                     }
-                    
-                    HStack {
-                        NordicLabel("Wi-Fi Status", systemImage: "wifi")
-                            .tint(.nordicBlue)
-                        Spacer()
-                        ReversedLabel {
-                            Text(viewModel.wifiState?.description ?? "Unprovisioned")
-                        } image: {
-                            StatusIndicatorView(status: viewModel.wifiState, forceProgress: viewModel.forceShowProvisionInProgress)
+
+                    VStack {
+                        HStack {
+                            NordicLabel("Wi-Fi Status", systemImage: "wifi")
+                                    .tint(.nordicBlue)
+                            Spacer()
+                            ReversedLabel {
+                                Text(viewModel.wifiState?.description ?? "Unprovisioned")
+                            } image: {
+                                StatusIndicatorView(status: viewModel.wifiState, forceProgress: viewModel.forceShowProvisionInProgress)
+                            }
+                                    .status(viewModel.wifiState ?? .disconnected)
                         }
-                        .status(viewModel.wifiState ?? .disconnected)
+                        if let e = viewModel.provisioningError {
+                            HStack {
+                                Text(e.message)
+                                        .foregroundColor(.red)
+                                Spacer()
+                            }
+                        }
                     }
                 }
 

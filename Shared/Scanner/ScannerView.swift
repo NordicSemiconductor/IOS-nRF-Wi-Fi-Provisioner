@@ -90,10 +90,9 @@ struct ScannerView: View {
         List {
             Section {
                 ForEach(viewModel.scanResults) { scanResult in
+
                     NavigationLink {
-                        DeviceView(
-                                viewModel: deviceViewModelFactory.viewModel(for: scanResult.id)
-                        )
+                        DeviceView(viewModel: deviceViewModelFactory.viewModel(for: scanResult.id))
                     } label: {
                         Label {
                             Text(scanResult.name)
