@@ -27,9 +27,9 @@ struct DeviceView: View {
                             try await self.viewModel.connect()
                         }
                     }
-                            .buttonStyle(NordicButtonStyle())
+                    .buttonStyle(NordicButtonStyle())
                 })
-                        .padding()
+                .padding()
             case .connected:
                 deviceInfo
             case .disconnected:
@@ -55,12 +55,12 @@ struct DeviceView: View {
                 Section("Device") {
                     HStack {
                         NordicLabel("Device Name", image: "bluetooth")
-                            
+                        
                         Spacer()
                         Text(viewModel.deviceName).foregroundColor(.secondary)
                     }
                 }
-
+                
                 // MARK: Device Info
                 Section("Device Status") {
                     HStack {
@@ -68,11 +68,11 @@ struct DeviceView: View {
                         Spacer()
                         Text(viewModel.version).foregroundColor(.secondary)
                     }
-
+                    
                     VStack {
                         HStack {
                             NordicLabel("Wi-Fi Status", systemImage: "wifi")
-                                    .tint(.nordicBlue)
+                                .tint(.nordicBlue)
                             Spacer()
                             ReversedLabel {
                                 Text(viewModel.wifiState?.description ?? "Unprovisioned")
@@ -84,13 +84,13 @@ struct DeviceView: View {
                         if let e = viewModel.provisioningError {
                             HStack {
                                 Text(e.message)
-                                        .foregroundColor(.red)
+                                    .foregroundColor(.red)
                                 Spacer()
                             }
                         }
                     }
                 }
-
+                
                 // MARK: Access Points
                 Section("Access Point") {
                     NavigationLink(isActive: $viewModel.showAccessPointList) {
@@ -100,15 +100,15 @@ struct DeviceView: View {
                             NordicLabel("Access Point", systemImage: "wifi.circle")
                             Spacer()
                             Text(viewModel.selectedAccessPoint?.ssid ?? "Not Selected")
-                                    .foregroundColor(.secondary)
+                                .foregroundColor(.secondary)
                         }
-                        .disabled(viewModel.wifiState?.isInProgress ?? false)
+                        .disabled(viewModel.inProgress)
                     }
-                    .disabled(viewModel.wifiState?.isInProgress ?? false)
-
+                    .disabled(viewModel.inProgress)
+                    
                     if viewModel.passwordRequired {
                         SecureField("Password", text: $viewModel.password)
-                            .disabled(viewModel.wifiState?.isInProgress ?? false)
+                            .disabled(viewModel.inProgress)
                     }
                 }
             }

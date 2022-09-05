@@ -26,11 +26,15 @@ class DeviceViewModel: ObservableObject {
             switch wifiState {
             case .connectionFailed(let e):
                 provisioningError = conventConnectionFailure(e)
+                inProgress = false
+            case .connected:
+                inProgress = false
             default:
                 provisioningError = nil
             }
         }
     }
+    @Published(initialValue: false) var inProgress: Bool
     @Published(initialValue: nil) private (set) var provisioningError: ReadableError?
 
 	@Published(initialValue: "Unknown") fileprivate(set) var version: String
@@ -175,6 +179,10 @@ extension DeviceViewModel {
     }
 
     func startProvision() async throws {
+        wifiState = .disconnected
+        inProgress = true
+        self.buttonState.isEnabled = false 
+        
         let statePublisher = try await provisioner.startProvision(accessPoint: selectedAccessPoint!, passphrase: password.isEmpty ? nil : password)
         DispatchQueue.main.async {
             self.buttonState.isEnabled = false
