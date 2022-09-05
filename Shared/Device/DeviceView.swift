@@ -93,7 +93,7 @@ struct DeviceView: View {
 
                 // MARK: Access Points
                 Section("Access Point") {
-                    NavigationLink {
+                    NavigationLink(isActive: $viewModel.showAccessPointList) {
                         AccessPointList(viewModel: viewModel.accessPointListViewModel)
                     } label: {
                         HStack {

@@ -7,6 +7,7 @@
 
 import SwiftUI
 import NordicStyle
+import Provisioner
 
 struct AccessPointList: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
@@ -17,52 +18,31 @@ struct AccessPointList: View {
             ForEach(viewModel.accessPoints) { ap in
                 Picker(selection: $viewModel.selectedAccessPoint, content: {
                     ForEach(viewModel.allChannels(for: ap)) { accessPoint in
-                        HStack {
-                            Label {
-                                Text("\(accessPoint.channel)")
-                            } icon: {
-                                RSSIView<WiFiRSSI>(rssi: WiFiRSSI(level: ap.rssi))
-                                        .frame(maxWidth: 30, maxHeight: 20)
-                            }
+                        Label {
+                            Text("Channel: \(accessPoint.channel)")
+                        } icon: {
+                            RSSIView<WiFiRSSI>(rssi: WiFiRSSI(level: accessPoint.rssi))
+                                .frame(maxWidth: 30, maxHeight: 20)
                         }
+                        .tag(Optional(accessPoint))
                     }
-                            .navigationBarTitle("Select Channel")
+                    .navigationBarTitle("Select Channel")
                 }, label: {
                     HStack {
                         Label(ap.ssid, systemImage: ap.isOpen ? "lock.open" : "lock")
-                                .tint(Color.accentColor)
+                            .tint(Color.accentColor)
                         Spacer()
                         RSSIView<WiFiRSSI>(rssi: WiFiRSSI(level: ap.rssi))
-                                .frame(maxWidth: 30, maxHeight: 20)
+                            .frame(maxWidth: 30, maxHeight: 20)
                     }
                 })
-                        .navigationBarTitle("Select Access Point")
-
-                /*
-                Button {
-                    self.presentationMode.wrappedValue.dismiss()
-                    viewModel.selectedAccessPoint = ap
-                } label: {
-                    HStack {
-                        Label(ap.ssid, systemImage: ap.isOpen ? "lock.open" : "lock")
-                                .tint(Color.accentColor)
-                        Spacer()
-                        RSSIView<WiFiRSSI>(rssi: WiFiRSSI(level: ap.rssi))
-                                .frame(maxWidth: 30, maxHeight: 20)
-                    }
-                }
-                 */
+                .navigationBarTitle("Select Access Point")
             }
         }
         .navigationTitle("Wi-Fi")
                 .onAppear {
                     Task {
-//                        await viewModel.startScan()
-                    }
-                }
-                .onDisappear {
-                    Task {
-//                        try? await viewModel.stopScan()
+                        await viewModel.startScan()
                     }
                 }
                 .toolbar {

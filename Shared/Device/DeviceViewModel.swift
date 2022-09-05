@@ -37,11 +37,12 @@ class DeviceViewModel: ObservableObject {
 
     @Published(initialValue: false) var showAccessPointList: Bool
     @Published(initialValue: [:]) fileprivate(set) var accessPoints: [String : AccessPoint]
-    @Published var selectedAccessPoint: AccessPoint? {
+    @Published(initialValue: nil) var selectedAccessPoint: AccessPoint? {
         didSet {
             passwordRequired = selectedAccessPoint?.isOpen == false
             updateButtonState()
-
+            
+            showAccessPointList = false
             Task {
                 try? await activeAccessPointVM?.stopScan()
                 activeAccessPointVM = nil
@@ -55,8 +56,8 @@ class DeviceViewModel: ObservableObject {
         }
     }
     @Published var buttonState: ProvisionButtonState = ProvisionButtonState(isEnabled: false, title: "Connect", style: NordicButtonStyle())
-    @Published var forceShowProvisionInProgress: Bool = false
-    @Published var isScanning: Bool = false
+    @Published(initialValue: false) var forceShowProvisionInProgress: Bool
+    @Published(initialValue: false) var isScanning: Bool
 
     private var cancellable: Set<AnyCancellable> = []
 
@@ -66,17 +67,19 @@ class DeviceViewModel: ObservableObject {
 
     private var activeAccessPointVM: AccessPointListViewModel?
     var accessPointListViewModel: AccessPointListViewModel {
-        let vm = AccessPointListViewModel(provisioner: provisioner)
-        Task {
-            if let active = activeAccessPointVM {
-                try? await active.stopScan()
-            }
-            await vm.startScan()
+        if let vm = activeAccessPointVM {
+            return vm
         }
+        let vm = AccessPointListViewModel(provisioner: provisioner)
         activeAccessPointVM = vm
-        vm.$selectedAccessPoint.sink { [weak self] ap in
-            self?.selectedAccessPoint = ap
-        }.store(in: &cancellable)
+        vm.$selectedAccessPoint
+                .receive(on: DispatchQueue.main)
+                .sink { [weak self] selection  in
+                    if let ap = selection {
+                        self?.selectedAccessPoint = ap
+                    }
+                }
+                .store(in: &cancellable)
         return vm
     }
     
@@ -93,7 +96,13 @@ class DeviceViewModel: ObservableObject {
 	}
 
     func connect() async throws {
-        provisioner.bluetoothConnectionStates.sink { [weak self] state in
+        if case .connected = connectionStatus {
+            return
+        }
+
+        provisioner.bluetoothConnectionStates
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] state in
             self?.connectionStatus = state.toConnectionState()
                     self?.logger.info("Bluetooth connection state: \(state)")
                     if case .connected = state {
