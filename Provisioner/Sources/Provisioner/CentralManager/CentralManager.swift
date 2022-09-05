@@ -91,6 +91,9 @@ class CentralManager {
     private var connectionExecutor = AsyncExecutor<WifiDevice>()
 
     private var valueStreams = PassthroughSubject<Data, Swift.Error>()
+    var dataOutStream: AnyPublisher<Data, Swift.Error> {
+        valueStreams.eraseToAnyPublisher()  
+    }
     private var connectedDevice: WifiDevice!
 
     init(centralManager: CBMCentralManager = CBMCentralManagerFactory.instance()) {
@@ -168,17 +171,12 @@ extension CentralManager {
             throw e
         }
     }
-
-    func notifications(for characteristic: Characteristic) -> AnyPublisher<Data, Swift.Error> {
-        return valueStreams
-                .eraseToAnyPublisher()
-    }
 }
 
 // MARK: - Private methods
 extension CentralManager {
     // Convert Characteristic to CBMCharacteristic
-    private func cbmCharacteristic(for characteristic: Characteristic) -> CBMCharacteristic {
+    private func cbmCharacteristic(for characteristic: Characteristic) -> CBCharacteristic {
         switch characteristic {
         case .version:
             return connectedDevice.version

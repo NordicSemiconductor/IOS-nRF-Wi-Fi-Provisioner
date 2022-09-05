@@ -36,11 +36,17 @@ class DeviceViewModel: ObservableObject {
 	@Published(initialValue: "Unknown") fileprivate(set) var version: String
 
     @Published(initialValue: false) var showAccessPointList: Bool
-    @Published(initialValue: []) fileprivate(set) var accessPoints: [AccessPoint]
-    @Published var selectedAccessPoint: AccessPoint? {
+    @Published(initialValue: [:]) fileprivate(set) var accessPoints: [String : AccessPoint]
+    @Published(initialValue: nil) var selectedAccessPoint: AccessPoint? {
         didSet {
             passwordRequired = selectedAccessPoint?.isOpen == false
             updateButtonState()
+            
+            showAccessPointList = false
+            Task {
+                try? await activeAccessPointVM?.stopScan()
+                activeAccessPointVM = nil
+            }
         }
     }
     @Published(initialValue: false) private(set) var passwordRequired: Bool
@@ -50,14 +56,32 @@ class DeviceViewModel: ObservableObject {
         }
     }
     @Published var buttonState: ProvisionButtonState = ProvisionButtonState(isEnabled: false, title: "Connect", style: NordicButtonStyle())
-    @Published var forceShowProvisionInProgress: Bool = false
-    @Published var isScanning: Bool = false
+    @Published(initialValue: false) var forceShowProvisionInProgress: Bool
+    @Published(initialValue: false) var isScanning: Bool
 
     private var cancellable: Set<AnyCancellable> = []
 
     let provisioner: Provisioner
     let peripheralId: UUID
     let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "nordic", category: "DeviceViewModel")
+
+    private var activeAccessPointVM: AccessPointListViewModel?
+    var accessPointListViewModel: AccessPointListViewModel {
+        if let vm = activeAccessPointVM {
+            return vm
+        }
+        let vm = AccessPointListViewModel(provisioner: provisioner)
+        activeAccessPointVM = vm
+        vm.$selectedAccessPoint
+                .receive(on: DispatchQueue.main)
+                .sink { [weak self] selection  in
+                    if let ap = selection {
+                        self?.selectedAccessPoint = ap
+                    }
+                }
+                .store(in: &cancellable)
+        return vm
+    }
     
     init(peripheralId: UUID) {
         self.peripheralId = peripheralId
@@ -72,7 +96,13 @@ class DeviceViewModel: ObservableObject {
 	}
 
     func connect() async throws {
-        provisioner.bluetoothConnectionStates.sink { [weak self] state in
+        if case .connected = connectionStatus {
+            return
+        }
+
+        provisioner.bluetoothConnectionStates
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] state in
             self?.connectionStatus = state.toConnectionState()
                     self?.logger.info("Bluetooth connection state: \(state)")
                     if case .connected = state {
@@ -128,29 +158,6 @@ extension DeviceViewModel {
 
         DispatchQueue.main.async {
             self.wifiState = status
-        }
-    }
-
-    func startScan() async {
-        DispatchQueue.main.async {
-            self.accessPoints.removeAll()
-            self.isScanning = true
-        }
-        do {
-            for try await scanResult in try await provisioner.startScan().values {
-                print(scanResult.ssid)
-                DispatchQueue.main.async {
-                    self.accessPoints.append(scanResult)
-                }
-            }
-            DispatchQueue.main.async {
-                self.isScanning = false
-            }
-        } catch let e {
-            print(e.localizedDescription)
-            DispatchQueue.main.async {
-                self.isScanning = false
-            }
         }
     }
 

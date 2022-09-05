@@ -7,39 +7,42 @@
 
 import SwiftUI
 import NordicStyle
+import Provisioner
 
 struct AccessPointList: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-    @ObservedObject var viewModel: DeviceViewModel
+    @ObservedObject var viewModel: AccessPointListViewModel
     
     var body: some View {
         List {
             ForEach(viewModel.accessPoints) { ap in
-                Button {
-                    self.presentationMode.wrappedValue.dismiss()
-                    viewModel.selectedAccessPoint = ap
-                } label: {
+                Picker(selection: $viewModel.selectedAccessPoint, content: {
+                    ForEach(viewModel.allChannels(for: ap)) { accessPoint in
+                        Label {
+                            Text("Channel: \(accessPoint.channel)")
+                        } icon: {
+                            RSSIView<WiFiRSSI>(rssi: WiFiRSSI(level: accessPoint.rssi))
+                                .frame(maxWidth: 30, maxHeight: 20)
+                        }
+                        .tag(Optional(accessPoint))
+                    }
+                    .navigationBarTitle("Select Channel")
+                }, label: {
                     HStack {
                         Label(ap.ssid, systemImage: ap.isOpen ? "lock.open" : "lock")
-                                .tint(Color.accentColor)
+                            .tint(Color.accentColor)
                         Spacer()
                         RSSIView<WiFiRSSI>(rssi: WiFiRSSI(level: ap.rssi))
-                                .frame(maxWidth: 30, maxHeight: 20)
+                            .frame(maxWidth: 30, maxHeight: 20)
                     }
-                }
+                })
+                .navigationBarTitle("Select Access Point")
             }
         }
         .navigationTitle("Wi-Fi")
                 .onAppear {
                     Task {
                         await viewModel.startScan()
-                    }
-                }
-                .onDisappear {
-                    Task {
-                        do {
-                            try await viewModel.stopScan()
-                        }
                     }
                 }
                 .toolbar {
@@ -51,6 +54,6 @@ struct AccessPointList: View {
 
 struct AccessPointList_Previews: PreviewProvider {
     static var previews: some View {
-        AccessPointList(viewModel: DeviceViewModel(peripheralId: UUID()))
+        AccessPointList(viewModel: AccessPointListViewModel(provisioner: MockProvisioner()))
     }
 }

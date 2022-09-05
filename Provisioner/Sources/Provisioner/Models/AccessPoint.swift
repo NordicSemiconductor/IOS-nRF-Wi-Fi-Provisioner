@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct AccessPoint: Identifiable {
+public struct AccessPoint: Identifiable, Hashable {
     let wifiInfo: WifiInfo
 
     public var ssid: String
