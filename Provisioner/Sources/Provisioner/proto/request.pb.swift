@@ -35,6 +35,7 @@ struct WifiConfig {
   /// Clears the value of `wifi`. Subsequent reads from it will return its default value.
   mutating func clearWifi() {self._wifi = nil}
 
+  /// Default: empty string
   var passphrase: Data {
     get {return _passphrase ?? Data()}
     set {_passphrase = newValue}
@@ -44,12 +45,23 @@ struct WifiConfig {
   /// Clears the value of `passphrase`. Subsequent reads from it will return its default value.
   mutating func clearPassphrase() {self._passphrase = nil}
 
+  /// Should the Wi-Fi config be kept only in RAM and be removed after device reboot.
+  var volatileMemory: Bool {
+    get {return _volatileMemory ?? false}
+    set {_volatileMemory = newValue}
+  }
+  /// Returns true if `volatileMemory` has been explicitly set.
+  var hasVolatileMemory: Bool {return self._volatileMemory != nil}
+  /// Clears the value of `volatileMemory`. Subsequent reads from it will return its default value.
+  mutating func clearVolatileMemory() {self._volatileMemory = nil}
+
   var unknownFields = SwiftProtobuf.UnknownStorage()
 
   init() {}
 
   fileprivate var _wifi: WifiInfo? = nil
   fileprivate var _passphrase: Data? = nil
+  fileprivate var _volatileMemory: Bool? = nil
 }
 
 /// The request type, sent to the device. 
@@ -111,6 +123,7 @@ extension WifiConfig: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementatio
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .same(proto: "wifi"),
     2: .same(proto: "passphrase"),
+    3: .same(proto: "volatileMemory"),
   ]
 
   public var isInitialized: Bool {
@@ -126,6 +139,7 @@ extension WifiConfig: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementatio
       switch fieldNumber {
       case 1: try { try decoder.decodeSingularMessageField(value: &self._wifi) }()
       case 2: try { try decoder.decodeSingularBytesField(value: &self._passphrase) }()
+      case 3: try { try decoder.decodeSingularBoolField(value: &self._volatileMemory) }()
       default: break
       }
     }
@@ -142,12 +156,16 @@ extension WifiConfig: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementatio
     try { if let v = self._passphrase {
       try visitor.visitSingularBytesField(value: v, fieldNumber: 2)
     } }()
+    try { if let v = self._volatileMemory {
+      try visitor.visitSingularBoolField(value: v, fieldNumber: 3)
+    } }()
     try unknownFields.traverse(visitor: &visitor)
   }
 
   static func ==(lhs: WifiConfig, rhs: WifiConfig) -> Bool {
     if lhs._wifi != rhs._wifi {return false}
     if lhs._passphrase != rhs._passphrase {return false}
+    if lhs._volatileMemory != rhs._volatileMemory {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }

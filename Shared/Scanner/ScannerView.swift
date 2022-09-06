@@ -92,7 +92,8 @@ struct ScannerView: View {
                 ForEach(viewModel.scanResults) { scanResult in
 
                     NavigationLink {
-                        DeviceView(viewModel: deviceViewModelFactory.viewModel(for: scanResult.id))
+                        DeviceView()
+                            .environmentObject(deviceViewModelFactory.viewModel(for: scanResult.id))
                     } label: {
                         Label {
                             Text(scanResult.name)

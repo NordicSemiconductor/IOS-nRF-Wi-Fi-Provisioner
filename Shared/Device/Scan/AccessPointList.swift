@@ -10,8 +10,8 @@ import NordicStyle
 import Provisioner
 
 struct AccessPointList: View {
-    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-    @ObservedObject var viewModel: AccessPointListViewModel
+//    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    @EnvironmentObject var viewModel: AccessPointListViewModel
     
     var body: some View {
         List {
@@ -54,6 +54,7 @@ struct AccessPointList: View {
 
 struct AccessPointList_Previews: PreviewProvider {
     static var previews: some View {
-        AccessPointList(viewModel: AccessPointListViewModel(provisioner: MockProvisioner()))
+        AccessPointList()
+            .environmentObject(AccessPointListViewModel(provisioner: MockProvisioner()))
     }
 }

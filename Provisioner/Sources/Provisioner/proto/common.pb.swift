@@ -303,9 +303,10 @@ enum AuthMode: SwiftProtobuf.Enum {
   case wpaPsk // = 2
   case wpa2Psk // = 3
   case wpaWpa2Psk // = 4
+  case wpa2Enterprise // = 5
 
   /// Note: More modes can be added in the future.
-  case wpa2Enterprise // = 5
+  case wpa3Psk // = 6
 
   init() {
     self = .open
@@ -319,6 +320,7 @@ enum AuthMode: SwiftProtobuf.Enum {
     case 3: self = .wpa2Psk
     case 4: self = .wpaWpa2Psk
     case 5: self = .wpa2Enterprise
+    case 6: self = .wpa3Psk
     default: return nil
     }
   }
@@ -331,6 +333,7 @@ enum AuthMode: SwiftProtobuf.Enum {
     case .wpa2Psk: return 3
     case .wpaWpa2Psk: return 4
     case .wpa2Enterprise: return 5
+    case .wpa3Psk: return 6
     }
   }
 
@@ -529,6 +532,7 @@ extension AuthMode: SwiftProtobuf._ProtoNameProviding {
     3: .same(proto: "WPA2_PSK"),
     4: .same(proto: "WPA_WPA2_PSK"),
     5: .same(proto: "WPA2_ENTERPRISE"),
+    6: .same(proto: "WPA3_PSK"),
   ]
 }
 
