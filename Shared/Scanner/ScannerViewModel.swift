@@ -68,7 +68,9 @@ class ScannerViewModel: ObservableObject {
             .mapError { _ in fatalError() }
                 .sink(receiveValue: { [weak self] result in
                     guard let self = self else { return }
-                    self.allScanResults.append(result)
+                    if !self.allScanResults.contains(result) {
+                        self.allScanResults.append(result)
+                    }
             })
             .store(in: &cancelable)
     }

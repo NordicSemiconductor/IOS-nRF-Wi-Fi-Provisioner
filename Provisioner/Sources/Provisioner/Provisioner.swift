@@ -100,7 +100,7 @@ open class Provisioner {
         guard case .success = response.status else {
             throw ProvisionError.unknownDeviceStatus
         }
-        return response.deviceStatus.state.toPublicStatus(withReason: response.deviceStatus.reason)
+        return response.deviceStatus.state.toPublicStatus()
     }
     
     open func startScan() async throws -> AnyPublisher<AccessPoint, Swift.Error> {
@@ -131,6 +131,8 @@ open class Provisioner {
     open func startProvision(accessPoint: AccessPoint, passphrase: String?) async throws -> AnyPublisher<WiFiStatus, Swift.Error> {
         var config = WifiConfig()
         config.wifi = accessPoint.wifiInfo
+        config.volatileMemory = true
+        
         if let passphrase = passphrase {
             config.passphrase = passphrase.data(using: .utf8)!
         }
@@ -142,7 +144,7 @@ open class Provisioner {
                     return nil
                 }
                 self?.logger.debug("Read data: \(try! result.jsonString(), privacy: .public)")
-                return result.state.toPublicStatus()
+                return result.state.toPublicStatus(withReason: result.reason)
             }
             .eraseToAnyPublisher()
 

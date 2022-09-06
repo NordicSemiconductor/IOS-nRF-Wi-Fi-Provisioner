@@ -10,7 +10,7 @@ import NordicStyle
 import Provisioner
 
 struct DeviceView: View {
-    @ObservedObject var viewModel: DeviceViewModel
+    @EnvironmentObject var viewModel: DeviceViewModel
     
     var body: some View {
         VStack {
@@ -94,7 +94,8 @@ struct DeviceView: View {
                 // MARK: Access Points
                 Section("Access Point") {
                     NavigationLink(isActive: $viewModel.showAccessPointList) {
-                        AccessPointList(viewModel: viewModel.accessPointListViewModel)
+                        AccessPointList()
+                            .environmentObject(viewModel.accessPointListViewModel)
                     } label: {
                         HStack {
                             NordicLabel("Access Point", systemImage: "wifi.circle")
@@ -153,7 +154,8 @@ struct StatusIndicatorView: View {
 struct DeviceView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
-            DeviceView(viewModel: MockDeviceViewModel(index: 1))
+            DeviceView()
+                .environmentObject(MockDeviceViewModel(index: 1))
         }
         .setupNavBarBackground()
     }

@@ -79,12 +79,23 @@ struct Result {
   /// Clears the value of `state`. Subsequent reads from it will return its default value.
   mutating func clearState() {self._state = nil}
 
+  /// The failure reason is set when the state is CONNECTION_FAILED.
+  var reason: ConnectionFailureReason {
+    get {return _reason ?? .authError}
+    set {_reason = newValue}
+  }
+  /// Returns true if `reason` has been explicitly set.
+  var hasReason: Bool {return self._reason != nil}
+  /// Clears the value of `reason`. Subsequent reads from it will return its default value.
+  mutating func clearReason() {self._reason = nil}
+
   var unknownFields = SwiftProtobuf.UnknownStorage()
 
   init() {}
 
   fileprivate var _scanRecord: ScanRecord? = nil
   fileprivate var _state: ConnectionState? = nil
+  fileprivate var _reason: ConnectionFailureReason? = nil
 }
 
 #if swift(>=5.5) && canImport(_Concurrency)
@@ -146,6 +157,7 @@ extension Result: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBas
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .standard(proto: "scan_record"),
     2: .same(proto: "state"),
+    3: .same(proto: "reason"),
   ]
 
   public var isInitialized: Bool {
@@ -161,6 +173,7 @@ extension Result: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBas
       switch fieldNumber {
       case 1: try { try decoder.decodeSingularMessageField(value: &self._scanRecord) }()
       case 2: try { try decoder.decodeSingularEnumField(value: &self._state) }()
+      case 3: try { try decoder.decodeSingularEnumField(value: &self._reason) }()
       default: break
       }
     }
@@ -177,12 +190,16 @@ extension Result: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBas
     try { if let v = self._state {
       try visitor.visitSingularEnumField(value: v, fieldNumber: 2)
     } }()
+    try { if let v = self._reason {
+      try visitor.visitSingularEnumField(value: v, fieldNumber: 3)
+    } }()
     try unknownFields.traverse(visitor: &visitor)
   }
 
   static func ==(lhs: Result, rhs: Result) -> Bool {
     if lhs._scanRecord != rhs._scanRecord {return false}
     if lhs._state != rhs._state {return false}
+    if lhs._reason != rhs._reason {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
