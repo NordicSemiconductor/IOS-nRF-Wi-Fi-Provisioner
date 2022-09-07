@@ -128,10 +128,10 @@ open class Provisioner {
         try await sendRequestToDataPoint(opCode: .stopScan)
     }
 
-    open func startProvision(accessPoint: AccessPoint, passphrase: String?) async throws -> AnyPublisher<WiFiStatus, Swift.Error> {
+    open func startProvision(accessPoint: AccessPoint, passphrase: String?, volatileMemory: Bool) async throws -> AnyPublisher<WiFiStatus, Swift.Error> {
         var config = WifiConfig()
         config.wifi = accessPoint.wifiInfo
-        config.volatileMemory = true
+        config.volatileMemory = volatileMemory
         
         if let passphrase = passphrase {
             config.passphrase = passphrase.data(using: .utf8)!

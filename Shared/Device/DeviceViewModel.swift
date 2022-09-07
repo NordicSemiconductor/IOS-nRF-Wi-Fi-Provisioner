@@ -54,6 +54,7 @@ class DeviceViewModel: ObservableObject {
         }
     }
     @Published(initialValue: false) private(set) var passwordRequired: Bool
+    @Published(initialValue: false) var volatileMemory: Bool
     @Published var password: String = "" {
         didSet {
             updateButtonState()
@@ -183,7 +184,7 @@ extension DeviceViewModel {
         inProgress = true
         self.buttonState.isEnabled = false 
         
-        let statePublisher = try await provisioner.startProvision(accessPoint: selectedAccessPoint!, passphrase: password.isEmpty ? nil : password)
+        let statePublisher = try await provisioner.startProvision(accessPoint: selectedAccessPoint!, passphrase: password.isEmpty ? nil : password, volatileMemory: self.volatileMemory)
         DispatchQueue.main.async {
             self.buttonState.isEnabled = false
             self.forceShowProvisionInProgress = true

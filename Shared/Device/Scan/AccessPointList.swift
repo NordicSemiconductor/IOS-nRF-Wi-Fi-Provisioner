@@ -52,9 +52,11 @@ struct AccessPointList: View {
     }
 }
 
+#if DEBUG
 struct AccessPointList_Previews: PreviewProvider {
     static var previews: some View {
         AccessPointList()
             .environmentObject(AccessPointListViewModel(provisioner: MockProvisioner()))
     }
 }
+#endif

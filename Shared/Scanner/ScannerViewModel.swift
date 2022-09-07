@@ -31,7 +31,7 @@ class ScannerViewModel: ObservableObject {
     
     @Published private (set) var state: State = .waiting
     @Published private (set) var scanResults: [ScanResult] = []
-    private var allScanResults: [BluetoothManager.ScanResult] = [] {
+    private var allScanResults = Set<BluetoothManager.ScanResult>([]) {
         didSet {
             scanResults = allScanResults.map {
                 ScannerViewModel.ScanResult(
@@ -69,7 +69,7 @@ class ScannerViewModel: ObservableObject {
                 .sink(receiveValue: { [weak self] result in
                     guard let self = self else { return }
                     if !self.allScanResults.contains(result) {
-                        self.allScanResults.append(result)
+                        self.allScanResults.insert(result)
                     }
             })
             .store(in: &cancelable)

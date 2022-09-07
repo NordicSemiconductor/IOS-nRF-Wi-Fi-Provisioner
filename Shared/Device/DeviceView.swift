@@ -106,26 +106,35 @@ struct DeviceView: View {
                         .disabled(viewModel.inProgress)
                     }
                     .disabled(viewModel.inProgress)
-                    
+
                     if viewModel.passwordRequired {
                         SecureField("Password", text: $viewModel.password)
                             .disabled(viewModel.inProgress)
                     }
-                }
-            }
-            if viewModel.selectedAccessPoint != nil {
-                Spacer()
-                Button(viewModel.buttonState.title) {
-                    Task {
-                        do {
-                            try await viewModel.startProvision()
+
+                    if viewModel.selectedAccessPoint != nil {
+                        HStack {
+                            Text("Volatile Memory")
+                            Spacer()
+                            Toggle("", isOn: $viewModel.volatileMemory)
+                                    .toggleStyle(SwitchToggleStyle(tint: .nordicBlue))
                         }
+                                .disabled(viewModel.inProgress)
                     }
                 }
-                .disabled(!viewModel.buttonState.isEnabled)
-                .buttonStyle(viewModel.buttonState.style)
-                .padding()
             }
+
+            Spacer()
+            Button(viewModel.buttonState.title) {
+                Task {
+                    do {
+                        try await viewModel.startProvision()
+                    }
+                }
+            }
+                    .disabled(!viewModel.buttonState.isEnabled || viewModel.selectedAccessPoint == nil)
+                    .buttonStyle(viewModel.buttonState.style)
+                    .padding()
         }
     }
 }

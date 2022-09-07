@@ -11,13 +11,17 @@ import Foundation
 import os
 
 extension BluetoothManager {
-    struct ScanResult {
+    struct ScanResult: Hashable {
         let peripheral: CBPeripheral
         let rssi: Int
         let advertisementData: [String: Any]
 
         var name: String {
             peripheral.name ?? advertisementData[CBAdvertisementDataLocalNameKey] as? String ?? "n/a"
+        }
+
+        func hash(into hasher: inout Hasher) {
+            hasher.combine(peripheral.identifier)
         }
     }
 }
