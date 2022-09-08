@@ -10,20 +10,36 @@ import Foundation
 import Provisioner
 import SwiftUI
 import CoreBluetoothMock
+import os
 
 extension ScannerViewModel {
     enum State {
         case waiting, scanning, noPermission, turnedOff
     }
 
-    struct ScanResult: Identifiable, Equatable {
+    struct ScanResult: Identifiable, Equatable, Hashable {
         let name: String
         let rssi: Int
         let id: UUID
+        
+        func hash(into hasher: inout Hasher) {
+            hasher.combine(id)
+        }
+        
+        static func == (lhs: Self, rhs: Self) -> Bool {
+            lhs.id == rhs.id
+        }
     }
+    
+    
 }
 
 class ScannerViewModel: ObservableObject {
+    let logger = Logger(
+            subsystem: Bundle(for: ScannerViewModel.self).bundleIdentifier ?? "",
+            category: "scanner.scanner-view-model"
+    )
+    
     // Show start info on first launch
     @AppStorage("dontShowAgain") var dontShowAgain: Bool = false
     @Published var showStartInfo: Bool = false
@@ -40,6 +56,8 @@ class ScannerViewModel: ObservableObject {
                         id: $0.peripheral.identifier
                 )
             }
+            
+            logger.debug("Scan results updated: \(self.scanResults.count)")
         }
     }
 

@@ -284,9 +284,6 @@ extension CentralManager: CBMPeripheralDelegate {
                 continuation.continuation.resume(with: .failure(Error.noValue))
             }
         }
-        
-        let rawString = characteristic.value?.base64EncodedString()
-        logger.info("Raw data: \(rawString!)")
 
         if let c = identifiableContinuation, c.characteristic == characteristic {
             handleData(characteristic, error, c)

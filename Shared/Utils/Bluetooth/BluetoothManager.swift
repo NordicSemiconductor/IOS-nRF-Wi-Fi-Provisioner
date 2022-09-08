@@ -17,12 +17,18 @@ extension BluetoothManager {
         let advertisementData: [String: Any]
 
         var name: String {
-            peripheral.name ?? advertisementData[CBAdvertisementDataLocalNameKey] as? String ?? "n/a"
+            (advertisementData[CBAdvertisementDataLocalNameKey] as? String) ?? peripheral.name ?? "n/a"
         }
 
         func hash(into hasher: inout Hasher) {
             hasher.combine(peripheral.identifier)
         }
+    }
+}
+
+extension BluetoothManager.ScanResult: Equatable {
+    static func == (lhs: Self, rhs: Self) -> Bool {
+        lhs.peripheral.identifier == rhs.peripheral.identifier
     }
 }
 
@@ -80,12 +86,6 @@ extension BluetoothManager: CBCentralManagerDelegate {
 extension BluetoothManager.ScanResult: CustomDebugStringConvertible {
     var debugDescription: String {
         "ScanResult(peripheral: \(peripheral.identifier.uuidString), rssi: \(rssi), advertisementData: \(advertisementData))"
-    }
-}
-
-extension BluetoothManager.ScanResult: Equatable {
-    static func == (lhs: BluetoothManager.ScanResult, rhs: BluetoothManager.ScanResult) -> Bool {
-        lhs.peripheral.identifier == rhs.peripheral.identifier && lhs.rssi == rhs.rssi
     }
 }
 
