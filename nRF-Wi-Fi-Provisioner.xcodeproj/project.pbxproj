@@ -171,6 +171,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0112A03128C9FB2C008D72D9 /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "Recovered References";
+			sourceTree = "<group>";
+		};
 		011A2611287CAF780004A5C4 /* Bluetooth */ = {
 			isa = PBXGroup;
 			children = (
@@ -190,6 +197,7 @@
 				01481AB52852093000925FAB /* Tests macOS */,
 				01481A9A2852093000925FAB /* Products */,
 				019A5D91286C8F30002D03F0 /* Frameworks */,
+				0112A03128C9FB2C008D72D9 /* Recovered References */,
 			);
 			sourceTree = "<group>";
 		};
@@ -485,6 +493,7 @@
 			);
 			mainGroup = 01481A8C2852092F00925FAB;
 			packageReferences = (
+				0144816028A4616F00907C3F /* XCRemoteSwiftPackageReference "AsyncBluetooth" */,
 			);
 			productRefGroup = 01481A9A2852093000925FAB /* Products */;
 			projectDirPath = "";
@@ -1014,6 +1023,17 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		0144816028A4616F00907C3F /* XCRemoteSwiftPackageReference "AsyncBluetooth" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/manolofdez/AsyncBluetooth.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
 		01A0C288288853EB000AA135 /* NordicStyle */ = {
