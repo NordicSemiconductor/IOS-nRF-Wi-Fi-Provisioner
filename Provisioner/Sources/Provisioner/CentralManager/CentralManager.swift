@@ -7,13 +7,6 @@ import CoreBluetoothMock
 import Combine
 import os
 
-extension CentralManager {
-    enum Error: Swift.Error {
-        case peripheralNotFound
-        case timeout
-        case noValue
-    }
-}
 
 private struct Service {
     static let wifi = CBMUUID(string: "14387800-130c-49e7-b877-2881c89cb258")
@@ -22,6 +15,32 @@ private struct Service {
         static let version = CBMUUID(string: "14387801-130c-49e7-b877-2881c89cb258")
         static let controlPoint = CBMUUID(string: "14387802-130c-49e7-b877-2881c89cb258")
         static let dataOut = CBMUUID(string: "14387803-130c-49e7-b877-2881c89cb258")
+    }
+}
+
+private struct WifiDevice {
+    var peripheral: CBPeripheral
+    var wifi: CBService!
+    var version: CBCharacteristic!
+    var controlPoint: CBCharacteristic!
+    var dataOut: CBCharacteristic!
+
+    func valid() throws -> Bool {
+        if wifi != nil && version != nil && controlPoint != nil && dataOut != nil {
+            return true
+        } else {
+            if wifi == nil {
+                throw BluetoothConnectionError.wifiServiceNotFound
+            } else if version == nil {
+                throw BluetoothConnectionError.versionCharacteristicNotFound
+            } else if controlPoint == nil {
+                throw BluetoothConnectionError.controlCharacteristicPointNotFound
+            } else if dataOut == nil {
+                throw BluetoothConnectionError.dataOutCharacteristicNotFound
+            } else {
+                throw BluetoothConnectionError.unknownError
+            }
+        }
     }
 }
 
@@ -42,6 +61,14 @@ private struct CharacteristicValueContinuation: Identifiable, Hashable {
     let characteristic: CBMCharacteristic
 }
 
+extension CentralManager {
+    enum Error: Swift.Error {
+        case peripheralNotFound
+        case timeout
+        case noValue
+    }
+}
+
 class CentralManager {
     enum Characteristic {
         case version
@@ -55,47 +82,71 @@ class CentralManager {
             category: "provisioner-central-manager"
     )
 
-    private var connectedPeripheral: CBMPeripheral?
-    private var connectionContinuation: CheckedContinuation<CBMPeripheral, Swift.Error>?
-
-    private var wifiService: CBMService!
-    private var versionCharacteristic: CBMCharacteristic!
-    private var controlPointCharacteristic: CBMCharacteristic!
-    private var dataOutCharacteristic: CBMCharacteristic!
+    // State of the connection
+    let connectionStateSubject = PassthroughSubject<Provisioner.BluetoothConnectionStatus, Never>()
 
     private var readValueContinuation: CharacteristicValueContinuation?
     private var identifiableContinuation: CharacteristicValueContinuation?
+
+    private var connectionExecutor = AsyncExecutor<WifiDevice>()
+
     private var valueStreams = PassthroughSubject<Data, Swift.Error>()
+    var dataOutStream: AnyPublisher<Data, Swift.Error> {
+        valueStreams.eraseToAnyPublisher()  
+    }
+    private var connectedDevice: WifiDevice!
 
     init(centralManager: CBMCentralManager = CBMCentralManagerFactory.instance()) {
         self.centralManager = centralManager
         centralManager.delegate = self
+        connectionStateSubject.send(.disconnected)
     }
 }
 
 extension CentralManager {
-    func connectPeripheral(_ identifier: UUID) async throws -> CBMPeripheral {
-        try await withCheckedThrowingContinuation { [weak self] continuation in
-            guard let peripheral = self?.centralManager.retrievePeripherals(withIdentifiers: [identifier]).first else {
-                continuation.resume(throwing: CentralManager.Error.peripheralNotFound)
-                self?.logger.error("Peripheral not found")
-                return
-            }
-
-            self?.connectionContinuation = continuation
-            self?.centralManager.connect(peripheral)
-            self?.logger.log("Connecting to peripheral \(identifier)")
+    func connectPeripheral(_ identifier: UUID) async throws -> CBPeripheral {
+        connectionStateSubject.send(.connecting)
+        guard let peripheral = centralManager.retrievePeripherals(withIdentifiers: [identifier]).first else {
+            connectionStateSubject.send(.connectionCanceled(.error(Error.peripheralNotFound)))
+            throw BluetoothConnectionError.canNotConnect
         }
+
+        centralManager.connect(peripheral, options: nil)
+
+        do {
+            self.connectedDevice = try await withTimeout(seconds: 20) {
+                try await self.connectionExecutor.execute()
+            }
+        } catch let e {
+            connectionStateSubject.send(.connectionCanceled(.error(TimeoutError())))
+            throw e
+        }
+
+        connectionExecutor.reset()
+
+        connectedDevice.peripheral.delegate = self
+        connectedDevice.peripheral.discoverServices([Service.wifi])
+
+        do {
+            self.connectedDevice = try await withTimeout(seconds: 30) {
+                try await self.connectionExecutor.execute()
+            }
+        } catch let e {
+            connectionStateSubject.send(.connectionCanceled(.error(TimeoutError())))
+            throw e
+        }
+
+        connectionStateSubject.send(.connected)
+
+        return connectedDevice.peripheral
     }
 
     /// Reads the value of the characteristic.
     func readValue(for characteristic: Characteristic) async throws -> Data {
         let cbmCharacteristic = cbmCharacteristic(for: characteristic)
-        guard let peripheral = connectedPeripheral else {
-            throw CentralManager.Error.peripheralNotFound
-        }
+        let peripheral = connectedDevice.peripheral
 
-        return try await withTimeout(seconds: 5) { () -> Data in
+        return try await withTimeout(seconds: 30) { () -> Data in
             try await withCheckedThrowingContinuation { [weak self] continuation in
                 self?.readValueContinuation = CharacteristicValueContinuation(continuation: continuation, characteristic: cbmCharacteristic)
                 peripheral.readValue(for: cbmCharacteristic)
@@ -106,9 +157,7 @@ extension CentralManager {
     /// Writes data to the characteristic and waits for the response.
     func writeValue(_ data: Data, for characteristic: Characteristic) async throws -> Data {
         let cbmCharacteristic = cbmCharacteristic(for: characteristic)
-        guard let peripheral = connectedPeripheral else {
-            throw CentralManager.Error.peripheralNotFound
-        }
+        let peripheral = connectedDevice.peripheral
 
         do {
             return try await withTimeout(seconds: 5) { () -> Data in
@@ -122,24 +171,19 @@ extension CentralManager {
             throw e
         }
     }
-
-    func notifications(for characteristic: Characteristic) -> AnyPublisher<Data, Swift.Error> {
-        return valueStreams
-                .eraseToAnyPublisher()
-    }
 }
 
 // MARK: - Private methods
 extension CentralManager {
     // Convert Characteristic to CBMCharacteristic
-    private func cbmCharacteristic(for characteristic: Characteristic) -> CBMCharacteristic {
+    private func cbmCharacteristic(for characteristic: Characteristic) -> CBCharacteristic {
         switch characteristic {
         case .version:
-            return versionCharacteristic
+            return connectedDevice.version
         case .controlPoint:
-            return controlPointCharacteristic
+            return connectedDevice.controlPoint
         case .dataOut:
-            return dataOutCharacteristic
+            return connectedDevice.dataOut
         }
     }
 }
@@ -147,28 +191,27 @@ extension CentralManager {
 // MARK: - CBMPeripheralDelegate
 extension CentralManager: CBMCentralManagerDelegate {
     func centralManagerDidUpdateState(_ central: CBMCentralManager) {
-        print("centralManagerDidUpdateState")
+        logger.debug("Central manager did update state: \(central.state)")
     }
 
     func centralManager(_ central: CBMCentralManager, didConnect peripheral: CBMPeripheral) {
         logger.debug("didConnect peripheral \(peripheral.identifier.uuidString)")
-        connectedPeripheral = peripheral
-        peripheral.delegate = self
-        // Discover wifi service
-        peripheral.discoverServices([Service.wifi])
+        connectionExecutor.complete(with: WifiDevice(peripheral: peripheral))
     }
 
     func centralManager(_ central: CBMCentralManager, didDisconnectPeripheral peripheral: CBMPeripheral, error: Swift.Error?) {
         if let e = error {
             logger.error("didDisconnectPeripheral peripheral \(peripheral.identifier.uuidString) error: \(e.localizedDescription)")
+            connectionStateSubject.send(.connectionCanceled(.error(e)))
         } else {
             logger.debug("didDisconnectPeripheral peripheral \(peripheral.identifier.uuidString)")
+            connectionStateSubject.send(.connectionCanceled(.byRequest))
         }
     }
 
     func centralManager(_ central: CBMCentralManager, didFailToConnect peripheral: CBMPeripheral, error: Swift.Error?) {
         logger.error("didFailToConnect peripheral \(peripheral.identifier.uuidString) error: \(error?.localizedDescription ?? "")")
-        connectionContinuation?.resume(with: .failure(error ?? CentralManager.Error.peripheralNotFound))
+        connectionExecutor.complete(with: error ?? BluetoothConnectionError.unknownError)
     }
 }
 
@@ -177,26 +220,26 @@ extension CentralManager: CBMPeripheralDelegate {
     func peripheral(_ peripheral: CBMPeripheral, didDiscoverServices error: Swift.Error?) {
         if let e = error {
             logger.error("didDiscoverServices error: \(e.localizedDescription)")
-            connectionContinuation?.resume(throwing: e)
+            connectionExecutor.complete(with: e)
         } else {
             logger.debug("didDiscoverServices")
             guard let service = peripheral.services?.first(where: { $0.uuid == Service.wifi }) else {
                 return
             }
-            wifiService = service
+            connectedDevice.wifi = service
             // Discover wifi characteristics
             peripheral.discoverCharacteristics([
                 Service.Characteristic.version,
                 Service.Characteristic.controlPoint,
                 Service.Characteristic.dataOut
-            ], for: peripheral.services!.first { $0.uuid == Service.wifi }!)
+            ], for: service)
         }
     }
 
     func peripheral(_ peripheral: CBMPeripheral, didDiscoverCharacteristicsFor service: CBMService, error: Swift.Error?) {
         if let e = error {
             logger.error("didDiscoverCharacteristicsFor error: \(e.localizedDescription)")
-            connectionContinuation?.resume(throwing: e)
+            connectionExecutor.complete(with: e)
         }
         guard let characteristics = service.characteristics else {
             return
@@ -206,22 +249,23 @@ extension CentralManager: CBMPeripheralDelegate {
             switch ch.uuid {
             case Service.Characteristic.version:
                 logger.debug("found version characteristic")
-                versionCharacteristic = ch
+                connectedDevice.version = ch
+                peripheral.setNotifyValue(true, for: ch)
             case Service.Characteristic.controlPoint:
                 logger.debug("found controlPoint characteristic")
-                controlPointCharacteristic = ch
-                peripheral.setNotifyValue(true, for: controlPointCharacteristic)
+                connectedDevice.controlPoint = ch
+                peripheral.setNotifyValue(true, for: ch)
             case Service.Characteristic.dataOut:
                 logger.debug("found dataOut characteristic")
-                dataOutCharacteristic = ch
-                peripheral.setNotifyValue(true, for: dataOutCharacteristic)
+                connectedDevice.dataOut = ch
+                peripheral.setNotifyValue(true, for: ch)
             default:
                 break
             }
         }
 
-        if versionCharacteristic != nil && controlPointCharacteristic != nil && dataOutCharacteristic != nil {
-            connectionContinuation?.resume(with: .success(peripheral))
+        if (try? connectedDevice.valid()) == true {
+            connectionExecutor.complete(with: connectedDevice)
         }
     }
 

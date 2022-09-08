@@ -95,3 +95,5 @@ iOSInjectionProject/
 .vscode/
 
 fastlane/.env 
+Gemfile.lock
+*.mobileprovision

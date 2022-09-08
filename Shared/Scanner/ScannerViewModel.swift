@@ -5,99 +5,114 @@
 //  Created by Nick Kibysh on 12/07/2022.
 //
 
-import AsyncBluetooth
+import Combine
 import Foundation
 import Provisioner
 import SwiftUI
+import CoreBluetoothMock
+import os
 
-class ScannerViewModel: ObservableObject {
+extension ScannerViewModel {
     enum State {
         case waiting, scanning, noPermission, turnedOff
     }
 
+    struct ScanResult: Identifiable, Equatable, Hashable {
+        let name: String
+        let rssi: Int
+        let id: UUID
+        
+        func hash(into hasher: inout Hasher) {
+            hasher.combine(id)
+        }
+        
+        static func == (lhs: Self, rhs: Self) -> Bool {
+            lhs.id == rhs.id
+        }
+    }
+    
+    
+}
+
+class ScannerViewModel: ObservableObject {
+    let logger = Logger(
+            subsystem: Bundle(for: ScannerViewModel.self).bundleIdentifier ?? "",
+            category: "scanner.scanner-view-model"
+    )
+    
     // Show start info on first launch
     @AppStorage("dontShowAgain") var dontShowAgain: Bool = false
     @Published var showStartInfo: Bool = false
+    @Published var onlyUnprovisioned: Bool = false
     
     @Published private (set) var state: State = .waiting
     @Published private (set) var scanResults: [ScanResult] = []
-    private var allScanResults: [ScanData] = []
-    
-    @Published var uuidFilter = true {
+    private var allScanResults = Set<BluetoothManager.ScanResult>([]) {
         didSet {
-            reset()
-        }
-    }
-    @Published var nearbyFilter = false {
-        didSet {
-            reset()
-        }
-    }
-    @Published var nameFilter = true {
-        didSet {
-            reset()
-        }
-    }
-    
-    private let scanner: CentralManager
-    
-    init(scanner: CentralManager = CentralManager()) {
-        self.scanner = scanner
-        showStartInfo = !dontShowAgain
-    }
-    
-    func startScan() {
-        Task {
-            do {
-                try await scanner.waitUntilReady()
-                
-                let scanResultStream = try await scanner.scanForPeripherals(withServices: nil)
-                
-                DispatchQueue.main.async { [weak self] in
-                    self?.state = .scanning
-                }
-                
-                for try await scanResult in scanResultStream {
-                    self.allScanResults.appendIfNotContains(scanResult)
-                    
-                    DispatchQueue.main.async {
-                        self.scanResults = self.allScanResults.filter { sr in
-                            if self.nameFilter && sr.peripheral.name?.isEmpty != false {
-                                return false
-                            }
-                            
-                            if self.nearbyFilter && !BluetoothRSSI(level: sr.rssi.intValue).isNearby {
-                                return false
-                            }
-                            
-                            if self.uuidFilter && !sr.containsService(Provisioner.Service.wifi) {
-                                return false
-                            }
-                            
-                            return true
-                        }
-                        .map {
-                            ScanResult(name: $0.peripheral.name ?? "n/a", id: $0.peripheral.identifier, rssi: $0.rssi.intValue)
-                        }
-                    }
-                }
-            } catch let e {
-                print(e.localizedDescription)
+            scanResults = allScanResults.map {
+                ScannerViewModel.ScanResult(
+                        name: $0.name,
+                        rssi: $0.rssi,
+                        id: $0.peripheral.identifier
+                )
             }
             
+            logger.debug("Scan results updated: \(self.scanResults.count)")
         }
+    }
+
+    private let bluetoothManager: BluetoothManager
+
+    private var cancelable: Set<AnyCancellable> = []
+    
+    init(bluetoothManager: BluetoothManager = BluetoothManager()) {
+        self.bluetoothManager = bluetoothManager
+        showStartInfo = !dontShowAgain
+
+        bluetoothManager.statePublisher
+            .receive(on: DispatchQueue.main)
+            .mapError { _ in fatalError() }
+            .sink(receiveValue: { [weak self] state in
+                guard let self = self else { return }
+                self.state = State(from: state)
+            })
+            .store(in: &cancelable)
+
+    }
+
+    func startScan() {
+        bluetoothManager.peripheralPublisher
+            .receive(on: DispatchQueue.main)
+            .mapError { _ in fatalError() }
+                .sink(receiveValue: { [weak self] result in
+                    guard let self = self else { return }
+                    if !self.allScanResults.contains(result) {
+                        self.allScanResults.insert(result)
+                    }
+            })
+            .store(in: &cancelable)
     }
     
     private func reset() {
-        Task {
-            DispatchQueue.main.async { [weak self] in
-                self?.state = .waiting
-            }
-            await scanner.stopScan()
-            DispatchQueue.main.async { [weak self] in
-                self?.scanResults.removeAll()
-            }
-            startScan()
+        // TODO: reset scan results when filter is applied
+    }
+}
+
+extension ScannerViewModel.State {
+    init(from bluetoothState: CBManagerState) {
+        switch bluetoothState {
+        case .poweredOn:
+            self = .scanning
+        case .poweredOff:
+            self = .turnedOff
+        case .unauthorized:
+            self = .noPermission
+        case .unsupported:
+            self = .noPermission
+        case .unknown:
+            self = .waiting
+        case .resetting:
+            self = .waiting
         }
     }
 }

@@ -10,7 +10,7 @@ import NordicStyle
 import Provisioner
 
 struct DeviceView: View {
-    @ObservedObject var viewModel: DeviceViewModel
+    @EnvironmentObject var viewModel: DeviceViewModel
     
     var body: some View {
         VStack {
@@ -21,9 +21,19 @@ struct DeviceView: View {
                     image: "bluetooth"
                 )
             case .failed(let e):
-                Placeholder(text: e.message, image: "bluetooth_disabled")
+                Placeholder(text: e.message, image: "bluetooth_disabled", action: {
+                    Button("Reconnect") {
+                        Task {
+                            try await self.viewModel.connect()
+                        }
+                    }
+                    .buttonStyle(NordicButtonStyle())
+                })
+                .padding()
             case .connected:
                 deviceInfo
+            case .disconnected:
+                Placeholder(text: "Disconnected", image: "bluetooth_disabled")
             }
         }
         .navigationTitle("Device Info")
@@ -35,24 +45,23 @@ struct DeviceView: View {
                 }
             }
         }
-        .alert(viewModel.connectionError?.title ?? "", isPresented: $viewModel.showErrorAlert) {
-            Button("OK", role: .cancel) { }
-        }
     }
     
     @ViewBuilder
     var deviceInfo: some View {
         VStack {
             Form {
+                // MARK: Device Name
                 Section("Device") {
                     HStack {
                         NordicLabel("Device Name", image: "bluetooth")
-                            
+                        
                         Spacer()
                         Text(viewModel.deviceName).foregroundColor(.secondary)
                     }
                 }
                 
+                // MARK: Device Info
                 Section("Device Status") {
                     HStack {
                         NordicLabel("Version", systemImage: "wrench.and.screwdriver")
@@ -60,68 +69,92 @@ struct DeviceView: View {
                         Text(viewModel.version).foregroundColor(.secondary)
                     }
                     
-                    HStack {
-                        NordicLabel("Wi-Fi Status", systemImage: "wifi")
-                            .tint(.nordicBlue)
-                        Spacer()
-                        ReversedLabel {
-                            Text(viewModel.wifiState?.description ?? "Unprovisioned")
-                        } image: {
-                            StatusIndicatorView(status: viewModel.wifiState)
+                    VStack {
+                        HStack {
+                            NordicLabel("Wi-Fi Status", systemImage: "wifi")
+                                .tint(.nordicBlue)
+                            Spacer()
+                            ReversedLabel {
+                                Text(viewModel.wifiState?.description ?? "Unprovisioned")
+                            } image: {
+                                StatusIndicatorView(status: viewModel.wifiState, forceProgress: viewModel.forceShowProvisionInProgress)
+                            }
+                            .status(viewModel.wifiState ?? .disconnected)
                         }
-                        .status(viewModel.wifiState ?? .disconnected)
+                        if let e = viewModel.provisioningError {
+                            HStack {
+                                Text(e.message)
+                                    .foregroundColor(.red)
+                                Spacer()
+                            }
+                        }
                     }
                 }
                 
+                // MARK: Access Points
                 Section("Access Point") {
-                    NavigationLink {
-                        AccessPointList(viewModel: viewModel)
+                    NavigationLink(isActive: $viewModel.showAccessPointList) {
+                        AccessPointList()
+                            .environmentObject(viewModel.accessPointListViewModel)
                     } label: {
                         HStack {
                             NordicLabel("Access Point", systemImage: "wifi.circle")
                             Spacer()
                             Text(viewModel.selectedAccessPoint?.ssid ?? "Not Selected")
-                                    .foregroundColor(.secondary)
+                                .foregroundColor(.secondary)
                         }
-                        .disabled(viewModel.wifiState?.isInProgress ?? false)
+                        .disabled(viewModel.inProgress)
                     }
-                    .disabled(viewModel.wifiState?.isInProgress ?? false)
+                    .disabled(viewModel.inProgress)
 
                     if viewModel.passwordRequired {
                         SecureField("Password", text: $viewModel.password)
+                            .disabled(viewModel.inProgress)
                     }
-                }
-            }
-            if viewModel.selectedAccessPoint != nil {
-                Spacer()
-                Button(viewModel.buttonState.title) {
-                    Task {
-                        do {
-                            try await viewModel.startProvision()
+
+                    if viewModel.selectedAccessPoint != nil {
+                        HStack {
+                            Text("Volatile Memory")
+                            Spacer()
+                            Toggle("", isOn: $viewModel.volatileMemory)
+                                    .toggleStyle(SwitchToggleStyle(tint: .nordicBlue))
                         }
+                                .disabled(viewModel.inProgress)
                     }
                 }
-                .disabled(!viewModel.buttonState.isEnabled)
-                .buttonStyle(viewModel.buttonState.style)
-                .padding()
             }
+
+            Spacer()
+            Button(viewModel.buttonState.title) {
+                Task {
+                    do {
+                        try await viewModel.startProvision()
+                    }
+                }
+            }
+                    .disabled(!viewModel.buttonState.isEnabled || viewModel.selectedAccessPoint == nil)
+                    .buttonStyle(viewModel.buttonState.style)
+                    .padding()
         }
     }
 }
 
 struct StatusIndicatorView: View {
     let status: Provisioner.WiFiStatus?
+    var forceProgress: Bool = false
     
     var body: some View {
-        switch status {
-        case .connected?:
-            Image(systemName: "checkmark")
-        case .connectionFailed(_)?:
-            Image(systemName: "info.circle")
-        case .association?, .authentication?, .obtainingIp?:
+        switch (status, forceProgress) {
+        case (_, true):
             ProgressView()
-        default:
-            Image("")
+        case (.connected?, _):
+            Image(systemName: "checkmark")
+        case (.association?, false): ProgressView()
+        case (.authentication?, false):  ProgressView()
+        case (.obtainingIp?, false):  ProgressView()
+        case (.connectionFailed(_)?, _):
+            Image(systemName: "info.circle")
+        default: Text("")
         }
     }
 }
@@ -130,7 +163,8 @@ struct StatusIndicatorView: View {
 struct DeviceView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
-            DeviceView(viewModel: MockDeviceViewModel(index: 1))
+            DeviceView()
+                .environmentObject(MockDeviceViewModel(index: 1))
         }
         .setupNavBarBackground()
     }
