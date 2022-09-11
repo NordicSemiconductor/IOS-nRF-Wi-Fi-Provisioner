@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  RGBAColorData.swift
 //  
 //
 //  Created by Nick Kibysh on 28/06/2022.
@@ -52,7 +52,7 @@ struct RGB {
     }
     
     init(r: Int, g: Int, b: Int, a: Double = 1) {
-        let f: (Int) -> (Double) = {
+        let f: (Int) -> Double = {
             Double($0) / 255.0
         }
         

@@ -20,8 +20,6 @@ extension CBManagerState: CustomStringConvertible {
             return "Powered Off"
         case .poweredOn:
             return "Powered On"
-        @unknown default:
-            return "Unknown"
         }
     }
 }

@@ -84,6 +84,7 @@ class CentralManager {
 
     // State of the connection
     let connectionStateSubject = PassthroughSubject<Provisioner.BluetoothConnectionStatus, Never>()
+    let centralManagerStateSubject = PassthroughSubject<CBManagerState, Never>()
 
     private var readValueContinuation: CharacteristicValueContinuation?
     private var identifiableContinuation: CharacteristicValueContinuation?
@@ -95,6 +96,7 @@ class CentralManager {
         valueStreams.eraseToAnyPublisher()  
     }
     private var connectedDevice: WifiDevice!
+    private var cancellables = Set<AnyCancellable>()
 
     init(centralManager: CBMCentralManager = CBMCentralManagerFactory.instance()) {
         self.centralManager = centralManager
@@ -106,6 +108,9 @@ class CentralManager {
 extension CentralManager {
     func connectPeripheral(_ identifier: UUID) async throws -> CBPeripheral {
         connectionStateSubject.send(.connecting)
+
+        try await waitUntilReady()
+
         guard let peripheral = centralManager.retrievePeripherals(withIdentifiers: [identifier]).first else {
             connectionStateSubject.send(.connectionCanceled(.error(Error.peripheralNotFound)))
             throw BluetoothConnectionError.canNotConnect
@@ -186,12 +191,23 @@ extension CentralManager {
             return connectedDevice.dataOut
         }
     }
+
+    private func waitUntilReady() async throws {
+        try await withTimeout(seconds: 10) {
+            _ = try await self.centralManagerStateSubject
+                    .filter { $0 == .poweredOn }
+                    .first()
+                    .eraseToAnyPublisher()
+                    .asyncThrowing()
+        }
+    }
 }
 
 // MARK: - CBMPeripheralDelegate
 extension CentralManager: CBMCentralManagerDelegate {
     func centralManagerDidUpdateState(_ central: CBMCentralManager) {
         logger.debug("Central manager did update state: \(central.state)")
+        centralManagerStateSubject.send(central.state)
     }
 
     func centralManager(_ central: CBMCentralManager, didConnect peripheral: CBMPeripheral) {

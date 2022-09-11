@@ -137,6 +137,10 @@ open class Provisioner {
             config.passphrase = passphrase.data(using: .utf8)!
         }
 
+        struct InternalError: Swift.Error {
+            let status: WiFiStatus
+        }
+
         // WiFiStatus publisher
         let statusPublisher = centralManager.dataOutStream
             .compactMap { [weak self] data -> WiFiStatus? in
@@ -146,7 +150,24 @@ open class Provisioner {
                 self?.logger.debug("Read data: \(try! result.jsonString(), privacy: .public)")
                 return result.state.toPublicStatus(withReason: result.reason)
             }
-            .eraseToAnyPublisher()
+                .timeout(.seconds(60), scheduler: DispatchQueue.main) { TimeoutError() }
+                .replaceError(with: .connectionFailed(.timeout))
+                .tryPrefix { status in
+                    switch status {
+                    case .connected, .connectionFailed:
+                        throw InternalError(status: status)
+                    default:
+                        return true
+                    }
+                }
+                .tryCatch { error -> AnyPublisher<WiFiStatus, Never> in
+                    if let e = error as? InternalError {
+                        return Just(e.status).eraseToAnyPublisher()
+                    } else {
+                        throw error
+                    }
+                }
+                .eraseToAnyPublisher()
 
         // Send request
         let response = try await sendRequestToDataPoint(opCode: .setConfig, config: config)

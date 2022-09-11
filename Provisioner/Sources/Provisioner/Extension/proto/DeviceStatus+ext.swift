@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  DeviceStates+Ext.swift
 //  
 //
 //  Created by Nick Kibysh on 25/07/2022.
