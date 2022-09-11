@@ -21,6 +21,7 @@ extension ScannerViewModel {
         let name: String
         let rssi: Int
         let id: UUID
+        let previsioned: Bool?
         
         func hash(into hasher: inout Hasher) {
             hasher.combine(id)
@@ -43,21 +44,17 @@ class ScannerViewModel: ObservableObject {
     // Show start info on first launch
     @AppStorage("dontShowAgain") var dontShowAgain: Bool = false
     @Published var showStartInfo: Bool = false
-    @Published var onlyUnprovisioned: Bool = false
+    @Published var onlyUnprovisioned: Bool = false {
+        didSet {
+            reset()
+        }
+    }
     
     @Published private (set) var state: State = .waiting
     @Published private (set) var scanResults: [ScanResult] = []
     private var allScanResults = Set<BluetoothManager.ScanResult>([]) {
         didSet {
-            scanResults = allScanResults.map {
-                ScannerViewModel.ScanResult(
-                        name: $0.name,
-                        rssi: $0.rssi,
-                        id: $0.peripheral.identifier
-                )
-            }
-            
-            logger.debug("Scan results updated: \(self.scanResults.count)")
+            reset()
         }
     }
 
@@ -94,7 +91,16 @@ class ScannerViewModel: ObservableObject {
     }
     
     private func reset() {
-        // TODO: reset scan results when filter is applied
+        scanResults = allScanResults.filter {
+                onlyUnprovisioned ? $0.previsioned != true : true
+            }.map {
+                ScannerViewModel.ScanResult(
+                    name: $0.name,
+                    rssi: $0.rssi,
+                    id: $0.peripheral.identifier,
+                    previsioned: $0.previsioned
+                )
+            }
     }
 }
 

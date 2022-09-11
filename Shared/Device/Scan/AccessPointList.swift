@@ -10,53 +10,78 @@ import NordicStyle
 import Provisioner
 
 struct AccessPointList: View {
-//    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-    @EnvironmentObject var viewModel: AccessPointListViewModel
+    @StateObject var viewModel: AccessPointListViewModel
     
     var body: some View {
-        List {
-            ForEach(viewModel.accessPoints) { ap in
-                Picker(selection: $viewModel.selectedAccessPoint, content: {
-                    ForEach(viewModel.allChannels(for: ap)) { accessPoint in
-                        Label {
-                            Text("Channel: \(accessPoint.channel)")
-                        } icon: {
-                            RSSIView<WiFiRSSI>(rssi: WiFiRSSI(level: accessPoint.rssi))
-                                .frame(maxWidth: 30, maxHeight: 20)
-                        }
-                        .tag(Optional(accessPoint))
-                    }
-                    .navigationBarTitle("Select Channel")
-                }, label: {
-                    HStack {
-                        Label(ap.ssid, systemImage: ap.isOpen ? "lock.open" : "lock")
-                            .tint(Color.accentColor)
-                        Spacer()
-                        RSSIView<WiFiRSSI>(rssi: WiFiRSSI(level: ap.rssi))
-                            .frame(maxWidth: 30, maxHeight: 20)
-                    }
-                })
-                .navigationBarTitle("Select Access Point")
+        VStack {
+            if viewModel.accessPoints.isEmpty {
+                Placeholder(text: "Scanning", message: "Scannig for wi-fi", systemImage: "wifi")
+            } else {
+                list()
             }
         }
         .navigationTitle("Wi-Fi")
-                .onAppear {
-                    Task {
-                        await viewModel.startScan()
+        .onAppear {
+            Task {
+                await viewModel.startScan()
+            }
+        }
+        .onDisappear {
+            Task {
+                try await viewModel.stopScan()
+            }
+        }
+        .toolbar {
+            ProgressView()
+                .isHidden(!viewModel.isScanning, remove: true)
+        }
+    }
+    
+    @ViewBuilder
+    private func list() -> some View {
+        List {
+            Section {
+                ForEach(viewModel.accessPoints) {
+                    channelPicker(accessPoint: $0)
+                }
+            } header: {
+                Text("Access Points")
+            }
+        }
+    }
+    
+    @ViewBuilder
+    private func channelPicker(accessPoint: AccessPoint) -> some View {
+        Picker(selection: $viewModel.selectedAccessPoint, content: {
+            Section {
+                ForEach(viewModel.allChannels(for: accessPoint)) { ap in
+                    Label {
+                        Text("Channel: \(ap.channel)")
+                    } icon: {
+                        RSSIView<WiFiRSSI>(rssi: WiFiRSSI(level: ap.rssi))
+                            .frame(maxWidth: 30, maxHeight: 20)
                     }
+                    .tag(Optional(ap))
                 }
-                .toolbar {
-                    ProgressView()
-                        .isHidden(!viewModel.isScanning, remove: true)
-                }
+            }
+            .navigationBarTitle("Select Channel")
+        }, label: {
+            HStack {
+                Label(accessPoint.ssid, systemImage: accessPoint.isOpen ? "lock.open" : "lock")
+                    .tint(Color.accentColor)
+                Spacer()
+                RSSIView<WiFiRSSI>(rssi: WiFiRSSI(level: accessPoint.rssi))
+                    .frame(maxWidth: 30, maxHeight: 20)
+            }
+        })
+        .navigationBarTitle("Select Access Point")
     }
 }
 
 #if DEBUG
 struct AccessPointList_Previews: PreviewProvider {
     static var previews: some View {
-        AccessPointList()
-            .environmentObject(AccessPointListViewModel(provisioner: MockProvisioner()))
+        AccessPointList(viewModel: AccessPointListViewModel(provisioner: MockProvisioner(), accessPointSelection: MockDeviceViewModel(index: 1)))
     }
 }
 #endif

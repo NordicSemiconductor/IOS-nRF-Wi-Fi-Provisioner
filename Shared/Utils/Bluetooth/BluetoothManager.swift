@@ -9,6 +9,7 @@ import Combine
 import CoreBluetoothMock
 import Foundation
 import os
+import Provisioner
 
 extension BluetoothManager {
     struct ScanResult: Hashable {
@@ -22,6 +23,34 @@ extension BluetoothManager {
 
         func hash(into hasher: inout Hasher) {
             hasher.combine(peripheral.identifier)
+        }
+        
+        var previsioned: Bool? {
+            serviceByteArray.map { $0[1] & 1 == 1 }
+        }
+        
+        var connected: Bool? {
+            serviceByteArray.map { $0[1] & 2 == 2 }
+        }
+        
+        var version: Int? {
+            serviceByteArray.flatMap { Int($0[0]) }
+        }
+        
+        var wifiRssi: Int? {
+            serviceByteArray.flatMap { Int($0[3]) }
+        }
+        
+        private var serviceData: Data? {
+            advertisementData[CBAdvertisementDataServiceDataKey]
+                .flatMap { $0 as? [CBUUID : Data] }
+                .flatMap { $0[CBUUID(string: "14387800-130c-49e7-b877-2881c89cb258")] }
+        }
+        
+        private var serviceByteArray: [UInt8]? {
+            serviceData
+                .flatMap { String(data: Data($0), encoding: .utf8) }
+                .map { $0.utf8.map{UInt8($0)} }
         }
     }
 }
@@ -79,6 +108,10 @@ extension BluetoothManager: CBCentralManagerDelegate {
                 advertisementData: advertisementData
         )
         peripheralSubject.send(scanResult)
+        
+        let mData = advertisementData["kCBAdvDataServiceData"]
+        logger.debug("mdata: \(mData.debugDescription)")
+        
         logger.debug("didDiscover peripheral: \(scanResult.debugDescription)")
     }
 }
@@ -103,8 +136,6 @@ extension CBManagerState: CustomDebugStringConvertible {
         case .unsupported:
             return "unsupported"
         case .unknown:
-            return "unknown"
-        @unknown default:
             return "unknown"
         }
     }

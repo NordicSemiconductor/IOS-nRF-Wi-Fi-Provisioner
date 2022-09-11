@@ -10,8 +10,7 @@ import SwiftUI
 import CoreBluetoothMock
 
 struct ScannerView: View {
-	@ObservedObject var viewModel: ScannerViewModel
-    @EnvironmentObject var deviceViewModelFactory: DeviceViewModelFactory
+	@StateObject var viewModel: ScannerViewModel
 
 	var body: some View {
         NavigationView {
@@ -62,7 +61,9 @@ struct ScannerView: View {
                 Button(action: {
                     viewModel.onlyUnprovisioned.toggle()
                 }) {
-                    Image(systemName: viewModel.onlyUnprovisioned ? "lightbulb.fill" : "lightbulb")
+                    Image(systemName: viewModel.onlyUnprovisioned
+                          ? "line.3.horizontal.decrease.circle.fill"
+                          : "line.3.horizontal.decrease.circle")
                 }
             }
         }
@@ -92,8 +93,7 @@ struct ScannerView: View {
                 ForEach(viewModel.scanResults) { scanResult in
 
                     NavigationLink {
-                        DeviceView()
-                            .environmentObject(deviceViewModelFactory.viewModel(for: scanResult.id))
+                        DeviceView(viewModel: DeviceViewModel(peripheralId: scanResult.id))
                     } label: {
                         Label {
                             Text(scanResult.name)
@@ -103,6 +103,7 @@ struct ScannerView: View {
                         }
                                 .padding()
                     }
+                    .isDetailLink(false)
                 }
             } header: {
                 HStack {
@@ -124,7 +125,7 @@ struct ScannerView: View {
 
 			override var scanResults: [ScanResult] {
 				(0...3).map { i in
-                    ScanResult(name: "Device \(i)", rssi: -90 + i * 10, id: UUID())
+                    ScanResult(name: "Device \(i)", rssi: -90 + i * 10, id: UUID(), previsioned: true)
 				}
 			}
 		}
