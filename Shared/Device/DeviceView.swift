@@ -10,7 +10,7 @@ import NordicStyle
 import Provisioner
 
 struct DeviceView: View {
-    @EnvironmentObject var viewModel: DeviceViewModel
+    @StateObject var viewModel: DeviceViewModel
     
     var body: some View {
         VStack {
@@ -163,8 +163,7 @@ struct StatusIndicatorView: View {
 struct DeviceView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
-            DeviceView()
-                .environmentObject(MockDeviceViewModel(index: 1))
+            DeviceView(viewModel: MockDeviceViewModel(index: 1))
         }
         .setupNavBarBackground()
     }

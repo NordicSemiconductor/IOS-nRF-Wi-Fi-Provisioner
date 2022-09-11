@@ -10,8 +10,7 @@ import SwiftUI
 import CoreBluetoothMock
 
 struct ScannerView: View {
-	@ObservedObject var viewModel: ScannerViewModel
-    @EnvironmentObject var deviceViewModelFactory: DeviceViewModelFactory
+	@StateObject var viewModel: ScannerViewModel
 
 	var body: some View {
         NavigationView {
@@ -92,8 +91,7 @@ struct ScannerView: View {
                 ForEach(viewModel.scanResults) { scanResult in
 
                     NavigationLink {
-                        DeviceView()
-                            .environmentObject(deviceViewModelFactory.viewModel(for: scanResult.id))
+                        DeviceView(viewModel: DeviceViewModel(peripheralId: scanResult.id))
                     } label: {
                         Label {
                             Text(scanResult.name)
@@ -103,6 +101,7 @@ struct ScannerView: View {
                         }
                                 .padding()
                     }
+                    .isDetailLink(false)
                 }
             } header: {
                 HStack {
