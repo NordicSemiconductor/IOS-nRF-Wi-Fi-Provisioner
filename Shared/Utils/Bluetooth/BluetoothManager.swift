@@ -104,8 +104,6 @@ extension CBManagerState: CustomDebugStringConvertible {
             return "unsupported"
         case .unknown:
             return "unknown"
-        @unknown default:
-            return "unknown"
         }
     }
 }

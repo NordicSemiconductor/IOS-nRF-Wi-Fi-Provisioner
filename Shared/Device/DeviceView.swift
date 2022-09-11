@@ -94,8 +94,7 @@ struct DeviceView: View {
                 // MARK: Access Points
                 Section("Access Point") {
                     NavigationLink(isActive: $viewModel.showAccessPointList) {
-                        AccessPointList()
-                            .environmentObject(viewModel.accessPointListViewModel)
+                        AccessPointList(viewModel: AccessPointListViewModel(provisioner: viewModel.provisioner, accessPointSelection: viewModel))
                     } label: {
                         HStack {
                             NordicLabel("Access Point", systemImage: "wifi.circle")

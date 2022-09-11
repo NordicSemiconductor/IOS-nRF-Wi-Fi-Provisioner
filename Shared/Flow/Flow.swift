@@ -2,7 +2,6 @@
 // Created by Nick Kibysh on 09/09/2022.
 //
 
-import Foundation
+import SwiftUI
 
-class Flow {
-}
+

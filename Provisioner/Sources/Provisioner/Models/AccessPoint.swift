@@ -7,11 +7,11 @@
 
 import Foundation
 
-public struct AccessPoint: Identifiable, Hashable {
+public struct AccessPoint: Identifiable, Hashable, Equatable {
     let wifiInfo: WifiInfo
 
     public var ssid: String
-    public var id: UUID
+    public var id: String
     public var isOpen: Bool
     public var channel: Int
     public var rssi: Int
@@ -19,10 +19,19 @@ public struct AccessPoint: Identifiable, Hashable {
     init(wifiInfo: WifiInfo, RSSI: Int32) {
         self.wifiInfo = wifiInfo
         ssid = String(data: wifiInfo.ssid, encoding: .utf8) ?? "n/a"
-        id = UUID()
+        id = ssid + String(wifiInfo.channel)
         isOpen = wifiInfo.auth.isOpen
         channel = Int(wifiInfo.channel)
         rssi = Int(RSSI)
+    }
+
+    public static func == (lhs: AccessPoint, rhs: AccessPoint) -> Bool {
+        lhs.ssid == rhs.ssid && lhs.channel == rhs.channel
+    }
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(ssid)
+        hasher.combine(channel)
     }
 
 }

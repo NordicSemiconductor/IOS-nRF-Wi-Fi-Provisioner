@@ -11,7 +11,12 @@ import Combine
 import NordicStyle
 import os
 
-class DeviceViewModel: ObservableObject {
+protocol AccessPointSelection {
+    var selectedAccessPoint: AccessPoint? { get set }
+    var showAccessPointList: Bool { get set }
+}
+
+class DeviceViewModel: ObservableObject, AccessPointSelection {
     @Published(initialValue: "") private (set) var deviceName: String
 
     /// The current bluetooth state of the device.
@@ -39,18 +44,12 @@ class DeviceViewModel: ObservableObject {
 
 	@Published(initialValue: "Unknown") fileprivate(set) var version: String
 
-    @Published(initialValue: false) var showAccessPointList: Bool
     @Published(initialValue: [:]) fileprivate(set) var accessPoints: [String : AccessPoint]
+    @Published(initialValue: false) var showAccessPointList: Bool
     @Published(initialValue: nil) var selectedAccessPoint: AccessPoint? {
         didSet {
             passwordRequired = selectedAccessPoint?.isOpen == false
             updateButtonState()
-            
-            showAccessPointList = false
-            Task {
-                try? await activeAccessPointVM?.stopScan()
-                activeAccessPointVM = nil
-            }
         }
     }
     @Published(initialValue: false) private(set) var passwordRequired: Bool
@@ -70,24 +69,6 @@ class DeviceViewModel: ObservableObject {
     let peripheralId: UUID
     let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "nordic", category: "DeviceViewModel")
 
-    private var activeAccessPointVM: AccessPointListViewModel?
-    var accessPointListViewModel: AccessPointListViewModel {
-        if let vm = activeAccessPointVM {
-            return vm
-        }
-        let vm = AccessPointListViewModel(provisioner: provisioner)
-        activeAccessPointVM = vm
-        vm.$selectedAccessPoint
-                .receive(on: DispatchQueue.main)
-                .sink { [weak self] selection  in
-                    if let ap = selection {
-                        self?.selectedAccessPoint = ap
-                    }
-                }
-                .store(in: &cancellable)
-        return vm
-    }
-    
     init(peripheralId: UUID) {
         self.peripheralId = peripheralId
         self.provisioner = Provisioner(deviceID: peripheralId)
