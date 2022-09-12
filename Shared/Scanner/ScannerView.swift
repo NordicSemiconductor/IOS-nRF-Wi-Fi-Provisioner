@@ -72,7 +72,7 @@ struct ScannerView: View {
 		.onAppear {
             viewModel.startScan()
         }
-        .sheet(isPresented: $viewModel.showStartInfo) { ContentView(show: $viewModel.showStartInfo, dontShowAgain: $viewModel.dontShowAgain) }
+        .sheet(isPresented: $viewModel.showStartInfo) { IntroView(show: $viewModel.showStartInfo, dontShowAgain: $viewModel.dontShowAgain) }
 
     }
     
