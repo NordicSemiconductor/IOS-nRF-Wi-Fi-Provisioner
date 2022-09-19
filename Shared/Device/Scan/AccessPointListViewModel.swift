@@ -36,7 +36,7 @@ class AccessPointListViewModel: ObservableObject {
                     aps.append(ap)
                 }
             }
-            accessPoints = aps.sorted(by: { $0.rssi > $1.rssi })
+            accessPoints = aps.sorted(by: { $0.ssid < $1.ssid })
         }
     }
 
@@ -50,7 +50,9 @@ class AccessPointListViewModel: ObservableObject {
 extension AccessPointListViewModel {
 
     func allChannels(for accessPoint: AccessPoint) -> [AccessPoint] {
-        let array = Array(allAccessPoints).filter { $0.ssid == accessPoint.ssid }
+        let array = Array(allAccessPoints)
+            .filter { $0.ssid == accessPoint.ssid }
+            .sorted { $0.channel < $0.channel }
         return array
     }
 
