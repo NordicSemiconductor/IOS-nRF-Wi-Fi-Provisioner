@@ -103,7 +103,7 @@ struct ScannerView: View {
                         }
                                 .padding()
                     }
-                    .isDetailLink(false)
+                    .deviceAdoptiveDetail()
                 }
             } header: {
                 HStack {

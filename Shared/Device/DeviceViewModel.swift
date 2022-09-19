@@ -25,17 +25,21 @@ class DeviceViewModel: ObservableObject, AccessPointSelection {
     @Published(initialValue: false) private (set) var provisioningInProgress: Bool
 	@Published(initialValue: nil) fileprivate(set) var wifiState: Provisioner.WiFiStatus? {
         didSet {
-            provisioningInProgress = wifiState?.isInProgress ?? false
-            updateButtonState()
-
-            switch wifiState {
-            case .connectionFailed(let e):
-                provisioningError = conventConnectionFailure(e)
-                inProgress = false
-            case .connected:
-                inProgress = false
-            default:
-                provisioningError = nil
+            DispatchQueue.main.async { [weak self] in
+                guard let `self` = self else { return }
+                self.provisioningInProgress = self.wifiState?.isInProgress ?? false
+                self.updateButtonState()
+                
+                switch self.wifiState {
+                case .connectionFailed(let e):
+                    self.provisioningError = self.conventConnectionFailure(e)
+                    self.inProgress = false
+                case .connected:
+                    self.inProgress = false
+                default:
+                    self.provisioningError = nil
+                    
+                }
             }
         }
     }
