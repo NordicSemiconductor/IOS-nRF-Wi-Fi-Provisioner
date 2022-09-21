@@ -46,9 +46,6 @@ class AccessPointListViewModel: ObservableObject {
         self.provisioner = provisioner
         self.accessPointSelection = accessPointSelection
     }
-}
-
-extension AccessPointListViewModel {
     
     func allChannels(for accessPoint: AccessPoint) -> [AccessPoint] {
         let array = Array(allAccessPoints)

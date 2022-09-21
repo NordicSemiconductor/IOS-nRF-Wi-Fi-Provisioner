@@ -15,7 +15,7 @@ struct AccessPointList: View {
     var body: some View {
         VStack {
             if viewModel.accessPoints.isEmpty {
-                Placeholder(text: "Scanning", message: "Scannig for wi-fi", systemImage: "wifi")
+                Placeholder(text: "Scanning", message: "Scanning for wi-fi", systemImage: "wifi")
             } else {
                 list()
             }
@@ -80,8 +80,61 @@ struct AccessPointList: View {
 
 #if DEBUG
 struct AccessPointList_Previews: PreviewProvider {
+    class DummyAccessPointListViewModel: AccessPointListViewModel {
+        override var isScanning: Bool {
+            get {
+                true
+            } set {
+                
+            }
+        }
+        
+        override var accessPoints: [AccessPoint] {
+            get {
+                [
+                    AccessPoint(
+                        ssid: "Test",
+                        id: "id",
+                        isOpen: true,
+                        channel: 1,
+                        rssi: -50
+                    )
+                ]
+            } set {
+                
+            }
+        }
+        
+        override func startScan() async {
+            
+        }
+        
+        override func stopScan() async throws {
+            
+        }
+        
+        override func allChannels(for accessPoint: AccessPoint) -> [AccessPoint] {
+            [
+                AccessPoint(
+                    ssid: "Test",
+                    id: "id",
+                    isOpen: true,
+                    channel: 1,
+                    rssi: -50
+                )
+            ]
+        }
+    }
+    
     static var previews: some View {
-        AccessPointList(viewModel: AccessPointListViewModel(provisioner: MockProvisioner(), accessPointSelection: MockDeviceViewModel(index: 1)))
+        NavigationView {
+            AccessPointList(
+                viewModel: DummyAccessPointListViewModel(
+                    provisioner: MockProvisioner(),
+                    accessPointSelection: MockDeviceViewModel(fakeStatus: .connected)
+                )
+            )
+        }
     }
 }
 #endif

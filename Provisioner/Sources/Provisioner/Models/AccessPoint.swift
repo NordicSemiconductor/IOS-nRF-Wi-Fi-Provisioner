@@ -15,6 +15,18 @@ public struct AccessPoint: Identifiable, Hashable, Equatable {
     public var isOpen: Bool
     public var channel: Int
     public var rssi: Int
+    
+    #if DEBUG
+    // Init with all fields for testing
+    public init(ssid: String, id: String, isOpen: Bool, channel: Int, rssi: Int) {
+        self.ssid = ssid
+        self.id = id
+        self.isOpen = isOpen
+        self.channel = channel
+        self.rssi = rssi
+        self.wifiInfo = WifiInfo()
+    }
+    #endif
 
     init(wifiInfo: WifiInfo, RSSI: Int32) {
         self.wifiInfo = wifiInfo
