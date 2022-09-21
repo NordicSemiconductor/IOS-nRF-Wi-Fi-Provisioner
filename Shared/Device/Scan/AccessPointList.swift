@@ -52,6 +52,25 @@ struct AccessPointList: View {
     
     @ViewBuilder
     private func channelPicker(accessPoint: AccessPoint) -> some View {
+        NavigationLink {
+            ChannelPicker(
+                channels: viewModel.allChannels(for: accessPoint),
+                selectedChannel: $viewModel.selectedAccessPointId
+            ).navigationTitle(accessPoint.ssid)
+        } label: {
+            HStack {
+                Label(accessPoint.ssid, systemImage: accessPoint.isOpen ? "lock.open" : "lock")
+                    .tint(Color.accentColor)
+                Spacer()
+                RSSIView<WiFiRSSI>(rssi: WiFiRSSI(level: accessPoint.rssi))
+                    .frame(maxWidth: 30, maxHeight: 20)
+            }
+        }
+    }
+    
+    /*
+    @ViewBuilder
+    private func channelPicker(accessPoint: AccessPoint) -> some View {
         Picker(selection: $viewModel.selectedAccessPoint, content: {
             Section {
                 ForEach(viewModel.allChannels(for: accessPoint)) { ap in
@@ -76,6 +95,7 @@ struct AccessPointList: View {
         })
         .navigationBarTitle("Select Access Point")
     }
+     */
 }
 
 #if DEBUG
@@ -94,10 +114,11 @@ struct AccessPointList_Previews: PreviewProvider {
                 [
                     AccessPoint(
                         ssid: "Test",
+                        bssid: "bssid",
                         id: "id",
                         isOpen: true,
                         channel: 1,
-                        rssi: -50
+                        rssi: -50, frequency: ._5GHz
                     )
                 ]
             } set {
@@ -117,10 +138,12 @@ struct AccessPointList_Previews: PreviewProvider {
             [
                 AccessPoint(
                     ssid: "Test",
+                    bssid: "bssid",
                     id: "id",
                     isOpen: true,
                     channel: 1,
-                    rssi: -50
+                    rssi: -50,
+                    frequency: ._5GHz
                 )
             ]
         }
