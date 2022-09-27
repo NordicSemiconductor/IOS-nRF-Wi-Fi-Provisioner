@@ -49,7 +49,7 @@ struct AccessPointList: View {
             }
         }
     }
-    
+    //*
     @ViewBuilder
     private func channelPicker(accessPoint: AccessPoint) -> some View {
         NavigationLink {
@@ -67,23 +67,34 @@ struct AccessPointList: View {
             }
         }
     }
+    // */
     
     /*
     @ViewBuilder
     private func channelPicker(accessPoint: AccessPoint) -> some View {
         Picker(selection: $viewModel.selectedAccessPoint, content: {
             Section {
-                ForEach(viewModel.allChannels(for: accessPoint)) { ap in
-                    Label {
-                        Text("Channel: \(ap.channel)")
-                    } icon: {
-                        RSSIView<WiFiRSSI>(rssi: WiFiRSSI(level: ap.rssi))
-                            .frame(maxWidth: 30, maxHeight: 20)
+                ForEach(viewModel.allChannels(for: accessPoint), id: \.id) { channel in
+                    HStack {
+                        VStack(alignment: .leading) {
+                            Text("Channel \(channel.channel)")
+                            Text(channel.bssid)
+                                .font(.caption)
+                        }
+                        Spacer()
+                        VStack(alignment: .trailing) {
+                            RSSIView<WiFiRSSI>(rssi: WiFiRSSI(level: channel.rssi))
+                                .frame(maxWidth: 30, maxHeight: 20)
+                            Text(channel.frequency.stringValue.description)
+                                .font(.caption)
+                                .foregroundColor(.secondary)
+                        }
                     }
-                    .tag(Optional(ap))
+                    .tag(Optional(channel))
                 }
+            } header: {
+                Text("Select Channel")
             }
-            .navigationBarTitle("Select Channel")
         }, label: {
             HStack {
                 Label(accessPoint.ssid, systemImage: accessPoint.isOpen ? "lock.open" : "lock")
@@ -95,7 +106,7 @@ struct AccessPointList: View {
         })
         .navigationBarTitle("Select Access Point")
     }
-     */
+     // */
 }
 
 #if DEBUG

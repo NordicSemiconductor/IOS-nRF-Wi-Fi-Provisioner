@@ -42,6 +42,7 @@ struct ChannelPicker: View {
     }
 }
 
+#if DEBUG
 struct ChannelPicker_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
@@ -80,3 +81,4 @@ struct ChannelPicker_Previews: PreviewProvider {
         }
     }
 }
+#endif
