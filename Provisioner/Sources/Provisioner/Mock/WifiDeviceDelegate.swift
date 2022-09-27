@@ -1,83 +1,15 @@
 //
-//  AppConfigurator.swift
-//  nRF-Wi-Fi-Provisioner
+//  File.swift
+//  
 //
-//  Created by Nick Kibysh on 23/09/2022.
+//  Created by Nick Kibysh on 27/09/2022.
 //
-
-import CoreBluetoothMock
-import Foundation
 
 #if DEBUG
+import Foundation
+import CoreBluetoothMock
 
-extension CBMUUID {
-    static let version = CBMUUID(string: "14387801-130c-49e7-b877-2881c89cb258")
-    static let controlPoint = CBMUUID(string: "14387802-130c-49e7-b877-2881c89cb258")
-    static let dataOut = CBMUUID(string: "14387803-130c-49e7-b877-2881c89cb258")
-    static let wifi = CBMUUID(string: "14387800-130c-49e7-b877-2881c89cb258")
-}
-
-/// Queue structure based on LinkedList.
-private struct Queue<Element> {
-    private var head: Node<Element>?
-    private var tail: Node<Element>?
-
-    private class Node<Element> {
-        var value: Element
-        var next: Node?
-
-        init(value: Element) {
-            self.value = value
-        }
-    }
-
-    /// Adds a new element to the end of the queue.
-    ///
-    /// - Parameter value: The value to add.
-    mutating func enqueue(_ value: Element) {
-        let node = Node(value: value)
-        if head == nil {
-            head = node
-            tail = node
-        } else {
-            tail?.next = node
-            tail = node
-        }
-    }
-
-    /// Removes the first element from the queue.
-    ///
-    /// - Returns: The removed element.
-    mutating func dequeue() -> Element? {
-        guard let head = head else { return nil }
-        self.head = head.next
-        return head.value
-    }
-
-    /// Returns the first element of the queue.
-    ///
-    /// - Returns: The first element of the queue.
-    func peek() -> Element? {
-        return head?.value
-    }
-
-    /// Returns the number of elements in the queue.
-    ///
-    /// - Returns: The number of elements in the queue.
-    func count() -> Int {
-        guard let head = head else { return 0 }
-        var count = 1
-        var node = head
-        while let next = node.next {
-            count += 1
-            node = next
-        }
-        return count
-    }
-}
-
-private class WifiDeviceDelegate: CBMPeripheralSpecDelegate {
-    var controlPointQueue = Queue<Request>()
+class WifiDeviceDelegate: CBMPeripheralSpecDelegate {
 
     init() { }
 
@@ -158,6 +90,18 @@ private class WifiDeviceDelegate: CBMPeripheralSpecDelegate {
             case .getStatus:
                 peripheral.simulateValueUpdate(wifiStatus, for: .controlPoint)
                 return Swift.Result.success(())
+            case .startScan:
+                peripheral.simulateValueUpdate(wifiStatus, for: .controlPoint)
+                let data = try Data(contentsOf: Bundle.module.url(forResource: "MockAP", withExtension: "json")!)
+                let aps = try JSONDecoder().decode([Result].self, from: data)
+                for ap in aps {
+                    peripheral.simulateValueUpdate(try ap.serializedData(), for: .dataOut)
+                }
+                
+                return Swift.Result.success(())
+            case .stopScan:
+                peripheral.simulateValueUpdate(wifiStatus, for: .controlPoint)
+                return Swift.Result.success(())
             default:
                 fatalError("OpCode not implemented")
             }
@@ -197,59 +141,4 @@ extension WifiDeviceDelegate {
     }
 }
 
-extension CBMCharacteristicMock {
-    static let version = CBMCharacteristicMock(type: .version, properties: [.read])
-    static let controlPoint = CBMCharacteristicMock(type: .controlPoint, properties: [.write, .notify])
-    static let dataOut = CBMCharacteristicMock(type: .dataOut, properties: [.notify])
-}
-
-private class WiFiService: CBMServiceMock {
-    init() {
-        super.init(
-                type: .wifi,
-                primary: true,
-                characteristics: [
-                    .version,
-                    .controlPoint,
-                    .dataOut
-                ])
-    }
-}
-
-let wifiDevice = CBMPeripheralSpec
-        .simulatePeripheral(proximity: .near)
-        .advertising(
-                advertisementData: [
-                    CBMAdvertisementDataLocalNameKey    : "nRF-Wi-Fi",
-                    CBMAdvertisementDataServiceUUIDsKey : [CBMUUID.wifi],
-                    CBMAdvertisementDataIsConnectable   : true as NSNumber
-                ],
-                withInterval: 0.250,
-                alsoWhenConnected: false
-        )
-        .connectable(
-                name: "nRF Wi-Fi",
-                services: [
-                    WiFiService()
-                ],
-                delegate: WifiDeviceDelegate(),
-                connectionInterval: 0.150,
-                mtu: 23)
-        .build()
-
-public class AppConfigurator: ObservableObject {
-    public static func setup() {
-        CBMCentralManagerMock.simulateInitialState(.poweredOff)
-        CBMCentralManagerMock.simulatePeripherals([
-            wifiDevice
-        ])
-        CBMCentralManagerMock.simulatePowerOn()
-    }
-}
-#else
-public class AppConfigurator: ObservableObject {
-    public static func setup() {
-        
-    }
-}
 #endif

@@ -105,23 +105,26 @@ open class Provisioner {
 
     open func startScan() async throws -> AnyPublisher<AccessPoint, Swift.Error> {
         logger.info("start scan")
+        
+        let resultStream = centralManager.dataOutStream
+            .compactMap { [weak self] data -> AccessPoint? in
+                guard let result = try? Result(serializedData: data) else {
+                    return nil
+                }
+                self?.logger.debug("Read data: \(try! result.jsonString(), privacy: .public)")
+                guard result.hasScanRecord else {
+                    return nil
+                }
+                let wifiInfo = result.scanRecord.wifi
+                return AccessPoint(wifiInfo: wifiInfo, RSSI: result.scanRecord.rssi)
+            }
+            .eraseToAnyPublisher()
+        
         let response = (try await sendRequestToDataPoint(opCode: .startScan))
         guard case .success = response.status else {
             throw ProvisionError.requestFailed
         }
-        return centralManager.dataOutStream
-                .compactMap { [weak self] data -> AccessPoint? in
-                    guard let result = try? Result(serializedData: data) else {
-                        return nil
-                    }
-                    self?.logger.debug("Read data: \(try! result.jsonString(), privacy: .public)")
-                    guard result.hasScanRecord else {
-                        return nil
-                    }
-                    let wifiInfo = result.scanRecord.wifi
-                    return AccessPoint(wifiInfo: wifiInfo, RSSI: result.scanRecord.rssi)
-                }
-                .eraseToAnyPublisher()
+        return resultStream
     }
 
     open func stopScan() async throws {
@@ -147,6 +150,7 @@ open class Provisioner {
                     guard let result = try? Result(serializedData: data), result.hasState else {
                         return nil
                     }
+                    
                     self?.logger.debug("Read data: \(try! result.jsonString(), privacy: .public)")
                     return result.state.toPublicStatus(withReason: result.reason)
                 }.timeout(.seconds(60), scheduler: DispatchQueue.main) { TimeoutError() }
