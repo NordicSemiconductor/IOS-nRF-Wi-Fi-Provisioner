@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0101F2E628DB212300AE80A9 /* ChannelPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0101F2E528DB212300AE80A9 /* ChannelPicker.swift */; };
+		0101F2E728DB212300AE80A9 /* ChannelPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0101F2E528DB212300AE80A9 /* ChannelPicker.swift */; };
 		01062ADA28B6592700BB41FD /* View+Mod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01062AD928B6592700BB41FD /* View+Mod.swift */; };
 		01062ADB28B6592700BB41FD /* View+Mod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01062AD928B6592700BB41FD /* View+Mod.swift */; };
 		011A2613287CAF890004A5C4 /* BluetoothManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011A2612287CAF890004A5C4 /* BluetoothManager.swift */; };
@@ -67,14 +69,18 @@
 		339760CF1C795330A945D8CA /* CoreBluetoothTypeAliases.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33976DF4DDFF808ED30D6140 /* CoreBluetoothTypeAliases.swift */; };
 		339760D65C7C44D873D948A8 /* DeviceViewModel+Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = 339761CA515EDED3B38AB2F3 /* DeviceViewModel+Types.swift */; };
 		339760F98E06FFC4EFB82EB1 /* AccessPointListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33976AAA2657AC333AE0133B /* AccessPointListViewModel.swift */; };
+		339761E5D6992A0548A2B051 /* AdoptiveDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33976123FD83A0EF2122EE5E /* AdoptiveDetailView.swift */; };
 		339763EFE61724385FE9F50B /* AccessPointListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33976AAA2657AC333AE0133B /* AccessPointListViewModel.swift */; };
 		339764A344D60772B8354BA1 /* CoreBluetoothTypeAliases.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33976DF4DDFF808ED30D6140 /* CoreBluetoothTypeAliases.swift */; };
 		339766E1F365F51C4CD49F6D /* IntroViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33976A539401C3999098986C /* IntroViewModel.swift */; };
+		3397673EF437823851596518 /* AdoptiveDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33976123FD83A0EF2122EE5E /* AdoptiveDetailView.swift */; };
 		3397680D2FE5FBB193E7A5EE /* BluetoothRSSI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 339762F1507DAF6B903DF4D1 /* BluetoothRSSI.swift */; };
 		3397689B2FD60C49322F3E29 /* WiFiRSSI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33976EF9849513130301C930 /* WiFiRSSI.swift */; };
 		339768F56D7C8EC8A0DD8B25 /* WiFiStatus+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33976AAF8A53D43BC33F0ED9 /* WiFiStatus+Ext.swift */; };
+		339769E1197BCCAF98D480E9 /* NavigationLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 339767EA454996E6D30A9621 /* NavigationLink.swift */; };
 		33976B5960D8927917CD726E /* WiFiStatus+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33976AAF8A53D43BC33F0ED9 /* WiFiStatus+Ext.swift */; };
 		33976BAEC7C5753351244397 /* IntroViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33976A539401C3999098986C /* IntroViewModel.swift */; };
+		33976D6784AE1F2745318CFA /* NavigationLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 339767EA454996E6D30A9621 /* NavigationLink.swift */; };
 		33976EBA0FF55A009B0C55ED /* WiFiRSSI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33976EF9849513130301C930 /* WiFiRSSI.swift */; };
 		33976EF1DCD95ADC4A0807C9 /* DeviceViewModel+Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = 339761CA515EDED3B38AB2F3 /* DeviceViewModel+Types.swift */; };
 		33976EFC0D92E4D7C58060E1 /* BluetoothRSSI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 339762F1507DAF6B903DF4D1 /* BluetoothRSSI.swift */; };
@@ -98,6 +104,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0101F2E528DB212300AE80A9 /* ChannelPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelPicker.swift; sourceTree = "<group>"; };
 		01062AD928B6592700BB41FD /* View+Mod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Mod.swift"; sourceTree = "<group>"; };
 		011A2612287CAF890004A5C4 /* BluetoothManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BluetoothManager.swift; sourceTree = "<group>"; };
 		01481A922852092F00925FAB /* nRF_Wi_Fi_ProvisionerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = nRF_Wi_Fi_ProvisionerApp.swift; sourceTree = "<group>"; };
@@ -133,8 +140,10 @@
 		01D26B55286DA3D400FD069D /* Localizable.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
 		01D26B5A286DAE9800FD069D /* LocalizationKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizationKey.swift; sourceTree = "<group>"; };
 		01FA5911288713860008AF88 /* ReadableError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadableError.swift; sourceTree = "<group>"; };
+		33976123FD83A0EF2122EE5E /* AdoptiveDetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdoptiveDetailView.swift; sourceTree = "<group>"; };
 		339761CA515EDED3B38AB2F3 /* DeviceViewModel+Types.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "DeviceViewModel+Types.swift"; sourceTree = "<group>"; };
 		339762F1507DAF6B903DF4D1 /* BluetoothRSSI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BluetoothRSSI.swift; sourceTree = "<group>"; };
+		339767EA454996E6D30A9621 /* NavigationLink.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationLink.swift; sourceTree = "<group>"; };
 		33976A539401C3999098986C /* IntroViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntroViewModel.swift; sourceTree = "<group>"; };
 		33976AAA2657AC333AE0133B /* AccessPointListViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccessPointListViewModel.swift; sourceTree = "<group>"; };
 		33976AAF8A53D43BC33F0ED9 /* WiFiStatus+Ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "WiFiStatus+Ext.swift"; sourceTree = "<group>"; };
@@ -268,6 +277,7 @@
 			children = (
 				015845CB288FD5A900C7E4B7 /* AccessPointList.swift */,
 				33976AAA2657AC333AE0133B /* AccessPointListViewModel.swift */,
+				0101F2E528DB212300AE80A9 /* ChannelPicker.swift */,
 			);
 			path = Scan;
 			sourceTree = "<group>";
@@ -297,6 +307,8 @@
 			children = (
 				0183EFCC2897C446002E79A5 /* ReversedLabel.swift */,
 				01922CBC28A2713100492E87 /* NavigationView.swift */,
+				339762DB6A20E141289014FD /* Modifiers */,
+				339767EA454996E6D30A9621 /* NavigationLink.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -385,6 +397,14 @@
 				33976EF9849513130301C930 /* WiFiRSSI.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		339762DB6A20E141289014FD /* Modifiers */ = {
+			isa = PBXGroup;
+			children = (
+				33976123FD83A0EF2122EE5E /* AdoptiveDetailView.swift */,
+			);
+			path = Modifiers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -572,6 +592,7 @@
 				01922CBD28A2713100492E87 /* NavigationView.swift in Sources */,
 				01C0F0FA287DE864008BBE46 /* ScannerViewModel.swift in Sources */,
 				01062ADA28B6592700BB41FD /* View+Mod.swift in Sources */,
+				0101F2E628DB212300AE80A9 /* ChannelPicker.swift in Sources */,
 				01A43DEB2886FECB0025A5C4 /* DeviceView.swift in Sources */,
 				019DCE292885A15100E16E9F /* FilterList.swift in Sources */,
 				015D60A32875A1530048F065 /* ScannerView.swift in Sources */,
@@ -596,6 +617,8 @@
 				33976EF1DCD95ADC4A0807C9 /* DeviceViewModel+Types.swift in Sources */,
 				339763EFE61724385FE9F50B /* AccessPointListViewModel.swift in Sources */,
 				33976BAEC7C5753351244397 /* IntroViewModel.swift in Sources */,
+				339761E5D6992A0548A2B051 /* AdoptiveDetailView.swift in Sources */,
+				339769E1197BCCAF98D480E9 /* NavigationLink.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -608,6 +631,7 @@
 				01922CBE28A2713100492E87 /* NavigationView.swift in Sources */,
 				01C0F0FB287DE864008BBE46 /* ScannerViewModel.swift in Sources */,
 				01062ADB28B6592700BB41FD /* View+Mod.swift in Sources */,
+				0101F2E728DB212300AE80A9 /* ChannelPicker.swift in Sources */,
 				01A43DEC2886FECB0025A5C4 /* DeviceView.swift in Sources */,
 				019DCE2A2885A15100E16E9F /* FilterList.swift in Sources */,
 				015D60A42875A1530048F065 /* ScannerView.swift in Sources */,
@@ -632,6 +656,8 @@
 				339760D65C7C44D873D948A8 /* DeviceViewModel+Types.swift in Sources */,
 				339760F98E06FFC4EFB82EB1 /* AccessPointListViewModel.swift in Sources */,
 				339766E1F365F51C4CD49F6D /* IntroViewModel.swift in Sources */,
+				3397673EF437823851596518 /* AdoptiveDetailView.swift in Sources */,
+				33976D6784AE1F2745318CFA /* NavigationLink.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -788,7 +814,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 25;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -803,7 +829,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.8.0;
+				MARKETING_VERSION = 0.9;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.nordicsemi.nRF-Wi-Fi-Provisioner";
 				PRODUCT_NAME = "nRF-Wi-Fi-Provisioner";
@@ -822,7 +848,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 25;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -837,7 +863,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.8.0;
+				MARKETING_VERSION = 0.9;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.nordicsemi.nRF-Wi-Fi-Provisioner";
 				PRODUCT_NAME = "nRF-Wi-Fi-Provisioner";
 				PROVISIONING_PROFILE_SPECIFIER = "";

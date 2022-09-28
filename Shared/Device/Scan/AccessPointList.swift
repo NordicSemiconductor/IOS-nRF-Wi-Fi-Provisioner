@@ -15,7 +15,7 @@ struct AccessPointList: View {
     var body: some View {
         VStack {
             if viewModel.accessPoints.isEmpty {
-                Placeholder(text: "Scanning", message: "Scannig for wi-fi", systemImage: "wifi")
+                Placeholder(text: "Scanning", message: "Scanning for wi-fi", systemImage: "wifi")
             } else {
                 list()
             }
@@ -49,22 +49,52 @@ struct AccessPointList: View {
             }
         }
     }
+    //*
+    @ViewBuilder
+    private func channelPicker(accessPoint: AccessPoint) -> some View {
+        NavigationLink {
+            ChannelPicker(
+                channels: viewModel.allChannels(for: accessPoint),
+                selectedChannel: $viewModel.selectedAccessPointId
+            ).navigationTitle(accessPoint.ssid)
+        } label: {
+            HStack {
+                Label(accessPoint.ssid, systemImage: accessPoint.isOpen ? "lock.open" : "lock")
+                    .tint(Color.accentColor)
+                Spacer()
+                RSSIView<WiFiRSSI>(rssi: WiFiRSSI(level: accessPoint.rssi))
+                    .frame(maxWidth: 30, maxHeight: 20)
+            }
+        }
+    }
+    // */
     
+    /*
     @ViewBuilder
     private func channelPicker(accessPoint: AccessPoint) -> some View {
         Picker(selection: $viewModel.selectedAccessPoint, content: {
             Section {
-                ForEach(viewModel.allChannels(for: accessPoint)) { ap in
-                    Label {
-                        Text("Channel: \(ap.channel)")
-                    } icon: {
-                        RSSIView<WiFiRSSI>(rssi: WiFiRSSI(level: ap.rssi))
-                            .frame(maxWidth: 30, maxHeight: 20)
+                ForEach(viewModel.allChannels(for: accessPoint), id: \.id) { channel in
+                    HStack {
+                        VStack(alignment: .leading) {
+                            Text("Channel \(channel.channel)")
+                            Text(channel.bssid)
+                                .font(.caption)
+                        }
+                        Spacer()
+                        VStack(alignment: .trailing) {
+                            RSSIView<WiFiRSSI>(rssi: WiFiRSSI(level: channel.rssi))
+                                .frame(maxWidth: 30, maxHeight: 20)
+                            Text(channel.frequency.stringValue.description)
+                                .font(.caption)
+                                .foregroundColor(.secondary)
+                        }
                     }
-                    .tag(Optional(ap))
+                    .tag(Optional(channel))
                 }
+            } header: {
+                Text("Select Channel")
             }
-            .navigationBarTitle("Select Channel")
         }, label: {
             HStack {
                 Label(accessPoint.ssid, systemImage: accessPoint.isOpen ? "lock.open" : "lock")
@@ -76,12 +106,69 @@ struct AccessPointList: View {
         })
         .navigationBarTitle("Select Access Point")
     }
+     // */
 }
 
 #if DEBUG
 struct AccessPointList_Previews: PreviewProvider {
+    class DummyAccessPointListViewModel: AccessPointListViewModel {
+        override var isScanning: Bool {
+            get {
+                true
+            } set {
+                
+            }
+        }
+        
+        override var accessPoints: [AccessPoint] {
+            get {
+                [
+                    AccessPoint(
+                        ssid: "Test",
+                        bssid: "bssid",
+                        id: "id",
+                        isOpen: true,
+                        channel: 1,
+                        rssi: -50, frequency: ._5GHz
+                    )
+                ]
+            } set {
+                
+            }
+        }
+        
+        override func startScan() async {
+            
+        }
+        
+        override func stopScan() async throws {
+            
+        }
+        
+        override func allChannels(for accessPoint: AccessPoint) -> [AccessPoint] {
+            [
+                AccessPoint(
+                    ssid: "Test",
+                    bssid: "bssid",
+                    id: "id",
+                    isOpen: true,
+                    channel: 1,
+                    rssi: -50,
+                    frequency: ._5GHz
+                )
+            ]
+        }
+    }
+    
     static var previews: some View {
-        AccessPointList(viewModel: AccessPointListViewModel(provisioner: MockProvisioner(), accessPointSelection: MockDeviceViewModel(index: 1)))
+        NavigationView {
+            AccessPointList(
+                viewModel: DummyAccessPointListViewModel(
+                    provisioner: MockProvisioner(),
+                    accessPointSelection: MockDeviceViewModel(fakeStatus: .connected)
+                )
+            )
+        }
     }
 }
 #endif

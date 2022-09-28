@@ -103,7 +103,7 @@ struct ScannerView: View {
                         }
                                 .padding()
                     }
-                    .isDetailLink(false)
+                    .deviceAdoptiveDetail()
                 }
             } header: {
                 HStack {
@@ -122,10 +122,27 @@ struct ScannerView: View {
 #if DEBUG
 	struct ScannerView_Previews: PreviewProvider {
 		class DummyScanViewModel: ScannerViewModel {
+            override var showStartInfo: Bool {
+                get {
+                    false
+                }
+                set {
+                    
+                }
+            }
+            
+            override var state: ScannerViewModel.State {
+                .scanning
+            }
 
 			override var scanResults: [ScanResult] {
 				(0...3).map { i in
-                    ScanResult(name: "Device \(i)", rssi: -90 + i * 10, id: UUID(), previsioned: true)
+                    ScanResult(
+                        name: "Device \(i)",
+                        rssi: -90 + i * 10,
+                        id: UUID(),
+                        previsioned: false
+                    )
 				}
 			}
 		}
