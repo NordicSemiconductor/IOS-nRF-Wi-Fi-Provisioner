@@ -19,7 +19,7 @@ protocol AccessPointSelection {
 private let UnknownVersion = "Unknown"
 
 class DeviceViewModel: ObservableObject, AccessPointSelection {
-    @Published(initialValue: "") private (set) var deviceName: String
+    @Published(initialValue: false) private (set) var provisioned: Bool
     
     /// The current bluetooth state of the device.
     @Published(initialValue: .connecting) fileprivate(set) var connectionStatus: ConnectionState
@@ -78,13 +78,11 @@ class DeviceViewModel: ObservableObject, AccessPointSelection {
     init(peripheralId: UUID) {
         self.peripheralId = peripheralId
         self.provisioner = Provisioner(deviceID: peripheralId)
-        deviceName = "Wi-Fi Device"
     }
     
     init(provisioner: Provisioner) {
         self.peripheralId = provisioner.deviceID
         self.provisioner = provisioner
-        deviceName = "Wi-Fi Device"
     }
     
     func connect() async throws {

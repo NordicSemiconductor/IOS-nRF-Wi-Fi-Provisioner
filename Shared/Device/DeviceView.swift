@@ -36,7 +36,6 @@ struct DeviceView: View {
                 Placeholder(text: "Disconnected", image: "bluetooth_disabled")
             }
         }
-        .navigationTitle("Device Info")
         .onAppear {
             Task {
                 do {
@@ -54,10 +53,11 @@ struct DeviceView: View {
                 // MARK: Device Name
                 Section("Device") {
                     HStack {
-                        NordicLabel("Device Name", image: "bluetooth")
+                        NordicLabel("Status", image: "bluetooth")
                         
                         Spacer()
-                        Text(viewModel.deviceName).foregroundColor(.secondary)
+                        Text(viewModel.provisioned ? "Provisioned  ✓" : "Not Provisioned")
+                            .foregroundColor(viewModel.provisioned ? .green : .secondary)
                     }
                 }
                 
@@ -165,8 +165,11 @@ struct DeviceView_Previews: PreviewProvider {
             DeviceView(
                 viewModel: MockDeviceViewModel(fakeStatus: .connected)
             )
+            .navigationTitle("Device Name")
         }
         .setupNavBarBackground()
+        .previewDisplayName("iPhone 14 Pro")
+        .previewDevice(PreviewDevice(rawValue: "iPhone 14 Pro"))
     }
     
     
