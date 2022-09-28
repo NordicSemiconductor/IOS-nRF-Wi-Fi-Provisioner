@@ -17,6 +17,12 @@ class AccessPointListViewModel: ObservableObject {
     // MARK: - Properties
     @Published(initialValue: []) var accessPoints: [AccessPoint]
     @Published(initialValue: false) var isScanning: Bool
+    @Published(initialValue: nil) var selectedAccessPointId: String? {
+        didSet {
+            guard let apId = selectedAccessPointId else { return }
+            self.selectedAccessPoint = allAccessPoints.first(where: { $0.id == apId })
+        }
+    }
     @Published(initialValue: nil) var selectedAccessPoint: AccessPoint? {
         didSet {
             guard let ap = selectedAccessPoint else {
@@ -46,14 +52,11 @@ class AccessPointListViewModel: ObservableObject {
         self.provisioner = provisioner
         self.accessPointSelection = accessPointSelection
     }
-}
-
-extension AccessPointListViewModel {
     
     func allChannels(for accessPoint: AccessPoint) -> [AccessPoint] {
         let array = Array(allAccessPoints)
             .filter { $0.ssid == accessPoint.ssid }
-            .sorted { $0.channel < $1.channel }
+            .sorted { $0.rssi > $1.rssi }
         return array
     }
     

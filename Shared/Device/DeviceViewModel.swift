@@ -170,9 +170,12 @@ extension DeviceViewModel {
     }
     
     func startProvision() async throws {
-        wifiState = .disconnected
-        inProgress = true
-        self.buttonState.isEnabled = false
+        Task {
+            DispatchQueue.main.async {
+                self.wifiState = .disconnected
+                self.inProgress = true
+            }
+        }
         
         let statePublisher = try await provisioner.startProvision(accessPoint: selectedAccessPoint!, passphrase: password.isEmpty ? nil : password, volatileMemory: self.volatileMemory)
         DispatchQueue.main.async {
@@ -256,27 +259,21 @@ class MockProvisioner: Provisioner {
     }
     
     override func getStatus() async throws -> Provisioner.WiFiStatus {
-        return .disconnected
+        return .connected
     }
 }
 
 class MockDeviceViewModel: DeviceViewModel {
-    var i: Int? = 0
-    
-    init(index: Int) {
+    init(fakeStatus: ConnectionState) {
         super.init(provisioner: MockProvisioner())
-        self.i = index
         
-        let states: [ConnectionState] = [.connecting, .connected, .failed(TitleMessageError(message: "Failed to retreive required services"))]
-        
-        self.connectionStatus = states[index % 3]
+        self.connectionStatus = fakeStatus
     }
     
     override func connect() async throws {
         self.connectionStatus = .connected
-        self.wifiState = .disconnected
+        self.wifiState = .connected
         self.version = "14"
-        
     }
 }
 #endif

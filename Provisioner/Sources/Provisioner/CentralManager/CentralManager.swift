@@ -12,9 +12,9 @@ private struct Service {
     static let wifi = CBMUUID(string: "14387800-130c-49e7-b877-2881c89cb258")
 
     struct Characteristic {
-        static let version = CBMUUID(string: "14387801-130c-49e7-b877-2881c89cb258")
-        static let controlPoint = CBMUUID(string: "14387802-130c-49e7-b877-2881c89cb258")
-        static let dataOut = CBMUUID(string: "14387803-130c-49e7-b877-2881c89cb258")
+        static let version =        CBMUUID(string: "14387801-130c-49e7-b877-2881c89cb258")
+        static let controlPoint =   CBMUUID(string: "14387802-130c-49e7-b877-2881c89cb258")
+        static let dataOut =        CBMUUID(string: "14387803-130c-49e7-b877-2881c89cb258")
     }
 }
 
@@ -84,7 +84,7 @@ class CentralManager {
 
     // State of the connection
     let connectionStateSubject = PassthroughSubject<Provisioner.BluetoothConnectionStatus, Never>()
-    let centralManagerStateSubject = PassthroughSubject<CBManagerState, Never>()
+    private let centralManagerStateSubject = CurrentValueSubject<CBManagerState, Never>(.unknown)
 
     private var readValueContinuation: CharacteristicValueContinuation?
     private var identifiableContinuation: CharacteristicValueContinuation?
@@ -195,7 +195,9 @@ extension CentralManager {
     private func waitUntilReady() async throws {
         try await withTimeout(seconds: 10) {
             _ = try await self.centralManagerStateSubject
-                    .filter { $0 == .poweredOn }
+                    .filter {
+                        $0 == .poweredOn
+                    }
                     .first()
                     .eraseToAnyPublisher()
                     .asyncThrowing()
@@ -211,6 +213,7 @@ extension CentralManager: CBMCentralManagerDelegate {
     }
 
     func centralManager(_ central: CBMCentralManager, didConnect peripheral: CBMPeripheral) {
+
         logger.debug("didConnect peripheral \(peripheral.identifier.uuidString)")
         connectionExecutor.complete(with: WifiDevice(peripheral: peripheral))
     }
@@ -305,6 +308,7 @@ extension CentralManager: CBMPeripheralDelegate {
             handleData(characteristic, error, c)
             identifiableContinuation = nil // reset
         } else if let c = readValueContinuation, c.characteristic == characteristic {
+            // It's usually used for reading version characteristic
             handleData(characteristic, error, c)
             readValueContinuation = nil // reset
         } else if characteristic.uuid == Service.Characteristic.dataOut {
@@ -314,9 +318,5 @@ extension CentralManager: CBMPeripheralDelegate {
                 valueStreams.send(completion: .failure(e))
             }
         }
-    }
-
-    func peripheral(_ peripheral: CBMPeripheral, didWriteValueFor characteristic: CBMCharacteristic, error: Swift.Error?) {
-        print("didWriteValueFor characteristic")
     }
 }
