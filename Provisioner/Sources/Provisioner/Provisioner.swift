@@ -155,8 +155,12 @@ open class Provisioner {
                     return result.state.toPublicStatus(withReason: result.reason)
                 }.timeout(.seconds(60), scheduler: DispatchQueue.main) { TimeoutError() }
                 .replaceError(with: .connectionFailed(.timeout))
+                // 1 - get prefixes until state is connected
                 .tryPrefix { status in
                     switch status {
+                    // 2 - if state is connected or failed throw InternalError.
+                    // We can not just return false, because steam will be closed without sending 'connected' state
+                    // Note: InternalError is a special structure which is used only in this method
                     case .connected, .connectionFailed:
                         throw InternalError(status: status)
                     default:
@@ -165,8 +169,10 @@ open class Provisioner {
                 }
                 .tryCatch { error -> AnyPublisher<WiFiStatus, Never> in
                     if let e = error as? InternalError {
+                        // 3 - if wi got `InternalError` just replace it with state it contains inside.
                         return Just(e.status).eraseToAnyPublisher()
                     } else {
+                        // 4 - Else: rethrow error
                         throw error
                     }
                 }

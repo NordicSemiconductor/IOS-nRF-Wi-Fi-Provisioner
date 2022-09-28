@@ -176,7 +176,6 @@ extension DeviceViewModel {
                 self.inProgress = true
             }
         }
-        self.buttonState.isEnabled = false
         
         let statePublisher = try await provisioner.startProvision(accessPoint: selectedAccessPoint!, passphrase: password.isEmpty ? nil : password, volatileMemory: self.volatileMemory)
         DispatchQueue.main.async {
