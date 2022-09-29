@@ -19,13 +19,13 @@ protocol AccessPointSelection {
 private let UnknownVersion = "Unknown"
 
 class DeviceViewModel: ObservableObject, AccessPointSelection {
-    @Published(initialValue: "") private (set) var deviceName: String
+    @Published(initialValue: false) private (set) var provisioned: Bool
     
     /// The current bluetooth state of the device.
     @Published(initialValue: .connecting) fileprivate(set) var connectionStatus: ConnectionState
     
     @Published(initialValue: false) private (set) var provisioningInProgress: Bool
-    @Published(initialValue: nil) fileprivate(set) var wifiState: Provisioner.WiFiStatus? {
+    @Published(initialValue: nil) fileprivate(set) var wifiState: WiFiStatus? {
         didSet {
             DispatchQueue.main.async { [weak self] in
                 guard let `self` = self else { return }
@@ -78,13 +78,11 @@ class DeviceViewModel: ObservableObject, AccessPointSelection {
     init(peripheralId: UUID) {
         self.peripheralId = peripheralId
         self.provisioner = Provisioner(deviceID: peripheralId)
-        deviceName = "Wi-Fi Device"
     }
     
     init(provisioner: Provisioner) {
         self.peripheralId = provisioner.deviceID
         self.provisioner = provisioner
-        deviceName = "Wi-Fi Device"
     }
     
     func connect() async throws {
@@ -151,7 +149,10 @@ extension DeviceViewModel {
         if case .none = wifiState {
             let status = try await provisioner.getStatus()
             DispatchQueue.main.async {
-                self.wifiState = status
+                self.wifiState = status.connectionStatus
+                self.provisioned = status.connectedAccessPoint != nil
+                self.selectedAccessPoint = status.connectedAccessPoint
+                self.updateButtonState()
             }
         }
     }
@@ -215,9 +216,10 @@ extension DeviceViewModel {
             if state.isInProgress {
                 return oldTitle
             }
+            
             switch state {
             case .disconnected:
-                return "Provision"
+                return provisioned ? "Re-Provision" : "Provision"
             case .connectionFailed(_):
                 return "Try Again"
             case .connected:
@@ -230,7 +232,7 @@ extension DeviceViewModel {
         buttonState.title = title
     }
     
-    private func conventConnectionFailure(_ reason: Provisioner.WiFiStatus.ConnectionFailure) -> ReadableError {
+    private func conventConnectionFailure(_ reason: WiFiStatus.ConnectionFailure) -> ReadableError {
         switch reason {
         case .authError:
             return TitleMessageError(title: "Authentication Error", message: "Please check your password.")
@@ -258,8 +260,8 @@ class MockProvisioner: Provisioner {
         return "14"
     }
     
-    override func getStatus() async throws -> Provisioner.WiFiStatus {
-        return .connected
+    override func getStatus() async throws -> WiFiDeviceStatus {
+        return WiFiDeviceStatus(accessPoint: nil, connectionStatus: .disconnected)
     }
 }
 
@@ -274,6 +276,15 @@ class MockDeviceViewModel: DeviceViewModel {
         self.connectionStatus = .connected
         self.wifiState = .connected
         self.version = "14"
+    }
+    
+    override var selectedAccessPoint: AccessPoint? {
+        get {
+            AccessPoint(ssid: "Office Wi-Fi", bssid: "4F.41.AF.10", id: "Office 1", isOpen: false, channel: 12, rssi: -50, frequency: ._5GHz)
+        }
+        set {
+            
+        }
     }
 }
 #endif

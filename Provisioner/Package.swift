@@ -27,7 +27,7 @@ let package = Package(
                 .product(name: "SwiftProtobuf", package: "swift-protobuf"),
                 .product(name: "CoreBluetoothMock", package: "IOS-CoreBluetooth-Mock")
             ],
-            resources: [.process("Resources/MockAP.json")]
+            resources: [.process("Mock/MockAP.json")]
         ),
         .testTarget(
             name: "ProvisionerTests",

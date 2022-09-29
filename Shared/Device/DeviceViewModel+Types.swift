@@ -34,7 +34,7 @@ extension DeviceViewModel {
     }
 }
 
-extension Provisioner.BluetoothConnectionStatus {
+extension BluetoothConnectionStatus {
     func toConnectionState() -> DeviceViewModel.ConnectionState {
         switch self {
         case .disconnected:
@@ -54,7 +54,7 @@ extension Provisioner.BluetoothConnectionStatus {
     }
 }
 
-extension Provisioner.BluetoothConnectionStatus: CustomStringConvertible {
+extension BluetoothConnectionStatus: CustomStringConvertible {
     public var description: String {
         switch self {
         case .disconnected:

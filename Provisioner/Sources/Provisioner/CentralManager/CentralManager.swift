@@ -83,7 +83,7 @@ class CentralManager {
     )
 
     // State of the connection
-    let connectionStateSubject = PassthroughSubject<Provisioner.BluetoothConnectionStatus, Never>()
+    let connectionStateSubject = PassthroughSubject<BluetoothConnectionStatus, Never>()
     private let centralManagerStateSubject = CurrentValueSubject<CBManagerState, Never>(.unknown)
 
     private var readValueContinuation: CharacteristicValueContinuation?

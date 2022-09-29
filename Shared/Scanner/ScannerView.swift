@@ -94,6 +94,7 @@ struct ScannerView: View {
 
                     NavigationLink {
                         DeviceView(viewModel: DeviceViewModel(peripheralId: scanResult.id))
+                            .navigationTitle(scanResult.name)
                     } label: {
                         Label {
                             Text(scanResult.name)
@@ -149,7 +150,8 @@ struct ScannerView: View {
 
 		static var previews: some View {
             ScannerView(viewModel: DummyScanViewModel())
-                .previewDisplayName("iPhone 13")
+                .previewDisplayName("iPhone 14 Pro")
+                .previewDevice(PreviewDevice(rawValue: "iPhone 14 Pro"))
 		}
 	}
 #endif

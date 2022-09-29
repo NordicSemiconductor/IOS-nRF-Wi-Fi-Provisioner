@@ -4,60 +4,6 @@ import SwiftProtobuf
 import CoreBluetoothMock
 import Combine
 
-extension Provisioner {
-    public enum WiFiStatus: CustomDebugStringConvertible {
-        case disconnected
-        case authentication
-        case association
-        case obtainingIp
-        case connected
-        case connectionFailed(ConnectionFailure)
-
-        public enum ConnectionFailure {
-            case authError
-            case networkNotFound
-            case timeout
-            case failIp
-            case failConn
-            case unknown
-        }
-
-        public var debugDescription: String {
-            switch self {
-            case .disconnected: return "disconnected"
-            case .authentication: return "authentication"
-            case .association: return "association"
-            case .obtainingIp: return "obtainingIp"
-            case .connected: return "connected"
-            case .connectionFailed(let reason): return "connectionFailed: \(reason)"
-            }
-        }
-
-        public struct Service {
-            public static let wifi = UUID(uuidString: "14387800-130c-49e7-b877-2881c89cb258")!
-
-            public struct Characteristic {
-                public static let version = UUID(uuidString: "14387801-130c-49e7-b877-2881c89cb258")!
-                public static let controlPoint = UUID(uuidString: "14387802-130c-49e7-b877-2881c89cb258")!
-                public static let dataOut = UUID(uuidString: "14387803-130c-49e7-b877-2881c89cb258")!
-            }
-        }
-    }
-
-    /// The current bluetooth device connection status.
-    public enum BluetoothConnectionStatus {
-        case disconnected
-        case connected
-        case connecting
-        case connectionCanceled(Reason)
-
-        public enum Reason {
-            case error(Swift.Error)
-            case byRequest
-        }
-    }
-}
-
 open class Provisioner {
     private let logger = Logger(
             subsystem: Bundle(for: Provisioner.self).bundleIdentifier ?? "",
@@ -95,12 +41,13 @@ open class Provisioner {
         return "\(version)"
     }
 
-    open func getStatus() async throws -> WiFiStatus {
+    open func getStatus() async throws -> WiFiDeviceStatus {
         let response = (try await sendRequestToDataPoint(opCode: .getStatus))
         guard case .success = response.status else {
             throw ProvisionError.unknownDeviceStatus
         }
-        return response.deviceStatus.state.toPublicStatus()
+        
+        return WiFiDeviceStatus(deviceStatus: response.deviceStatus)
     }
 
     open func startScan() async throws -> AnyPublisher<AccessPoint, Swift.Error> {
@@ -185,6 +132,10 @@ open class Provisioner {
         }
 
         return statusPublisher
+    }
+    
+    open func unprovision() {
+        
     }
 }
 

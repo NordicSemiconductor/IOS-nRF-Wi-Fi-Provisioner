@@ -36,7 +36,6 @@ struct DeviceView: View {
                 Placeholder(text: "Disconnected", image: "bluetooth_disabled")
             }
         }
-        .navigationTitle("Device Info")
         .onAppear {
             Task {
                 do {
@@ -54,10 +53,11 @@ struct DeviceView: View {
                 // MARK: Device Name
                 Section("Device") {
                     HStack {
-                        NordicLabel("Device Name", image: "bluetooth")
+                        NordicLabel("Status", image: "bluetooth")
                         
                         Spacer()
-                        Text(viewModel.deviceName).foregroundColor(.secondary)
+                        Text(viewModel.provisioned ? "Provisioned  ✓" : "Not Provisioned")
+                            .foregroundColor(viewModel.provisioned ? .green : .secondary)
                     }
                 }
                 
@@ -96,11 +96,17 @@ struct DeviceView: View {
                     NavigationLink(isActive: $viewModel.showAccessPointList) {
                         AccessPointList(viewModel: AccessPointListViewModel(provisioner: viewModel.provisioner, accessPointSelection: viewModel))
                     } label: {
-                        HStack {
-                            NordicLabel("Access Point", systemImage: "wifi.circle")
-                            Spacer()
-                            Text(viewModel.selectedAccessPoint?.ssid ?? "Not Selected")
-                                .foregroundColor(.secondary)
+                        VStack {
+                            HStack {
+                                NordicLabel("Access Point", systemImage: "wifi.circle")
+                                Spacer()
+                                Text(viewModel.selectedAccessPoint?.ssid ?? "Not Selected")
+                                    .foregroundColor(.secondary)
+                            }
+                            if viewModel.selectedAccessPoint != nil {
+                                Divider()
+                                additionalInfo(ap: viewModel.selectedAccessPoint!)
+                            }
                         }
                         .disabled(viewModel.inProgress)
                     }
@@ -136,10 +142,44 @@ struct DeviceView: View {
                     .padding()
         }
     }
+    
+    @ViewBuilder
+    func additionalInfo(ap: AccessPoint) -> some View {
+        HStack {
+            VStack(alignment: .leading) {
+                Text("Channel \(ap.channel)")
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+                Text(ap.bssid)
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+            }
+            
+            Spacer()
+            Text(ap.frequency.stringValue)
+//                .font(.caption)
+                .foregroundColor(.secondary)
+            if ap.rssi != 0 {
+                RSSIView(rssi: WiFiRSSI(level: ap.rssi))
+                    .frame(maxWidth: 30, maxHeight: 16)
+            }
+            
+        }
+        HStack {
+            
+            Spacer()
+            
+        }
+        HStack {
+            
+            Spacer()
+            
+        }
+    }
 }
 
 struct StatusIndicatorView: View {
-    let status: Provisioner.WiFiStatus?
+    let status: WiFiStatus?
     var forceProgress: Bool = false
     
     var body: some View {
@@ -165,8 +205,11 @@ struct DeviceView_Previews: PreviewProvider {
             DeviceView(
                 viewModel: MockDeviceViewModel(fakeStatus: .connected)
             )
+            .navigationTitle("Device Name")
         }
         .setupNavBarBackground()
+        .previewDisplayName("iPhone 14 Pro")
+        .previewDevice(PreviewDevice(rawValue: "iPhone 14 Pro"))
     }
     
     

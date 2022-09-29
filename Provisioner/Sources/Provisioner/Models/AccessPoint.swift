@@ -30,7 +30,7 @@ public struct AccessPoint: Identifiable, Hashable, Equatable {
         public var stringValue: String {
             switch self {
             case .any:
-                return "Any"
+                return ""
             case ._2_4GHz:
                 return "2.4 GHz"
             case ._5GHz:

@@ -8,7 +8,7 @@
 import Foundation
 
 extension ConnectionState {
-    func toPublicStatus(withReason reason: ConnectionFailureReason? = nil) -> Provisioner.WiFiStatus {
+    func toPublicStatus(withReason reason: ConnectionFailureReason? = nil) -> WiFiStatus {
         switch self {
         case .connected: return .connected
         case .association: return .association
@@ -21,7 +21,7 @@ extension ConnectionState {
 }
 
 extension ConnectionFailureReason {
-    func toPublicStatus() -> Provisioner.WiFiStatus.ConnectionFailure {
+    func toPublicStatus() -> WiFiStatus.ConnectionFailure {
         switch self {
         case .authError: return .authError
         case .failConn: return .failConn
