@@ -104,8 +104,8 @@ struct DeviceView: View {
                                     .foregroundColor(.secondary)
                             }
                             if viewModel.selectedAccessPoint != nil {
+                                Divider()
                                 additionalInfo(ap: viewModel.selectedAccessPoint!)
-                                
                             }
                         }
                         .disabled(viewModel.inProgress)
@@ -146,21 +146,34 @@ struct DeviceView: View {
     @ViewBuilder
     func additionalInfo(ap: AccessPoint) -> some View {
         HStack {
-            Text("Channel \(ap.channel)")
-                .font(.caption)
-                .foregroundColor(.secondary)
-            Spacer()
-            RSSIView(rssi: WiFiRSSI(level: ap.rssi))
-                .frame(maxWidth: 30, maxHeight: 16)
-        }
-        HStack {
-            Text(ap.bssid)
-                .font(.caption)
-                .foregroundColor(.secondary)
+            VStack(alignment: .leading) {
+                Text("Channel \(ap.channel)")
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+                Text(ap.bssid)
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+            }
+            
             Spacer()
             Text(ap.frequency.stringValue)
-                .font(.caption)
+//                .font(.caption)
                 .foregroundColor(.secondary)
+            if ap.rssi != 0 {
+                RSSIView(rssi: WiFiRSSI(level: ap.rssi))
+                    .frame(maxWidth: 30, maxHeight: 16)
+            }
+            
+        }
+        HStack {
+            
+            Spacer()
+            
+        }
+        HStack {
+            
+            Spacer()
+            
         }
     }
 }
