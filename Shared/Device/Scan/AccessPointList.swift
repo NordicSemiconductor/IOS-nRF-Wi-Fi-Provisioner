@@ -15,7 +15,7 @@ struct AccessPointList: View {
     var body: some View {
         VStack {
             if viewModel.accessPoints.isEmpty {
-                Placeholder(text: "Scanning", message: "Scanning for wi-fi", systemImage: "wifi")
+                Placeholder(text: "Scanning", message: "Scanning for Wi-Fi", systemImage: "wifi")
             } else {
                 list()
             }
