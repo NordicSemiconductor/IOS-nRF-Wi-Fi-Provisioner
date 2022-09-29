@@ -9,7 +9,7 @@ import SwiftUI
 import Provisioner
 
 struct WiFiStatusColorModifier: ViewModifier {
-    let status: Provisioner.WiFiStatus
+    let status: WiFiStatus
     
     func body(content: Content) -> some View {
         switch status {
@@ -24,7 +24,7 @@ struct WiFiStatusColorModifier: ViewModifier {
 }
 
 extension View {
-    func status(_ status: Provisioner.WiFiStatus) -> some View {
+    func status(_ status: WiFiStatus) -> some View {
         modifier(WiFiStatusColorModifier(status: status))
     }
 }

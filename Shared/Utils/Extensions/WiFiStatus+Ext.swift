@@ -4,7 +4,7 @@
 
 import Provisioner
 
-extension Provisioner.WiFiStatus: CustomStringConvertible {
+extension WiFiStatus: CustomStringConvertible {
     var isInProgress: Bool {
         switch self {
         case .disconnected, .connectionFailed, .connected:
@@ -31,7 +31,7 @@ extension Provisioner.WiFiStatus: CustomStringConvertible {
         }
     }
 
-    private func conventError(_ error: Provisioner.WiFiStatus.ConnectionFailure) -> String {
+    private func conventError(_ error: WiFiStatus.ConnectionFailure) -> String {
         switch error {
         case .authError:
             return "Authentication error"

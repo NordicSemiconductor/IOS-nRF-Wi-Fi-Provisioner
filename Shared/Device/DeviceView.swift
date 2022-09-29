@@ -96,11 +96,17 @@ struct DeviceView: View {
                     NavigationLink(isActive: $viewModel.showAccessPointList) {
                         AccessPointList(viewModel: AccessPointListViewModel(provisioner: viewModel.provisioner, accessPointSelection: viewModel))
                     } label: {
-                        HStack {
-                            NordicLabel("Access Point", systemImage: "wifi.circle")
-                            Spacer()
-                            Text(viewModel.selectedAccessPoint?.ssid ?? "Not Selected")
-                                .foregroundColor(.secondary)
+                        VStack {
+                            HStack {
+                                NordicLabel("Access Point", systemImage: "wifi.circle")
+                                Spacer()
+                                Text(viewModel.selectedAccessPoint?.ssid ?? "Not Selected")
+                                    .foregroundColor(.secondary)
+                            }
+                            if viewModel.selectedAccessPoint != nil {
+                                additionalInfo(ap: viewModel.selectedAccessPoint!)
+                                
+                            }
                         }
                         .disabled(viewModel.inProgress)
                     }
@@ -136,10 +142,31 @@ struct DeviceView: View {
                     .padding()
         }
     }
+    
+    @ViewBuilder
+    func additionalInfo(ap: AccessPoint) -> some View {
+        HStack {
+            Text("Channel \(ap.channel)")
+                .font(.caption)
+                .foregroundColor(.secondary)
+            Spacer()
+            RSSIView(rssi: WiFiRSSI(level: ap.rssi))
+                .frame(maxWidth: 30, maxHeight: 16)
+        }
+        HStack {
+            Text(ap.bssid)
+                .font(.caption)
+                .foregroundColor(.secondary)
+            Spacer()
+            Text(ap.frequency.stringValue)
+                .font(.caption)
+                .foregroundColor(.secondary)
+        }
+    }
 }
 
 struct StatusIndicatorView: View {
-    let status: Provisioner.WiFiStatus?
+    let status: WiFiStatus?
     var forceProgress: Bool = false
     
     var body: some View {
