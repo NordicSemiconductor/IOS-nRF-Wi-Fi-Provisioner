@@ -22,6 +22,7 @@ extension ScannerViewModel {
         let rssi: Int
         let id: UUID
         let previsioned: Bool?
+        let version: Int?
         
         func hash(into hasher: inout Hasher) {
             hasher.combine(id)
@@ -98,7 +99,8 @@ class ScannerViewModel: ObservableObject {
                     name: $0.name,
                     rssi: $0.rssi,
                     id: $0.peripheral.identifier,
-                    previsioned: $0.previsioned
+                    previsioned: $0.previsioned,
+                    version: $0.version
                 )
             }
     }

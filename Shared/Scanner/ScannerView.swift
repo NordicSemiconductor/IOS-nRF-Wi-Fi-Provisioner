@@ -97,8 +97,8 @@ struct ScannerView: View {
                             .navigationTitle(scanResult.name)
                     } label: {
                         Label {
-                            Text(scanResult.name)
-                                    .lineLimit(1)
+                            
+                            ScanResultLabel(scanResult: scanResult)
                         } icon: {
                             RSSIView<BluetoothRSSI>(rssi: BluetoothRSSI(level: scanResult.rssi))
                         }
@@ -115,9 +115,27 @@ struct ScannerView: View {
                 }
             }
         }
-        
-        
 	}
+}
+
+private struct ScanResultLabel: View {
+    let scanResult: ScannerViewModel.ScanResult
+    
+    var body: some View {
+        HStack {
+            Text(scanResult.name)
+                .lineLimit(1)
+            if scanResult.previsioned == true {
+                Image(systemName: "checkmark")
+            }
+            
+            if scanResult.version != nil {
+                Spacer()
+                Text("v\(scanResult.version!)")
+                    .foregroundColor(.secondary)
+            }
+        }
+    }
 }
 
 #if DEBUG
@@ -142,7 +160,7 @@ struct ScannerView: View {
                         name: "Device \(i)",
                         rssi: -90 + i * 10,
                         id: UUID(),
-                        previsioned: false
+                        previsioned: false, version: 19
                     )
 				}
 			}
