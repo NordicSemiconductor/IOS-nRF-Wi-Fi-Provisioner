@@ -66,6 +66,7 @@ struct AccessPointList: View {
                     .frame(maxWidth: 30, maxHeight: 20)
             }
         }
+        .accessibility(identifier: "access_point_\(viewModel.accessPoints.firstIndex(of: accessPoint) ?? -1)")
     }
     // */
     

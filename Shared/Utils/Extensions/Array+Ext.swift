@@ -20,4 +20,10 @@ extension Array where Element : Hashable {
         }
     }
     
+    func appended(_ element: Element) -> [Element] {
+        var newArr = self
+        newArr.append(element)
+        return newArr
+    }
+    
 }

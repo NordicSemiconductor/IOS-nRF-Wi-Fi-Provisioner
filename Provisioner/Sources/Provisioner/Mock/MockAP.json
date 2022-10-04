@@ -38,7 +38,7 @@
   {
     "scanRecord": {
       "wifi": {
-        "ssid": "",
+        "ssid": "T2ZmaWNlIEFQ",
         "bssid": "9p/C1BZJ",
         "band": "BAND_2_4_GH",
         "channel": 1,
@@ -86,7 +86,7 @@
   {
     "scanRecord": {
       "wifi": {
-        "ssid": "",
+        "ssid": "T2ZmaWNlIEFQ",
         "bssid": "/p/C1BaY",
         "band": "BAND_2_4_GH",
         "channel": 6,
@@ -98,7 +98,7 @@
   {
     "scanRecord": {
       "wifi": {
-        "ssid": "",
+        "ssid": "T2ZmaWNlIEFQ",
         "bssid": "/p/C1Bb7",
         "band": "BAND_2_4_GH",
         "channel": 6,
@@ -110,7 +110,7 @@
   {
     "scanRecord": {
       "wifi": {
-        "ssid": "",
+        "ssid": "T2ZmaWNlIEFQ",
         "bssid": "/p/C1Bji",
         "band": "BAND_2_4_GH",
         "channel": 11,
@@ -182,7 +182,7 @@
   {
     "scanRecord": {
       "wifi": {
-        "ssid": "",
+        "ssid": "T2ZmaWNlIEFQ",
         "bssid": "+p/C1RaY",
         "band": "BAND_2_4_GH",
         "channel": 36,
@@ -194,7 +194,7 @@
   {
     "scanRecord": {
       "wifi": {
-        "ssid": "",
+        "ssid": "T2ZmaWNlIEFQ",
         "bssid": "9p/C1Rji",
         "band": "BAND_2_4_GH",
         "channel": 36,
@@ -206,7 +206,7 @@
   {
     "scanRecord": {
       "wifi": {
-        "ssid": "",
+        "ssid": "T2ZmaWNlIEFQ",
         "bssid": "/p/C1RaY",
         "band": "BAND_2_4_GH",
         "channel": 36,
@@ -218,7 +218,7 @@
   {
     "scanRecord": {
       "wifi": {
-        "ssid": "",
+        "ssid": "T2ZmaWNlIEFQ",
         "bssid": "+p/C1Rji",
         "band": "BAND_2_4_GH",
         "channel": 36,
@@ -230,7 +230,7 @@
   {
     "scanRecord": {
       "wifi": {
-        "ssid": "",
+        "ssid": "T2ZmaWNlIEFQ",
         "bssid": "4p/C1RaY",
         "band": "BAND_2_4_GH",
         "channel": 36,
@@ -242,7 +242,7 @@
   {
     "scanRecord": {
       "wifi": {
-        "ssid": "",
+        "ssid": "T2ZmaWNlIEFQ",
         "bssid": "/p/C1Rji",
         "band": "BAND_2_4_GH",
         "channel": 36,
@@ -266,7 +266,7 @@
   {
     "scanRecord": {
       "wifi": {
-        "ssid": "",
+        "ssid": "T2ZmaWNlIEFQ",
         "bssid": "4p/C1Rji",
         "band": "BAND_2_4_GH",
         "channel": 36,
@@ -278,7 +278,7 @@
   {
     "scanRecord": {
       "wifi": {
-        "ssid": "",
+        "ssid": "T2ZmaWNlIEFQ",
         "bssid": "9p/C1RaY",
         "band": "BAND_2_4_GH",
         "channel": 36,
@@ -298,23 +298,10 @@
       },
       "rssi": -83
     }
-  },
-  {
+  },  {
     "scanRecord": {
       "wifi": {
-        "ssid": "AAAAAAAA",
-        "bssid": "kPiRmkEV",
-        "band": "BAND_2_4_GH",
-        "channel": 100,
-        "auth": "WPA_WPA2_PSK"
-      },
-      "rssi": -83
-    }
-  },
-  {
-    "scanRecord": {
-      "wifi": {
-        "ssid": "",
+        "ssid": "T2ZmaWNlIEFQ",
         "bssid": "YkW36GEP",
         "band": "BAND_2_4_GH",
         "channel": 157,

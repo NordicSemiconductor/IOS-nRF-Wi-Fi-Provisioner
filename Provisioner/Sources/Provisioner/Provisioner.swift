@@ -10,6 +10,7 @@ open class Provisioner {
             category: "provisioner-manager"
     )
 
+    private var cancelables = Set<AnyCancellable>()
     private let centralManager = CentralManager()
 
     public let deviceID: UUID
@@ -50,10 +51,40 @@ open class Provisioner {
         return WiFiDeviceStatus(deviceStatus: response.deviceStatus)
     }
 
-    open func startScan() async throws -> AnyPublisher<AccessPoint, Swift.Error> {
+    open func startScan() -> AnyPublisher<AccessPoint, Swift.Error> {
         logger.info("start scan")
         
-        let resultStream = centralManager.dataOutStream
+        struct ImpossibleError: Error {}
+        
+        let future = Future<Bool, Swift.Error> { promise in
+            Task {
+                let response = (try await self.sendRequestToDataPoint(opCode: .startScan))
+                if case .success = response.status {
+                    promise(.success((true)))
+                } else {
+                    promise(.failure(ProvisionError.requestFailed))
+                }
+            }
+        }
+        
+        return self.centralManager.dataOutStream.combineLatest(future)
+            .scan((Array<Data>(), false)) { old, value -> (Array<Data>, Bool) in
+                var oldValue = old
+                oldValue.1 = value.1
+                oldValue.0.append(value.0)
+                return oldValue
+            }
+            .compactMap { val -> [Data]? in
+                if val.1 {
+                    return val.0
+                } else {
+                    return nil
+                }
+            }
+            .flatMap { dataSeq -> Publishers.Sequence<[Data], Error> in
+                self.logger.debug("Assigned access points: - \(dataSeq.count)")
+                return Publishers.Sequence(sequence: dataSeq)
+            }
             .compactMap { [weak self] data -> AccessPoint? in
                 guard let result = try? Result(serializedData: data) else {
                     return nil
@@ -66,12 +97,6 @@ open class Provisioner {
                 return AccessPoint(wifiInfo: wifiInfo, RSSI: result.scanRecord.rssi)
             }
             .eraseToAnyPublisher()
-        
-        let response = (try await sendRequestToDataPoint(opCode: .startScan))
-        guard case .success = response.status else {
-            throw ProvisionError.requestFailed
-        }
-        return resultStream
     }
 
     open func stopScan() async throws {

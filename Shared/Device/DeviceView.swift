@@ -110,25 +110,26 @@ struct DeviceView: View {
                         }
                         .disabled(viewModel.inProgress)
                     }
+                    .accessibilityIdentifier("access_point_selector")
                     .disabled(viewModel.inProgress)
-
+                    
                     if viewModel.passwordRequired {
                         SecureField("Password", text: $viewModel.password)
                             .disabled(viewModel.inProgress)
                     }
-
+                    
                     if viewModel.selectedAccessPoint != nil {
                         HStack {
                             Text("Volatile Memory")
                             Spacer()
                             Toggle("", isOn: $viewModel.volatileMemory)
-                                    .toggleStyle(SwitchToggleStyle(tint: .nordicBlue))
+                                .toggleStyle(SwitchToggleStyle(tint: .nordicBlue))
                         }
-                                .disabled(viewModel.inProgress)
+                        .disabled(viewModel.inProgress)
                     }
                 }
             }
-
+            
             Spacer()
             Button(viewModel.buttonState.title) {
                 Task {
@@ -137,9 +138,9 @@ struct DeviceView: View {
                     }
                 }
             }
-                    .disabled(!viewModel.buttonState.isEnabled || viewModel.selectedAccessPoint == nil)
-                    .buttonStyle(viewModel.buttonState.style)
-                    .padding()
+            .disabled(!viewModel.buttonState.isEnabled || viewModel.selectedAccessPoint == nil)
+            .buttonStyle(viewModel.buttonState.style)
+            .padding()
         }
     }
     
@@ -157,23 +158,20 @@ struct DeviceView: View {
             
             Spacer()
             Text(ap.frequency.stringValue)
-//                .font(.caption)
+            //                .font(.caption)
                 .foregroundColor(.secondary)
             if ap.rssi != 0 {
                 RSSIView(rssi: WiFiRSSI(level: ap.rssi))
                     .frame(maxWidth: 30, maxHeight: 16)
+                    .accessibilityIdentifier("rssi_view")
             }
             
         }
         HStack {
-            
             Spacer()
-            
         }
         HStack {
-            
             Spacer()
-            
         }
     }
 }

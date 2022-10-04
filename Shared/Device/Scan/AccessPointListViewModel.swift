@@ -44,7 +44,10 @@ class AccessPointListViewModel: ObservableObject {
                     aps.append(ap)
                 }
             }
-            accessPoints = aps.sorted(by: { $0.ssid < $1.ssid })
+            DispatchQueue.main.async {
+                self.logger.debug("Assigned access points: \(self.allAccessPoints.count)")
+                self.accessPoints = aps.sorted(by: { $0.ssid < $1.ssid })
+            }
         }
     }
     
@@ -61,36 +64,15 @@ class AccessPointListViewModel: ObservableObject {
     }
     
     func startScan() async {
-        DispatchQueue.main.async {
+        DispatchQueue.main.async { [unowned self] in
             self.allAccessPoints.removeAll()
             self.isScanning = true
-        }
-        do {
-            try await provisioner.startScan()
-                .receive(on: DispatchQueue.main)
-                .sink { [weak self] completion in
-                    guard let self = self else {
-                        return
-                    }
-                    switch completion {
-                    case .finished:
-                        self.isScanning = false
-                    case .failure(let error):
-                        self.logger.error("failed to start scan: \(error.localizedDescription)")
-                        self.isScanning = false
-                    }
-                } receiveValue: { [weak self] accessPoint in
-                    guard let self = self else {
-                        return
-                    }
-                    self.allAccessPoints.insert(accessPoint)
-                }
+            
+            provisioner.startScan()
+                .scan(Set<AccessPoint>(), { $0.inserted($1) })
+                .assertNoFailure()
+                .assign(to: \AccessPointListViewModel.allAccessPoints, on: self)
                 .store(in: &cancellables)
-        } catch let e {
-            print(e.localizedDescription)
-            DispatchQueue.main.async {
-                self.isScanning = false
-            }
         }
     }
     

@@ -67,6 +67,7 @@ struct IntroView: View {
                 }
                 .buttonStyle(NordicButtonStyle())
                 .padding()
+                .accessibilityIdentifier("start_provisioning_btn")
             }
             .navigationTitle("Wi-Fi")
             .onAppear { try? viewModel.readInfo() }

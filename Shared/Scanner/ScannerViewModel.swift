@@ -6,17 +6,17 @@
 //
 
 import Combine
+import CoreBluetoothMock
 import Foundation
 import Provisioner
 import SwiftUI
-import CoreBluetoothMock
 import os
 
 extension ScannerViewModel {
     enum State {
         case waiting, scanning, noPermission, turnedOff
     }
-
+    
     struct ScanResult: Identifiable, Equatable, Hashable {
         let name: String
         let rssi: Int
@@ -32,14 +32,12 @@ extension ScannerViewModel {
             lhs.id == rhs.id
         }
     }
-    
-    
 }
 
 class ScannerViewModel: ObservableObject {
     let logger = Logger(
-            subsystem: Bundle(for: ScannerViewModel.self).bundleIdentifier ?? "",
-            category: "scanner.scanner-view-model"
+        subsystem: Bundle(for: ScannerViewModel.self).bundleIdentifier ?? "",
+        category: "scanner.scanner-view-model"
     )
     
     // Show start info on first launch
@@ -51,22 +49,22 @@ class ScannerViewModel: ObservableObject {
         }
     }
     
-    @Published private (set) var state: State = .waiting
-    @Published private (set) var scanResults: [ScanResult] = []
+    @Published private(set) var state: State = .waiting
+    @Published private(set) var scanResults: [ScanResult] = []
     private var allScanResults = Set<BluetoothManager.ScanResult>([]) {
         didSet {
             reset()
         }
     }
-
+    
     private let bluetoothManager: BluetoothManager
-
+    
     private var cancelable: Set<AnyCancellable> = []
     
     init(bluetoothManager: BluetoothManager = BluetoothManager()) {
         self.bluetoothManager = bluetoothManager
         showStartInfo = !dontShowAgain
-
+        
         bluetoothManager.statePublisher
             .receive(on: DispatchQueue.main)
             .mapError { _ in fatalError() }
@@ -75,34 +73,34 @@ class ScannerViewModel: ObservableObject {
                 self.state = State(from: state)
             })
             .store(in: &cancelable)
-
+        
     }
-
+    
     func startScan() {
         bluetoothManager.peripheralPublisher
             .receive(on: DispatchQueue.main)
             .mapError { _ in fatalError() }
-                .sink(receiveValue: { [weak self] result in
-                    guard let self = self else { return }
-                    if !self.allScanResults.contains(result) {
-                        self.allScanResults.insert(result)
-                    }
+            .sink(receiveValue: { [weak self] result in
+                guard let self = self else { return }
+                if !self.allScanResults.contains(result) {
+                    self.allScanResults.insert(result)
+                }
             })
             .store(in: &cancelable)
     }
     
     private func reset() {
         scanResults = allScanResults.filter {
-                onlyUnprovisioned ? $0.previsioned != true : true
-            }.map {
-                ScannerViewModel.ScanResult(
-                    name: $0.name,
-                    rssi: $0.rssi,
-                    id: $0.peripheral.identifier,
-                    previsioned: $0.previsioned,
-                    version: $0.version
-                )
-            }
+            onlyUnprovisioned ? $0.previsioned != true : true
+        }.map {
+            ScannerViewModel.ScanResult(
+                name: $0.name,
+                rssi: $0.rssi,
+                id: $0.peripheral.identifier,
+                previsioned: $0.previsioned,
+                version: $0.version
+            )
+        }
     }
 }
 

@@ -10,27 +10,27 @@ import SwiftUI
 import CoreBluetoothMock
 
 struct ScannerView: View {
-	@StateObject var viewModel: ScannerViewModel
-
-	var body: some View {
+    @StateObject var viewModel: ScannerViewModel
+    
+    var body: some View {
         NavigationView {
             Group {
                 switch viewModel.state {
                 case .noPermission:
                     Placeholder(
-                            text: "Bluetooth permission denied",
-                            message: "Please, enable Bluetooth in Settings",
-                            image: "bluetooth_disabled",
-                            action: {
-                                Button(action: {
-                                    UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
-                                }) {
-                                    Text("Open Settings")
-                                }
-                                        .buttonStyle(NordicButtonStyle())
+                        text: "Bluetooth permission denied",
+                        message: "Please, enable Bluetooth in Settings",
+                        image: "bluetooth_disabled",
+                        action: {
+                            Button(action: {
+                                UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
+                            }) {
+                                Text("Open Settings")
                             }
+                            .buttonStyle(NordicButtonStyle())
+                        }
                     )
-                            .padding()
+                    .padding()
                 case .scanning:
                     if viewModel.scanResults.isEmpty {
                         scanningPlaceholder
@@ -41,17 +41,17 @@ struct ScannerView: View {
                     scanningPlaceholder
                 case .turnedOff:
                     Placeholder(
-                            text: "Bluetooth is turned off",
-                            message: "Please, enable Bluetooth in Settings",
-                            image: "bluetooth_disabled",
-                            action: {
-                                Button(action: {
-                                    UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
-                                }) {
-                                    Text("Open Settings")
-                                }
-                                        .buttonStyle(NordicButtonStyle())
+                        text: "Bluetooth is turned off",
+                        message: "Please, enable Bluetooth in Settings",
+                        image: "bluetooth_disabled",
+                        action: {
+                            Button(action: {
+                                UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
+                            }) {
+                                Text("Open Settings")
                             }
+                            .buttonStyle(NordicButtonStyle())
+                        }
                     )
                 }
             }
@@ -69,29 +69,31 @@ struct ScannerView: View {
         }
         .setupNavBarBackground()
         .accentColor(.white)
-		.onAppear {
+        .onAppear {
             viewModel.startScan()
         }
-        .sheet(isPresented: $viewModel.showStartInfo) { IntroView(show: $viewModel.showStartInfo, dontShowAgain: $viewModel.dontShowAgain) }
-
+        .sheet(isPresented: $viewModel.showStartInfo) {
+            IntroView(show: $viewModel.showStartInfo, dontShowAgain: $viewModel.dontShowAgain)
+        }
+        
     }
     
     @ViewBuilder
     private var scanningPlaceholder: some View {
         Placeholder(
-                text: "Scanning for devices",
-                message: "If you don't see your device check if it is turned on",
-                image: "bluetooth_searching"
+            text: "Scanning for devices",
+            message: "If you don't see your device check if it is turned on",
+            image: "bluetooth_searching"
         )
-            .padding()
+        .padding()
     }
-
-	@ViewBuilder
-	private func listView() -> some View {
+    
+    @ViewBuilder
+    private func listView() -> some View {
         List {
             Section {
                 ForEach(viewModel.scanResults) { scanResult in
-
+                    
                     NavigationLink {
                         DeviceView(viewModel: DeviceViewModel(peripheralId: scanResult.id))
                             .navigationTitle(scanResult.name)
@@ -102,9 +104,10 @@ struct ScannerView: View {
                         } icon: {
                             RSSIView<BluetoothRSSI>(rssi: BluetoothRSSI(level: scanResult.rssi))
                         }
-                                .padding()
+                        .padding()
                     }
                     .deviceAdoptiveDetail()
+                    .accessibilityIdentifier("scan_result_\(viewModel.scanResults.firstIndex(of: scanResult) ?? -1)")
                 }
             } header: {
                 HStack {
@@ -115,7 +118,7 @@ struct ScannerView: View {
                 }
             }
         }
-	}
+    }
 }
 
 private struct ScanResultLabel: View {
@@ -139,37 +142,37 @@ private struct ScanResultLabel: View {
 }
 
 #if DEBUG
-	struct ScannerView_Previews: PreviewProvider {
-		class DummyScanViewModel: ScannerViewModel {
-            override var showStartInfo: Bool {
-                get {
-                    false
-                }
-                set {
-                    
-                }
+struct ScannerView_Previews: PreviewProvider {
+    class DummyScanViewModel: ScannerViewModel {
+        override var showStartInfo: Bool {
+            get {
+                false
             }
-            
-            override var state: ScannerViewModel.State {
-                .scanning
+            set {
+                
             }
-
-			override var scanResults: [ScanResult] {
-				(0...3).map { i in
-                    ScanResult(
-                        name: "Device \(i)",
-                        rssi: -90 + i * 10,
-                        id: UUID(),
-                        previsioned: false, version: 19
-                    )
-				}
-			}
-		}
-
-		static var previews: some View {
-            ScannerView(viewModel: DummyScanViewModel())
-                .previewDisplayName("iPhone 14 Pro")
-                .previewDevice(PreviewDevice(rawValue: "iPhone 14 Pro"))
-		}
-	}
+        }
+        
+        override var state: ScannerViewModel.State {
+            .scanning
+        }
+        
+        override var scanResults: [ScanResult] {
+            (0...3).map { i in
+                ScanResult(
+                    name: "Device \(i)",
+                    rssi: -90 + i * 10,
+                    id: UUID(),
+                    previsioned: false, version: 19
+                )
+            }
+        }
+    }
+    
+    static var previews: some View {
+        ScannerView(viewModel: DummyScanViewModel())
+            .previewDisplayName("iPhone 14 Pro")
+            .previewDevice(PreviewDevice(rawValue: "iPhone 14 Pro"))
+    }
+}
 #endif
