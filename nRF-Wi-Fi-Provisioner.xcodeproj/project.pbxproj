@@ -55,6 +55,7 @@
 		01A43DEF2886FED80025A5C4 /* DeviceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A43DED2886FED80025A5C4 /* DeviceViewModel.swift */; };
 		01A9468E28EAF9D600F40D1D /* Set+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A9468D28EAF9D600F40D1D /* Set+Ext.swift */; };
 		01A9468F28EAF9D600F40D1D /* Set+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A9468D28EAF9D600F40D1D /* Set+Ext.swift */; };
+		01A9469328ECD20D00F40D1D /* SnapshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A9469228ECD20D00F40D1D /* SnapshotHelper.swift */; };
 		01C0F0FA287DE864008BBE46 /* ScannerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C0F0F9287DE864008BBE46 /* ScannerViewModel.swift */; };
 		01C0F0FB287DE864008BBE46 /* ScannerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C0F0F9287DE864008BBE46 /* ScannerViewModel.swift */; };
 		01C0F0FD287DE926008BBE46 /* ScanResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C0F0FC287DE926008BBE46 /* ScanResult.swift */; };
@@ -147,6 +148,7 @@
 		01A43DEA2886FECB0025A5C4 /* DeviceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceView.swift; sourceTree = "<group>"; };
 		01A43DED2886FED80025A5C4 /* DeviceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceViewModel.swift; sourceTree = "<group>"; };
 		01A9468D28EAF9D600F40D1D /* Set+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Set+Ext.swift"; sourceTree = "<group>"; };
+		01A9469228ECD20D00F40D1D /* SnapshotHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SnapshotHelper.swift; path = fastlane/SnapshotHelper.swift; sourceTree = SOURCE_ROOT; };
 		01C0F0F9287DE864008BBE46 /* ScannerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerViewModel.swift; sourceTree = "<group>"; };
 		01C0F0FC287DE926008BBE46 /* ScanResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanResult.swift; sourceTree = "<group>"; };
 		01C1BF6B28E70BB200FDD841 /* nRF-Wi-Fi-ProvisionerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "nRF-Wi-Fi-ProvisionerUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -387,6 +389,7 @@
 		01C1BF6C28E70BB200FDD841 /* nRF-Wi-Fi-ProvisionerUITests */ = {
 			isa = PBXGroup;
 			children = (
+				01A9469228ECD20D00F40D1D /* SnapshotHelper.swift */,
 				01C1BF6D28E70BB200FDD841 /* nRF_Wi_Fi_ProvisionerUITests.swift */,
 				01C1BF6F28E70BB200FDD841 /* nRF_Wi_Fi_ProvisionerUITestsLaunchTests.swift */,
 			);
@@ -751,6 +754,7 @@
 			files = (
 				01C1BF6E28E70BB200FDD841 /* nRF_Wi_Fi_ProvisionerUITests.swift in Sources */,
 				01C1BF7028E70BB200FDD841 /* nRF_Wi_Fi_ProvisionerUITestsLaunchTests.swift in Sources */,
+				01A9469328ECD20D00F40D1D /* SnapshotHelper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1112,7 +1116,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = P3R8YQEV4L;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.nordicsemi.nRF-Wi-Fi-ProvisionerUITests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1132,7 +1136,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = P3R8YQEV4L;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.nordicsemi.nRF-Wi-Fi-ProvisionerUITests";
 				PRODUCT_NAME = "$(TARGET_NAME)";

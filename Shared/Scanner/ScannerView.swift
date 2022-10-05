@@ -66,6 +66,8 @@ struct ScannerView: View {
                           : "line.3.horizontal.decrease.circle")
                 }
             }
+            
+            Placeholder(text: "Select the device", message: "Select Bluetooth device to storct provisioning process", image: "bluetooth")
         }
         .setupNavBarBackground()
         .accentColor(.white)

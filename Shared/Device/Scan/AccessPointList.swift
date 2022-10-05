@@ -42,7 +42,12 @@ struct AccessPointList: View {
         List {
             Section {
                 ForEach(viewModel.accessPoints) {
-                    channelPicker(accessPoint: $0)
+                    if #available(iOS 16, *) {
+                        channelPickerList(accessPoint: $0)
+                    } else {
+                        channelPicker(accessPoint: $0)
+                    }
+                    
                 }
             } header: {
                 Text("Access Points")
@@ -51,7 +56,7 @@ struct AccessPointList: View {
     }
     //*
     @ViewBuilder
-    private func channelPicker(accessPoint: AccessPoint) -> some View {
+    private func channelPickerList(accessPoint: AccessPoint) -> some View {
         NavigationLink {
             ChannelPicker(
                 channels: viewModel.allChannels(for: accessPoint),
@@ -70,7 +75,7 @@ struct AccessPointList: View {
     }
     // */
     
-    /*
+    //*
     @ViewBuilder
     private func channelPicker(accessPoint: AccessPoint) -> some View {
         Picker(selection: $viewModel.selectedAccessPoint, content: {
@@ -106,6 +111,7 @@ struct AccessPointList: View {
             }
         })
         .navigationBarTitle("Select Access Point")
+        .accessibility(identifier: "access_point_\(viewModel.accessPoints.firstIndex(of: accessPoint) ?? -1)")
     }
      // */
 }

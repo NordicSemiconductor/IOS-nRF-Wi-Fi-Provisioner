@@ -19,6 +19,20 @@
                ReferencedContainer = "container:nRF-Wi-Fi-Provisioner.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "01C1BF6A28E70BB200FDD841"
+               BuildableName = "nRF-Wi-Fi-ProvisionerUITests.xctest"
+               BlueprintName = "nRF-Wi-Fi-ProvisionerUITests"
+               ReferencedContainer = "container:nRF-Wi-Fi-Provisioner.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
