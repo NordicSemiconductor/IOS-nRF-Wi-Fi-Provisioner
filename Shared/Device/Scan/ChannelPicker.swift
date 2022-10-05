@@ -20,19 +20,22 @@ struct ChannelPicker: View {
                     HStack {
                         VStack(alignment: .leading) {
                             Text("Channel \(channel.channel)")
+                                .accessibilityIdentifier("channel_\(channels.firstIndex(of: channel) ?? -1)")
                             Text(channel.bssid)
-                                .font(.caption)
+                                    .font(.caption)
                         }
                         Spacer()
                         VStack(alignment: .trailing) {
                             RSSIView<WiFiRSSI>(rssi: WiFiRSSI(level: channel.rssi))
-                                .frame(maxWidth: 30, maxHeight: 20)
+                                    .frame(maxWidth: 30, maxHeight: 20)
                             Text(channel.frequency.stringValue.description)
-                                .font(.caption)
-                                .foregroundColor(.secondary)
+                                    .font(.caption)
+                                    .foregroundColor(.secondary)
                         }
                     }
+                    .accessibilityIdentifier("channel_selector_\(channels.firstIndex(of: channel) ?? -1)")
                     .tag(Optional(channel))
+                    .accessibilityIdentifier("accid")
                 }
             } header: {
                 Text("Select Channel")

@@ -9,9 +9,14 @@
 import Combine
 import Foundation
 import CoreBluetoothMock
+import os
 
 class WifiDeviceDelegate: CBMPeripheralSpecDelegate {
     private var cancellables: Set<AnyCancellable> = Set()
+    private let logger = Logger(
+            subsystem: Bundle(for: WifiDeviceDelegate.self).bundleIdentifier ?? "",
+            category: "wifi-device-delegate"
+    )
     
     func peripheralDidReceiveConnectionRequest(_ peripheral: CBMPeripheralSpec) -> Swift.Result<(), Error> {
         return Swift.Result.success(())
@@ -46,9 +51,19 @@ class WifiDeviceDelegate: CBMPeripheralSpecDelegate {
                 peripheral.simulateValueUpdate(wifiStatus(.disconnected), for: .controlPoint)
                 let data = try Data(contentsOf: Bundle.module.url(forResource: "MockAP", withExtension: "json")!)
                 let aps = try JSONDecoder().decode([Result].self, from: data)
-                for ap in aps {
-                    peripheral.simulateValueUpdate(try ap.serializedData(), for: .dataOut)
-                }
+                
+                let iterator = aps.makeIterator().publisher
+                let timer = Timer.publish(every: 0.01, on: .main, in: .default)
+                    .autoconnect()
+                
+                Publishers.Zip(iterator, timer)
+                    .tryMap { try $0.0.serializedData() }
+                    .sink { _ in
+                        
+                    } receiveValue: {
+                        peripheral.simulateValueUpdate($0, for: .dataOut)
+                    }
+                    .store(in: &cancellables)
                 
                 return Swift.Result.success(())
             case .stopScan:

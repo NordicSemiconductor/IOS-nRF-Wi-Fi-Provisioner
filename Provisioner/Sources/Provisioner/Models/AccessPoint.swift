@@ -68,21 +68,13 @@ public struct AccessPoint: Identifiable, Hashable, Equatable {
         ssid = String(data: wifiInfo.ssid, encoding: .utf8) ?? "n/a"
         bssid = wifiInfo.bssid
             .map { String(format: "%02hhX", $0) }
-            .joined(separator: "-")
-        id = ssid + String(wifiInfo.channel)
+            .joined()
         isOpen = wifiInfo.auth.isOpen
         channel = Int(wifiInfo.channel)
         frequency = wifiInfo.band.frequency
         rssi = Int(RSSI)
-    }
-
-    public static func == (lhs: AccessPoint, rhs: AccessPoint) -> Bool {
-        lhs.ssid == rhs.ssid && lhs.channel == rhs.channel
-    }
-
-    public func hash(into hasher: inout Hasher) {
-        hasher.combine(ssid)
-        hasher.combine(channel)
+        let codedId: String = (ssid + bssid + "\(channel)" + frequency.stringValue + "\(rssi)" + (isOpen ? "open" : "closed"))
+        self.id = codedId.decodeBase64() ?? codedId
     }
 
 }
