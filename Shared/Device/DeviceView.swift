@@ -103,15 +103,15 @@ struct DeviceView: View {
                                 Text(viewModel.selectedAccessPoint?.ssid ?? "Not Selected")
                                     .foregroundColor(.secondary)
                             }
-                            if viewModel.selectedAccessPoint != nil {
-                                Divider()
-                                additionalInfo(ap: viewModel.selectedAccessPoint!)
-                            }
                         }
                         .disabled(viewModel.inProgress)
                     }
                     .accessibilityIdentifier("access_point_selector")
                     .disabled(viewModel.inProgress)
+                    
+                    if viewModel.selectedAccessPoint != nil {
+                        additionalInfo(ap: viewModel.selectedAccessPoint!)
+                    }
                     
                     if viewModel.passwordRequired {
                         SecureField("Password", text: $viewModel.password)
@@ -146,7 +146,27 @@ struct DeviceView: View {
     
     @ViewBuilder
     func additionalInfo(ap: AccessPoint) -> some View {
+        VStack {
+            DetailRow(title: "Channel", details: "\(ap.channel)")
+            DetailRow(title: "BSSID", details: ap.bssid)
+            DetailRow(title: "Band", details: ap.frequency.stringValue)
+            if ap.rssi < 0 {
+                HStack {
+                    DetailRow(title: "Signal Strength", details: "\(ap.rssi) dBm")
+                    RSSIView(rssi: WiFiRSSI(level: ap.rssi))
+                        .frame(maxWidth: 15, maxHeight: 16)
+                        .accessibilityIdentifier("rssi_view")
+                }
+                .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
+                .frame(maxHeight: 8)                
+            }
+        }
+        /*
         HStack {
+            
+            
+            /*
+            
             VStack(alignment: .leading) {
                 Text("Channel \(ap.channel)")
                     .font(.caption)
@@ -158,21 +178,37 @@ struct DeviceView: View {
             
             Spacer()
             Text(ap.frequency.stringValue)
-            //                .font(.caption)
                 .foregroundColor(.secondary)
             if ap.rssi != 0 {
                 RSSIView(rssi: WiFiRSSI(level: ap.rssi))
                     .frame(maxWidth: 30, maxHeight: 16)
                     .accessibilityIdentifier("rssi_view")
             }
-            
+             */
         }
+         */
+    }
+}
+
+private struct DetailRow: View {
+    let title: String
+    let details: String
+    
+    var body: some View {
         HStack {
+            ReversedLabel {
+                Text(title)
+                    .font(.caption)
+            } image: {
+                EmptyView()
+            }
+
             Spacer()
+            Text(details)
+                .font(.caption)
+                .foregroundColor(.secondary)
         }
-        HStack {
-            Spacer()
-        }
+        .frame(maxHeight: 12)
     }
 }
 

@@ -36,7 +36,15 @@ final class nRF_Wi_Fi_ProvisionerUITests: XCTestCase {
         let sidebar = app.buttons["ToggleSidebar"]
         if sidebar.exists {
             sidebar.tap()
+        } else {
+            let backButton = app.buttons["BackButton"]
+            if backButton.exists {
+                backButton.tap()
+            }
         }
+        
+        
+        
         
         let firstScanResult = app.buttons["scan_result_0"]
         XCTAssertTrue(firstScanResult.waitForExistence(timeout: 5))
