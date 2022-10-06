@@ -68,7 +68,7 @@ public struct AccessPoint: Identifiable, Hashable, Equatable {
         ssid = String(data: wifiInfo.ssid, encoding: .utf8) ?? "n/a"
         bssid = wifiInfo.bssid
             .map { String(format: "%02hhX", $0) }
-            .joined(separator: ".")
+            .joined(separator: ":")
         isOpen = wifiInfo.auth.isOpen
         channel = Int(wifiInfo.channel)
         frequency = wifiInfo.band.frequency

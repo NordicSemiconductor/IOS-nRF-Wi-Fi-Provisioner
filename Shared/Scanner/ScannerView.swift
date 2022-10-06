@@ -67,7 +67,7 @@ struct ScannerView: View {
                 }
             }
             
-            Placeholder(text: "Select the device", message: "Select Bluetooth device to storct provisioning process", image: "bluetooth")
+            Placeholder(text: "Select the device", message: "Select Bluetooth device to start provisioning process", image: "bluetooth")
         }
         .setupNavBarBackground()
         .accentColor(.white)

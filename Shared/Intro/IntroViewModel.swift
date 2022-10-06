@@ -29,7 +29,11 @@ class IntroViewModel: ObservableObject {
         // Read the build number from the Info.plist.
         let build = Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? ""
 
+        #if DEBUG
         return "\(version) (\(build))"
+        #else
+        return "\(version)"
+        #endif
     }
 }
 

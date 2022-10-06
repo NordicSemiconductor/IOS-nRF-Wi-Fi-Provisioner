@@ -56,9 +56,7 @@ struct IntroView: View {
                     .padding()
                 
                 HStack {
-                    Text("Don't show again")
-                    Spacer()
-                    Toggle("", isOn: $viewModel.dontShowAgain)
+                    Toggle("Don't show again", isOn: $viewModel.dontShowAgain)
                 }
                 .padding()
                 
@@ -69,7 +67,7 @@ struct IntroView: View {
                 .padding()
                 .accessibilityIdentifier("start_provisioning_btn")
             }
-            .navigationTitle("Wi-Fi")
+            .navigationTitle("Welcome")
             .onAppear { try? viewModel.readInfo() }
             
             
@@ -80,7 +78,9 @@ struct IntroView: View {
 #if DEBUG
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        IntroView(show: .constant(true), dontShowAgain: .constant(false))
+        NavigationView {
+            IntroView(show: .constant(true), dontShowAgain: .constant(false))
+        }
     }
 }
 #endif

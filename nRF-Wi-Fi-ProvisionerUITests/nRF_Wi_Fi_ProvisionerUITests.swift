@@ -43,9 +43,6 @@ final class nRF_Wi_Fi_ProvisionerUITests: XCTestCase {
             }
         }
         
-        
-        
-        
         let firstScanResult = app.buttons["scan_result_0"]
         XCTAssertTrue(firstScanResult.waitForExistence(timeout: 5))
         snapshot("02-scan-result")

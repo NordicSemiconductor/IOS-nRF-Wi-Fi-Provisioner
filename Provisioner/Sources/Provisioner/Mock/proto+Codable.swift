@@ -8,17 +8,6 @@
 #if DEBUG
 import Foundation
 
-extension String {
-    func decodeBase64() -> String? {
-        guard let data = Data(base64Encoded: self) else { return nil }
-        return String(data: data, encoding: .utf8)
-    }
-
-    func encodeBase64() -> Data? {
-        return Data(base64Encoded: self)
-    }
-}
-
 extension Band {
     init(name: String) {
         switch name {

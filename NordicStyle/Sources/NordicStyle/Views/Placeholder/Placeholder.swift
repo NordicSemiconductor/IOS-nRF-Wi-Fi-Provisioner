@@ -41,7 +41,7 @@ struct Placeholder<Action>: View where Action: View {
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .foregroundColor(.nordicBlue)
-                    .frame(maxWidth: 200, maxHeight: 250)
+                    .frame(maxWidth: 50, maxHeight: 100)
             } else {
                 // Fallback on earlier versions
             }
