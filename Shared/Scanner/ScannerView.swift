@@ -95,13 +95,11 @@ struct ScannerView: View {
         List {
             Section {
                 ForEach(viewModel.scanResults) { scanResult in
-                    
                     NavigationLink {
                         DeviceView(viewModel: DeviceViewModel(peripheralId: scanResult.id))
                             .navigationTitle(scanResult.name)
                     } label: {
                         Label {
-                            
                             ScanResultLabel(scanResult: scanResult)
                         } icon: {
                             RSSIView<BluetoothRSSI>(rssi: BluetoothRSSI(level: scanResult.rssi))
@@ -120,6 +118,7 @@ struct ScannerView: View {
                 }
             }
         }
+        .listStyle(InsetGroupedListStyle())
     }
 }
 
