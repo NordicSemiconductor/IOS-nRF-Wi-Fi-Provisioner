@@ -16,8 +16,8 @@ protocol ReadableError: LocalizedError {
 struct TitleMessageError: ReadableError {
     var title: String?
     var message: String
-    
-    var localizedDespcription: String {
+
+    var errorDescription: String? {
         return message
     }
 }

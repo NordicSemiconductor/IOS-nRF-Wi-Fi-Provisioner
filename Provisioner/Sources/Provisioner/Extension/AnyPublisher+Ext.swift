@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  AnyPublisher+Ext.swift
 //  
 //
 //  Created by Nick Kibysh on 25/07/2022.
@@ -12,7 +12,7 @@ enum AsyncError: Error {
 }
 
 extension AnyPublisher {
-    func async() async throws -> Output {
+    func asyncThrowing() async throws -> Output {
         try await withCheckedThrowingContinuation { continuation in
             var cancellable: AnyCancellable?
             var finishedWithoutValue = true

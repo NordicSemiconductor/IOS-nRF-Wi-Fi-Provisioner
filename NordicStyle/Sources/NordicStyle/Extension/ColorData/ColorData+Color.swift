@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  ColorData+Color.swift
 //  
 //
 //  Created by Nick Kibysh on 28/06/2022.

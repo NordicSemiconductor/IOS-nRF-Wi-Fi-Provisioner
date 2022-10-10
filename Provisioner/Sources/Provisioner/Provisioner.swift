@@ -5,66 +5,20 @@ import CoreBluetoothMock
 import Combine
 
 open class Provisioner {
-    public enum Error: Swift.Error {
-        case canNotConnect
-        case wifiServiceNotFound
-        case versionCharacteristicNotFound
-        case controlCharacteristicPointNotFound
-        case dataOutCharacteristicNotFound
-        case requestFailed
-        
-        case noResponse
-        case unknownDeviceStatus
-    }
-    
-    public enum WiFiStatus: CustomDebugStringConvertible {
-        case disconnected
-        case authentication
-        case association
-        case obtainingIp
-        case connected
-        case connectionFailed(ConnectionFailure)
-        
-        public enum ConnectionFailure {
-            case authError
-            case networkNotFound
-            case timeout
-            case failIp
-            case failConn
-            case unknown
-        }
-
-        public var debugDescription: String {
-            switch self {
-            case .disconnected: return "disconnected"
-            case .authentication: return "authentication"
-            case .association: return "association"
-            case .obtainingIp: return "obtainingIp"
-            case .connected: return "connected"
-            case .connectionFailed(let reason): return "connectionFailed: \(reason)"
-            }
-        }
-    }
-    
-    public struct Service {
-        public static let wifi = UUID(uuidString: "14387800-130c-49e7-b877-2881c89cb258")!
-        
-        public struct Characteristic {
-            public static let version = UUID(uuidString: "14387801-130c-49e7-b877-2881c89cb258")!
-            public static let controlPoint = UUID(uuidString: "14387802-130c-49e7-b877-2881c89cb258")!
-            public static let dataOut = UUID(uuidString: "14387803-130c-49e7-b877-2881c89cb258")!
-        }
-    }
-    
     private let logger = Logger(
-        subsystem: Bundle(for: Provisioner.self).bundleIdentifier ?? "",
-        category: "provisioner-manager"
+            subsystem: Bundle(for: Provisioner.self).bundleIdentifier ?? "",
+            category: "provisioner-manager"
     )
-    
+
+    private var cancelables = Set<AnyCancellable>()
     private let centralManager = CentralManager()
 
     public let deviceID: UUID
-    
+
+    public var bluetoothConnectionStates: AnyPublisher<BluetoothConnectionStatus, Never> {
+        centralManager.connectionStateSubject.eraseToAnyPublisher()
+    }
+
     public init(deviceID: UUID) {
         self.deviceID = deviceID
     }
@@ -74,72 +28,142 @@ open class Provisioner {
             _ = try await centralManager.connectPeripheral(deviceID)
         } catch let e {
             logger.error("failed to connect to device: \(e.localizedDescription)")
-            throw Error.canNotConnect
+            throw BluetoothConnectionError.commonError(error: e)
         }
     }
-    
+
     open func readVersion() async throws -> String? {
         let versionData: Data? = try await centralManager.readValue(for: .version)
-        
+
         let version = try Info(serializedData: versionData!).version
-        
+
         logger.info("Read version: \(version, privacy: .public)")
-        
+
         return "\(version)"
     }
-    
-    open func getStatus() async throws -> WiFiStatus {
+
+    open func getStatus() async throws -> WiFiDeviceStatus {
         let response = (try await sendRequestToDataPoint(opCode: .getStatus))
         guard case .success = response.status else {
-            throw Error.unknownDeviceStatus
+            throw ProvisionError.unknownDeviceStatus
         }
-        return response.deviceStatus.state.toPublicStatus(withReason: response.deviceStatus.reason)
+        
+        return WiFiDeviceStatus(deviceStatus: response.deviceStatus)
     }
-    
-    open func startScan() async throws -> AnyPublisher<AccessPoint, Swift.Error> {
-        let response = (try await sendRequestToDataPoint(opCode: .startScan))
-        guard case .success = response.status else {
-            throw Error.unknownDeviceStatus
-        }
-        return centralManager.notifications(for: .dataOut)
-                .tryMap { [weak self] data -> AccessPoint in
-                    let result = try Result(serializedData: data)
-                    self?.logger.debug("Read data: \(try! result.jsonString(), privacy: .public)")
-                    let wifiInfo = result.scanRecord.wifi
-                    return AccessPoint(wifiInfo: wifiInfo, RSSI: result.scanRecord.rssi)
+
+    open func startScan() -> AnyPublisher<AccessPoint, Swift.Error> {
+        logger.info("start scan")
+        
+        struct ImpossibleError: Error {}
+        
+        let future = Future<Bool, Swift.Error> { promise in
+            Task {
+                let response = (try await self.sendRequestToDataPoint(opCode: .startScan))
+                if case .success = response.status {
+                    promise(.success((true)))
+                } else {
+                    promise(.failure(ProvisionError.requestFailed))
                 }
-                .eraseToAnyPublisher()
+            }
+        }
+        
+        return self.centralManager.dataOutStream.combineLatest(future)
+            .scan((Array<Data>(), false)) { old, value -> (Array<Data>, Bool) in
+                var oldValue = old
+                oldValue.1 = value.1
+                oldValue.0.append(value.0)
+                return oldValue
+            }
+            .compactMap { val -> [Data]? in
+                if val.1 {
+                    return val.0
+                } else {
+                    return nil
+                }
+            }
+            .flatMap { dataSeq -> Publishers.Sequence<[Data], Error> in
+                self.logger.debug("Assigned access points: - \(dataSeq.count)")
+                return Publishers.Sequence(sequence: dataSeq)
+            }
+            .compactMap { [weak self] data -> AccessPoint? in
+                guard let result = try? Result(serializedData: data) else {
+                    return nil
+                }
+                self?.logger.debug("Read data: \(try! result.jsonString(), privacy: .public)")
+                guard result.hasScanRecord else {
+                    return nil
+                }
+                let wifiInfo = result.scanRecord.wifi
+                return AccessPoint(wifiInfo: wifiInfo, RSSI: result.scanRecord.rssi)
+            }
+            .eraseToAnyPublisher()
     }
-    
+
     open func stopScan() async throws {
         try await sendRequestToDataPoint(opCode: .stopScan)
     }
 
-    open func startProvision(accessPoint: AccessPoint, passphrase: String?) async throws -> AnyPublisher<WiFiStatus, Swift.Error> {
+    open func startProvision(accessPoint: AccessPoint, passphrase: String?, volatileMemory: Bool) async throws -> AnyPublisher<WiFiStatus, Swift.Error> {
         var config = WifiConfig()
         config.wifi = accessPoint.wifiInfo
+        config.volatileMemory = volatileMemory
+
         if let passphrase = passphrase {
             config.passphrase = passphrase.data(using: .utf8)!
         }
 
+        struct InternalError: Swift.Error {
+            let status: WiFiStatus
+        }
+
         // WiFiStatus publisher
-        let statusPublisher = centralManager.notifications(for: .dataOut)
-            .tryMap { data -> WiFiStatus in
-                let result = try Result(serializedData: data)
-                return result.state.toPublicStatus()
-            }
-            .eraseToAnyPublisher()
+        let statusPublisher = centralManager.dataOutStream
+                .compactMap { [weak self] data -> WiFiStatus? in
+                    guard let result = try? Result(serializedData: data), result.hasState else {
+                        return nil
+                    }
+                    
+                    self?.logger.debug("Read data: \(try! result.jsonString(), privacy: .public)")
+                    return result.state.toPublicStatus(withReason: result.reason)
+                }.timeout(.seconds(60), scheduler: DispatchQueue.main) { TimeoutError() }
+                .replaceError(with: .connectionFailed(.timeout))
+                // 1 - get prefixes until state is connected
+                .tryPrefix { status in
+                    switch status {
+                    // 2 - if state is connected or failed throw InternalError.
+                    // We can not just return false, because steam will be closed without sending 'connected' state
+                    // Note: InternalError is a special structure which is used only in this method
+                    case .connected, .connectionFailed:
+                        throw InternalError(status: status)
+                    default:
+                        return true
+                    }
+                }
+                .tryCatch { error -> AnyPublisher<WiFiStatus, Never> in
+                    if let e = error as? InternalError {
+                        // 3 - if wi got `InternalError` just replace it with state it contains inside.
+                        return Just(e.status).eraseToAnyPublisher()
+                    } else {
+                        // 4 - Else: rethrow error
+                        throw error
+                    }
+                }
+                .eraseToAnyPublisher()
 
         // Send request
         let response = try await sendRequestToDataPoint(opCode: .setConfig, config: config)
         guard case .success = response.status else {
-            throw Error.requestFailed
+            throw ProvisionError.requestFailed
         }
 
         return statusPublisher
     }
+    
+    open func unprovision() {
+        
+    }
 }
- 
+
 extension Provisioner {
     @discardableResult
     private func sendRequestToDataPoint(opCode: OpCode, config: WifiConfig? = nil) async throws -> Response {

@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  RSSIView.swift
 //  
 //
 //  Created by Nick Kibysh on 15/07/2022.

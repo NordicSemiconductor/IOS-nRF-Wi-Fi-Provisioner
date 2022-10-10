@@ -26,15 +26,6 @@ struct ConnectionInfo {
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
 
-  var wifi: WifiInfo {
-    get {return _wifi ?? WifiInfo()}
-    set {_wifi = newValue}
-  }
-  /// Returns true if `wifi` has been explicitly set.
-  var hasWifi: Bool {return self._wifi != nil}
-  /// Clears the value of `wifi`. Subsequent reads from it will return its default value.
-  mutating func clearWifi() {self._wifi = nil}
-
   var ip4Addr: Data {
     get {return _ip4Addr ?? Data()}
     set {_ip4Addr = newValue}
@@ -48,7 +39,6 @@ struct ConnectionInfo {
 
   init() {}
 
-  fileprivate var _wifi: WifiInfo? = nil
   fileprivate var _ip4Addr: Data? = nil
 }
 
@@ -70,44 +60,45 @@ struct DeviceStatus {
 
   /// The network information if provisioned to a network.
   /// This can be set even if connection failed.
-  var info: ConnectionInfo {
-    get {return _info ?? ConnectionInfo()}
-    set {_info = newValue}
+  var provisioningInfo: WifiInfo {
+    get {return _provisioningInfo ?? WifiInfo()}
+    set {_provisioningInfo = newValue}
   }
-  /// Returns true if `info` has been explicitly set.
-  var hasInfo: Bool {return self._info != nil}
-  /// Clears the value of `info`. Subsequent reads from it will return its default value.
-  mutating func clearInfo() {self._info = nil}
+  /// Returns true if `provisioningInfo` has been explicitly set.
+  var hasProvisioningInfo: Bool {return self._provisioningInfo != nil}
+  /// Clears the value of `provisioningInfo`. Subsequent reads from it will return its default value.
+  mutating func clearProvisioningInfo() {self._provisioningInfo = nil}
 
-  /// The failure reason is set when the state is CONNECTION_FAILED.
-  var reason: ConnectionFailureReason {
-    get {return _reason ?? .authError}
-    set {_reason = newValue}
+  /// The connection info is set when the device is connected
+  /// to the network and received the IP.
+  var connectionInfo: ConnectionInfo {
+    get {return _connectionInfo ?? ConnectionInfo()}
+    set {_connectionInfo = newValue}
   }
-  /// Returns true if `reason` has been explicitly set.
-  var hasReason: Bool {return self._reason != nil}
-  /// Clears the value of `reason`. Subsequent reads from it will return its default value.
-  mutating func clearReason() {self._reason = nil}
+  /// Returns true if `connectionInfo` has been explicitly set.
+  var hasConnectionInfo: Bool {return self._connectionInfo != nil}
+  /// Clears the value of `connectionInfo`. Subsequent reads from it will return its default value.
+  mutating func clearConnectionInfo() {self._connectionInfo = nil}
 
   /// Set if the device is scanning. 
   /// The period_ms contains remaining scanning period.
-  var scanState: ScanParams {
-    get {return _scanState ?? ScanParams()}
-    set {_scanState = newValue}
+  var scanInfo: ScanParams {
+    get {return _scanInfo ?? ScanParams()}
+    set {_scanInfo = newValue}
   }
-  /// Returns true if `scanState` has been explicitly set.
-  var hasScanState: Bool {return self._scanState != nil}
-  /// Clears the value of `scanState`. Subsequent reads from it will return its default value.
-  mutating func clearScanState() {self._scanState = nil}
+  /// Returns true if `scanInfo` has been explicitly set.
+  var hasScanInfo: Bool {return self._scanInfo != nil}
+  /// Clears the value of `scanInfo`. Subsequent reads from it will return its default value.
+  mutating func clearScanInfo() {self._scanInfo = nil}
 
   var unknownFields = SwiftProtobuf.UnknownStorage()
 
   init() {}
 
   fileprivate var _state: ConnectionState? = nil
-  fileprivate var _info: ConnectionInfo? = nil
-  fileprivate var _reason: ConnectionFailureReason? = nil
-  fileprivate var _scanState: ScanParams? = nil
+  fileprivate var _provisioningInfo: WifiInfo? = nil
+  fileprivate var _connectionInfo: ConnectionInfo? = nil
+  fileprivate var _scanInfo: ScanParams? = nil
 }
 
 /// A response type which is sent back from the device. 
@@ -166,14 +157,8 @@ extension Response: @unchecked Sendable {}
 extension ConnectionInfo: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   static let protoMessageName: String = "ConnectionInfo"
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-    1: .same(proto: "wifi"),
-    2: .standard(proto: "ip4_addr"),
+    1: .standard(proto: "ip4_addr"),
   ]
-
-  public var isInitialized: Bool {
-    if let v = self._wifi, !v.isInitialized {return false}
-    return true
-  }
 
   mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
     while let fieldNumber = try decoder.nextFieldNumber() {
@@ -181,8 +166,7 @@ extension ConnectionInfo: SwiftProtobuf.Message, SwiftProtobuf._MessageImplement
       // allocates stack space for every case branch when no optimizations are
       // enabled. https://github.com/apple/swift-protobuf/issues/1034
       switch fieldNumber {
-      case 1: try { try decoder.decodeSingularMessageField(value: &self._wifi) }()
-      case 2: try { try decoder.decodeSingularBytesField(value: &self._ip4Addr) }()
+      case 1: try { try decoder.decodeSingularBytesField(value: &self._ip4Addr) }()
       default: break
       }
     }
@@ -193,17 +177,13 @@ extension ConnectionInfo: SwiftProtobuf.Message, SwiftProtobuf._MessageImplement
     // allocates stack space for every if/case branch local when no optimizations
     // are enabled. https://github.com/apple/swift-protobuf/issues/1034 and
     // https://github.com/apple/swift-protobuf/issues/1182
-    try { if let v = self._wifi {
-      try visitor.visitSingularMessageField(value: v, fieldNumber: 1)
-    } }()
     try { if let v = self._ip4Addr {
-      try visitor.visitSingularBytesField(value: v, fieldNumber: 2)
+      try visitor.visitSingularBytesField(value: v, fieldNumber: 1)
     } }()
     try unknownFields.traverse(visitor: &visitor)
   }
 
   static func ==(lhs: ConnectionInfo, rhs: ConnectionInfo) -> Bool {
-    if lhs._wifi != rhs._wifi {return false}
     if lhs._ip4Addr != rhs._ip4Addr {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
@@ -214,13 +194,13 @@ extension DeviceStatus: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementat
   static let protoMessageName: String = "DeviceStatus"
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .same(proto: "state"),
-    10: .same(proto: "info"),
-    11: .same(proto: "reason"),
-    12: .standard(proto: "scan_state"),
+    10: .standard(proto: "provisioning_info"),
+    11: .standard(proto: "connection_info"),
+    12: .standard(proto: "scan_info"),
   ]
 
   public var isInitialized: Bool {
-    if let v = self._info, !v.isInitialized {return false}
+    if let v = self._provisioningInfo, !v.isInitialized {return false}
     return true
   }
 
@@ -231,9 +211,9 @@ extension DeviceStatus: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementat
       // enabled. https://github.com/apple/swift-protobuf/issues/1034
       switch fieldNumber {
       case 1: try { try decoder.decodeSingularEnumField(value: &self._state) }()
-      case 10: try { try decoder.decodeSingularMessageField(value: &self._info) }()
-      case 11: try { try decoder.decodeSingularEnumField(value: &self._reason) }()
-      case 12: try { try decoder.decodeSingularMessageField(value: &self._scanState) }()
+      case 10: try { try decoder.decodeSingularMessageField(value: &self._provisioningInfo) }()
+      case 11: try { try decoder.decodeSingularMessageField(value: &self._connectionInfo) }()
+      case 12: try { try decoder.decodeSingularMessageField(value: &self._scanInfo) }()
       default: break
       }
     }
@@ -247,13 +227,13 @@ extension DeviceStatus: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementat
     try { if let v = self._state {
       try visitor.visitSingularEnumField(value: v, fieldNumber: 1)
     } }()
-    try { if let v = self._info {
+    try { if let v = self._provisioningInfo {
       try visitor.visitSingularMessageField(value: v, fieldNumber: 10)
     } }()
-    try { if let v = self._reason {
-      try visitor.visitSingularEnumField(value: v, fieldNumber: 11)
+    try { if let v = self._connectionInfo {
+      try visitor.visitSingularMessageField(value: v, fieldNumber: 11)
     } }()
-    try { if let v = self._scanState {
+    try { if let v = self._scanInfo {
       try visitor.visitSingularMessageField(value: v, fieldNumber: 12)
     } }()
     try unknownFields.traverse(visitor: &visitor)
@@ -261,9 +241,9 @@ extension DeviceStatus: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementat
 
   static func ==(lhs: DeviceStatus, rhs: DeviceStatus) -> Bool {
     if lhs._state != rhs._state {return false}
-    if lhs._info != rhs._info {return false}
-    if lhs._reason != rhs._reason {return false}
-    if lhs._scanState != rhs._scanState {return false}
+    if lhs._provisioningInfo != rhs._provisioningInfo {return false}
+    if lhs._connectionInfo != rhs._connectionInfo {return false}
+    if lhs._scanInfo != rhs._scanInfo {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }

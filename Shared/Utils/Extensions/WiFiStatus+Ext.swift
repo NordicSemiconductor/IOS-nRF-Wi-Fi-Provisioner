@@ -4,7 +4,7 @@
 
 import Provisioner
 
-extension Provisioner.WiFiStatus: CustomStringConvertible {
+extension WiFiStatus: CustomStringConvertible {
     var isInProgress: Bool {
         switch self {
         case .disconnected, .connectionFailed, .connected:
@@ -16,8 +16,8 @@ extension Provisioner.WiFiStatus: CustomStringConvertible {
 
     public var description: String {
         switch self {
-        case .connectionFailed(_):
-            return "Error"
+        case .connectionFailed(let e):
+            return conventError(e)
         case .connected:
             return "Connected"
         case .disconnected:
@@ -28,6 +28,23 @@ extension Provisioner.WiFiStatus: CustomStringConvertible {
             return "Association"
         case .obtainingIp:
             return "Obtaining IP"
+        }
+    }
+
+    private func conventError(_ error: WiFiStatus.ConnectionFailure) -> String {
+        switch error {
+        case .authError:
+            return "Authentication error"
+        case .networkNotFound:
+            return "Network not found"
+        case .timeout:
+            return "Timeout"
+        case .failIp:
+            return "Failed to obtain IP"
+        case .failConn:
+            return "Failed to connect"
+        case .unknown:
+            return "Unknown error"
         }
     }
 }
