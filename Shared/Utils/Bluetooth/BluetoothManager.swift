@@ -76,8 +76,8 @@ class BluetoothManager: NSObject {
     private let centralManager: CBCentralManager
 
     private let logger = Logger(
-            subsystem: Bundle(for: BluetoothManager.self).bundleIdentifier ?? "",
-            category: "scanner.bluetooth-manager"
+        subsystem: Bundle(for: BluetoothManager.self).bundleIdentifier ?? "",
+        category: "scanner.bluetooth-manager"
     )
 
     init(centralManager: CBCentralManager) {

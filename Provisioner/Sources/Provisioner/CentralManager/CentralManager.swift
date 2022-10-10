@@ -7,7 +7,6 @@ import CoreBluetoothMock
 import Combine
 import os
 
-
 private struct Service {
     static let wifi = CBMUUID(string: "14387800-130c-49e7-b877-2881c89cb258")
 
@@ -235,8 +234,8 @@ extension CentralManager: CBMCentralManagerDelegate {
 }
 
 // MARK: - CBMPeripheralDelegate
-extension CentralManager: CBMPeripheralDelegate {
-    func peripheral(_ peripheral: CBMPeripheral, didDiscoverServices error: Swift.Error?) {
+extension CentralManager: CBPeripheralDelegate {
+    func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Swift.Error?) {
         if let e = error {
             logger.error("didDiscoverServices error: \(e.localizedDescription)")
             connectionExecutor.complete(with: e)
@@ -255,7 +254,7 @@ extension CentralManager: CBMPeripheralDelegate {
         }
     }
 
-    func peripheral(_ peripheral: CBMPeripheral, didDiscoverCharacteristicsFor service: CBMService, error: Swift.Error?) {
+    func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Swift.Error?) {
         if let e = error {
             logger.error("didDiscoverCharacteristicsFor error: \(e.localizedDescription)")
             connectionExecutor.complete(with: e)
@@ -288,13 +287,13 @@ extension CentralManager: CBMPeripheralDelegate {
         }
     }
 
-    func peripheral(_ peripheral: CBMPeripheral, didUpdateValueFor characteristic: CBMCharacteristic, error: Swift.Error?) {
+    func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Swift.Error?) {
         if let e = error {
             logger.error("didUpdateValueFor error: \(e.localizedDescription)")
         }
         logger.debug("didUpdateValueFor \(characteristic.uuid)")
 
-        let handleData: (CBMCharacteristic, Swift.Error?, CharacteristicValueContinuation) -> Void = { characteristic, error, continuation in
+        let handleData: (CBCharacteristic, Swift.Error?, CharacteristicValueContinuation) -> Void = { characteristic, error, continuation in
             if let e = error {
                 continuation.continuation.resume(throwing: e)
             } else if let data = characteristic.value {

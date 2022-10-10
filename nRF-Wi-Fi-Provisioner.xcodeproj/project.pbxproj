@@ -134,6 +134,7 @@
 		015845CB288FD5A900C7E4B7 /* AccessPointList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessPointList.swift; sourceTree = "<group>"; };
 		015D60A22875A1530048F065 /* ScannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerView.swift; sourceTree = "<group>"; };
 		01682619287F16CD0040C97E /* Array+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Ext.swift"; sourceTree = "<group>"; };
+		0179FABC28F03B0900DEBBBB /* Provisioner2 */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Provisioner2; sourceTree = "<group>"; };
 		0183EFC82897C196002E79A5 /* Status.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Status.swift; sourceTree = "<group>"; };
 		0183EFCC2897C446002E79A5 /* ReversedLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReversedLabel.swift; sourceTree = "<group>"; };
 		01922CBC28A2713100492E87 /* NavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationView.swift; sourceTree = "<group>"; };
@@ -230,6 +231,7 @@
 		01481A8C2852092F00925FAB = {
 			isa = PBXGroup;
 			children = (
+				0179FABC28F03B0900DEBBBB /* Provisioner2 */,
 				01A43DE82886CC080025A5C4 /* Provisioner */,
 				019A5D8D286C77CE002D03F0 /* NordicStyle */,
 				01481A912852092F00925FAB /* Shared */,
