@@ -8,11 +8,13 @@
 import CoreBluetoothMock
 import Foundation
 
+let perihpheralUUID = "14387800-130C-49E7-B877-2881C89CB258"
+
 extension CBMUUID {
-    static let version = CBMUUID(string: "14387801-130c-49e7-b877-2881c89cb258")
-    static let controlPoint = CBMUUID(string: "14387802-130c-49e7-b877-2881c89cb258")
-    static let dataOut = CBMUUID(string: "14387803-130c-49e7-b877-2881c89cb258")
-    static let wifi = CBMUUID(string: "14387800-130c-49e7-b877-2881c89cb258")
+    static let version =        CBMUUID(string: "14387801-130c-49e7-b877-2881c89cb258")
+    static let controlPoint =   CBMUUID(string: "14387802-130c-49e7-b877-2881c89cb258")
+    static let dataOut =        CBMUUID(string: "14387803-130c-49e7-b877-2881c89cb258")
+    static let wifi =           CBMUUID(string: "14387800-130c-49e7-b877-2881c89cb258")
 }
 
 extension CBMCharacteristicMock {
@@ -35,7 +37,10 @@ private class WiFiService: CBMServiceMock {
 }
 
 let wifiDevice = CBMPeripheralSpec
-        .simulatePeripheral(proximity: .near)
+        .simulatePeripheral(
+            identifier: UUID(uuidString: perihpheralUUID)!,
+            proximity: .near
+        )
         .advertising(
                 advertisementData: [
                     CBMAdvertisementDataLocalNameKey    : "nRF-Wi-Fi",

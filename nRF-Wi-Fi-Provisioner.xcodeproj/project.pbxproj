@@ -61,7 +61,6 @@
 		01C0F0FD287DE926008BBE46 /* ScanResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C0F0FC287DE926008BBE46 /* ScanResult.swift */; };
 		01C0F0FE287DE926008BBE46 /* ScanResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C0F0FC287DE926008BBE46 /* ScanResult.swift */; };
 		01C1BF6E28E70BB200FDD841 /* nRF_Wi_Fi_ProvisionerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C1BF6D28E70BB200FDD841 /* nRF_Wi_Fi_ProvisionerUITests.swift */; };
-		01C1BF7028E70BB200FDD841 /* nRF_Wi_Fi_ProvisionerUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C1BF6F28E70BB200FDD841 /* nRF_Wi_Fi_ProvisionerUITestsLaunchTests.swift */; };
 		01D26B56286DA3D400FD069D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 01D26B55286DA3D400FD069D /* Localizable.strings */; };
 		01D26B57286DA3D400FD069D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 01D26B55286DA3D400FD069D /* Localizable.strings */; };
 		01D26B5B286DAE9800FD069D /* LocalizationKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D26B5A286DAE9800FD069D /* LocalizationKey.swift */; };
@@ -154,7 +153,6 @@
 		01C0F0FC287DE926008BBE46 /* ScanResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanResult.swift; sourceTree = "<group>"; };
 		01C1BF6B28E70BB200FDD841 /* nRF-Wi-Fi-ProvisionerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "nRF-Wi-Fi-ProvisionerUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		01C1BF6D28E70BB200FDD841 /* nRF_Wi_Fi_ProvisionerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = nRF_Wi_Fi_ProvisionerUITests.swift; sourceTree = "<group>"; };
-		01C1BF6F28E70BB200FDD841 /* nRF_Wi_Fi_ProvisionerUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = nRF_Wi_Fi_ProvisionerUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		01D26B55286DA3D400FD069D /* Localizable.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
 		01D26B5A286DAE9800FD069D /* LocalizationKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizationKey.swift; sourceTree = "<group>"; };
 		01FA5911288713860008AF88 /* ReadableError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadableError.swift; sourceTree = "<group>"; };
@@ -393,7 +391,6 @@
 			children = (
 				01A9469228ECD20D00F40D1D /* SnapshotHelper.swift */,
 				01C1BF6D28E70BB200FDD841 /* nRF_Wi_Fi_ProvisionerUITests.swift */,
-				01C1BF6F28E70BB200FDD841 /* nRF_Wi_Fi_ProvisionerUITestsLaunchTests.swift */,
 			);
 			path = "nRF-Wi-Fi-ProvisionerUITests";
 			sourceTree = "<group>";
@@ -755,7 +752,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				01C1BF6E28E70BB200FDD841 /* nRF_Wi_Fi_ProvisionerUITests.swift in Sources */,
-				01C1BF7028E70BB200FDD841 /* nRF_Wi_Fi_ProvisionerUITestsLaunchTests.swift in Sources */,
 				01A9469328ECD20D00F40D1D /* SnapshotHelper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

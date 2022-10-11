@@ -28,6 +28,8 @@ let package = Package(
             ]),
         .testTarget(
             name: "Provisioner2Tests",
-            dependencies: ["Provisioner2"]),
+            dependencies: ["Provisioner2"],
+            resources: [.process("Mock/MockAP.json")]
+        )
     ]
 )

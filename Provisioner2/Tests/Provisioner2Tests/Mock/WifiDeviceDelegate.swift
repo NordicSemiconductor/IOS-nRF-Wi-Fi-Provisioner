@@ -12,18 +12,7 @@ import os
 
 @testable import Provisioner2
 
-struct Logger {
-    init(subsystem: String, category: String) {
-        
-    }
-}
-
 class WifiDeviceDelegate: CBMPeripheralSpecDelegate {
-    private let logger = Logger(
-            subsystem: Bundle(for: WifiDeviceDelegate.self).bundleIdentifier ?? "",
-            category: "wifi-device-delegate"
-    )
-    
     func peripheralDidReceiveConnectionRequest(_ peripheral: CBMPeripheralSpec) -> Swift.Result<(), Error> {
         return Swift.Result.success(())
     }
@@ -55,7 +44,7 @@ class WifiDeviceDelegate: CBMPeripheralSpecDelegate {
                 return Swift.Result.success(())
             case .startScan:
                 peripheral.simulateValueUpdate(wifiStatus(.disconnected), for: .controlPoint)
-                let data = Data() // try Data(contentsOf: Bundle.module.url(forResource: "MockAP", withExtension: "json")!)
+                let data = try Data(contentsOf: Bundle.module.url(forResource: "MockAP", withExtension: "json")!)
                 let aps = try JSONDecoder().decode([Result].self, from: data)
                 
                 DispatchQueue.main.async {
@@ -114,7 +103,6 @@ extension WifiDeviceDelegate {
         var deviceStatus = DeviceStatus()
         deviceStatus.state = stt
         deviceStatus.provisioningInfo = wifiInfo()
-        // deviceStatus.scanInfo
 
         response.deviceStatus = deviceStatus
 

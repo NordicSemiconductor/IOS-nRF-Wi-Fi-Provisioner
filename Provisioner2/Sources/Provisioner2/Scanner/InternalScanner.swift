@@ -18,6 +18,7 @@ class InternalScanner {
     init(delegate: ScannerDelegate?, centralManager: CBCentralManager) {
         self.delegate = delegate
         self.centralManager = centralManager
+        self.centralManager.delegate = self 
     }
     
     func startScan() {
