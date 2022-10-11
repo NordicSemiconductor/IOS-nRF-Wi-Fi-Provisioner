@@ -9,37 +9,29 @@ import CoreBluetoothMock
 /// Though this class is designed to scan for BLE devices, you don't need to deal with Bluetooth directly.
 /// Scanner provides all the necessary wrappers for CoreBluetooth, so you even don't need to import CoreBluetooth.
 open class Scanner {
-    var delegate: ScannerDelegate?
-    private var centralManager: CBCentralManager!
+    private (set) var scanResults: [ScanResult] = []
     
-    init(delegate: ScannerDelegate? = nil, centralManager: CBCentralManager = CBMCentralManagerFactory.instance()) {
-        self.delegate = delegate
-        self.centralManager = centralManager
-        self.centralManager.delegate = self
-    }
-}
-
-extension Scanner: CBCentralManagerDelegate {
-    public func centralManagerDidUpdateState(_ central: CoreBluetoothMock.CBMCentralManager) {
-        
-    }
+    private var internalScanner: InternalScanner
     
-    
-}
-
-/*
-extension Scanner: CBCentralManagerDelegate {
-    public func centralManagerDidUpdateState(_ central: CBCentralManager) {
-        
-    }
-    
-    public func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBMPeripheral, error: Error?) {
-        
-    }
-    
-    public func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBMPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
-        
+    public init(delegate: ScannerDelegate? = nil) {
+        self.internalScanner = InternalScanner(
+            delegate: delegate,
+            centralManager: CBMCentralManagerFactory.instance()
+        )
     }
 
+    /// Starts scanning for devices
+    open func startScan() {
+        internalScanner.startScan()
+    }
+
+    /// Stops scanning for devices
+    open func stopScan() {
+        internalScanner.stopScan()
+    }
+
+    /// Reset scan results
+    open func reset() {
+        scanResults = []
+    }
 }
-*/

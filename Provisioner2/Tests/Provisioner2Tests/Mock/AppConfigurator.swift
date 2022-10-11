@@ -8,8 +8,6 @@
 import CoreBluetoothMock
 import Foundation
 
-#if DEBUG
-
 extension CBMUUID {
     static let version = CBMUUID(string: "14387801-130c-49e7-b877-2881c89cb258")
     static let controlPoint = CBMUUID(string: "14387802-130c-49e7-b877-2881c89cb258")
@@ -57,7 +55,7 @@ let wifiDevice = CBMPeripheralSpec
                 mtu: 23)
         .build()
 
-public class AppConfigurator: ObservableObject {
+public class AppConfigurator {
     public static func setup() {
         CBMCentralManagerMock.simulateInitialState(.poweredOff)
         CBMCentralManagerMock.simulatePeripherals([
@@ -66,11 +64,3 @@ public class AppConfigurator: ObservableObject {
         CBMCentralManagerMock.simulatePowerOn()
     }
 }
-
-#else
-public class AppConfigurator: ObservableObject {
-    public static func setup() {
-        
-    }
-}
-#endif

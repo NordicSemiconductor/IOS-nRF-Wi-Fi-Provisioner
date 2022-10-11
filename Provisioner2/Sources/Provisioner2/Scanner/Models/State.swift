@@ -6,7 +6,6 @@ import Foundation
 import CoreBluetoothMock
 
 extension Scanner {
-
     public enum State {
         case poweredOn
         case poweredOff
