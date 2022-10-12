@@ -45,7 +45,15 @@ let wifiDevice = CBMPeripheralSpec
                 advertisementData: [
                     CBMAdvertisementDataLocalNameKey    : "nRF-Wi-Fi",
                     CBMAdvertisementDataServiceUUIDsKey : [CBMUUID.wifi],
-                    CBMAdvertisementDataIsConnectable   : true as NSNumber
+                    CBMAdvertisementDataIsConnectable   : true as NSNumber,
+                    CBMAdvertisementDataServiceDataKey   : [
+                        CBMUUID.wifi : Data([
+                            0x11, // Version: 0x11 == 17
+                            0x00, // Reserved
+                            0x03, // Flags: 0b 00 00 00 11. 1 (second bit) - connected; 1 (first bit) - provisioned
+                            0xC9  // Wi-Fi RSSI: 0xC9 == 0b11001001 == -55
+                        ])
+                    ]
                 ],
                 withInterval: 0.250,
                 alsoWhenConnected: false
