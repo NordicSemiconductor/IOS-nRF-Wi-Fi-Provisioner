@@ -11,6 +11,9 @@
 		0101F2E728DB212300AE80A9 /* ChannelPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0101F2E528DB212300AE80A9 /* ChannelPicker.swift */; };
 		01062ADA28B6592700BB41FD /* View+Mod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01062AD928B6592700BB41FD /* View+Mod.swift */; };
 		01062ADB28B6592700BB41FD /* View+Mod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01062AD928B6592700BB41FD /* View+Mod.swift */; };
+		0107FEA528F823EE00693317 /* Provisioner2 in Frameworks */ = {isa = PBXBuildFile; productRef = 0107FEA428F823EE00693317 /* Provisioner2 */; };
+		0107FEAA28F827A200693317 /* ScanResultRaw.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0107FEA928F827A200693317 /* ScanResultRaw.swift */; };
+		0107FEAB28F827A200693317 /* ScanResultRaw.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0107FEA928F827A200693317 /* ScanResultRaw.swift */; };
 		011A2613287CAF890004A5C4 /* BluetoothManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011A2612287CAF890004A5C4 /* BluetoothManager.swift */; };
 		011A2614287CAF890004A5C4 /* BluetoothManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011A2612287CAF890004A5C4 /* BluetoothManager.swift */; };
 		01481AAB2852093000925FAB /* Tests_iOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01481AAA2852093000925FAB /* Tests_iOS.swift */; };
@@ -117,6 +120,7 @@
 /* Begin PBXFileReference section */
 		0101F2E528DB212300AE80A9 /* ChannelPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelPicker.swift; sourceTree = "<group>"; };
 		01062AD928B6592700BB41FD /* View+Mod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Mod.swift"; sourceTree = "<group>"; };
+		0107FEA928F827A200693317 /* ScanResultRaw.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanResultRaw.swift; sourceTree = "<group>"; };
 		011A2612287CAF890004A5C4 /* BluetoothManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BluetoothManager.swift; sourceTree = "<group>"; };
 		01481A922852092F00925FAB /* nRF_Wi_Fi_ProvisionerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = nRF_Wi_Fi_ProvisionerApp.swift; sourceTree = "<group>"; };
 		01481A932852092F00925FAB /* IntroView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroView.swift; sourceTree = "<group>"; };
@@ -174,6 +178,7 @@
 			files = (
 				01DB109B28CF6404005634CF /* Markdown in Frameworks */,
 				01FA5917288809390008AF88 /* Provisioner in Frameworks */,
+				0107FEA528F823EE00693317 /* Provisioner2 in Frameworks */,
 				01A0C289288853EB000AA135 /* NordicStyle in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -351,6 +356,7 @@
 			isa = PBXGroup;
 			children = (
 				019DCE282885A15100E16E9F /* FilterList.swift */,
+				0107FEA928F827A200693317 /* ScanResultRaw.swift */,
 			);
 			path = AditionalViews;
 			sourceTree = "<group>";
@@ -463,6 +469,7 @@
 				01FA5916288809390008AF88 /* Provisioner */,
 				01A0C288288853EB000AA135 /* NordicStyle */,
 				01DB109A28CF6404005634CF /* Markdown */,
+				0107FEA428F823EE00693317 /* Provisioner2 */,
 			);
 			productName = "nRF-Wi-Fi-Provisioner (iOS)";
 			productReference = 01481A992852093000925FAB /* nRF-Wi-Fi-Provisioner.app */;
@@ -675,6 +682,7 @@
 				0168261A287F16CD0040C97E /* Array+Ext.swift in Sources */,
 				01D26B5B286DAE9800FD069D /* LocalizationKey.swift in Sources */,
 				01FA5912288713860008AF88 /* ReadableError.swift in Sources */,
+				0107FEAA28F827A200693317 /* ScanResultRaw.swift in Sources */,
 				011A2613287CAF890004A5C4 /* BluetoothManager.swift in Sources */,
 				3397680D2FE5FBB193E7A5EE /* BluetoothRSSI.swift in Sources */,
 				0183EFC92897C196002E79A5 /* Status.swift in Sources */,
@@ -715,6 +723,7 @@
 				0168261B287F16CD0040C97E /* Array+Ext.swift in Sources */,
 				01D26B5C286DAE9800FD069D /* LocalizationKey.swift in Sources */,
 				01FA5913288713860008AF88 /* ReadableError.swift in Sources */,
+				0107FEAB28F827A200693317 /* ScanResultRaw.swift in Sources */,
 				011A2614287CAF890004A5C4 /* BluetoothManager.swift in Sources */,
 				33976EFC0D92E4D7C58060E1 /* BluetoothRSSI.swift in Sources */,
 				0183EFCA2897C196002E79A5 /* Status.swift in Sources */,
@@ -1230,6 +1239,10 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		0107FEA428F823EE00693317 /* Provisioner2 */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Provisioner2;
+		};
 		01A0C288288853EB000AA135 /* NordicStyle */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = NordicStyle;

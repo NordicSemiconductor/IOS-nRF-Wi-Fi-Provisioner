@@ -36,33 +36,53 @@ private class WiFiService: CBMServiceMock {
     }
 }
 
-let wifiDevice = CBMPeripheralSpec
-        .simulatePeripheral(proximity: .near)
-        .advertising(
-                advertisementData: [
-                    CBMAdvertisementDataLocalNameKey    : "nRF-Wi-Fi",
-                    CBMAdvertisementDataServiceUUIDsKey : [CBMUUID.wifi],
-                    CBMAdvertisementDataIsConnectable   : true as NSNumber
-                ],
-                withInterval: 0.250,
-                alsoWhenConnected: false
-        )
-        .connectable(
-                name: "nRF Wi-Fi",
-                services: [
-                    WiFiService()
-                ],
-                delegate: WifiDeviceDelegate(),
-                connectionInterval: 0.150,
-                mtu: 23)
-        .build()
+struct DeviceConfig {
+    func createDevices() -> [CBMPeripheralSpec] {
+        var devices: [CBMPeripheralSpec] = []
+        for i in 0..<3 {
+            let wifiDevice = CBMPeripheralSpec
+                .simulatePeripheral(proximity: .near)
+                .advertising(
+                    advertisementData: [
+                        CBMAdvertisementDataLocalNameKey    : "nRF-Wi-Fi",
+                        CBMAdvertisementDataServiceUUIDsKey : [CBMUUID.wifi],
+                        CBMAdvertisementDataIsConnectable   : true as NSNumber,
+                        CBMAdvertisementDataServiceDataKey   : [
+                            CBMUUID.wifi : Data([
+                                0x11, // Version: 0x11 == 17
+                                0x00, // Reserved
+                                UInt8(i), // Flags: 0b 00 00 00 11. 1 (second bit) - connected; 1 (first bit) - provisioned
+                                0xC9  // Wi-Fi RSSI: 0xC9 == 0b11001001 == -55
+                            ])
+                        ]
+                    ],
+                    withInterval: 0.250,
+                    alsoWhenConnected: false
+                )
+                .connectable(
+                    name: "nRF Wi-Fi",
+                    services: [
+                        WiFiService()
+                    ],
+                    delegate: WifiDeviceDelegate(),
+                    connectionInterval: 0.150,
+                    mtu: 23)
+                .build()
+            
+            devices.append(wifiDevice)
+        }
+        return devices
+    }
+}
+
+
 
 public class AppConfigurator: ObservableObject {
     public static func setup() {
         CBMCentralManagerMock.simulateInitialState(.poweredOff)
-        CBMCentralManagerMock.simulatePeripherals([
-            wifiDevice
-        ])
+        CBMCentralManagerMock.simulatePeripherals(
+            DeviceConfig().createDevices()
+        )
         CBMCentralManagerMock.simulatePowerOn()
     }
 }

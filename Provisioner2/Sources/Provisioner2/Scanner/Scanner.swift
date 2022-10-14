@@ -13,7 +13,16 @@ open class Scanner {
     
     private var internalScanner: InternalScanner
     
-    public init(delegate: ScannerDelegate?) {
+    open var delegate: ScannerDelegate? {
+        get {
+            internalScanner.delegate
+        }
+        set {
+            internalScanner.delegate = newValue
+        }
+    }
+    
+    public init(delegate: ScannerDelegate? = nil) {
         self.internalScanner = InternalScanner(
             delegate: delegate,
             centralManager: CBMCentralManagerFactory.instance()

@@ -94,20 +94,15 @@ struct ScannerView: View {
     private func listView() -> some View {
         List {
             Section {
-                ForEach(viewModel.scanResults) { scanResult in
+                ForEach(viewModel.scanResults, id: \.id) { scanResult in
                     NavigationLink {
-                        DeviceView(viewModel: DeviceViewModel(peripheralId: scanResult.id))
+                        DeviceView(viewModel: DeviceViewModel(peripheralId: UUID(uuidString: scanResult.id)!))
                             .navigationTitle(scanResult.name)
                     } label: {
-                        Label {
-                            ScanResultLabel(scanResult: scanResult)
-                        } icon: {
-                            RSSIView<BluetoothRSSI>(rssi: BluetoothRSSI(level: scanResult.rssi))
-                        }
-                        .padding()
+                        ScanResultRaw(scanResult: scanResult)
                     }
                     .deviceAdoptiveDetail()
-                    .accessibilityIdentifier("scan_result_\(viewModel.scanResults.firstIndex(of: scanResult) ?? -1)")
+                    .accessibilityIdentifier("scan_result_\(viewModel.scanResults.firstIndex(where: { $0.id == scanResult.id }) ?? -1)")
                 }
             } header: {
                 HStack {
@@ -122,6 +117,7 @@ struct ScannerView: View {
     }
 }
 
+/*
 private struct ScanResultLabel: View {
     let scanResult: ScannerViewModel.ScanResult
     
@@ -141,9 +137,32 @@ private struct ScanResultLabel: View {
         }
     }
 }
+ */
 
 #if DEBUG
+import Provisioner2
+
 struct ScannerView_Previews: PreviewProvider {
+    struct MockScanResult: Provisioner2.ScanResult {
+        var id: String {
+            UUID().uuidString
+        }
+        
+        var name: String
+        
+        var rssi: Int
+        
+        var provisioned: Bool
+        
+        var connected: Bool
+        
+        var version: Int?
+        
+        var wifiRSSI: Int?
+        
+        
+    }
+    
     class DummyScanViewModel: ScannerViewModel {
         override var showStartInfo: Bool {
             get {
@@ -158,16 +177,12 @@ struct ScannerView_Previews: PreviewProvider {
             .scanning
         }
         
-        override var scanResults: [ScanResult] {
-            (0...3).map { i in
-                ScanResult(
-                    name: "Device \(i)",
-                    rssi: -90 + i * 10,
-                    id: UUID(),
-                    previsioned: false, version: 19
-                )
-            }
-        }
+//        override var scanResults: [any T] {
+//            return (0...3)
+//                .map { i -> any ScannerView_Previews.DummyScanViewModel.T in
+//                    MockScanResult(name: "Device \(i)", rssi: -80 + i * 10, provisioned: i % 2 == 0, connected: i == 0)
+//                }
+//        }
     }
     
     static var previews: some View {

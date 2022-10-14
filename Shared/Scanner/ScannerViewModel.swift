@@ -8,7 +8,7 @@
 import Combine
 import CoreBluetoothMock
 import Foundation
-import Provisioner
+import Provisioner2
 import SwiftUI
 import os
 
@@ -17,20 +17,30 @@ extension ScannerViewModel {
         case waiting, scanning, noPermission, turnedOff
     }
     
-    struct ScanResult: Identifiable, Equatable, Hashable {
-        let name: String
-        let rssi: Int
-        let id: UUID
-        let previsioned: Bool?
-        let version: Int?
+    struct DisplayableScanResult: Provisioner2.ScanResult, Identifiable, Equatable, Hashable {
+        let id: String
+        var name: String { sr.name }
+        var rssi: Int { sr.rssi }
+        var provisioned: Bool { sr.provisioned }
+        var connected: Bool { sr.connected }
+        var version: Int? { sr.version }
+        var wifiRSSI: Int? { sr.wifiRSSI }
+        
+        let sr: Provisioner2.ScanResult
+        
+        init(rowScanResult: Provisioner2.ScanResult) {
+            self.sr = rowScanResult
+            self.id = sr.id + sr.name + "\(sr.rssi)" + "\(sr.provisioned)" + "\(sr.connected)" + "\(sr.wifiRSSI ?? 0)"
+        }
+        
+        static func == (lhs: ScannerViewModel.DisplayableScanResult, rhs: ScannerViewModel.DisplayableScanResult) -> Bool {
+            lhs.id == rhs.id
+        }
         
         func hash(into hasher: inout Hasher) {
             hasher.combine(id)
         }
         
-        static func == (lhs: Self, rhs: Self) -> Bool {
-            lhs.id == rhs.id
-        }
     }
 }
 
@@ -50,21 +60,20 @@ class ScannerViewModel: ObservableObject {
     }
     
     @Published private(set) var state: State = .waiting
-    @Published private(set) var scanResults: [ScanResult] = []
-    private var allScanResults = Set<BluetoothManager.ScanResult>([]) {
-        didSet {
-            reset()
-        }
-    }
+    @Published private(set) var scanResults: [Provisioner2.ScanResult] = []
     
-    private let bluetoothManager: BluetoothManager
+    private let scanner: Provisioner2.Scanner
     
     private var cancelable: Set<AnyCancellable> = []
     
-    init(bluetoothManager: BluetoothManager = BluetoothManager()) {
-        self.bluetoothManager = bluetoothManager
-        showStartInfo = !dontShowAgain
+    init(scanner: Provisioner2.Scanner = Scanner()) {
+        self.scanner = scanner
+        self.showStartInfo = !dontShowAgain
         
+        self.scanner.delegate = self
+        self.startScan()
+        // TODO: Handle State Changing
+        /*
         bluetoothManager.statePublisher
             .receive(on: DispatchQueue.main)
             .mapError { _ in fatalError() }
@@ -73,10 +82,14 @@ class ScannerViewModel: ObservableObject {
                 self.state = State(from: state)
             })
             .store(in: &cancelable)
-        
+         */
     }
     
+    
     func startScan() {
+        self.scanner.startScan()
+        // TODO: Handle Start Scar
+        /*
         bluetoothManager.peripheralPublisher
             .receive(on: DispatchQueue.main)
             .mapError { _ in fatalError() }
@@ -87,9 +100,12 @@ class ScannerViewModel: ObservableObject {
                 }
             })
             .store(in: &cancelable)
+         */
     }
     
     private func reset() {
+        // TODO: Handle Reset
+        /*
         scanResults = allScanResults.filter {
             onlyUnprovisioned ? $0.previsioned != true : true
         }.map {
@@ -101,11 +117,12 @@ class ScannerViewModel: ObservableObject {
                 version: $0.version
             )
         }
+         */
     }
 }
 
 extension ScannerViewModel.State {
-    init(from bluetoothState: CBManagerState) {
+    init(from bluetoothState: Provisioner2.Scanner.State) {
         switch bluetoothState {
         case .poweredOn:
             self = .scanning
@@ -122,3 +139,27 @@ extension ScannerViewModel.State {
         }
     }
 }
+
+
+extension ScannerViewModel: Provisioner2.ScannerDelegate {
+    func scannerDidUpdateState(_ state: Provisioner2.Scanner.State) {
+        self.state = State.init(from: state)
+    }
+    
+    func scannerDidDiscover(_ scanResult: Provisioner2.ScanResult) {
+        if let index = scanResults.firstIndex(where: { ($0 as? DisplayableScanResult)?.sr.id == scanResult.id }) {
+            scanResults[index] = scanResult
+        } else {
+            scanResults.append(scanResult)
+        }
+    }
+    
+    func scannerStartedScanning() {
+        
+    }
+    
+    func scannerStoppedScanning() {
+        
+    }
+}
+

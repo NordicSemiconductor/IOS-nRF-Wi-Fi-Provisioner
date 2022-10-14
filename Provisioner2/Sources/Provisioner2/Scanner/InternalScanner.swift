@@ -9,7 +9,7 @@ import Foundation
 import CoreBluetoothMock
 
 class InternalScanner {
-    var delegate: ScannerDelegate?
+    weak var delegate: ScannerDelegate?
     var centralManager: CBCentralManager!
 
     var state: CBManagerState?

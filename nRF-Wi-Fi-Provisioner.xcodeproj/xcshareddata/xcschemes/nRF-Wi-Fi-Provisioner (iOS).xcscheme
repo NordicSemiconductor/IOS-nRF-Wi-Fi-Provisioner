@@ -33,6 +33,20 @@
                ReferencedContainer = "container:nRF-Wi-Fi-Provisioner.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "Provisioner2"
+               BuildableName = "Provisioner2"
+               BlueprintName = "Provisioner2"
+               ReferencedContainer = "container:Provisioner2">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction

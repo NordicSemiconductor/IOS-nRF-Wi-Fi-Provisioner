@@ -6,7 +6,7 @@
 //
 
 import Foundation
-
+/*
 struct ScanResult: Identifiable, Hashable {
     let name: String
     let id: UUID
@@ -20,3 +20,4 @@ struct ScanResult: Identifiable, Hashable {
         lhs.id == rhs.id
     }
 }
+*/

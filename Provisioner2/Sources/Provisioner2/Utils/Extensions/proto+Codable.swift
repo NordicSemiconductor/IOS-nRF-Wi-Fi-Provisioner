@@ -55,7 +55,7 @@ extension WifiInfo: Decodable {
         let bssidStr = try container.decode(String.self, forKey: .bssid)
         let bandStr = try container.decode(String.self, forKey: .band)
         let authStr = try container.decode(String.self, forKey: .auth)
-
+        
         channel = try container.decode(UInt32.self, forKey: .channel)
         ssid = ssidStr.encodeBase64()!
         bssid = bssidStr.encodeBase64()!

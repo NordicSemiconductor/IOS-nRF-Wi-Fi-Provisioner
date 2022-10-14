@@ -4,7 +4,7 @@
 
 import Foundation
 
-public protocol ScannerDelegate {
+public protocol ScannerDelegate: AnyObject {
     func scannerDidUpdateState(_ state: Scanner.State)
     func scannerDidDiscover(_ scanResult: ScanResult)
     func scannerStartedScanning()
