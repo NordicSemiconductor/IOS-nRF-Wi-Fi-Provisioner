@@ -7,6 +7,7 @@
 
 import Foundation
 import CoreBluetoothMock
+import CryptoKit
 
 /// Protocol which represents a discovered device
 public protocol ScanResult {
@@ -26,7 +27,7 @@ public protocol ScanResult {
     var wifiRSSI: Int? { get }
 }
 
-struct DiscoveredDevice: ScanResult {
+struct DiscoveredDevice: ScanResult, CustomStringConvertible {
     let peripheral: CBPeripheral
     let advertisementData: [String: Any]
     let serviceByteArray: [UInt8]?
@@ -66,5 +67,9 @@ struct DiscoveredDevice: ScanResult {
             .flatMap { $0 as? [CBUUID : Data] }
             .flatMap { $0[CBUUID(string: "14387800-130c-49e7-b877-2881c89cb258")] }
             .map { [UInt8]($0) }
+    }
+
+    var description: String {
+        "name: \(name)|id: \(id)| rssi: \(rssi)| provisioned: \(provisioned)| connected: \(connected)| version: \(version ?? -1)| wifiRSSI: \(wifiRSSI ?? -1)"
     }
 }

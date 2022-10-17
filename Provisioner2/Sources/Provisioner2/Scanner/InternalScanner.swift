@@ -7,6 +7,7 @@
 
 import Foundation
 import CoreBluetoothMock
+import os
 
 class InternalScanner {
     weak var delegate: ScannerDelegate?
@@ -14,6 +15,11 @@ class InternalScanner {
 
     var state: CBManagerState?
     var isScanning = false
+
+    let logger = Logger(
+        subsystem: Bundle(for: InternalScanner.self).bundleIdentifier ?? "",
+        category: "scanner.internal-scanner"
+    )
     
     init(delegate: ScannerDelegate?, centralManager: CBCentralManager) {
         self.delegate = delegate
@@ -53,5 +59,6 @@ extension InternalScanner: CBCentralManagerDelegate {
                 rssi: RSSI
         )
         delegate?.scannerDidDiscover(discoveredDevice)
+        logger.debug("Discovered device: \(discoveredDevice)")
     }
 }
