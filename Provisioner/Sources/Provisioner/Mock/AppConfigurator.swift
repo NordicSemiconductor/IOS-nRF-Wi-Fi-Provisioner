@@ -64,7 +64,7 @@ struct DeviceConfig {
                     services: [
                         WiFiService()
                     ],
-                    delegate: WifiDeviceDelegate(),
+                    connectionDelegate: WifiDeviceDelegate(),
                     connectionInterval: 0.150,
                     mtu: 23)
                 .build()
