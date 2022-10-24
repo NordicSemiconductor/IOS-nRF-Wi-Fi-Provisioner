@@ -15,6 +15,7 @@ class MockProvisionerDelegate: ProvisionerConnectionDelegate {
     
     func deviceConnected() {
         connected = true
+        connectionError = nil 
     }
     
     func deviceFailedToConnect(error: Error) {

@@ -167,6 +167,7 @@ final class ProvisionerConnectionTests: XCTestCase {
             }
             sleep(1)
             DispatchQueue.main.async {
+                failedProvisioner.connect()
                 CBMCentralManagerMock.simulatePowerOn()
             }
             sleep(1)

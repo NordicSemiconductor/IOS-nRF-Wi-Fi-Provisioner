@@ -19,7 +19,7 @@ public enum ProvisionerError: Error {
 }
 
 class InternalProvisioner: Provisioner {
-    let connectionGroup = DispatchGroup()
+    let connectionQueue = OperationQueue()
 
     let deviceId: String
     
@@ -42,11 +42,12 @@ class InternalProvisioner: Provisioner {
         self.deviceId = deviceId
         
         self.centralManager.delegate = self
-        self.connectionGroup.enter()
+        self.connectionQueue.isSuspended = true
     }
 
     func connect() {
-        connectionGroup.notify(queue: .main) { [weak self] in
+        connectionQueue.cancelAllOperations()
+        connectionQueue.addOperation { [weak self] in 
             guard let self = self else { return }
             guard case .poweredOn = self.centralManager.state else {
                 self.connectionDelegate?.deviceFailedToConnect(error: ProvisionerError.bluetoothNotAvailable)
@@ -84,9 +85,10 @@ extension InternalProvisioner: CBCentralManagerDelegate {
         case .unknown, .resetting:
             break
         case .unsupported, .unauthorized, .poweredOff:
+            connectionQueue.isSuspended = true
             connectionDelegate?.deviceFailedToConnect(error: ProvisionerError.bluetoothNotAvailable)
         case .poweredOn:
-            connectionGroup.leave()
+            connectionQueue.isSuspended = false
         }
     }
 
