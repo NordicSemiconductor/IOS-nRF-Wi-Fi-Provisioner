@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  ProvisionerConnectionDelegate.swift
 //  
 //
 //  Created by Nick Kibysh on 17/10/2022.
@@ -23,16 +23,4 @@ public protocol ProvisionerConnectionDelegate: AnyObject {
     ///
     /// - Parameter error: If disconnected due to an issue, this parameter contains the error
     func deviceDisconnected(error: Error?)
-}
-
-public protocol ProvisionerInfoDelegate: AnyObject {
-    /// Tells the delegate that the version of the device is received
-    ///
-    /// - Parameter version: Version of the device // TODO: Check the correctness of the parameter
-    func versionReceived(_ version: Int)
-
-    /// Tells the delegate that WiFi status changed
-    ///
-    /// - Parameter status: New WiFi status
-    func wifiStatusReceived(_ status: WiFiStatus)
 }

@@ -23,7 +23,6 @@ final class ProvisionerConnectionTests: XCTestCase {
         ])
         
         scannerDelegate = MockScanDelegate()
-        scanner = Provisioner2.Scanner(delegate: scannerDelegate)
         connectionDelegate = MockProvisionerDelegate()
     }
     
@@ -167,6 +166,7 @@ final class ProvisionerConnectionTests: XCTestCase {
             }
             sleep(1)
             DispatchQueue.main.async {
+                XCTAssertNotNil(self.connectionDelegate.connectionError, "Error should exist after contral manager powered off")
                 failedProvisioner.connect()
                 CBMCentralManagerMock.simulatePowerOn()
             }

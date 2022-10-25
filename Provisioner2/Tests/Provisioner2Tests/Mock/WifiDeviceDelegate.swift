@@ -29,9 +29,8 @@ class WifiDeviceDelegate: CBMPeripheralSpecDelegate {
         if characteristic.uuid == .version {
             return versionData
         } else {
-            fatalError("peripheral(_:didReceiveReadRequestFor:) has not been implemented")
+            fatalError("peripheral(_:didReceiveReadRequestFor: \(characteristic) has not been implemented")
         }
-
     }
 
     func peripheral(_ peripheral: CBMPeripheralSpec, didReceiveWriteRequestFor characteristic: CBMCharacteristicMock, data: Data) -> Swift.Result<(), Error> {
@@ -40,17 +39,23 @@ class WifiDeviceDelegate: CBMPeripheralSpecDelegate {
             let command = request.opCode
             switch command {
             case .getStatus:
-                peripheral.simulateValueUpdate(wifiStatus(.disconnected), for: .controlPoint)
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                    peripheral.simulateValueUpdate(self.wifiStatus(.disconnected), for: .controlPoint)
+                }
                 return Swift.Result.success(())
             case .startScan:
-                peripheral.simulateValueUpdate(wifiStatus(.disconnected), for: .controlPoint)
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    peripheral.simulateValueUpdate(self.wifiStatus(.disconnected), for: .controlPoint)
+                }
                 let data = try Data(contentsOf: Bundle.module.url(forResource: "MockAP", withExtension: "json")!)
                 let aps = try JSONDecoder().decode([Result].self, from: data)
                 
-                DispatchQueue.main.async {
+                DispatchQueue.global().asyncAfter(deadline: .now() + 1) {
                     var iterator = aps.makeIterator()
                     while let next = iterator.next() {
-                        peripheral.simulateValueUpdate(try! next.serializedData(), for: .dataOut)
+                        DispatchQueue.main.async {
+                            peripheral.simulateValueUpdate(try! next.serializedData(), for: .dataOut)
+                        }
                         sleep(100)
                     }
                 }
@@ -64,13 +69,15 @@ class WifiDeviceDelegate: CBMPeripheralSpecDelegate {
                 
                 let states = ConnectionState.allCases
                 
-                DispatchQueue.main.async {
+                DispatchQueue.global().async {
                     var iterator = states.makeIterator()
                     while let next = iterator.next() {
-                        peripheral.simulateValueUpdate(
-                            try! self.connectionStatusResult(next).serializedData(),
-                            for: .dataOut
-                        )
+                        DispatchQueue.main.async {
+                            peripheral.simulateValueUpdate(
+                                try! self.connectionStatusResult(next).serializedData(),
+                                for: .dataOut
+                            )
+                        }
                         sleep(1000)
                     }
                 }

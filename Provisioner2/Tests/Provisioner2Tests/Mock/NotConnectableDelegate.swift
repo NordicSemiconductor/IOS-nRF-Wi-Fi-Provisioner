@@ -13,3 +13,9 @@ class NotConnoctableWiFiDelegate: WifiDeviceDelegate {
         return .failure(NSError(domain: "NotConnoctableWiFiDelegate", code: 1))
     }
 }
+
+class NoServicesWiFiDelegate: WifiDeviceDelegate {
+    override func peripheral(_ peripheral: CBMPeripheralSpec, didReceiveServiceDiscoveryRequest serviceUUIDs: [CBMUUID]?) -> Result<(), Error> {
+        return .failure(NSError(domain: "NoServicesWiFiDelegate", code: 2))
+    }
+}

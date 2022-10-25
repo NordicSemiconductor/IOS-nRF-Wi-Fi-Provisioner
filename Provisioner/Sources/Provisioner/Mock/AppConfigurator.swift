@@ -8,8 +8,6 @@
 import CoreBluetoothMock
 import Foundation
 
-#if DEBUG
-
 extension CBMUUID {
     static let version = CBMUUID(string: "14387801-130c-49e7-b877-2881c89cb258")
     static let controlPoint = CBMUUID(string: "14387802-130c-49e7-b877-2881c89cb258")
@@ -23,7 +21,7 @@ extension CBMCharacteristicMock {
     static let dataOut = CBMCharacteristicMock(type: .dataOut, properties: [.notify])
 }
 
-private class WiFiService: CBMServiceMock {
+class WiFiService: CBMServiceMock {
     init() {
         super.init(
                 type: .wifi,
@@ -64,7 +62,7 @@ struct DeviceConfig {
                     services: [
                         WiFiService()
                     ],
-                    connectionDelegate: WifiDeviceDelegate(),
+                    delegate: WifiDeviceDelegate(),
                     connectionInterval: 0.150,
                     mtu: 23)
                 .build()
@@ -86,11 +84,3 @@ public class AppConfigurator: ObservableObject {
         CBMCentralManagerMock.simulatePowerOn()
     }
 }
-
-#else
-public class AppConfigurator: ObservableObject {
-    public static func setup() {
-        
-    }
-}
-#endif

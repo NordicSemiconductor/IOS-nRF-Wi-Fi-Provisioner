@@ -5,7 +5,6 @@
 //  Created by Nick Kibysh on 27/09/2022.
 //
 
-#if DEBUG
 import Combine
 import Foundation
 import CoreBluetoothMock
@@ -144,5 +143,3 @@ extension Int {
         return Data(bytes: &value, count: MemoryLayout.size(ofValue: value))
     }
 }
-
-#endif

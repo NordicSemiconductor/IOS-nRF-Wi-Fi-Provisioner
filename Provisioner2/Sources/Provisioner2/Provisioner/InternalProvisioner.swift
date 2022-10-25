@@ -14,23 +14,48 @@ public enum ProvisionerError: Error {
     case notConnected(Error)
     /// Bluetooth is not available
     case bluetoothNotAvailable
+    
+    case notSupported
 
     case unknown
 }
 
+/// Error that is thrown when the request to the device was sent, but the device is not connected
+public struct DeviceNotConnectedError: Error { }
+
 class InternalProvisioner: Provisioner {
+    
+    private struct ConnectionInfo {
+        var peripheral: CBPeripheral
+
+        var versionCharacteristic: CBCharacteristic?
+        var dataOutCharacteristic: CBCharacteristic?
+        var controlPointCharacteristic: CBCharacteristic?
+        
+        var isReady: Bool {
+            if case .connected = peripheral.state {
+                return versionCharacteristic.isSome
+                && dataOutCharacteristic.isSome
+                && controlPointCharacteristic.isSome
+            } else {
+                return false
+            }
+        }
+        
+        init(peripheral: CBPeripheral) {
+            self.peripheral = peripheral
+        }
+    }
+    
     let connectionQueue = OperationQueue()
 
     let deviceId: String
     
     let centralManager: CBCentralManager
     weak var connectionDelegate: ProvisionerConnectionDelegate?
+    weak var infoDelegate: ProvisionerInfoDelegate?
 
-    var peripheral: CBPeripheral?
-
-    var versionCharacteristic: CBCharacteristic?
-    var dataOutCharacteristic: CBCharacteristic?
-    var controlPointCharacteristic: CBCharacteristic?
+    private var connectionInfo: ConnectionInfo?
  
     let logger = Logger(
         subsystem: Bundle(for: InternalProvisioner.self).bundleIdentifier ?? "",
@@ -66,16 +91,22 @@ class InternalProvisioner: Provisioner {
         }
     }
     
-    func readVersion() {
-        
+    func readVersion() throws {
+        guard connectionInfo?.isReady == true else {
+            throw DeviceNotConnectedError()
+        }
     }
     
-    func readWiFiStatus() {
-        
+    func readWiFiStatus() throws {
+        guard connectionInfo?.isReady == true else {
+            throw DeviceNotConnectedError()
+        }
     }
     
-    func readProvisioningStatus() {
-        
+    func readProvisioningStatus() throws {
+        guard connectionInfo?.isReady == true else {
+            throw DeviceNotConnectedError()
+        }
     }
 }
 
@@ -93,7 +124,7 @@ extension InternalProvisioner: CBCentralManagerDelegate {
     }
 
     func centralManager(_ central:   CBMCentralManager, didConnect peripheral: CBMPeripheral) {
-        self.peripheral = peripheral
+        self.connectionInfo = ConnectionInfo(peripheral: peripheral)
         peripheral.delegate = self
         peripheral.discoverServices([wifiServiceUUID])
     }
@@ -110,7 +141,15 @@ extension InternalProvisioner: CBCentralManagerDelegate {
 
 extension InternalProvisioner: CBPeripheralDelegate {
     func peripheral(_ peripheral: CBMPeripheral, didDiscoverServices error: Error?) {
-        guard let wifiService = peripheral.services?.first(where: { $0.uuid == wifiServiceUUID }) else { return }
+        guard case .none = error else {
+            connectionDelegate?.deviceFailedToConnect(error: ProvisionerError.notSupported)
+            centralManager.cancelPeripheralConnection(peripheral)
+            return
+        }
+
+        guard let wifiService = peripheral.services?.first(where: { $0.uuid == wifiServiceUUID }) else {
+            return
+        }
         peripheral.discoverCharacteristics([versionCharacteristicUUID, controlPointCharacteristicUUID, dataOutCharacteristicUUID], for: wifiService)
     }
 
@@ -118,11 +157,11 @@ extension InternalProvisioner: CBPeripheralDelegate {
         guard let versionCharacteristic = service.characteristics?.first(where: { $0.uuid == versionCharacteristicUUID }) else { return }
         guard let controlPointCharacteristic = service.characteristics?.first(where: { $0.uuid == controlPointCharacteristicUUID }) else { return }
         guard let dataOutCharacteristic = service.characteristics?.first(where: { $0.uuid == dataOutCharacteristicUUID }) else { return }
-
-        self.versionCharacteristic = versionCharacteristic
-        self.controlPointCharacteristic = controlPointCharacteristic
-        self.dataOutCharacteristic = dataOutCharacteristic
-
+        
+        self.connectionInfo?.versionCharacteristic = versionCharacteristic
+        self.connectionInfo?.controlPointCharacteristic = controlPointCharacteristic
+        self.connectionInfo?.dataOutCharacteristic = dataOutCharacteristic
+        
         peripheral.setNotifyValue(true, for: dataOutCharacteristic)
 
         connectionDelegate?.deviceConnected()

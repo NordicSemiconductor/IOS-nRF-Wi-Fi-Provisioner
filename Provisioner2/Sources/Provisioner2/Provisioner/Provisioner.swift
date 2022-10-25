@@ -7,11 +7,18 @@ import Foundation
 public protocol Provisioner {
     var deviceId: String { get }
     var connectionDelegate: ProvisionerConnectionDelegate? { get set }
+    var infoDelegate: ProvisionerInfoDelegate? { get set }
     
     func connect()
-    func readVersion()
-    func readWiFiStatus()
-    func readProvisioningStatus()
+
+    /// Read the device version
+    ///
+    /// - Throws: If the version was request but device is not connected, this method throws `DeviceNotConnectedError`
+    func readVersion() throws
+
+    func readWiFiStatus() throws
+
+    func readProvisioningStatus() throws
 }
 
 public struct ProvisionerFactory {
