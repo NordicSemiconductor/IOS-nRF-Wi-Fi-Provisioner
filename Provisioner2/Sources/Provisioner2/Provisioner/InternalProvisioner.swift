@@ -18,35 +18,14 @@ public enum ProvisionerError: Error {
     case notSupported
 
     case unknown
+    /// Data was received but unnable to parse
+    case badData
 }
 
 /// Error that is thrown when the request to the device was sent, but the device is not connected
 public struct DeviceNotConnectedError: Error { }
 
 class InternalProvisioner: Provisioner {
-    
-    private struct ConnectionInfo {
-        var peripheral: CBPeripheral
-
-        var versionCharacteristic: CBCharacteristic?
-        var dataOutCharacteristic: CBCharacteristic?
-        var controlPointCharacteristic: CBCharacteristic?
-        
-        var isReady: Bool {
-            if case .connected = peripheral.state {
-                return versionCharacteristic.isSome
-                && dataOutCharacteristic.isSome
-                && controlPointCharacteristic.isSome
-            } else {
-                return false
-            }
-        }
-        
-        init(peripheral: CBPeripheral) {
-            self.peripheral = peripheral
-        }
-    }
-    
     let connectionQueue = OperationQueue()
 
     let deviceId: String
@@ -55,7 +34,7 @@ class InternalProvisioner: Provisioner {
     weak var connectionDelegate: ProvisionerConnectionDelegate?
     weak var infoDelegate: ProvisionerInfoDelegate?
 
-    private var connectionInfo: ConnectionInfo?
+    private var connectionInfo: BluetoothConnectionInfo?
  
     let logger = Logger(
         subsystem: Bundle(for: InternalProvisioner.self).bundleIdentifier ?? "",
@@ -95,6 +74,8 @@ class InternalProvisioner: Provisioner {
         guard connectionInfo?.isReady == true else {
             throw DeviceNotConnectedError()
         }
+        
+        connectionInfo?.readVersion()
     }
     
     func readWiFiStatus() throws {
@@ -110,6 +91,7 @@ class InternalProvisioner: Provisioner {
     }
 }
 
+// MARK: - CBCentralManagerDelegate
 extension InternalProvisioner: CBCentralManagerDelegate {
     func centralManagerDidUpdateState(_ central: CBCentralManager) {
         switch central.state {
@@ -124,7 +106,7 @@ extension InternalProvisioner: CBCentralManagerDelegate {
     }
 
     func centralManager(_ central:   CBMCentralManager, didConnect peripheral: CBMPeripheral) {
-        self.connectionInfo = ConnectionInfo(peripheral: peripheral)
+        self.connectionInfo = BluetoothConnectionInfo(peripheral: peripheral)
         peripheral.delegate = self
         peripheral.discoverServices([wifiServiceUUID])
     }
@@ -139,6 +121,7 @@ extension InternalProvisioner: CBCentralManagerDelegate {
     }
 }
 
+// MARK: - CBPeripheralDelegate
 extension InternalProvisioner: CBPeripheralDelegate {
     func peripheral(_ peripheral: CBMPeripheral, didDiscoverServices error: Error?) {
         guard case .none = error else {
@@ -165,5 +148,27 @@ extension InternalProvisioner: CBPeripheralDelegate {
         peripheral.setNotifyValue(true, for: dataOutCharacteristic)
 
         connectionDelegate?.deviceConnected()
+    }
+    
+    func peripheral(_ peripheral: CBMPeripheral, didUpdateValueFor characteristic: CBMCharacteristic, error: Error?) {
+        if characteristic.uuid == connectionInfo?.versionCharacteristic?.uuid {
+            if let data = characteristic.value {
+                parseVersionData(data: data)
+            } else {
+                infoDelegate?.versionReceived(.failure(.emptyData))
+            }
+        }
+    }
+}
+
+// MARK: - Parsing methods
+extension InternalProvisioner {
+    func parseVersionData(data: Data) {
+        do {
+            let info = try Info(serializedData: data)
+            infoDelegate?.versionReceived(.success(Int(info.version)))
+        } catch {
+            infoDelegate?.versionReceived(.failure(.badData))
+        }
     }
 }
