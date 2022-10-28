@@ -132,6 +132,27 @@ final class ProvisionerInfoTests: XCTestCase {
         waitForExpectations(timeout: 3)
     }
     
+    func testProvisionedStatus() {
+        let provisioner = InternalProvisioner(deviceId: wifiDevice.identifier.uuidString)
+        provisioner.infoDelegate = infoDelegate
+        provisioner.connect()
+        
+        let exp = expectation(description: "Provisioned Status Expectation")
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            do {
+                try self.dummy()
+                XCTAssertNoThrow(try provisioner.readProvisioningStatus())
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    
+                    
+                }
+            } catch {
+                
+            }
+        }
+    }
+    
     private func dummy() throws {
         // MARK: Empty throws method to get rid off warnings
     }

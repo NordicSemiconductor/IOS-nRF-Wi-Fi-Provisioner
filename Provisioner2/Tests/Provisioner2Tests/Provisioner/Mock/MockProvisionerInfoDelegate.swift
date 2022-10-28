@@ -13,7 +13,7 @@ class MockProvisionerInfoDelegate: ProvisionerInfoDelegate {
         self.version = version
     }
     
-    func wifiStatusReceived(_ status: Result<Provisioner2.WiFiStatus, Provisioner2.ProvisionerError>) {
+    func deviceStatusReceived(_ status: Result<Provisioner2.WiFiStatus, Provisioner2.ProvisionerError>) {
         self.wifiStatus = status
     }
     

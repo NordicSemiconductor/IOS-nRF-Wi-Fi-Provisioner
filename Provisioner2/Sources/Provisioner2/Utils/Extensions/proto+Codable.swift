@@ -8,7 +8,7 @@
 #if DEBUG
 import Foundation
 
-extension Band {
+extension Proto.Band {
     init(name: String) {
         switch name {
         case "BAND_2_4_GH":
@@ -21,7 +21,7 @@ extension Band {
     }
 }
 
-extension AuthMode {
+extension Proto.AuthMode {
     init(name: String) {
         switch name {
         case "OPEN":
@@ -40,7 +40,7 @@ extension AuthMode {
     }
 }
 
-extension WifiInfo: Decodable {
+extension Proto.WifiInfo: Decodable {
     enum CodingKeys: CodingKey {
         case ssid
         case bssid
@@ -59,12 +59,12 @@ extension WifiInfo: Decodable {
         channel = try container.decode(UInt32.self, forKey: .channel)
         ssid = ssidStr.encodeBase64()!
         bssid = bssidStr.encodeBase64()!
-        band = Band(name: bandStr)
-        auth = AuthMode(name: authStr)
+        band = Proto.Band(name: bandStr)
+        auth = Proto.AuthMode(name: authStr)
     }
 }
 
-extension ScanRecord: Decodable {
+extension Proto.ScanRecord: Decodable {
     enum CodingKeys: CodingKey {
         case wifi
         case rssi
@@ -72,19 +72,19 @@ extension ScanRecord: Decodable {
 
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        wifi = try container.decode(WifiInfo.self, forKey: .wifi)
+        wifi = try container.decode(Proto.WifiInfo.self, forKey: .wifi)
         rssi = try container.decode(Int32.self, forKey: .rssi)
     }
 }
 
-extension Result: Decodable {
+extension Proto.Result: Decodable {
     enum CodingKeys: CodingKey {
         case scanRecord
     }
 
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        scanRecord = try container.decode(ScanRecord.self, forKey: .scanRecord)
+        scanRecord = try container.decode(Proto.ScanRecord.self, forKey: .scanRecord)
     }
 }
 

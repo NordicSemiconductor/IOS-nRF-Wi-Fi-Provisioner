@@ -165,7 +165,7 @@ extension InternalProvisioner: CBPeripheralDelegate {
 extension InternalProvisioner {
     func parseVersionData(data: Data) {
         do {
-            let info = try Info(serializedData: data)
+            let info = try Proto.Info(serializedData: data)
             infoDelegate?.versionReceived(.success(Int(info.version)))
         } catch {
             infoDelegate?.versionReceived(.failure(.badData))

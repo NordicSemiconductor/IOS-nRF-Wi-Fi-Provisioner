@@ -34,7 +34,7 @@ class WifiDeviceDelegate: CBMPeripheralSpecDelegate {
 
     func peripheral(_ peripheral: CBMPeripheralSpec, didReceiveWriteRequestFor characteristic: CBMCharacteristicMock, data: Data) -> Swift.Result<(), Error> {
         do {
-            let request = try! Request(serializedData: data)
+            let request = try! Proto.Request(serializedData: data)
             let command = request.opCode
             switch command {
             case .getStatus:
@@ -47,7 +47,7 @@ class WifiDeviceDelegate: CBMPeripheralSpecDelegate {
                     peripheral.simulateValueUpdate(self.wifiStatus(.disconnected), for: .controlPoint)
                 }
                 let data = try Data(contentsOf: Bundle.module.url(forResource: "MockAP", withExtension: "json")!)
-                let aps = try JSONDecoder().decode([Result].self, from: data)
+                let aps = try JSONDecoder().decode([Proto.Result].self, from: data)
                 
                 DispatchQueue.global().asyncAfter(deadline: .now() + 1) {
                     var iterator = aps.makeIterator()
@@ -66,7 +66,7 @@ class WifiDeviceDelegate: CBMPeripheralSpecDelegate {
             case .setConfig:
                 peripheral.simulateValueUpdate(wifiStatus(.disconnected), for: .controlPoint)
                 
-                let states = ConnectionState.allCases
+                let states = Proto.ConnectionState.allCases
                 
                 DispatchQueue.global().async {
                     var iterator = states.makeIterator()
@@ -97,16 +97,16 @@ class WifiDeviceDelegate: CBMPeripheralSpecDelegate {
 
 extension WifiDeviceDelegate {
     var versionData: Swift.Result<Data, Error> {
-        var info = Info()
+        var info = Proto.Info()
         info.version = 17
         let data = try! info.serializedData()
         return Swift.Result.success(data)
     }
 
-    func wifiStatus(_ stt: ConnectionState) -> Data {
-        var response = Response()
+    func wifiStatus(_ stt: Proto.ConnectionState) -> Data {
+        var response = Proto.Response()
         response.status = .success
-        var deviceStatus = DeviceStatus()
+        var deviceStatus = Proto.DeviceStatus()
         deviceStatus.state = stt
         deviceStatus.provisioningInfo = wifiInfo()
 
@@ -115,14 +115,14 @@ extension WifiDeviceDelegate {
         return try! response.serializedData()
     }
 
-    func connectionStatusResult(_ stt: ConnectionState) -> Result {
-        var result = Result()
+    func connectionStatusResult(_ stt: Proto.ConnectionState) -> Proto.Result {
+        var result = Proto.Result()
         result.state = stt
         return result
     }
 
-    func wifiInfo() -> WifiInfo {
-        var wfInfo = WifiInfo()
+    func wifiInfo() -> Proto.WifiInfo {
+        var wfInfo = Proto.WifiInfo()
         wfInfo.ssid = "Nordic Guest".data(using: .utf8)!
         wfInfo.bssid = 0xFA_23_1A_2B_3D_0A.toData()
         wfInfo.channel = 6
