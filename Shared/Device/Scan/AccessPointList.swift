@@ -127,7 +127,7 @@ struct AccessPointList_Previews: PreviewProvider {
             }
         }
         
-        override var accessPoints: [AccessPoint] {
+        override var accessPoints: [WifiInfo] {
             get {
                 [
                     AccessPoint(
@@ -152,7 +152,7 @@ struct AccessPointList_Previews: PreviewProvider {
             
         }
         
-        override func allChannels(for accessPoint: AccessPoint) -> [AccessPoint] {
+        override func allChannels(for accessPoint: WifiInfo) -> [WifiInfo] {
             [
                 AccessPoint(
                     ssid: "Test",

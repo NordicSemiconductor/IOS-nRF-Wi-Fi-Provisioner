@@ -278,7 +278,7 @@ class MockDeviceViewModel: DeviceViewModel {
         self.version = "14"
     }
     
-    override var selectedAccessPoint: AccessPoint? {
+    override var selectedAccessPoint: WifiInfo? {
         get {
             AccessPoint(ssid: "Office Wi-Fi", bssid: "4F.41.AF.10", id: "Office 1", isOpen: false, channel: 12, rssi: -50, frequency: ._5GHz)
         }

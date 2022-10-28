@@ -24,5 +24,5 @@ public protocol ProvisionerInfoDelegate: AnyObject {
     /// Tells the delegate that WiFi status changed
     ///
     /// - Parameter status: New WiFi status
-    func deviceStatusReceived(_ status: Swift.Result<WiFiStatus, ProvisionerError>)
+    func deviceStatusReceived(_ status: Swift.Result<DeviceStatus, ProvisionerError>)
 }
