@@ -23,6 +23,7 @@ open class Provisioner {
         self.deviceID = deviceID
     }
     
+    // MARK: Connect
     open func connect() async throws {
         do {
             _ = try await centralManager.connectPeripheral(deviceID)
@@ -33,6 +34,7 @@ open class Provisioner {
         }
     }
     
+    // MARK: Info
     open func readVersion() async throws -> String? {
         let versionData: Data? = try await centralManager.readValue(for: .version)
         
@@ -52,6 +54,7 @@ open class Provisioner {
         return WiFiDeviceStatus(deviceStatus: response.deviceStatus)
     }
     
+    // MARK: Scan
     open func startScan() -> AnyPublisher<AccessPoint, Swift.Error> {
         logger.info("start scan")
         
@@ -106,6 +109,7 @@ open class Provisioner {
         try await sendRequestToDataPoint(opCode: .stopScan)
     }
     
+    // MARK: Provision
     open func startProvision(accessPoint: AccessPoint, passphrase: String?, volatileMemory: Bool) async throws -> AnyPublisher<WiFiStatus, Swift.Error> {
         var config = WifiConfig()
         config.wifi = accessPoint.wifiInfo

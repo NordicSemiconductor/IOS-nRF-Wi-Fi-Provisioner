@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol ScanParams {
+public protocol ScanParams {
     var band: Band? { get set }
     var passive: Bool? { get set }
     var periodMs: UInt? { get set }
@@ -50,6 +50,4 @@ extension Envelope: ScanParams where P == Proto.ScanParams {
             newValue.map { UInt32($0) }.map { model.groupChannels = $0 }
         }
     }
-    
-    
 }

@@ -20,6 +20,8 @@ public enum ProvisionerError: Error {
     case unknown
     /// Data was received but unnable to parse
     case badData
+    /// Device failure response
+    case deviceFailureResponse
 }
 
 /// Error that is thrown when the request to the device was sent, but the device is not connected
@@ -91,6 +93,22 @@ class InternalProvisioner: Provisioner {
     }
 }
 
+// MARK: - Private Methods
+extension InternalProvisioner {
+    private func sendRequest(opCode: Proto.OpCode, config: Proto.WifiConfig? = nil) throws {
+        var request = Proto.Request()
+        request.opCode = opCode
+        if let conf = config {
+            request.config = conf
+        }
+        
+        let data = try request.serializedData()
+        connectionInfo.map { ci in
+            ci.peripheral.writeValue(data, for: ci.controlPointCharacteristic, type: .withResponse)
+        }
+    }
+}
+
 // MARK: - CBCentralManagerDelegate
 extension InternalProvisioner: CBCentralManagerDelegate {
     func centralManagerDidUpdateState(_ central: CBCentralManager) {
@@ -157,6 +175,12 @@ extension InternalProvisioner: CBPeripheralDelegate {
             } else {
                 infoDelegate?.versionReceived(.failure(.emptyData))
             }
+        } else if characteristic.uuid == connectionInfo?.controlPointCharacteristic.uuid {
+            if let data = characteristic.value {
+                parseControlPointResponse(data: data)
+            } else {
+                infoDelegate?.versionReceived(.failure(.emptyData))
+            }
         }
     }
 }
@@ -169,6 +193,44 @@ extension InternalProvisioner {
             infoDelegate?.versionReceived(.success(Int(info.version)))
         } catch {
             infoDelegate?.versionReceived(.failure(.badData))
+        }
+    }
+    
+    func parseControlPointResponse(data: Data) {
+        do {
+            let response = try Proto.Response(serializedData: data)
+            parseResponse(response)
+        } catch {
+            infoDelegate?.deviceStatusReceived(.failure(.badData))
+        }
+    }
+    
+    func parseResponse(_ response: Proto.Response) {
+        switch response.requestOpCode {
+        case .reserved:
+            fatalError()
+        case .getStatus:
+            break
+        case .startScan:
+            fatalError()
+        case .stopScan:
+            fatalError()
+        case .setConfig:
+            fatalError()
+        case .forgetConfig:
+            fatalError()
+        }
+    }
+    
+    // MARK: Parse by OpCode
+    
+    func parseGetStatus(_ response: Proto.Response) {
+        switch response.status {
+        case .success:
+            let deviceStatus = Envelope(model: response.deviceStatus)
+            infoDelegate?.deviceStatusReceived(.success(deviceStatus))
+        default:
+            infoDelegate?.deviceStatusReceived(.failure(.deviceFailureResponse))
         }
     }
 }

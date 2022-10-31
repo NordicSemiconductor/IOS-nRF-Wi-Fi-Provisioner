@@ -8,38 +8,34 @@
 import Foundation
 
 public protocol WifiInfo {
-    var ssid: String { get }
-    var rssi: Int { get }
-    var bssid: String { get }
+    var ssid: String? { get }
+    var bssid: MACAddress { get }
     var band: Band { get }
     var channel: UInt { get }
     var auth: AuthMode { get }
 }
 
 extension Envelope: WifiInfo where P == Proto.WifiInfo {
-    var bssid: String {
-        ""
+    var bssid: MACAddress {
+        MACAddress(data: model.bssid)
     }
     
     var band: Band {
-        .any
+        Band(proto: model.band)
     }
     
     var channel: UInt {
-        0
+        UInt(model.channel)
     }
     
     var auth: AuthMode {
-        .open
+        AuthMode(proto: model.auth)
     }
     
-    var ssid: String {
-        ""
+    var ssid: String? {
+        String(data: model.ssid, encoding: .utf8)
     }
     
-    var rssi: Int {
-        -1
-    }
     
     
 }

@@ -11,9 +11,9 @@ import CoreBluetoothMock
 struct BluetoothConnectionInfo {
     var peripheral: CBPeripheral
 
-    var versionCharacteristic: CBCharacteristic?
-    var dataOutCharacteristic: CBCharacteristic?
-    var controlPointCharacteristic: CBCharacteristic?
+    var versionCharacteristic: CBCharacteristic!
+    var dataOutCharacteristic: CBCharacteristic!
+    var controlPointCharacteristic: CBCharacteristic!
     
     var isReady: Bool {
         if case .connected = peripheral.state {
