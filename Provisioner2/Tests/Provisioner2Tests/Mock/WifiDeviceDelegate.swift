@@ -38,7 +38,7 @@ class WifiDeviceDelegate: CBMPeripheralSpecDelegate {
             let command = request.opCode
             switch command {
             case .getStatus:
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                     peripheral.simulateValueUpdate(self.wifiStatus(.disconnected), for: .controlPoint)
                 }
                 return Swift.Result.success(())
@@ -49,7 +49,7 @@ class WifiDeviceDelegate: CBMPeripheralSpecDelegate {
                 let data = try Data(contentsOf: Bundle.module.url(forResource: "MockAP", withExtension: "json")!)
                 let aps = try JSONDecoder().decode([Proto.Result].self, from: data)
                 
-                DispatchQueue.global().asyncAfter(deadline: .now() + 1) {
+                DispatchQueue.global().asyncAfter(deadline: .now() + 0.5) {
                     var iterator = aps.makeIterator()
                     while let next = iterator.next() {
                         DispatchQueue.main.async {
@@ -93,9 +93,7 @@ class WifiDeviceDelegate: CBMPeripheralSpecDelegate {
     func peripheral(_ peripheral: CBMPeripheralSpec, didReceiveSetNotifyRequest enabled: Bool, for characteristic: CBMCharacteristicMock) -> Swift.Result<(), Error> {
         return Swift.Result.success(())
     }
-}
-
-extension WifiDeviceDelegate {
+    
     var versionData: Swift.Result<Data, Error> {
         var info = Proto.Info()
         info.version = 17
@@ -106,7 +104,9 @@ extension WifiDeviceDelegate {
     func wifiStatus(_ stt: Proto.ConnectionState) -> Data {
         var response = Proto.Response()
         response.status = .success
+        response.requestOpCode = .getStatus
         var deviceStatus = Proto.DeviceStatus()
+        
         deviceStatus.state = stt
         deviceStatus.provisioningInfo = wifiInfo()
 

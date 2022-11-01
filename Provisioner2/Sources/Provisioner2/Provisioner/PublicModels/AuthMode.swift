@@ -7,7 +7,7 @@
 
 import Foundation
 
-public enum AuthMode {
+public enum AuthMode: Equatable {
     case open
     case wep
     case wpaPsk

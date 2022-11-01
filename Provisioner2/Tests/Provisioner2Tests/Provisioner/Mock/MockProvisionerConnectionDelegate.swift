@@ -25,14 +25,4 @@ class MockProvisionerDelegate: ProvisionerConnectionDelegate {
     func deviceDisconnected(error: Error?) {
         
     }
-    
-    func versionReceived(_ version: Int) {
-        
-    }
-    
-    func wifiStatusReceived(_ status: Provisioner2.WiFiStatus) {
-        
-    }
-    
-    
 }

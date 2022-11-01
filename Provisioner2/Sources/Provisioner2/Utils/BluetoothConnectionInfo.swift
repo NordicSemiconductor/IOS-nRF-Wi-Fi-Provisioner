@@ -29,6 +29,11 @@ struct BluetoothConnectionInfo {
         self.peripheral = peripheral
     }
     
+    func setNotify() {
+        peripheral.setNotifyValue(true, for: dataOutCharacteristic)
+        peripheral.setNotifyValue(true, for: controlPointCharacteristic)
+    }
+    
     func readVersion() {
         versionCharacteristic.map { peripheral.readValue(for: $0) }
     }

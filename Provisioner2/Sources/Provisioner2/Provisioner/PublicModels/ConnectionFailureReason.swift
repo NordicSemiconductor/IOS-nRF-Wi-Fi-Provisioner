@@ -7,7 +7,7 @@
 
 import Foundation
 
-public enum ConnectionFailureReason: Error {
+public enum ConnectionFailureReason: Error, Equatable {
     
     /// Authentication error.
     case authError

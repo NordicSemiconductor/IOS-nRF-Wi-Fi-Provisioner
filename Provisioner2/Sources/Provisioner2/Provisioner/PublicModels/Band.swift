@@ -7,7 +7,7 @@
 
 import Foundation
 
-public enum Band {
+public enum Band: Equatable {
     case any 
     case band24Gh
     case band5Gh

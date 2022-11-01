@@ -8,11 +8,16 @@
 import Foundation
 import CoreBluetoothMock
 
-let perihpheralUUID     = "14387800-130C-49E7-B877-2881C89CB260"
-let notConnectableUUID  = "14387800-130C-49E7-B877-2881C89CB261"
-let noServiceDeviceUUID = "14387800-130C-49E7-B877-2881C89CB262"
-let noVersionDeviceUUID = "14387800-130C-49E7-B877-2881C89CB263"
-let badVersionDeviceUUID = "14387800-130C-49E7-B877-2881C89CB264"
+@testable import Provisioner2
+
+let perihpheralUUID             = "14387800-130C-49E7-B877-2881C89CB260"
+let notConnectableUUID          = "14387800-130C-49E7-B877-2881C89CB261"
+let noServiceDeviceUUID         = "14387800-130C-49E7-B877-2881C89CB262"
+let noVersionDeviceUUID         = "14387800-130C-49E7-B877-2881C89CB263"
+let badVersionDeviceUUID        = "14387800-130C-49E7-B877-2881C89CB264"
+let invalidArgumentDeviceUUID   = "14387800-130C-49E7-B877-2881C89CB265"
+let invalidProtoDeviceUUID      = "14387800-130C-49E7-B877-2881C89CB266"
+let internalErrorDeviceUUID     = "14387800-130C-49E7-B877-2881C89CB267"
 
 struct PeripheralFactory {
     static func build(uuid: String, name: String, delegate: CBMPeripheralSpecDelegate) -> CBMPeripheralSpec {
@@ -70,3 +75,30 @@ class BadVersionDataDelegate: WifiDeviceDelegate {
     }
 }
 let badVersionDataDevice = PeripheralFactory.build(uuid: badVersionDeviceUUID, name: "Bad Version", delegate: BadVersionDataDelegate())
+
+// MARK: Bad Device Response
+
+let invalidArgumentDevice = PeripheralFactory.build(
+    uuid: invalidArgumentDeviceUUID,
+    name: "Invalid Argument",
+    delegate: FailWifiStatusDelegate(failure: .some(.invalidArgument))
+)
+
+let invalidProtoDevice = PeripheralFactory.build(
+    uuid: invalidProtoDeviceUUID,
+    name: "Invalid Proto",
+    delegate: FailWifiStatusDelegate(failure: .some(.invalidProto))
+)
+
+let internalErrorDevice = PeripheralFactory.build(
+    uuid: internalErrorDeviceUUID,
+    name: "Internal Error",
+    delegate: FailWifiStatusDelegate(failure: .some(.internalError))
+)
+
+/*
+ case 0: self = .success
+ case 1: self = .invalidArgument
+ case 2: self = .invalidProto
+ case 3: self = .internalError
+ */

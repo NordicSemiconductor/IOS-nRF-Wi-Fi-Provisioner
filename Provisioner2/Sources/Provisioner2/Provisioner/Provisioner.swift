@@ -16,9 +16,7 @@ public protocol Provisioner {
     /// - Throws: If the version was request but device is not connected, this method throws `DeviceNotConnectedError`
     func readVersion() throws
 
-    func readWiFiStatus() throws
-
-    func readProvisioningStatus() throws
+    func readDeviceStatus() throws
 }
 
 public struct ProvisionerFactory {

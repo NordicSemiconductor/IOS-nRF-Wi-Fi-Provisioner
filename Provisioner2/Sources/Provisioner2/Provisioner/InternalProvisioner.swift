@@ -80,16 +80,12 @@ class InternalProvisioner: Provisioner {
         connectionInfo?.readVersion()
     }
     
-    func readWiFiStatus() throws {
+    func readDeviceStatus() throws {
         guard connectionInfo?.isReady == true else {
             throw DeviceNotConnectedError()
         }
-    }
-    
-    func readProvisioningStatus() throws {
-        guard connectionInfo?.isReady == true else {
-            throw DeviceNotConnectedError()
-        }
+        
+        try sendRequest(opCode: .getStatus)
     }
 }
 
@@ -163,7 +159,7 @@ extension InternalProvisioner: CBPeripheralDelegate {
         self.connectionInfo?.controlPointCharacteristic = controlPointCharacteristic
         self.connectionInfo?.dataOutCharacteristic = dataOutCharacteristic
         
-        peripheral.setNotifyValue(true, for: dataOutCharacteristic)
+        self.connectionInfo?.setNotify()
 
         connectionDelegate?.deviceConnected()
     }
@@ -208,9 +204,9 @@ extension InternalProvisioner {
     func parseResponse(_ response: Proto.Response) {
         switch response.requestOpCode {
         case .reserved:
-            fatalError()
+            return 
         case .getStatus:
-            break
+            parseGetStatus(response)
         case .startScan:
             fatalError()
         case .stopScan:

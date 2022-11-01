@@ -35,7 +35,4 @@ extension Envelope: WifiInfo where P == Proto.WifiInfo {
     var ssid: String? {
         String(data: model.ssid, encoding: .utf8)
     }
-    
-    
-    
 }

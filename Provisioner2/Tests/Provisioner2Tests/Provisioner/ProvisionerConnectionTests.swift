@@ -26,108 +26,91 @@ final class ProvisionerConnectionTests: XCTestCase {
         connectionDelegate = MockProvisionerDelegate()
     }
     
-    func testBadIdentifierConnection() {
+    override class func tearDown() {
+        super.tearDown()
+        
+        CBMCentralManagerMock.tearDownSimulation()
+    }
+    
+    func testBadIdentifierConnection() throws {
         let failedProvisioner = InternalProvisioner(deviceId: "")
         failedProvisioner.connectionDelegate = connectionDelegate
         failedProvisioner.connect()
-        
-        let errorExp = expectation(description: "Wrong UUID Expectation")
         
         CBMCentralManagerMock.simulatePowerOn()
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            XCTAssertNotNil(self.connectionDelegate.connectionError)
-            if let e = self.connectionDelegate.connectionError {
-                XCTAssertTrue(e is ProvisionerError)
-                if let provE = e as? ProvisionerError {
-                    guard case .badIdentifier = provE else {
-                        XCTAssert(false, "`badIdentifier` expected")
-                        return
-                    }
-                }
-            }
-            errorExp.fulfill()
-        }
+        wait(1)
         
-        waitForExpectations(timeout: 2)
+        XCTAssertNotNil(self.connectionDelegate.connectionError)
+        let e = try XCTUnwrap(self.connectionDelegate.connectionError)
+        let provE = try XCTUnwrap(e as? ProvisionerError)
+        
+        switch provE {
+        case .badIdentifier:
+            XCTAssert(true)
+        default:
+            XCTFail("`badIdentifier` expected")
+        }
     }
     
-    func testBadStateConnection() {
+    func testBadStateConnection() throws {
         let failedProvisioner = InternalProvisioner(deviceId: "")
         failedProvisioner.connectionDelegate = connectionDelegate
         failedProvisioner.connect()
         
-        let errorExp = expectation(description: "Bad Bluetooth State expectation")
-        
         CBMCentralManagerMock.simulatePowerOff()
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            XCTAssertNotNil(self.connectionDelegate.connectionError)
-            if let e = self.connectionDelegate.connectionError {
-                XCTAssertTrue(e is ProvisionerError)
-                if let provE = e as? ProvisionerError {
-                    guard case .bluetoothNotAvailable = provE else {
-                        XCTAssert(false, "`bluetoothNotAvailable` expected")
-                        return
-                    }
-                }
-            }
-            errorExp.fulfill()
-        }
+        wait(1)
         
-        waitForExpectations(timeout: 2)
+        let e = try XCTUnwrap(self.connectionDelegate.connectionError)
+        let provE = try XCTUnwrap(e as? ProvisionerError)
+        
+        switch provE {
+        case .bluetoothNotAvailable:
+            XCTAssert(true)
+        default:
+            XCTFail("`bluetoothNotAvailable` expected")
+        }
     }
     
-    func testNoPeripheralFonud() {
+    func testNoPeripheralFonud() throws {
         let failedProvisioner = InternalProvisioner(deviceId: UUID().uuidString)
         failedProvisioner.connectionDelegate = connectionDelegate
         failedProvisioner.connect()
         
-        let errorExp = expectation(description: "No Peripheral found expectation")
-        
         CBMCentralManagerMock.simulatePowerOn()
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            XCTAssertNotNil(self.connectionDelegate.connectionError)
-            if let e = self.connectionDelegate.connectionError {
-                XCTAssertTrue(e is ProvisionerError)
-                if let provE = e as? ProvisionerError {
-                    guard case .noPeripheralFound = provE else {
-                        XCTAssert(false, "`noPeripheralFound` expected")
-                        return
-                    }
-                }
-            }
-            errorExp.fulfill()
-        }
+        wait(1)
         
-        waitForExpectations(timeout: 2)
+        let e = try XCTUnwrap(self.connectionDelegate.connectionError)
+        let provE = try XCTUnwrap(e as? ProvisionerError)
+        
+        switch provE {
+        case .noPeripheralFound:
+            XCTAssert(true)
+        default:
+            XCTFail("`noPeripheralFound` expected")
+        }
     }
     
-    func testNotConnected() {
+    func testNotConnected() throws {
         let failedProvisioner = InternalProvisioner(deviceId: notConnectableDevice.identifier.uuidString)
         failedProvisioner.connectionDelegate = connectionDelegate
         failedProvisioner.connect()
         
-        let errorExp = expectation(description: "Not Connected expectation")
-        
         CBMCentralManagerMock.simulatePowerOn()
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            XCTAssertNotNil(self.connectionDelegate.connectionError)
-            if let e = self.connectionDelegate.connectionError {
-                XCTAssertTrue(e is ProvisionerError)
-                if let provE = e as? ProvisionerError {
-                    guard case .notConnected = provE else {
-                        XCTAssert(false, "`notConnected` expected")
-                        return
-                    }
-                }
-            }
-            errorExp.fulfill()
-        }
+        wait(1)
         
-        waitForExpectations(timeout: 2)
+        let e = try XCTUnwrap(self.connectionDelegate.connectionError)
+        let provE = try XCTUnwrap(e as? ProvisionerError)
+        
+        switch provE {
+        case .notConnected:
+            XCTAssert(true)
+        default:
+            XCTFail("`notConnected` expected")
+        }
     }
     
     func testSuccessConnection() {
@@ -135,17 +118,12 @@ final class ProvisionerConnectionTests: XCTestCase {
         failedProvisioner.connectionDelegate = connectionDelegate
         failedProvisioner.connect()
         
-        let errorExp = expectation(description: "Connected expectation")
-        
         CBMCentralManagerMock.simulatePowerOn()
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            XCTAssertNil(self.connectionDelegate.connectionError, "There should not be error")
-            XCTAssertTrue(self.connectionDelegate.connected, "Device should be connected")
-            errorExp.fulfill()
-        }
+        wait(1)
         
-        waitForExpectations(timeout: 2)
+        XCTAssertNil(self.connectionDelegate.connectionError, "There should not be error")
+        XCTAssertTrue(self.connectionDelegate.connected, "Device should be connected")
     }
     
     func testBluetoothStateChanging() {
@@ -153,31 +131,19 @@ final class ProvisionerConnectionTests: XCTestCase {
         failedProvisioner.connectionDelegate = connectionDelegate
         failedProvisioner.connect()
         
-        let errorExp = expectation(description: "Connected expectation")
+        wait(1)
+        CBMCentralManagerMock.simulatePowerOn()
         
-        DispatchQueue.global().async {
-            sleep(1)
-            DispatchQueue.main.async {
-                CBMCentralManagerMock.simulatePowerOn()
-            }
-            sleep(1)
-            DispatchQueue.main.async {
-                CBMCentralManagerMock.simulatePowerOff()
-            }
-            sleep(1)
-            DispatchQueue.main.async {
-                XCTAssertNotNil(self.connectionDelegate.connectionError, "Error should exist after contral manager powered off")
-                failedProvisioner.connect()
-                CBMCentralManagerMock.simulatePowerOn()
-            }
-            sleep(1)
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                XCTAssertNil(self.connectionDelegate.connectionError, "There should not be error")
-                XCTAssertTrue(self.connectionDelegate.connected, "Device should be connected")
-                errorExp.fulfill()
-            }
-        }
+        wait(1)
+        CBMCentralManagerMock.simulatePowerOff()
         
-        waitForExpectations(timeout: 10)
+        wait(1)
+        XCTAssertNotNil(self.connectionDelegate.connectionError, "Error should exist after contral manager powered off")
+        failedProvisioner.connect()
+        CBMCentralManagerMock.simulatePowerOn()
+        
+        wait(1)
+        XCTAssertNil(self.connectionDelegate.connectionError, "There should not be error")
+        XCTAssertTrue(self.connectionDelegate.connected, "Device should be connected")
     }
 }

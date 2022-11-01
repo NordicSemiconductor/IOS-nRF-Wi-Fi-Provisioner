@@ -7,7 +7,7 @@
 
 import Foundation
 
-public enum ConnectionState {
+public enum ConnectionState: Equatable {
     case disconnected
     case authentication
     case association

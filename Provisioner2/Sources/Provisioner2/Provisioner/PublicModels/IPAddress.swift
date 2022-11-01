@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct IPAddress: CustomStringConvertible {
+public struct IPAddress: CustomStringConvertible, Equatable {
     private let data: Data
     
     init(data: Data) {

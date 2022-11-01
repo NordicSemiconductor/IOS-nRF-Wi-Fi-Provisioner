@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct MACAddress: CustomStringConvertible {
+public struct MACAddress: CustomStringConvertible, Equatable {
     private let data: Data
     
     init(data: Data) {
@@ -19,6 +19,4 @@ public struct MACAddress: CustomStringConvertible {
             .map { String(format: "%02hhX", $0) }
             .joined(separator: ":")
     }
-    
-    
 }
