@@ -6,16 +6,16 @@
 //
 
 import SwiftUI
-import Provisioner
+import Provisioner2
 
 struct WiFiStatusColorModifier: ViewModifier {
-    let status: WiFiStatus
+    let status: ConnectionState
     
     func body(content: Content) -> some View {
         switch status {
         case .connected:
             content.foregroundColor(.green)
-        case .connectionFailed(_):
+        case .connectionFailed:
             content.foregroundColor(.red)
         default:
             content.foregroundColor(.secondary)
@@ -24,7 +24,7 @@ struct WiFiStatusColorModifier: ViewModifier {
 }
 
 extension View {
-    func status(_ status: WiFiStatus) -> some View {
+    func status(_ status: ConnectionState) -> some View {
         modifier(WiFiStatusColorModifier(status: status))
     }
 }

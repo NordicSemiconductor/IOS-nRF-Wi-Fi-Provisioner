@@ -6,26 +6,67 @@
 //
 
 import Foundation
-import Provisioner
 import Combine
 import NordicStyle
 import os
+import Provisioner2
 
 protocol AccessPointSelection {
-    var selectedAccessPoint: AccessPoint? { get set }
+    var selectedAccessPoint: WifiInfo? { get set }
     var showAccessPointList: Bool { get set }
 }
 
 private let UnknownVersion = "Unknown"
 
 class DeviceViewModel: ObservableObject, AccessPointSelection {
+    private var versionResult: Swift.Result<Int, ProvisionerInfoError>? {
+        didSet {
+            guard let versionResult else { return }
+            
+            switch versionResult {
+            case .success(let success):
+                self.version = "\(success)"
+            case .failure:
+                // TODO: Display Error
+                self.version = UnknownVersion
+            }
+        }
+    }
+    
+    private var deviceStausResult: Swift.Result<DeviceStatus, ProvisionerError>? {
+        didSet {
+            guard let deviceStausResult else { return }
+            
+            switch deviceStausResult {
+            case .success(let status):
+                self.deviceStatus = status
+            case .failure(_):
+                // TODO: Handle bad device status
+                break
+            }
+        }
+    }
+    
     @Published(initialValue: false) private (set) var provisioned: Bool
     
     /// The current bluetooth state of the device.
-    @Published(initialValue: .connecting) fileprivate(set) var connectionStatus: ConnectionState
+    @Published(initialValue: .disconnected(.byRequest)) fileprivate(set) var peripheralConnectionStatus: PeripheralConnectionStatus
     
     @Published(initialValue: false) private (set) var provisioningInProgress: Bool
-    @Published(initialValue: nil) fileprivate(set) var wifiState: WiFiStatus? {
+    
+    @Published(initialValue: nil) var deviceStatus: DeviceStatus? {
+        didSet {
+            guard let deviceStatus else {
+                return
+            }
+            
+            wifiState = deviceStatus.state
+            selectedAccessPoint = deviceStatus.provisioningInfo
+            provisioned = true
+        }
+    }
+    
+    @Published(initialValue: nil) fileprivate(set) var wifiState: ConnectionState? {
         didSet {
             DispatchQueue.main.async { [weak self] in
                 guard let `self` = self else { return }
@@ -33,14 +74,10 @@ class DeviceViewModel: ObservableObject, AccessPointSelection {
                 self.updateButtonState()
                 
                 switch self.wifiState {
-                case .connectionFailed(let e):
-                    self.provisioningError = self.conventConnectionFailure(e)
-                    self.inProgress = false
-                case .connected:
+                case .connected, .connectionFailed:
                     self.inProgress = false
                 default:
                     self.provisioningError = nil
-                    
                 }
             }
         }
@@ -50,11 +87,10 @@ class DeviceViewModel: ObservableObject, AccessPointSelection {
     
     @Published(initialValue: UnknownVersion) fileprivate(set) var version: String
     
-    @Published(initialValue: [:]) fileprivate(set) var accessPoints: [String : AccessPoint]
     @Published(initialValue: false) var showAccessPointList: Bool
-    @Published(initialValue: nil) var selectedAccessPoint: AccessPoint? {
+    @Published(initialValue: nil) var selectedAccessPoint: WifiInfo? {
         didSet {
-            passwordRequired = selectedAccessPoint?.isOpen == false
+            passwordRequired = selectedAccessPoint?.auth?.isOpen == false
             updateButtonState()
         }
     }
@@ -71,93 +107,36 @@ class DeviceViewModel: ObservableObject, AccessPointSelection {
     
     private var cancellable: Set<AnyCancellable> = []
     
-    let provisioner: Provisioner
+    private (set) var provisioner: Provisioner
     let peripheralId: UUID
     let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "nordic", category: "DeviceViewModel")
     
     init(peripheralId: UUID) {
         self.peripheralId = peripheralId
-        self.provisioner = Provisioner(deviceID: peripheralId)
+        self.provisioner = ProvisionerFactory.create(deviceId: peripheralId.uuidString)
+        self.provisioner.infoDelegate = self
+        self.provisioner.connectionDelegate = self
     }
     
-    init(provisioner: Provisioner) {
-        self.peripheralId = provisioner.deviceID
-        self.provisioner = provisioner
-    }
-    
-    func connect() async throws {
-        if case .connected = connectionStatus {
-            return
-        }
-        
-        provisioner.bluetoothConnectionStates
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] state in
-                self?.connectionStatus = state.toConnectionState()
-                self?.logger.info("Bluetooth connection state: \(state)")
-                if case .connected = state {
-                    
-                } else {
-                    // reset
-                    /*
-                     self?.wifiState = nil
-                     self?.accessPoints = []
-                     self?.selectedAccessPoint = nil
-                     self?.password = ""
-                     self?.version = "Unknown"
-                     */
-                }
-            }.store(in: &cancellable)
-        
-        do {
-            try await provisioner.connect()
-            DispatchQueue.main.async {
-                self.connectionStatus = .connected
-            }
-        } catch let e as BluetoothConnectionError {
-            switch e {
-            case .canNotConnect:
-                try rethrowError(TitleMessageError(title: "Can not connect", message: "Please check if your device is turned on and in range."))
-            case .versionCharacteristicNotFound:
-                try rethrowError(TitleMessageError(title: "Version Characteristic Not Found", message: "Please check if your device has the correct firmware installed."))
-            case .controlCharacteristicPointNotFound:
-                try rethrowError(TitleMessageError(title: "Control Characteristic Not Found", message: "Please check if your device has the correct firmware installed."))
-            case .dataOutCharacteristicNotFound:
-                try rethrowError(TitleMessageError(title: "Data Out Characteristic Not Found", message: "Please check if your device has the correct firmware installed."))
-            case .wifiServiceNotFound:
-                try rethrowError(TitleMessageError(title: "Wi-Fi Service Not Found", message: "Please check if your device has the correct firmware installed."))
-            case .unknownError:
-                try rethrowError(TitleMessageError(title: "Unknown Error", message: "Something went wrong."))
-            case .commonError(let e):
-                try rethrowError(TitleMessageError(title: "Error", message: e.localizedDescription))
-            }
-        } catch {
-            try rethrowError(TitleMessageError(title: "Unknown Error", message: "Something went wrong."))
-        }
+    func connect() throws {
+        self.peripheralConnectionStatus = .connecting
+        provisioner.connect()
     }
 }
 
 extension DeviceViewModel {
-    func readInformation() async throws {
-        if version == UnknownVersion {
-            let v = try await provisioner.readVersion() ?? "Unknown"
-            DispatchQueue.main.async {
-                self.version = v
-            }
+    func readInformation() throws {
+        if case .none = self.versionResult {
+            try provisioner.readVersion()
         }
         
-        if case .none = wifiState {
-            let status = try await provisioner.getStatus()
-            DispatchQueue.main.async {
-                self.wifiState = status.connectionStatus
-                self.provisioned = status.connectedAccessPoint != nil
-                self.selectedAccessPoint = status.connectedAccessPoint
-                self.updateButtonState()
-            }
+        if case .none = self.deviceStausResult {
+            try provisioner.readDeviceStatus()
         }
     }
     
     func stopScan() async throws {
+        /*
         do {
             try await provisioner.stopScan()
             DispatchQueue.main.async {
@@ -168,9 +147,11 @@ extension DeviceViewModel {
             // TODO: Show error HUD
             try rethrowError(TitleMessageError(title: "Error", message: "Something went wrong."))
         }
+         */
     }
     
     func startProvision() async throws {
+        /*
         Task {
             DispatchQueue.main.async {
                 self.wifiState = .disconnected
@@ -192,10 +173,42 @@ extension DeviceViewModel {
                 self?.forceShowProvisionInProgress = false
             }
         }
+         */
+    }
+}
+
+extension DeviceViewModel: ProvisionerConnectionDelegate {
+    func deviceConnected() {
+        peripheralConnectionStatus = .connected
+        
+        try? readInformation()
+    }
+    
+    func deviceFailedToConnect(error: Error) {
+        peripheralConnectionStatus = .disconnected(.error(error))
+    }
+    
+    func deviceDisconnected(error: Error?) {
+        if let error {
+            peripheralConnectionStatus = .disconnected(.error(error))
+        } else {
+            peripheralConnectionStatus = .disconnected(.byRequest)
+        }
+    }
+}
+
+extension DeviceViewModel: ProvisionerInfoDelegate {
+    func versionReceived(_ version: Result<Int, ProvisionerInfoError>) {
+        versionResult = version
+    }
+    
+    func deviceStatusReceived(_ status: Result<DeviceStatus, ProvisionerError>) {
+        deviceStausResult = status
     }
 }
 
 extension DeviceViewModel {
+    
     private func rethrowError(_ error: ReadableError) throws -> Never {
         DispatchQueue.main.async {
             // TODO: Show error placeholder
@@ -220,8 +233,8 @@ extension DeviceViewModel {
             switch state {
             case .disconnected:
                 return provisioned ? "Re-Provision" : "Provision"
-            case .connectionFailed(_):
-                return "Try Again"
+//            case .connectionFailed(_):
+//                return "Try Again"
             case .connected:
                 return "Re-provision"
             default:
@@ -232,6 +245,7 @@ extension DeviceViewModel {
         buttonState.title = title
     }
     
+    /*
     private func conventConnectionFailure(_ reason: WiFiStatus.ConnectionFailure) -> ReadableError {
         switch reason {
         case .authError:
@@ -248,39 +262,30 @@ extension DeviceViewModel {
             return TitleMessageError(title: "Unknown Error", message: "Something went wrong.")
         }
     }
+     */
 }
 
 #if DEBUG
-class MockProvisioner: Provisioner {
-    init() {
-        super.init(deviceID: UUID())
-    }
-    
-    override func readVersion() async throws -> String? {
-        return "14"
-    }
-    
-    override func getStatus() async throws -> WiFiDeviceStatus {
-        return WiFiDeviceStatus(accessPoint: nil, connectionStatus: .disconnected)
-    }
-}
 
 class MockDeviceViewModel: DeviceViewModel {
     init(fakeStatus: ConnectionState) {
-        super.init(provisioner: MockProvisioner())
-        
-        self.connectionStatus = fakeStatus
+        super.init(peripheralId: UUID())
     }
     
-    override func connect() async throws {
-        self.connectionStatus = .connected
+    override func connect() throws {
         self.wifiState = .connected
         self.version = "14"
     }
     
     override var selectedAccessPoint: WifiInfo? {
         get {
-            AccessPoint(ssid: "Office Wi-Fi", bssid: "4F.41.AF.10", id: "Office 1", isOpen: false, channel: 12, rssi: -50, frequency: ._5GHz)
+            WifiInfo(
+                ssid: "Nordic Guest",
+                bssid: MACAddress(i: 0xff_02_04_04_33_fa),
+                band: .band5Gh,
+                channel: 2,
+                auth: .wpa2Psk
+            )
         }
         set {
             

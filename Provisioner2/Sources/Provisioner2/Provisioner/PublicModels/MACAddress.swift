@@ -8,9 +8,9 @@
 import Foundation
 
 public struct MACAddress: CustomStringConvertible, Equatable {
-    private let data: Data
+    let data: Data
     
-    init(data: Data) {
+    public init(data: Data) {
         self.data = data
     }
     

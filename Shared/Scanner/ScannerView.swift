@@ -96,7 +96,7 @@ struct ScannerView: View {
             Section {
                 ForEach(viewModel.scanResults, id: \.id) { scanResult in
                     NavigationLink {
-                        DeviceView(viewModel: DeviceViewModel(peripheralId: UUID(uuidString: scanResult.id)!))
+                        DeviceView(viewModel: DeviceViewModel(peripheralId: UUID(uuidString: scanResult.sr.id)!))
                             .navigationTitle(scanResult.name)
                     } label: {
                         ScanResultRaw(scanResult: scanResult)

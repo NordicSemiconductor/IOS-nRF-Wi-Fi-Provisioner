@@ -44,6 +44,14 @@
 		019262E5288039F100A69D04 /* Counter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019262E3288039F100A69D04 /* Counter.swift */; };
 		019D09F428CE1777005143D5 /* Flow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019D09F328CE1777005143D5 /* Flow.swift */; };
 		019D09F528CE1777005143D5 /* Flow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019D09F328CE1777005143D5 /* Flow.swift */; };
+		019D1D2E29128E96000D8BD4 /* AuthMode+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019D1D2D29128E96000D8BD4 /* AuthMode+Ext.swift */; };
+		019D1D2F29128E96000D8BD4 /* AuthMode+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019D1D2D29128E96000D8BD4 /* AuthMode+Ext.swift */; };
+		019D1D3129128F3E000D8BD4 /* ConnectionState+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019D1D3029128F3E000D8BD4 /* ConnectionState+Ext.swift */; };
+		019D1D3229128F3E000D8BD4 /* ConnectionState+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019D1D3029128F3E000D8BD4 /* ConnectionState+Ext.swift */; };
+		019D1D342912C201000D8BD4 /* MACAddress+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019D1D332912C201000D8BD4 /* MACAddress+Ext.swift */; };
+		019D1D352912C201000D8BD4 /* MACAddress+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019D1D332912C201000D8BD4 /* MACAddress+Ext.swift */; };
+		019D1D372912C588000D8BD4 /* Band+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019D1D362912C588000D8BD4 /* Band+Ext.swift */; };
+		019D1D382912C588000D8BD4 /* Band+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019D1D362912C588000D8BD4 /* Band+Ext.swift */; };
 		019DCE25288553E700E16E9F /* CGRect+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019DCE24288553E700E16E9F /* CGRect+Ext.swift */; };
 		019DCE26288553E700E16E9F /* CGRect+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019DCE24288553E700E16E9F /* CGRect+Ext.swift */; };
 		019DCE292885A15100E16E9F /* FilterList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019DCE282885A15100E16E9F /* FilterList.swift */; };
@@ -145,6 +153,10 @@
 		019262E3288039F100A69D04 /* Counter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Counter.swift; sourceTree = "<group>"; };
 		019A5D8D286C77CE002D03F0 /* NordicStyle */ = {isa = PBXFileReference; lastKnownFileType = text; path = NordicStyle; sourceTree = SOURCE_ROOT; };
 		019D09F328CE1777005143D5 /* Flow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Flow.swift; sourceTree = "<group>"; };
+		019D1D2D29128E96000D8BD4 /* AuthMode+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AuthMode+Ext.swift"; sourceTree = "<group>"; };
+		019D1D3029128F3E000D8BD4 /* ConnectionState+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ConnectionState+Ext.swift"; sourceTree = "<group>"; };
+		019D1D332912C201000D8BD4 /* MACAddress+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MACAddress+Ext.swift"; sourceTree = "<group>"; };
+		019D1D362912C588000D8BD4 /* Band+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Band+Ext.swift"; sourceTree = "<group>"; };
 		019DCE24288553E700E16E9F /* CGRect+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGRect+Ext.swift"; sourceTree = "<group>"; };
 		019DCE282885A15100E16E9F /* FilterList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterList.swift; sourceTree = "<group>"; };
 		01A0C29428896343000AA135 /* DeviceViewModelFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceViewModelFactory.swift; sourceTree = "<group>"; };
@@ -352,6 +364,17 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		019D1D2C29128E7E000D8BD4 /* ModelExtensions */ = {
+			isa = PBXGroup;
+			children = (
+				019D1D2D29128E96000D8BD4 /* AuthMode+Ext.swift */,
+				019D1D3029128F3E000D8BD4 /* ConnectionState+Ext.swift */,
+				019D1D332912C201000D8BD4 /* MACAddress+Ext.swift */,
+				019D1D362912C588000D8BD4 /* Band+Ext.swift */,
+			);
+			path = ModelExtensions;
+			sourceTree = "<group>";
+		};
 		019DCE272885A13300E16E9F /* AditionalViews */ = {
 			isa = PBXGroup;
 			children = (
@@ -372,6 +395,7 @@
 		01A43DE92886FEB80025A5C4 /* Device */ = {
 			isa = PBXGroup;
 			children = (
+				019D1D2C29128E7E000D8BD4 /* ModelExtensions */,
 				0183EFC72897C17E002E79A5 /* Modifiers */,
 				015845CA288FD54500C7E4B7 /* Scan */,
 				01A43DEA2886FECB0025A5C4 /* DeviceView.swift */,
@@ -670,13 +694,17 @@
 				019DCE292885A15100E16E9F /* FilterList.swift in Sources */,
 				015D60A32875A1530048F065 /* ScannerView.swift in Sources */,
 				019DCE25288553E700E16E9F /* CGRect+Ext.swift in Sources */,
+				019D1D342912C201000D8BD4 /* MACAddress+Ext.swift in Sources */,
 				019D09F428CE1777005143D5 /* Flow.swift in Sources */,
 				01922CC028A2A48300492E87 /* Label+Ext.swift in Sources */,
 				01C0F0FD287DE926008BBE46 /* ScanResult.swift in Sources */,
+				019D1D372912C588000D8BD4 /* Band+Ext.swift in Sources */,
 				01481ABA2852093000925FAB /* nRF_Wi_Fi_ProvisionerApp.swift in Sources */,
 				015845CC288FD5A900C7E4B7 /* AccessPointList.swift in Sources */,
+				019D1D2E29128E96000D8BD4 /* AuthMode+Ext.swift in Sources */,
 				0183EFCD2897C446002E79A5 /* ReversedLabel.swift in Sources */,
 				019262E4288039F100A69D04 /* Counter.swift in Sources */,
+				019D1D3129128F3E000D8BD4 /* ConnectionState+Ext.swift in Sources */,
 				01A9468E28EAF9D600F40D1D /* Set+Ext.swift in Sources */,
 				01A0C29528896343000AA135 /* DeviceViewModelFactory.swift in Sources */,
 				0168261A287F16CD0040C97E /* Array+Ext.swift in Sources */,
@@ -711,13 +739,17 @@
 				019DCE2A2885A15100E16E9F /* FilterList.swift in Sources */,
 				015D60A42875A1530048F065 /* ScannerView.swift in Sources */,
 				019DCE26288553E700E16E9F /* CGRect+Ext.swift in Sources */,
+				019D1D352912C201000D8BD4 /* MACAddress+Ext.swift in Sources */,
 				019D09F528CE1777005143D5 /* Flow.swift in Sources */,
 				01922CC128A2A48300492E87 /* Label+Ext.swift in Sources */,
 				01C0F0FE287DE926008BBE46 /* ScanResult.swift in Sources */,
+				019D1D382912C588000D8BD4 /* Band+Ext.swift in Sources */,
 				01481ABB2852093000925FAB /* nRF_Wi_Fi_ProvisionerApp.swift in Sources */,
 				015845CD288FD5A900C7E4B7 /* AccessPointList.swift in Sources */,
+				019D1D2F29128E96000D8BD4 /* AuthMode+Ext.swift in Sources */,
 				0183EFCE2897C446002E79A5 /* ReversedLabel.swift in Sources */,
 				019262E5288039F100A69D04 /* Counter.swift in Sources */,
+				019D1D3229128F3E000D8BD4 /* ConnectionState+Ext.swift in Sources */,
 				01A9468F28EAF9D600F40D1D /* Set+Ext.swift in Sources */,
 				01A0C29628896343000AA135 /* DeviceViewModelFactory.swift in Sources */,
 				0168261B287F16CD0040C97E /* Array+Ext.swift in Sources */,

@@ -8,9 +8,9 @@
 import Foundation
 
 public struct IPAddress: CustomStringConvertible, Equatable {
-    private let data: Data
+    public let data: Data
     
-    init(data: Data) {
+    public init(data: Data) {
         self.data = data
     }
     
@@ -19,6 +19,4 @@ public struct IPAddress: CustomStringConvertible, Equatable {
             .map { String(format: "%02hhX", $0) }
             .joined(separator: ":")
     }
-    
-    
 }

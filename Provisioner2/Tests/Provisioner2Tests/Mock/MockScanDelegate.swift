@@ -38,6 +38,4 @@ class MockScanDelegate: ScannerDelegate {
         scanStatusHandler?(false)
         isScanning = false 
     }
-    
-    
 }

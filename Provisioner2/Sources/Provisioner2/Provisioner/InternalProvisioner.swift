@@ -22,6 +22,8 @@ public enum ProvisionerError: Error {
     case badData
     /// Device failure response
     case deviceFailureResponse
+    /// Response is successful but it's empty
+    case emptyResponse
 }
 
 /// Error that is thrown when the request to the device was sent, but the device is not connected
@@ -165,7 +167,7 @@ extension InternalProvisioner: CBPeripheralDelegate {
     }
     
     func peripheral(_ peripheral: CBMPeripheral, didUpdateValueFor characteristic: CBMCharacteristic, error: Error?) {
-        if characteristic.uuid == connectionInfo?.versionCharacteristic?.uuid {
+        if characteristic.uuid == connectionInfo?.versionCharacteristic.uuid {
             if let data = characteristic.value {
                 parseVersionData(data: data)
             } else {
@@ -177,6 +179,8 @@ extension InternalProvisioner: CBPeripheralDelegate {
             } else {
                 infoDelegate?.versionReceived(.failure(.emptyData))
             }
+        } else {
+            print("dataOut")
         }
     }
 }
@@ -223,8 +227,13 @@ extension InternalProvisioner {
     func parseGetStatus(_ response: Proto.Response) {
         switch response.status {
         case .success:
-            let deviceStatus = Envelope(model: response.deviceStatus)
-            infoDelegate?.deviceStatusReceived(.success(deviceStatus))
+            guard response.hasDeviceStatus else {
+                // TODO: Unit Test
+                infoDelegate?.deviceStatusReceived(.failure(.emptyResponse))
+                return
+            }
+            
+            infoDelegate?.deviceStatusReceived(.success(DeviceStatus(proto: response.deviceStatus)))
         default:
             infoDelegate?.deviceStatusReceived(.failure(.deviceFailureResponse))
         }

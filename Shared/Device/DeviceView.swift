@@ -7,11 +7,50 @@
 
 import SwiftUI
 import NordicStyle
-import Provisioner
+import Provisioner2
 
 struct DeviceView: View {
     @StateObject var viewModel: DeviceViewModel
     
+    var body: some View {
+        VStack {
+            switch viewModel.peripheralConnectionStatus {
+            case .connecting:
+                Placeholder(
+                    text: "Connecting",
+                    image: "bluetooth"
+                )
+            case .connected:
+                deviceInfo
+            case .disconnected(let reason):
+                switch reason {
+                case .byRequest:
+                    Placeholder(text: "Disconnected", image: "bluetooth_disabled")
+                case .error(let e):
+                    // TODO: Change Error type
+                    Placeholder(text: e.localizedDescription, image: "bluetooth_disabled", action: {
+                        Button("Reconnect") {
+                            Task {
+                                try self.viewModel.connect()
+                            }
+                        }
+                        .buttonStyle(NordicButtonStyle())
+                    })
+                    .padding()
+                }
+            }
+        }
+        .onAppear {
+            Task {
+                do {
+                    try viewModel.connect()
+//                    try viewModel.readInformation()
+                }
+            }
+        }
+    }
+    
+    /*
     var body: some View {
         VStack {
             switch viewModel.connectionStatus {
@@ -45,6 +84,7 @@ struct DeviceView: View {
             }
         }
     }
+     */
     
     @ViewBuilder
     var deviceInfo: some View {
@@ -92,42 +132,7 @@ struct DeviceView: View {
                 }
                 
                 // MARK: Access Points
-                Section("Access Point") {
-                    NavigationLink(isActive: $viewModel.showAccessPointList) {
-                        AccessPointList(viewModel: AccessPointListViewModel(provisioner: viewModel.provisioner, accessPointSelection: viewModel))
-                    } label: {
-                        VStack {
-                            HStack {
-                                NordicLabel("Access Point", systemImage: "wifi.circle")
-                                Spacer()
-                                Text(viewModel.selectedAccessPoint?.ssid ?? "Not Selected")
-                                    .foregroundColor(.secondary)
-                            }
-                        }
-                        .disabled(viewModel.inProgress)
-                    }
-                    .accessibilityIdentifier("access_point_selector")
-                    .disabled(viewModel.inProgress)
-                    
-                    if viewModel.selectedAccessPoint != nil {
-                        additionalInfo(ap: viewModel.selectedAccessPoint!)
-                    }
-                    
-                    if viewModel.passwordRequired {
-                        SecureField("Password", text: $viewModel.password)
-                            .disabled(viewModel.inProgress)
-                    }
-                    
-                    if viewModel.selectedAccessPoint != nil {
-                        HStack {
-                            Text("Volatile Memory")
-                            Spacer()
-                            Toggle("", isOn: $viewModel.volatileMemory)
-                                .toggleStyle(SwitchToggleStyle(tint: .nordicBlue))
-                        }
-                        .disabled(viewModel.inProgress)
-                    }
-                }
+                bulidAccessPointSection()
             }
             
             Spacer()
@@ -145,11 +150,60 @@ struct DeviceView: View {
     }
     
     @ViewBuilder
-    func additionalInfo(ap: AccessPoint) -> some View {
+    func bulidAccessPointSection() -> some View {
+        EmptyView()
+        /*
+        Section("Access Point") {
+            NavigationLink(isActive: $viewModel.showAccessPointList) {
+                AccessPointList(viewModel: AccessPointListViewModel(provisioner: viewModel.provisioner, accessPointSelection: viewModel))
+            } label: {
+                VStack {
+                    HStack {
+                        NordicLabel("Access Point", systemImage: "wifi.circle")
+                        Spacer()
+                        Text(viewModel.selectedAccessPoint?.ssid ?? "Not Selected")
+                            .foregroundColor(.secondary)
+                    }
+                }
+                .disabled(viewModel.inProgress)
+            }
+            .accessibilityIdentifier("access_point_selector")
+            .disabled(viewModel.inProgress)
+            
+            if viewModel.selectedAccessPoint != nil {
+                additionalInfo(ap: viewModel.selectedAccessPoint!)
+            }
+            
+            if viewModel.passwordRequired {
+                SecureField("Password", text: $viewModel.password)
+                    .disabled(viewModel.inProgress)
+            }
+            
+            if viewModel.selectedAccessPoint != nil {
+                HStack {
+                    Text("Volatile Memory")
+                    Spacer()
+                    Toggle("", isOn: $viewModel.volatileMemory)
+                        .toggleStyle(SwitchToggleStyle(tint: .nordicBlue))
+                }
+                .disabled(viewModel.inProgress)
+            }
+        }
+         */
+    }
+    
+    @ViewBuilder
+    func additionalInfo(ap: WifiInfo) -> some View {
         VStack {
-            DetailRow(title: "Channel", details: "\(ap.channel)")
-            DetailRow(title: "BSSID", details: ap.bssid)
-            DetailRow(title: "Band", details: ap.frequency.stringValue)
+            if let channel = ap.channel {
+                DetailRow(title: "Channel", details: "\(channel)")
+            }
+            if let bssid = ap.bssid {
+                DetailRow(title: "BSSID", details: "\(bssid)")
+            }
+            
+            ap.band.map { DetailRow(title: "Band", details: "\($0)") }
+            /*
             if ap.rssi < 0 {
                 HStack {
                     DetailRow(title: "Signal Strength", details: "\(ap.rssi) dBm")
@@ -160,6 +214,7 @@ struct DeviceView: View {
                 .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
                 .frame(maxHeight: 8)                
             }
+             */
         }
         /*
         HStack {
@@ -213,7 +268,7 @@ private struct DetailRow: View {
 }
 
 struct StatusIndicatorView: View {
-    let status: WiFiStatus?
+    let status: ConnectionState?
     var forceProgress: Bool = false
     
     var body: some View {
@@ -225,7 +280,7 @@ struct StatusIndicatorView: View {
         case (.association?, false): ProgressView()
         case (.authentication?, false):  ProgressView()
         case (.obtainingIp?, false):  ProgressView()
-        case (.connectionFailed(_)?, _):
+        case (.connectionFailed, _):
             Image(systemName: "info.circle")
         default: Text("")
         }
@@ -233,6 +288,7 @@ struct StatusIndicatorView: View {
 }
 
 #if DEBUG
+/*
 struct DeviceView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
@@ -248,4 +304,5 @@ struct DeviceView_Previews: PreviewProvider {
     
     
 }
+ */
 #endif

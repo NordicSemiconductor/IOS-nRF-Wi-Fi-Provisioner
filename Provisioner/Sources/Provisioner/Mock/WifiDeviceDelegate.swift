@@ -35,7 +35,6 @@ class WifiDeviceDelegate: CBMPeripheralSpecDelegate {
         } else {
             fatalError("peripheral(_:didReceiveReadRequestFor:) has not been implemented")
         }
-
     }
 
     func peripheral(_ peripheral: CBMPeripheralSpec, didReceiveWriteRequestFor characteristic: CBMCharacteristicMock, data: Data) -> Swift.Result<(), Error> {
@@ -44,10 +43,12 @@ class WifiDeviceDelegate: CBMPeripheralSpecDelegate {
             let command = request.opCode
             switch command {
             case .getStatus:
-                peripheral.simulateValueUpdate(wifiStatus(.disconnected), for: .controlPoint)
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    peripheral.simulateValueUpdate(self.wifiStatus(.disconnected, opCode: command), for: .controlPoint)
+                }
                 return Swift.Result.success(())
             case .startScan:
-                peripheral.simulateValueUpdate(wifiStatus(.disconnected), for: .controlPoint)
+                peripheral.simulateValueUpdate(wifiStatus(.disconnected, opCode: command), for: .controlPoint)
                 let data = try Data(contentsOf: Bundle.module.url(forResource: "MockAP", withExtension: "json")!)
                 let aps = try JSONDecoder().decode([Result].self, from: data)
                 
@@ -66,10 +67,10 @@ class WifiDeviceDelegate: CBMPeripheralSpecDelegate {
                 
                 return Swift.Result.success(())
             case .stopScan:
-                peripheral.simulateValueUpdate(wifiStatus(.connected), for: .controlPoint)
+                peripheral.simulateValueUpdate(wifiStatus(.connected, opCode: command), for: .controlPoint)
                 return Swift.Result.success(())
             case .setConfig:
-                peripheral.simulateValueUpdate(wifiStatus(.disconnected), for: .controlPoint)
+                peripheral.simulateValueUpdate(wifiStatus(.disconnected, opCode: command), for: .controlPoint)
                 
                 let states = ConnectionState.allCases
                 Publishers.Zip(states.publisher, Timer.publish(every: 0.7, on: .main, in: .default).autoconnect())
@@ -107,13 +108,14 @@ extension WifiDeviceDelegate {
         return Swift.Result.success(data)
     }
 
-    func wifiStatus(_ stt: ConnectionState) -> Data {
+    func wifiStatus(_ stt: ConnectionState, opCode: OpCode) -> Data {
         var response = Response()
         response.status = .success
+        response.requestOpCode = opCode
         var deviceStatus = DeviceStatus()
         deviceStatus.state = stt
         deviceStatus.provisioningInfo = wifiInfo()
-        // deviceStatus.scanInfo
+        deviceStatus.scanInfo = scanParam()
 
         response.deviceStatus = deviceStatus
 
@@ -134,6 +136,15 @@ extension WifiDeviceDelegate {
         wfInfo.auth = .wpa2Psk
         wfInfo.band = .band5Gh
         return wfInfo
+    }
+    
+    func scanParam() -> ScanParams {
+        var sp = ScanParams()
+        sp.band = .band5Gh
+        sp.groupChannels = 2
+        sp.passive = true
+        sp.periodMs = 1000
+        return sp
     }
 }
 

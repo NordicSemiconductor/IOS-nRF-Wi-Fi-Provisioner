@@ -117,8 +117,10 @@ struct AccessPointList: View {
 }
 
 #if DEBUG
+/*
 struct AccessPointList_Previews: PreviewProvider {
     class DummyAccessPointListViewModel: AccessPointListViewModel {
+        /*
         override var isScanning: Bool {
             get {
                 true
@@ -166,7 +168,7 @@ struct AccessPointList_Previews: PreviewProvider {
             ]
         }
     }
-    
+    */
     static var previews: some View {
         NavigationView {
             AccessPointList(
@@ -178,4 +180,5 @@ struct AccessPointList_Previews: PreviewProvider {
         }
     }
 }
+ */
 #endif

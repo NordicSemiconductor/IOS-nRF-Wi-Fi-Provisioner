@@ -20,7 +20,7 @@ public protocol Provisioner {
 }
 
 public struct ProvisionerFactory {
-    static func create(deviceId: String) -> Provisioner & AnyObject {
+    public static func create(deviceId: String) -> Provisioner & AnyObject {
         InternalProvisioner(deviceId: deviceId)
     }
 }
