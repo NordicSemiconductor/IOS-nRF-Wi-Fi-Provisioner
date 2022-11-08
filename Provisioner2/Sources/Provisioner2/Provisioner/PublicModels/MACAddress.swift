@@ -7,10 +7,13 @@
 
 import Foundation
 
+/// Representation of MAC-48 identifier
 public struct MACAddress: CustomStringConvertible, Equatable {
     let data: Data
     
-    public init(data: Data) {
+    /// Data should be 48 bit length, otherwise nil will be returned
+    public init?(data: Data) {
+        guard data.count == 6 else { return nil }
         self.data = data
     }
     

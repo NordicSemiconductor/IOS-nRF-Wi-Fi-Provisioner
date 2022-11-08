@@ -98,9 +98,7 @@ class WifiDeviceDelegate: CBMPeripheralSpecDelegate {
     func peripheral(_ peripheral: CBMPeripheralSpec, didReceiveSetNotifyRequest enabled: Bool, for characteristic: CBMCharacteristicMock) -> Swift.Result<(), Error> {
         return Swift.Result.success(())
     }
-}
-
-extension WifiDeviceDelegate {
+    
     var versionData: Swift.Result<Data, Error> {
         var info = Info()
         info.version = 17
@@ -114,21 +112,23 @@ extension WifiDeviceDelegate {
         response.requestOpCode = opCode
         var deviceStatus = DeviceStatus()
         deviceStatus.state = stt
-        deviceStatus.provisioningInfo = wifiInfo()
+        if let wifiInfo = wifiInfo() {
+            deviceStatus.provisioningInfo = wifiInfo
+        }
         deviceStatus.scanInfo = scanParam()
 
         response.deviceStatus = deviceStatus
 
         return try! response.serializedData()
     }
-
+    
     func connectionStatusResult(_ stt: ConnectionState) -> Result {
         var result = Result()
         result.state = stt
         return result
     }
 
-    func wifiInfo() -> WifiInfo {
+    func wifiInfo() -> WifiInfo? {
         var wfInfo = WifiInfo()
         wfInfo.ssid = "Nordic Guest".data(using: .utf8)!
         wfInfo.bssid = 0xFA_23_1A_2B_3D_0A.toData()
@@ -153,4 +153,21 @@ extension Int {
         var value = self
         return Data(bytes: &value, count: MemoryLayout.size(ofValue: value))
     }
+}
+
+// MARK: - Children
+class NotProvisionedDelegate: WifiDeviceDelegate {
+    override func wifiInfo() -> WifiInfo? {
+        return nil
+    }
+}
+
+class ProvisionedNotConnected: WifiDeviceDelegate {
+    override func connectionStatusResult(_ stt: ConnectionState) -> Result {
+        return super.connectionStatusResult(.disconnected)
+    }
+}
+
+class ProvisionedConnected: WifiDeviceDelegate {
+    
 }

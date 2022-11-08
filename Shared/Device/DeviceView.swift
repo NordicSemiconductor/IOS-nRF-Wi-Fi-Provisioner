@@ -151,11 +151,10 @@ struct DeviceView: View {
     
     @ViewBuilder
     func bulidAccessPointSection() -> some View {
-        EmptyView()
-        /*
         Section("Access Point") {
             NavigationLink(isActive: $viewModel.showAccessPointList) {
-                AccessPointList(viewModel: AccessPointListViewModel(provisioner: viewModel.provisioner, accessPointSelection: viewModel))
+//                AccessPointList(viewModel: AccessPointListViewModel(provisioner: viewModel.provisioner, accessPointSelection: viewModel))
+                EmptyView()
             } label: {
                 VStack {
                     HStack {
@@ -189,7 +188,6 @@ struct DeviceView: View {
                 .disabled(viewModel.inProgress)
             }
         }
-         */
     }
     
     @ViewBuilder

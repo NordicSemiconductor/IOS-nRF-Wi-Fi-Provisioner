@@ -10,13 +10,14 @@ import Foundation
 public struct IPAddress: CustomStringConvertible, Equatable {
     public let data: Data
     
-    public init(data: Data) {
+    public init?(data: Data) {
+        guard data.count == 4 else { return nil }
         self.data = data
     }
     
     public var description: String {
         data
-            .map { String(format: "%02hhX", $0) }
-            .joined(separator: ":")
+            .map { String(format: "%d", $0) }
+            .joined(separator: ".")
     }
 }
