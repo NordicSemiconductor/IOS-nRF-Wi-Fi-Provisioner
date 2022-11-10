@@ -11,6 +11,6 @@ import Provisioner2
 extension MACAddress {
     init(i: Int) {
         var _i = i
-        self.init(data: Data(bytes: &_i, count: MemoryLayout.size(ofValue: i)))
+        self.init(data: Data(bytes: &_i, count: MemoryLayout.size(ofValue: i)))!
     }
 }

@@ -110,16 +110,22 @@ class WifiDeviceDelegate: CBMPeripheralSpecDelegate {
         var response = Response()
         response.status = .success
         response.requestOpCode = opCode
+        response.deviceStatus = deviceStatus(stt, connection: nil)
+
+        return try! response.serializedData()
+    }
+    
+    func deviceStatus(_ stt: ConnectionState, connection: ConnectionInfo?) -> DeviceStatus {
         var deviceStatus = DeviceStatus()
         deviceStatus.state = stt
         if let wifiInfo = wifiInfo() {
             deviceStatus.provisioningInfo = wifiInfo
         }
         deviceStatus.scanInfo = scanParam()
-
-        response.deviceStatus = deviceStatus
-
-        return try! response.serializedData()
+        if let connection {
+            deviceStatus.connectionInfo = connection
+        }
+        return deviceStatus
     }
     
     func connectionStatusResult(_ stt: ConnectionState) -> Result {
@@ -155,6 +161,16 @@ extension Int {
     }
 }
 
+extension Data {
+    static func random8bytes() -> [UInt8] {
+        var arr: [UInt8] = []
+        for _ in 0..<8 {
+            arr.append(UInt8.random(in: 0...0xff))
+        }
+        return arr
+    }
+}
+
 // MARK: - Children
 class NotProvisionedDelegate: WifiDeviceDelegate {
     override func wifiInfo() -> WifiInfo? {
@@ -169,5 +185,9 @@ class ProvisionedNotConnected: WifiDeviceDelegate {
 }
 
 class ProvisionedConnected: WifiDeviceDelegate {
-    
+    override func deviceStatus(_ stt: ConnectionState, connection: ConnectionInfo?) -> DeviceStatus {
+        var connectionInfo = ConnectionInfo()
+        connectionInfo.ip4Addr = Data(Data.random8bytes().prefix(4))
+        return super.deviceStatus(.connected, connection: connectionInfo)
+    }
 }

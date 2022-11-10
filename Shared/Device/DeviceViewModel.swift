@@ -62,6 +62,7 @@ class DeviceViewModel: ObservableObject, AccessPointSelection {
             
             wifiState = deviceStatus.state
             selectedAccessPoint = deviceStatus.provisioningInfo
+            passwordRequired = false
             provisioned = true
         }
     }
@@ -95,6 +96,7 @@ class DeviceViewModel: ObservableObject, AccessPointSelection {
         }
     }
     @Published(initialValue: false) private(set) var passwordRequired: Bool
+    @Published(initialValue: false) private(set) var showVolatileMemory: Bool
     @Published(initialValue: false) var volatileMemory: Bool
     @Published var password: String = "" {
         didSet {
@@ -216,7 +218,7 @@ extension DeviceViewModel {
         throw error
     }
     
-    private func updateButtonState() {
+    private func updateButtonState(forceEnabled: Bool? = nil) {
         let enabled = wifiState?.isInProgress != true
         && selectedAccessPoint != nil
         && (password.count >= 6 || !passwordRequired)
@@ -243,6 +245,10 @@ extension DeviceViewModel {
         }()
         
         buttonState.title = title
+        
+        if let forceEnabled {
+            buttonState.isEnabled = forceEnabled
+        }
     }
     
     /*
