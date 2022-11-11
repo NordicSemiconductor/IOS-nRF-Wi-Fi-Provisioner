@@ -100,7 +100,7 @@ struct DeviceView: View {
                 )
                 AccessPointSection(
                     inProgress: viewModel.inProgress,
-                    wifiInfo: viewModel.selectedAccessPoint,
+                    wifiInfo: viewModel.displayedWiFi,
                     passwordRequired: viewModel.passwordRequired,
                     showVolatileMemory: false,
                     password: $viewModel.password,
@@ -117,7 +117,7 @@ struct DeviceView: View {
                     }
                 }
             }
-            .disabled(!viewModel.buttonState.isEnabled || viewModel.selectedAccessPoint == nil)
+            .disabled(!viewModel.buttonState.isEnabled || viewModel.displayedWiFi == nil)
             .buttonStyle(viewModel.buttonState.style)
             .padding()
         }

@@ -12,7 +12,7 @@ import os
 import Provisioner2
 
 protocol AccessPointSelection {
-    var selectedAccessPoint: WifiInfo? { get set }
+    var displayedWiFi: WifiInfo? { get set }
     var showAccessPointList: Bool { get set }
 }
 
@@ -47,6 +47,22 @@ class DeviceViewModel: ObservableObject, AccessPointSelection {
         }
     }
     
+    private var provisionedWiFi: WifiInfo? {
+        didSet {
+            passwordRequired = false
+            displayedWiFi = provisionedWiFi
+            updateButtonState()
+        }
+    }
+    
+    var selectedWiFi: WifiInfo? {
+        didSet {
+            passwordRequired = selectedWiFi?.auth?.isOpen == false
+            displayedWiFi = selectedWiFi
+            updateButtonState()
+        }
+    }
+    
     @Published(initialValue: false) private (set) var provisioned: Bool
     
     /// The current bluetooth state of the device.
@@ -61,7 +77,7 @@ class DeviceViewModel: ObservableObject, AccessPointSelection {
             }
             
             wifiState = deviceStatus.state
-            selectedAccessPoint = deviceStatus.provisioningInfo
+            provisionedWiFi = deviceStatus.provisioningInfo
             passwordRequired = false
             provisioned = true
         }
@@ -89,12 +105,7 @@ class DeviceViewModel: ObservableObject, AccessPointSelection {
     @Published(initialValue: UnknownVersion) fileprivate(set) var version: String
     
     @Published(initialValue: false) var showAccessPointList: Bool
-    @Published(initialValue: nil) var selectedAccessPoint: WifiInfo? {
-        didSet {
-            passwordRequired = selectedAccessPoint?.auth?.isOpen == false
-            updateButtonState()
-        }
-    }
+    @Published(initialValue: nil) var displayedWiFi: WifiInfo?
     @Published(initialValue: false) private(set) var passwordRequired: Bool
     @Published(initialValue: false) private(set) var showVolatileMemory: Bool
     @Published(initialValue: false) var volatileMemory: Bool
@@ -218,9 +229,9 @@ extension DeviceViewModel {
         throw error
     }
     
-    private func updateButtonState(forceEnabled: Bool? = nil) {
+    private func updateButtonState() {
         let enabled = wifiState?.isInProgress != true
-        && selectedAccessPoint != nil
+        && selectedWiFi != nil
         && (password.count >= 6 || !passwordRequired)
         
         buttonState.isEnabled = enabled
@@ -245,10 +256,6 @@ extension DeviceViewModel {
         }()
         
         buttonState.title = title
-        
-        if let forceEnabled {
-            buttonState.isEnabled = forceEnabled
-        }
     }
     
     /*
@@ -283,7 +290,7 @@ class MockDeviceViewModel: DeviceViewModel {
         self.version = "14"
     }
     
-    override var selectedAccessPoint: WifiInfo? {
+    override var displayedWiFi: WifiInfo? {
         get {
             WifiInfo(
                 ssid: "Nordic Guest",
