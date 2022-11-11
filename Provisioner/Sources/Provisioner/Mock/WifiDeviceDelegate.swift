@@ -35,7 +35,6 @@ class WifiDeviceDelegate: CBMPeripheralSpecDelegate {
         } else {
             fatalError("peripheral(_:didReceiveReadRequestFor:) has not been implemented")
         }
-
     }
 
     func peripheral(_ peripheral: CBMPeripheralSpec, didReceiveWriteRequestFor characteristic: CBMCharacteristicMock, data: Data) -> Swift.Result<(), Error> {
@@ -44,10 +43,12 @@ class WifiDeviceDelegate: CBMPeripheralSpecDelegate {
             let command = request.opCode
             switch command {
             case .getStatus:
-                peripheral.simulateValueUpdate(wifiStatus(.disconnected), for: .controlPoint)
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    peripheral.simulateValueUpdate(self.wifiStatus(.disconnected, opCode: command), for: .controlPoint)
+                }
                 return Swift.Result.success(())
             case .startScan:
-                peripheral.simulateValueUpdate(wifiStatus(.disconnected), for: .controlPoint)
+                peripheral.simulateValueUpdate(wifiStatus(.disconnected, opCode: command), for: .controlPoint)
                 let data = try Data(contentsOf: Bundle.module.url(forResource: "MockAP", withExtension: "json")!)
                 let aps = try JSONDecoder().decode([Result].self, from: data)
                 
@@ -66,10 +67,10 @@ class WifiDeviceDelegate: CBMPeripheralSpecDelegate {
                 
                 return Swift.Result.success(())
             case .stopScan:
-                peripheral.simulateValueUpdate(wifiStatus(.connected), for: .controlPoint)
+                peripheral.simulateValueUpdate(wifiStatus(.connected, opCode: command), for: .controlPoint)
                 return Swift.Result.success(())
             case .setConfig:
-                peripheral.simulateValueUpdate(wifiStatus(.disconnected), for: .controlPoint)
+                peripheral.simulateValueUpdate(wifiStatus(.disconnected, opCode: command), for: .controlPoint)
                 
                 let states = ConnectionState.allCases
                 Publishers.Zip(states.publisher, Timer.publish(every: 0.7, on: .main, in: .default).autoconnect())
@@ -97,9 +98,7 @@ class WifiDeviceDelegate: CBMPeripheralSpecDelegate {
     func peripheral(_ peripheral: CBMPeripheralSpec, didReceiveSetNotifyRequest enabled: Bool, for characteristic: CBMCharacteristicMock) -> Swift.Result<(), Error> {
         return Swift.Result.success(())
     }
-}
-
-extension WifiDeviceDelegate {
+    
     var versionData: Swift.Result<Data, Error> {
         var info = Info()
         info.version = 17
@@ -107,26 +106,35 @@ extension WifiDeviceDelegate {
         return Swift.Result.success(data)
     }
 
-    func wifiStatus(_ stt: ConnectionState) -> Data {
+    func wifiStatus(_ stt: ConnectionState, opCode: OpCode) -> Data {
         var response = Response()
         response.status = .success
-        var deviceStatus = DeviceStatus()
-        deviceStatus.state = stt
-        deviceStatus.provisioningInfo = wifiInfo()
-        // deviceStatus.scanInfo
-
-        response.deviceStatus = deviceStatus
+        response.requestOpCode = opCode
+        response.deviceStatus = deviceStatus(stt, connection: nil)
 
         return try! response.serializedData()
     }
-
+    
+    func deviceStatus(_ stt: ConnectionState, connection: ConnectionInfo?) -> DeviceStatus {
+        var deviceStatus = DeviceStatus()
+        deviceStatus.state = stt
+        if let wifiInfo = wifiInfo() {
+            deviceStatus.provisioningInfo = wifiInfo
+        }
+        deviceStatus.scanInfo = scanParam()
+        if let connection {
+            deviceStatus.connectionInfo = connection
+        }
+        return deviceStatus
+    }
+    
     func connectionStatusResult(_ stt: ConnectionState) -> Result {
         var result = Result()
         result.state = stt
         return result
     }
 
-    func wifiInfo() -> WifiInfo {
+    func wifiInfo() -> WifiInfo? {
         var wfInfo = WifiInfo()
         wfInfo.ssid = "Nordic Guest".data(using: .utf8)!
         wfInfo.bssid = 0xFA_23_1A_2B_3D_0A.toData()
@@ -135,11 +143,51 @@ extension WifiDeviceDelegate {
         wfInfo.band = .band5Gh
         return wfInfo
     }
+    
+    func scanParam() -> ScanParams {
+        var sp = ScanParams()
+        sp.band = .band5Gh
+        sp.groupChannels = 2
+        sp.passive = true
+        sp.periodMs = 1000
+        return sp
+    }
 }
 
 extension Int {
     func toData() -> Data {
         var value = self
         return Data(bytes: &value, count: MemoryLayout.size(ofValue: value))
+    }
+}
+
+extension Data {
+    static func random8bytes() -> [UInt8] {
+        var arr: [UInt8] = []
+        for _ in 0..<8 {
+            arr.append(UInt8.random(in: 0...0xff))
+        }
+        return arr
+    }
+}
+
+// MARK: - Children
+class NotProvisionedDelegate: WifiDeviceDelegate {
+    override func wifiInfo() -> WifiInfo? {
+        return nil
+    }
+}
+
+class ProvisionedNotConnected: WifiDeviceDelegate {
+    override func connectionStatusResult(_ stt: ConnectionState) -> Result {
+        return super.connectionStatusResult(.disconnected)
+    }
+}
+
+class ProvisionedConnected: WifiDeviceDelegate {
+    override func deviceStatus(_ stt: ConnectionState, connection: ConnectionInfo?) -> DeviceStatus {
+        var connectionInfo = ConnectionInfo()
+        connectionInfo.ip4Addr = Data(Data.random8bytes().prefix(4))
+        return super.deviceStatus(.connected, connection: connectionInfo)
     }
 }

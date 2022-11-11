@@ -60,7 +60,7 @@ class ScannerViewModel: ObservableObject {
     }
     
     @Published private(set) var state: State = .waiting
-    @Published private(set) var scanResults: [Provisioner2.ScanResult] = []
+    @Published private(set) var scanResults: [DisplayableScanResult] = []
     
     private let scanner: Provisioner2.Scanner
     

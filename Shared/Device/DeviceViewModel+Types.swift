@@ -4,7 +4,6 @@
 
 import Foundation
 import NordicStyle
-import Provisioner
 
 extension DeviceViewModel {
     struct ProvisionButtonState {
@@ -12,7 +11,7 @@ extension DeviceViewModel {
         var title: String
         var style: NordicButtonStyle
     }
-
+/*
     enum ConnectionState: CustomStringConvertible {
         case disconnected
         case connecting
@@ -32,44 +31,30 @@ extension DeviceViewModel {
             }
         }
     }
+ */
 }
 
-extension BluetoothConnectionStatus {
-    func toConnectionState() -> DeviceViewModel.ConnectionState {
-        switch self {
-        case .disconnected:
-            return .disconnected
-        case .connected:
-            return .connected
-        case .connecting:
-            return .connecting
-        case .connectionCanceled(let reason):
-            switch reason {
-            case .error(let e):
-                return .failed(TitleMessageError(title: "Something went wrong", message: e.localizedDescription))
-            case .byRequest:
-                return .disconnected
-            }
-        }
+enum PeripheralConnectionStatus {
+    enum Reason {
+        case byRequest, error(Error)
     }
+    case disconnected(Reason), connected, connecting
 }
 
-extension BluetoothConnectionStatus: CustomStringConvertible {
+extension PeripheralConnectionStatus: CustomStringConvertible {
     public var description: String {
         switch self {
-        case .disconnected:
-            return "Disconnected"
-        case .connected:
-            return "Connected"
-        case .connecting:
-            return "Connecting ..."
-        case .connectionCanceled(let reason):
+        case .disconnected(let reason):
             switch reason {
             case .error(let e):
                 return e.localizedDescription
             case .byRequest:
                 return "Disconnected"
             }
+        case .connected:
+            return "Connected"
+        case .connecting:
+            return "Connecting ..."
         }
     }
 }

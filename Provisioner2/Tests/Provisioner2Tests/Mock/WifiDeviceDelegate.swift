@@ -135,7 +135,9 @@ class WifiDeviceDelegate: CBMPeripheralSpecDelegate {
 extension Int {
     func toData() -> Data {
         var value = self
-        return Data(bytes: &value, count: MemoryLayout.size(ofValue: value))
+        let data = Data(bytes: &value, count: MemoryLayout.size(ofValue: value))
+        let arr = [UInt8](data)
+        return Data(arr.reversed())
     }
 }
 

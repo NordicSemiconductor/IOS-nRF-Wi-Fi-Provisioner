@@ -37,6 +37,7 @@ class WiFiService: CBMServiceMock {
 struct DeviceConfig {
     func createDevices() -> [CBMPeripheralSpec] {
         var devices: [CBMPeripheralSpec] = []
+        let delegates: [WifiDeviceDelegate] = [NotProvisionedDelegate(), ProvisionedNotConnected(), ProvisionedConnected()]
         for i in 0..<3 {
             let wifiDevice = CBMPeripheralSpec
                 .simulatePeripheral(proximity: .near)
@@ -62,7 +63,7 @@ struct DeviceConfig {
                     services: [
                         WiFiService()
                     ],
-                    delegate: WifiDeviceDelegate(),
+                    delegate: delegates[i],
                     connectionInterval: 0.150,
                     mtu: 23)
                 .build()

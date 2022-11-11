@@ -7,47 +7,35 @@
 
 import Foundation
 
-public protocol ScanParams {
-    var band: Band? { get set }
-    var passive: Bool? { get set }
-    var periodMs: UInt? { get set }
-    var groupChannels: UInt? { get set }
+public struct ScanParams {
+    var band: Band?
+    var passive: Bool?
+    var periodMs: UInt?
+    var groupChannels: UInt?
+    
+    public init(band: Band? = nil, passive: Bool? = nil, periodMs: UInt? = nil, groupChannels: UInt? = nil) {
+        self.band = band
+        self.passive = passive
+        self.periodMs = periodMs
+        self.groupChannels = groupChannels
+    }
 }
 
-extension Envelope: ScanParams where P == Proto.ScanParams {
-    var band: Band? {
-        get {
-            model.hasBand ? Band(proto: model.band) : nil
-        }
-        set {
-            (newValue?.proto).map { model.band = $0 }
-        }
+extension ScanParams: ProtoConvertible {
+    init(proto: Proto.ScanParams) {
+        self.band = proto.hasBand ? Band(proto: proto.band) : nil
+        self.passive = proto.hasPassive ? proto.passive : nil
+        self.periodMs = proto.hasPeriodMs ? UInt(proto.periodMs) : nil
+        self.groupChannels = proto.hasGroupChannels ? UInt(proto.groupChannels) : nil
     }
     
-    var passive: Bool? {
-        get {
-            model.hasPassive ? model.passive : nil
-        }
-        set {
-            newValue.map { model.passive = $0 }
-        }
+    var proto: Proto.ScanParams {
+        var proto = Proto.ScanParams()
+        band.map { proto.band = $0.proto }
+        passive.map { proto.passive = $0 }
+        periodMs.map { proto.periodMs = UInt32($0) }
+        groupChannels.map { proto.groupChannels = UInt32($0) }
+        return proto
     }
     
-    var periodMs: UInt? {
-        get {
-            model.hasPeriodMs ? UInt(model.periodMs) : nil
-        }
-        set {
-            newValue.map { UInt32($0) }.map { model.periodMs = $0 }
-        }
-    }
-    
-    var groupChannels: UInt? {
-        get {
-            model.hasGroupChannels ? UInt(model.groupChannels) : nil
-        }
-        set {
-            newValue.map { UInt32($0) }.map { model.groupChannels = $0 }
-        }
-    }
 }

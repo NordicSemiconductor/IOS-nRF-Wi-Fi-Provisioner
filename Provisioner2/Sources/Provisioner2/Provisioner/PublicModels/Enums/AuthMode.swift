@@ -17,6 +17,27 @@ public enum AuthMode: Equatable {
     case wpa3Psk
 }
 
+extension AuthMode: CustomStringConvertible {
+    public var description: String {
+        switch self {
+        case .open:
+            return "Open"
+        case .wep:
+            return "WEP"
+        case .wpaPsk:
+            return "WPA-PSK"
+        case .wpa2Psk:
+            return "WPA2-PSK"
+        case .wpaWpa2Psk:
+            return "WPA/WPA2-PSK"
+        case .wpa2Enterprise:
+            return "WPA2-Enterprise"
+        case .wpa3Psk:
+            return "WPA3-PSK"
+        }
+    }
+}
+
 extension AuthMode: ProtoConvertible {
     var proto: Proto.AuthMode {
         switch self {

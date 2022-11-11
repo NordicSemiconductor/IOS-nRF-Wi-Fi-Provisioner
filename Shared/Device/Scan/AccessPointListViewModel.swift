@@ -28,7 +28,7 @@ class AccessPointListViewModel: ObservableObject {
             guard let ap = selectedAccessPoint else {
                 return
             }
-            accessPointSelection.selectedAccessPoint = ap
+//            accessPointSelection.selectedAccessPoint = ap
             accessPointSelection.showAccessPointList = false
         }
     }
