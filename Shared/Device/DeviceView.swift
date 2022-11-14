@@ -31,7 +31,7 @@ struct DeviceView: View {
                     Placeholder(text: e.localizedDescription, image: "bluetooth_disabled", action: {
                         Button("Reconnect") {
                             Task {
-                                try self.viewModel.connect()
+                                self.viewModel.connect()
                             }
                         }
                         .buttonStyle(NordicButtonStyle())
@@ -40,13 +40,8 @@ struct DeviceView: View {
                 }
             }
         }
-        .onAppear {
-            Task {
-                do {
-                    try viewModel.connect()
-//                    try viewModel.readInformation()
-                }
-            }
+        .onFirstAppear {
+            viewModel.connect()
         }
     }
     

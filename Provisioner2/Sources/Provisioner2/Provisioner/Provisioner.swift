@@ -4,23 +4,51 @@
 
 import Foundation
 
-public protocol Provisioner {
-    var deviceId: String { get }
-    var connectionDelegate: ProvisionerConnectionDelegate? { get set }
-    var infoDelegate: ProvisionerInfoDelegate? { get set }
+open class Provisioner {
+    private let internalProvisioner: InternalProvisioner
     
-    func connect()
+    public init(deviceId: String) {
+        self.internalProvisioner = InternalProvisioner(deviceId: deviceId)
+    }
+    
+    open var deviceId: String {
+        internalProvisioner.deviceId
+    }
+    
+    open var connectionState: ConnectionState {
+        internalProvisioner.connectionState
+    }
+    
+    open var connectionDelegate: ProvisionerConnectionDelegate? {
+        get {
+            internalProvisioner.connectionDelegate
+        }
+        set {
+            internalProvisioner.connectionDelegate = newValue
+        }
+    }
+    
+    open var infoDelegate: ProvisionerInfoDelegate? {
+        get {
+            internalProvisioner.infoDelegate
+        }
+        set {
+            internalProvisioner.infoDelegate = newValue
+        }
+    }
+    
+    open func connect() {
+        internalProvisioner.connect()
+    }
 
     /// Read the device version
     ///
     /// - Throws: If the version was request but device is not connected, this method throws `DeviceNotConnectedError`
-    func readVersion() throws
+    open func readVersion() throws {
+        
+    }
 
-    func readDeviceStatus() throws
-}
-
-public struct ProvisionerFactory {
-    public static func create(deviceId: String) -> Provisioner & AnyObject {
-        InternalProvisioner(deviceId: deviceId)
+    open func readDeviceStatus() throws {
+        
     }
 }

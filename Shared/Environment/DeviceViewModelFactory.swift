@@ -9,9 +9,9 @@ import Foundation
 import SwiftUI
 
 class DeviceViewModelFactory: ObservableObject {
-    private var viewModels: [UUID:DeviceViewModel] = [:]
+    private var viewModels: [String:DeviceViewModel] = [:]
     
-    func viewModel(for peripheralId: UUID) -> DeviceViewModel {
+    func viewModel(for peripheralId: String) -> DeviceViewModel {
         if let vm = viewModels[peripheralId] {
             return vm
         } else {

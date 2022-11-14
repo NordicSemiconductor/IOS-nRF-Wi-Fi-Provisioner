@@ -29,7 +29,7 @@ public enum ProvisionerError: Error {
 /// Error that is thrown when the request to the device was sent, but the device is not connected
 public struct DeviceNotConnectedError: Error { }
 
-class InternalProvisioner: Provisioner {
+class InternalProvisioner {
     let connectionQueue = OperationQueue()
 
     let deviceId: String
@@ -39,6 +39,11 @@ class InternalProvisioner: Provisioner {
     weak var infoDelegate: ProvisionerInfoDelegate?
 
     private var connectionInfo: BluetoothConnectionInfo?
+    private (set) var connectionState: Provisioner.ConnectionState = .disconnected {
+        didSet {
+            connectionDelegate?.connectionStateChanged(connectionState)
+        }
+    }
  
     let logger = Logger(
         subsystem: Bundle(for: InternalProvisioner.self).bundleIdentifier ?? "",
@@ -70,6 +75,7 @@ class InternalProvisioner: Provisioner {
                 return
             }
 
+            self.connectionState = .connecting
             self.centralManager.connect(peripheral)
         }
     }
@@ -130,10 +136,12 @@ extension InternalProvisioner: CBCentralManagerDelegate {
     func centralManager(_ central: CBMCentralManager, didFailToConnect peripheral: CBMPeripheral, error: Error?) {
         let e: Error = error ?? ProvisionerError.unknown
         connectionDelegate?.deviceFailedToConnect(error: ProvisionerError.notConnected(e))
+        self.connectionState = .disconnected
     }
 
     func centralManager(_ central: CBMCentralManager, didDisconnectPeripheral peripheral: CBMPeripheral, error: Error?) {
         connectionDelegate?.deviceDisconnected(error: error)
+        self.connectionState = .disconnected
     }
 }
 
@@ -143,6 +151,7 @@ extension InternalProvisioner: CBPeripheralDelegate {
         guard case .none = error else {
             connectionDelegate?.deviceFailedToConnect(error: ProvisionerError.notSupported)
             centralManager.cancelPeripheralConnection(peripheral)
+            self.connectionState = .disconnecting
             return
         }
 
@@ -163,6 +172,7 @@ extension InternalProvisioner: CBPeripheralDelegate {
         
         self.connectionInfo?.setNotify()
 
+        self.connectionState = .connected
         connectionDelegate?.deviceConnected()
     }
     

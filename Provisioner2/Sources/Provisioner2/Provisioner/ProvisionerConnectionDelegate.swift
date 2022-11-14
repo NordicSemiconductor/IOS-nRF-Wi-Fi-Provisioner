@@ -23,4 +23,9 @@ public protocol ProvisionerConnectionDelegate: AnyObject {
     ///
     /// - Parameter error: If disconnected due to an issue, this parameter contains the error
     func deviceDisconnected(error: Error?)
+    
+    /// Tells the delegate that the provisioner changed its connection state
+    ///
+    /// - Parameter newState: New Connection State
+    func connectionStateChanged(_ newState: Provisioner.ConnectionState)
 }

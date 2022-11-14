@@ -121,19 +121,26 @@ class DeviceViewModel: ObservableObject, AccessPointSelection {
     private var cancellable: Set<AnyCancellable> = []
     
     private (set) var provisioner: Provisioner
-    let peripheralId: UUID
+    let peripheralId: String
     let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "nordic", category: "DeviceViewModel")
     
-    init(peripheralId: UUID) {
+    init(peripheralId: String) {
         self.peripheralId = peripheralId
-        self.provisioner = ProvisionerFactory.create(deviceId: peripheralId.uuidString)
+        self.provisioner = Provisioner(deviceId: peripheralId)
         self.provisioner.infoDelegate = self
         self.provisioner.connectionDelegate = self
     }
     
-    func connect() throws {
-        self.peripheralConnectionStatus = .connecting
-        provisioner.connect()
+    func connect() {
+        switch provisioner.connectionState {
+        case .disconnected, .disconnecting:
+            provisioner.connect()
+            self.peripheralConnectionStatus = .connecting
+        case .connected:
+            self.peripheralConnectionStatus = .connected
+        default:
+            break
+        }
     }
 }
 
@@ -191,6 +198,10 @@ extension DeviceViewModel {
 }
 
 extension DeviceViewModel: ProvisionerConnectionDelegate {
+    func connectionStateChanged(_ newState: Provisioner2.Provisioner.ConnectionState) {
+        
+    }
+    
     func deviceConnected() {
         peripheralConnectionStatus = .connected
         
@@ -282,10 +293,10 @@ extension DeviceViewModel {
 
 class MockDeviceViewModel: DeviceViewModel {
     init(fakeStatus: ConnectionState) {
-        super.init(peripheralId: UUID())
+        super.init(peripheralId: UUID().uuidString)
     }
     
-    override func connect() throws {
+    override func connect() {
         self.wifiState = .connected
         self.version = "14"
     }
