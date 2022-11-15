@@ -14,8 +14,6 @@ extension Band: CustomStringConvertible {
             return "2.4 GHz"
         case .band5Gh:
             return "5 GHz"
-        case .any:
-            return "Any"
         }
     }
 }

@@ -10,8 +10,13 @@ import CoreBluetoothMock
 @testable import Provisioner2
 
 class MockProvisionerDelegate: ProvisionerConnectionDelegate {
+    func connectionStateChanged(_ newState: Provisioner2.Provisioner.ConnectionState) {
+        self.connectionState = newState
+    }
+    
     var connected = false
     var connectionError: Error?
+    var connectionState: Provisioner.ConnectionState?
     
     func deviceConnected() {
         connected = true

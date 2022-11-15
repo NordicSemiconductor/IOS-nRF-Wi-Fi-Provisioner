@@ -8,7 +8,6 @@
 import Foundation
 
 public enum Band: Equatable {
-    case any 
     case band24Gh
     case band5Gh
 }
@@ -19,7 +18,7 @@ extension Band: ProtoConvertible {
     init(proto: Proto.Band) {
         switch proto {
         case .any:
-            self = .any
+            fatalError("`any` is an internal parameter for `ScanParams` structure")
         case .band24Gh:
             self = .band24Gh
         case .band5Gh:
@@ -29,8 +28,6 @@ extension Band: ProtoConvertible {
     
     var proto: Proto.Band {
         switch self {
-        case .any:
-            return .any
         case .band24Gh:
             return .band24Gh
         case .band5Gh:

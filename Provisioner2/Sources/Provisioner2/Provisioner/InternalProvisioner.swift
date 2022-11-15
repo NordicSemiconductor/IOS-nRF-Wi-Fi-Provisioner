@@ -37,6 +37,7 @@ class InternalProvisioner {
     let centralManager: CBCentralManager
     weak var connectionDelegate: ProvisionerConnectionDelegate?
     weak var infoDelegate: ProvisionerInfoDelegate?
+    weak var provisionerScanDelegate: ProvisionerScanDelegate?
 
     private var connectionInfo: BluetoothConnectionInfo?
     private (set) var connectionState: Provisioner.ConnectionState = .disconnected {
@@ -95,15 +96,35 @@ class InternalProvisioner {
         
         try sendRequest(opCode: .getStatus)
     }
+    
+    func startScan(scanParams: ScanParams) throws {
+        guard connectionInfo?.isReady == true else {
+            throw DeviceNotConnectedError()
+        }
+        
+        try sendRequest(opCode: .startScan, scanParam: scanParams.proto)
+    }
+    
+    func stopScan() throws {
+        guard connectionInfo?.isReady == true else {
+            throw DeviceNotConnectedError()
+        }
+        
+        try sendRequest(opCode: .stopScan)
+    }
 }
 
 // MARK: - Private Methods
 extension InternalProvisioner {
-    private func sendRequest(opCode: Proto.OpCode, config: Proto.WifiConfig? = nil) throws {
+    private func sendRequest(opCode: Proto.OpCode, config: Proto.WifiConfig? = nil, scanParam: Proto.ScanParams? = nil) throws {
         var request = Proto.Request()
         request.opCode = opCode
         if let conf = config {
             request.config = conf
+        }
+        
+        if let scanParam {
+            request.scanParams = scanParam
         }
         
         let data = try request.serializedData()
@@ -215,25 +236,34 @@ extension InternalProvisioner {
         }
     }
     
+    func parseDataOutResult(data: Data) {
+        do {
+            let result = try Proto.Result(serializedData: data)
+            if result.hasScanRecord {
+                handleScanRecord(result.scanRecord)
+            } else if result.hasState {
+
+            } else if result.hasReason {
+
+            }
+        } catch {
+            // TODO: Handle error
+        }
+        
+    }
+    
     func parseResponse(_ response: Proto.Response) {
         switch response.requestOpCode {
         case .reserved:
             return 
         case .getStatus:
             parseGetStatus(response)
-        case .startScan:
-            fatalError()
-        case .stopScan:
-            fatalError()
-        case .setConfig:
-            fatalError()
-        case .forgetConfig:
-            fatalError()
+        default:
+            fatalError("Not implemented")
         }
     }
-    
+
     // MARK: Parse by OpCode
-    
     func parseGetStatus(_ response: Proto.Response) {
         switch response.status {
         case .success:
@@ -247,5 +277,12 @@ extension InternalProvisioner {
         default:
             infoDelegate?.deviceStatusReceived(.failure(.deviceFailureResponse))
         }
+    }
+
+    // MARK: Handle Result
+    func handleScanRecord(_ result: Proto.ScanRecord) {
+        guard result.hasWifi else { return }
+        let rssi: Int? = result.hasRssi ? Int(result.rssi) : nil
+        provisionerScanDelegate?.accessPointDiscovered(WifiInfo(proto: result.wifi), rssi: rssi)
     }
 }
