@@ -39,7 +39,7 @@ class WifiDeviceDelegate: CBMPeripheralSpecDelegate {
             switch command {
             case .getStatus:
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                    peripheral.simulateValueUpdate(self.wifiStatus(.disconnected), for: .controlPoint)
+                    peripheral.simulateValueUpdate(self.wifiStatus(.connected), for: .controlPoint)
                 }
                 return Swift.Result.success(())
             case .startScan:
@@ -109,10 +109,20 @@ class WifiDeviceDelegate: CBMPeripheralSpecDelegate {
         
         deviceStatus.state = stt
         deviceStatus.provisioningInfo = wifiInfo()
+        deviceStatus.scanInfo = scanInfo()
 
         response.deviceStatus = deviceStatus
 
         return try! response.serializedData()
+    }
+    
+    func scanInfo() -> Proto.ScanParams {
+        var scanParams = Proto.ScanParams()
+        scanParams.band = .band24Gh
+        scanParams.groupChannels = 1
+        scanParams.periodMs = 1
+        scanParams.passive = false
+        return scanParams
     }
 
     func connectionStatusResult(_ stt: Proto.ConnectionState) -> Proto.Result {
