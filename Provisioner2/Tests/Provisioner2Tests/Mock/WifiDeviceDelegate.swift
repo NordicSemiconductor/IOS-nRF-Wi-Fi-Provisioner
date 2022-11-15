@@ -12,6 +12,12 @@ import os
 @testable import Provisioner2
 
 class WifiDeviceDelegate: CBMPeripheralSpecDelegate {
+    let scanResultQueue = OperationQueue()
+    
+    init() {
+        scanResultQueue.maxConcurrentOperationCount = 1
+    }
+    
     func peripheralDidReceiveConnectionRequest(_ peripheral: CBMPeripheralSpec) -> Swift.Result<(), Error> {
         return Swift.Result.success(())
     }
@@ -47,8 +53,14 @@ class WifiDeviceDelegate: CBMPeripheralSpecDelegate {
                     peripheral.simulateValueUpdate(self.wifiStatus(.disconnected), for: .controlPoint)
                 }
                 
-                try emitScanResults(peripheral: peripheral)
+                let aps = try accessPoints()
                 
+                DispatchQueue.global().asyncAfter(deadline: .now() + 0.5) {
+                    for sr in aps {
+                        peripheral.simulateValueUpdate(try! sr.serializedData(), for: .dataOut)
+                    }
+                }
+            
                 return Swift.Result.success(())
             case .stopScan:
                 peripheral.simulateValueUpdate(wifiStatus(.connected), for: .controlPoint)
@@ -121,17 +133,7 @@ class WifiDeviceDelegate: CBMPeripheralSpecDelegate {
     }
     
     func emitScanResults(peripheral: CBMPeripheralSpec) throws {
-        let aps = try accessPoints()
         
-        DispatchQueue.global().asyncAfter(deadline: .now() + 0.5) {
-            var iterator = aps.makeIterator()
-            while let next = iterator.next() {
-                DispatchQueue.main.async {
-                    peripheral.simulateValueUpdate(try! next.serializedData(), for: .dataOut)
-                }
-                sleep(100)
-            }
-        }
     }
     
     func accessPoints() throws -> [Proto.Result] {

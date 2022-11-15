@@ -210,8 +210,12 @@ extension InternalProvisioner: CBPeripheralDelegate {
             } else {
                 infoDelegate?.versionReceived(.failure(.emptyData))
             }
-        } else {
-            print("dataOut")
+        } else if characteristic.uuid == connectionInfo?.dataOutCharacteristic.uuid {
+            if let data = characteristic.value {
+                parseDataOutResult(data: data)
+            } else {
+                infoDelegate?.versionReceived(.failure(.emptyData))
+            }
         }
     }
 }

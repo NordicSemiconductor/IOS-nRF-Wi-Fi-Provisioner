@@ -11,7 +11,7 @@ import CoreBluetoothMock
 
 final class ProvisionerScannTests: XCTestCase {
     
-    var scanDelegate: ProvisionerScanDelegate!
+    var scanDelegate: MockProvisionerScanDelegate!
     
     override func setUpWithError() throws {
         try super.setUpWithError()
@@ -19,7 +19,7 @@ final class ProvisionerScannTests: XCTestCase {
         CBMCentralManagerMock.simulateInitialState(.unknown)
         CBMCentralManagerMock.simulatePeripherals([
             noServiceDevice, badVersionDataDevice, wifiDevice,
-            invalidArgumentDevice, invalidProtoDevice, internalErrorDevice
+            invalidArgumentDevice, invalidProtoDevice, internalErrorDevice, scanResultDevice
         ])
         CBMCentralManagerMock.simulatePowerOn()
         
@@ -33,14 +33,14 @@ final class ProvisionerScannTests: XCTestCase {
     }
     
     func testNotConnectedError() throws {
-        let provisioner = InternalProvisioner(deviceId: wifiDevice.identifier.uuidString)
+        let provisioner = InternalProvisioner(deviceId: scanResultDevice.identifier.uuidString)
         provisioner.provisionerScanDelegate = scanDelegate
         
         XCTAssertThrowsError(try provisioner.startScan(scanParams: ScanParams()))
     }
     
     func testScan() throws {
-        let provisioner = InternalProvisioner(deviceId: wifiDevice.identifier.uuidString)
+        let provisioner = InternalProvisioner(deviceId: scanResultDevice.identifier.uuidString)
         provisioner.provisionerScanDelegate = scanDelegate
         provisioner.connect()
         
@@ -48,6 +48,11 @@ final class ProvisionerScannTests: XCTestCase {
         
         XCTAssertNoThrow(try provisioner.startScan(scanParams: ScanParams()))
         
+        wait(2)
         
+        XCTAssertEqual(scanDelegate.scanresults.count, 4)
+        XCTAssertEqual(scanDelegate.scanresults[3].wifi.ssid, WifiInfo.wifi2.ssid)
+        XCTAssertEqual(scanDelegate.scanresults[3].wifi.bssid, WifiInfo.wifi2.bssid)
+        XCTAssertEqual(scanDelegate.scanresults[3].rssi, -60)
     }
 }
