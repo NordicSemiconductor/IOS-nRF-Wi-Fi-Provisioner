@@ -29,5 +29,19 @@ final class MACAddressTests: XCTestCase {
         XCTAssertNotNil(mac4)
         XCTAssertEqual(mac4?.description, "00:00:00:00:00:00")
     }
+    
+    func testMockMAC() throws {
+        let mac1 = try XCTUnwrap(MACAddress.mac1)
+        XCTAssertEqual(mac1.description, "01:02:03:04:05:06")
+        
+        let mac2 = try XCTUnwrap(MACAddress.mac2)
+        XCTAssertEqual(mac2.description, "AA:BB:CC:DD:EE:FF")
+        
+        let mac3 = try XCTUnwrap(MACAddress.mac3)
+        XCTAssertEqual(mac3.description, "1A:2B:3C:4D:5E:6F")
+        
+        let mac4 = try XCTUnwrap(MACAddress.mac4)
+        XCTAssertEqual(mac4.description, "A1:B2:C3:D4:E5:F6")
+    }
 
 }

@@ -166,21 +166,37 @@ final class ProvisionerInfoTests: XCTestCase {
         switch status {
         case .success(let status):
             let wifiInfo = try XCTUnwrap(status.provisioningInfo)
-            
-            XCTAssertEqual(wifiInfo.ssid, "Nordic Guest")
-            XCTAssertEqual(wifiInfo.bssid, MACAddress(data: 0xFA_23_1A_2B_3D_0A.toData()))
-            XCTAssertEqual(wifiInfo.auth, .wpa2Psk)
-            XCTAssertEqual(wifiInfo.band, .band5Gh)
-            XCTAssertEqual(wifiInfo.channel, 6)
+            /*
+             ssid: "WiFi-1",
+             bssid: MACAddress.mac1,
+             band: .band24Gh,
+             channel: 1,
+             auth: .open
+             */
+            /// Look at mock in ``Provisioner2/Tests/Provisioner2Tests/Provisioner/ProvisionerInfoTests.swift``
+            XCTAssertEqual(wifiInfo.ssid, "WiFi-1")
+            XCTAssertEqual(wifiInfo.bssid, MACAddress.mac1)
+            XCTAssertEqual(wifiInfo.auth, .open)
+            XCTAssertEqual(wifiInfo.band, .band24Gh)
+            XCTAssertEqual(wifiInfo.channel, 1)
             
             let connectionInfo = try XCTUnwrap(status.connectionInfo)
             XCTAssertEqual(connectionInfo.ip, IPAddress(data: Data()))
             
+            /*
+             Look at mock in ``Tests/Provisioner2Tests/Mock/Model+Extensions/ScanParams+Ext.swift:12``
+             band: .band5Gh,
+             passive: true,
+             periodMs: 100,
+             groupChannels: 1
+             */
+            
+            /// ``../Mock/Model+Extensions/ScanParams+Ext.swift``
             let scanParam = try XCTUnwrap(status.scanInfo)
-            XCTAssertEqual(scanParam.band, .band24Gh)
+            XCTAssertEqual(scanParam.band, .band5Gh)
             XCTAssertEqual(scanParam.groupChannels, 1)
-            XCTAssertEqual(scanParam.passive, false)
-            XCTAssertEqual(scanParam.periodMs, 1)
+            XCTAssertEqual(scanParam.passive, true)
+            XCTAssertEqual(scanParam.periodMs, 100)
             
             let state = try XCTUnwrap(status.state)
             XCTAssertEqual(state, .connected)

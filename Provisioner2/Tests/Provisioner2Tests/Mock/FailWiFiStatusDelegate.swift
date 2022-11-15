@@ -24,9 +24,7 @@ class FailWifiStatusDelegate: WifiDeviceDelegate {
             var deviceStatus = Proto.DeviceStatus()
             deviceStatus.state = stt
             deviceStatus.provisioningInfo = wifiInfo()
-
-            response.deviceStatus = deviceStatus
-
+            
             return try! response.serializedData()
         } else {
             return super.wifiStatus(stt)
