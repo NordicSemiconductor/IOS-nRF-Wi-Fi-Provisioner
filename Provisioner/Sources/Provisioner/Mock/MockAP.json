@@ -42,7 +42,7 @@
         "bssid": "9p/C1BZJ",
         "band": "BAND_2_4_GH",
         "channel": 1,
-        "auth": "WPA_WPA2_PSK"
+        "auth": "OPEN"
       },
       "rssi": -62
     }
@@ -90,7 +90,7 @@
         "bssid": "/p/C1BaY",
         "band": "BAND_2_4_GH",
         "channel": 6,
-        "auth": "WPA_WPA2_PSK"
+        "auth": "OPEN"
       },
       "rssi": -17
     }
@@ -102,7 +102,7 @@
         "bssid": "/p/C1Bb7",
         "band": "BAND_2_4_GH",
         "channel": 6,
-        "auth": "WPA_WPA2_PSK"
+        "auth": "OPEN"
       },
       "rssi": -70
     }
@@ -114,7 +114,7 @@
         "bssid": "/p/C1Bji",
         "band": "BAND_2_4_GH",
         "channel": 11,
-        "auth": "WPA_WPA2_PSK"
+        "auth": "OPEN"
       },
       "rssi": -36
     }
@@ -186,7 +186,7 @@
         "bssid": "+p/C1RaY",
         "band": "BAND_2_4_GH",
         "channel": 36,
-        "auth": "WPA_WPA2_PSK"
+        "auth": "OPEN"
       },
       "rssi": -31
     }
@@ -210,7 +210,7 @@
         "bssid": "/p/C1RaY",
         "band": "BAND_2_4_GH",
         "channel": 36,
-        "auth": "WPA_WPA2_PSK"
+        "auth": "OPEN"
       },
       "rssi": -32
     }
@@ -222,7 +222,7 @@
         "bssid": "+p/C1Rji",
         "band": "BAND_2_4_GH",
         "channel": 36,
-        "auth": "WPA_WPA2_PSK"
+        "auth": "OPEN"
       },
       "rssi": -50
     }
@@ -234,7 +234,7 @@
         "bssid": "4p/C1RaY",
         "band": "BAND_2_4_GH",
         "channel": 36,
-        "auth": "WPA_WPA2_PSK"
+        "auth": "OPEN"
       },
       "rssi": -32
     }
@@ -246,7 +246,7 @@
         "bssid": "/p/C1Rji",
         "band": "BAND_2_4_GH",
         "channel": 36,
-        "auth": "WPA_WPA2_PSK"
+        "auth": "OPEN"
       },
       "rssi": -49
     }
@@ -270,7 +270,7 @@
         "bssid": "4p/C1Rji",
         "band": "BAND_2_4_GH",
         "channel": 36,
-        "auth": "WPA_WPA2_PSK"
+        "auth": "OPEN"
       },
       "rssi": -50
     }
@@ -305,7 +305,7 @@
         "bssid": "YkW36GEP",
         "band": "BAND_2_4_GH",
         "channel": 157,
-        "auth": "WEP"
+        "auth": "OPEN"
       },
       "rssi": -45
     }

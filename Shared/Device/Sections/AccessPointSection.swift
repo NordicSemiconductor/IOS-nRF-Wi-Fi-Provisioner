@@ -9,10 +9,13 @@ import SwiftUI
 import Provisioner2
 
 struct AccessPointSection: View {
+    let viewModel: DeviceView.ViewModel
+    
     let inProgress: Bool
     let wifiInfo: WifiInfo?
     
     let passwordRequired: Bool
+    let showFooter: Bool
     var showVolatileMemory: Bool
     
     @Binding var password: String
@@ -20,7 +23,7 @@ struct AccessPointSection: View {
     @Binding var showAccessPointList: Bool
     
     var body: some View {
-        Section("Access Point") {
+        Section {
             accessPointSelector
             
             if let wifiInfo {
@@ -41,14 +44,23 @@ struct AccessPointSection: View {
                 }
                 .disabled(inProgress)
             }
+        } header: {
+            Text("Access Point")
+        } footer: {
+            if wifiInfo == nil {
+                Text("WIFI_NOT_PROVISIONED_FOOTER")
+            } else if wifiInfo != nil && showFooter {
+                Text("PROVISIONED_DEVICE_FOOTER")
+            } else {
+                EmptyView()
+            }
         }
     }
     
     @ViewBuilder
     var accessPointSelector: some View {
         NavigationLink(isActive: $showAccessPointList) {
-//                AccessPointList(viewModel: AccessPointListViewModel(provisioner: viewModel.provisioner, accessPointSelection: viewModel))
-            EmptyView()
+            AccessPointList(provisioner: viewModel.provisioner, wifiSelection: viewModel)
         } label: {
             VStack {
                 HStack {
@@ -67,49 +79,11 @@ struct AccessPointSection: View {
     @ViewBuilder
     func additionalInfo(wifiInfo: WifiInfo) -> some View {
         VStack {
-            wifiInfo.channel.map { DetailRow(title: "Channel", details: "\($0)") }
-            wifiInfo.bssid.map { DetailRow(title: "BSSID", details: "\($0)") }
+            DetailRow(title: "Channel", details: "\(wifiInfo.channel)")
+            DetailRow(title: "BSSID", details: "\(wifiInfo.bssid)")
             wifiInfo.band.map { DetailRow(title: "Band", details: "\($0)") }
             wifiInfo.auth.map { DetailRow(title: "Security", details: "\($0)") }
-            /*
-            if ap.rssi < 0 {
-                HStack {
-                    DetailRow(title: "Signal Strength", details: "\(ap.rssi) dBm")
-                    RSSIView(rssi: WiFiRSSI(level: ap.rssi))
-                        .frame(maxWidth: 15, maxHeight: 16)
-                        .accessibilityIdentifier("rssi_view")
-                }
-                .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
-                .frame(maxHeight: 8)
-            }
-             */
         }
-        /*
-        HStack {
-            
-            
-            /*
-            
-            VStack(alignment: .leading) {
-                Text("Channel \(ap.channel)")
-                    .font(.caption)
-                    .foregroundColor(.secondary)
-                Text(ap.bssid)
-                    .font(.caption)
-                    .foregroundColor(.secondary)
-            }
-            
-            Spacer()
-            Text(ap.frequency.stringValue)
-                .foregroundColor(.secondary)
-            if ap.rssi != 0 {
-                RSSIView(rssi: WiFiRSSI(level: ap.rssi))
-                    .frame(maxWidth: 30, maxHeight: 16)
-                    .accessibilityIdentifier("rssi_view")
-            }
-             */
-        }
-         */
     }
 }
 
@@ -155,36 +129,55 @@ struct AccessPointSection_Previews: PreviewProvider {
     static var previews: some View {
         Form {
             AccessPointSection(
+                viewModel: MockDeviceViewModel(deviceId: ""),
                 inProgress: false,
                 wifiInfo: wf1,
                 passwordRequired: false,
+                showFooter: true,
                 showVolatileMemory: true,
                 password: .constant(""),
                 volatileMemory: .constant(false),
                 showAccessPointList: .constant(false)
             )
             AccessPointSection(
+                viewModel: MockDeviceViewModel(deviceId: ""),
                 inProgress: false,
                 wifiInfo: wf2,
                 passwordRequired: true,
+                showFooter: false,
                 showVolatileMemory: false,
                 password: .constant(""),
                 volatileMemory: .constant(false),
                 showAccessPointList: .constant(false)
             )
             AccessPointSection(
+                viewModel: MockDeviceViewModel(deviceId: ""),
                 inProgress: false,
                 wifiInfo: wf3,
                 passwordRequired: false,
+                showFooter: true,
                 showVolatileMemory: false,
                 password: .constant(""),
                 volatileMemory: .constant(false),
                 showAccessPointList: .constant(false)
             )
             AccessPointSection(
+                viewModel: MockDeviceViewModel(deviceId: ""),
                 inProgress: false,
                 wifiInfo: wf1,
                 passwordRequired: false,
+                showFooter: true,
+                showVolatileMemory: false,
+                password: .constant(""),
+                volatileMemory: .constant(false),
+                showAccessPointList: .constant(false)
+            )
+            AccessPointSection(
+                viewModel: MockDeviceViewModel(deviceId: ""),
+                inProgress: false,
+                wifiInfo: nil,
+                passwordRequired: false,
+                showFooter: true,
                 showVolatileMemory: false,
                 password: .constant(""),
                 volatileMemory: .constant(false),

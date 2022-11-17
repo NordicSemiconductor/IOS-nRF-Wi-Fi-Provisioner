@@ -10,7 +10,7 @@ import NordicStyle
 import Provisioner2
 
 struct DeviceView: View {
-    @StateObject var viewModel: DeviceViewModel
+    @StateObject var viewModel: ViewModel
     
     var body: some View {
         VStack {
@@ -45,42 +45,6 @@ struct DeviceView: View {
         }
     }
     
-    /*
-    var body: some View {
-        VStack {
-            switch viewModel.connectionStatus {
-            case .connecting:
-                Placeholder(
-                    text: "Connecting",
-                    image: "bluetooth"
-                )
-            case .failed(let e):
-                Placeholder(text: e.message, image: "bluetooth_disabled", action: {
-                    Button("Reconnect") {
-                        Task {
-                            try await self.viewModel.connect()
-                        }
-                    }
-                    .buttonStyle(NordicButtonStyle())
-                })
-                .padding()
-            case .connected:
-                deviceInfo
-            case .disconnected:
-                Placeholder(text: "Disconnected", image: "bluetooth_disabled")
-            }
-        }
-        .onAppear {
-            Task {
-                do {
-                    try await viewModel.connect()
-                    try await viewModel.readInformation()
-                }
-            }
-        }
-    }
-     */
-    
     @ViewBuilder
     var deviceInfo: some View {
         VStack {
@@ -94,9 +58,11 @@ struct DeviceView: View {
                     ip: viewModel.deviceStatus?.connectionInfo?.ip?.description
                 )
                 AccessPointSection(
+                    viewModel: viewModel,
                     inProgress: viewModel.inProgress,
                     wifiInfo: viewModel.displayedWiFi,
                     passwordRequired: viewModel.passwordRequired,
+                    showFooter: viewModel.showFooter,
                     showVolatileMemory: false,
                     password: $viewModel.password,
                     volatileMemory: $viewModel.volatileMemory,
@@ -120,21 +86,19 @@ struct DeviceView: View {
 }
 
 #if DEBUG
-/*
+
 struct DeviceView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
             DeviceView(
-                viewModel: MockDeviceViewModel(fakeStatus: .connected)
+                viewModel: MockDeviceViewModel(deviceId: "")
             )
             .navigationTitle("Device Name")
         }
         .setupNavBarBackground()
+        .tint(.nordicBlue)
         .previewDisplayName("iPhone 14 Pro")
         .previewDevice(PreviewDevice(rawValue: "iPhone 14 Pro"))
     }
-    
-    
 }
- */
 #endif

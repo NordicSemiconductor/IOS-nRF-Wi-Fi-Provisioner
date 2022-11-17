@@ -54,16 +54,14 @@
 		019D1D382912C588000D8BD4 /* Band+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019D1D362912C588000D8BD4 /* Band+Ext.swift */; };
 		019DCE25288553E700E16E9F /* CGRect+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019DCE24288553E700E16E9F /* CGRect+Ext.swift */; };
 		019DCE26288553E700E16E9F /* CGRect+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019DCE24288553E700E16E9F /* CGRect+Ext.swift */; };
-		019DCE292885A15100E16E9F /* FilterList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019DCE282885A15100E16E9F /* FilterList.swift */; };
-		019DCE2A2885A15100E16E9F /* FilterList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019DCE282885A15100E16E9F /* FilterList.swift */; };
 		01A0C289288853EB000AA135 /* NordicStyle in Frameworks */ = {isa = PBXBuildFile; productRef = 01A0C288288853EB000AA135 /* NordicStyle */; };
 		01A0C28B288853F2000AA135 /* NordicStyle in Frameworks */ = {isa = PBXBuildFile; productRef = 01A0C28A288853F2000AA135 /* NordicStyle */; };
 		01A0C29528896343000AA135 /* DeviceViewModelFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A0C29428896343000AA135 /* DeviceViewModelFactory.swift */; };
 		01A0C29628896343000AA135 /* DeviceViewModelFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A0C29428896343000AA135 /* DeviceViewModelFactory.swift */; };
 		01A43DEB2886FECB0025A5C4 /* DeviceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A43DEA2886FECB0025A5C4 /* DeviceView.swift */; };
 		01A43DEC2886FECB0025A5C4 /* DeviceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A43DEA2886FECB0025A5C4 /* DeviceView.swift */; };
-		01A43DEE2886FED80025A5C4 /* DeviceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A43DED2886FED80025A5C4 /* DeviceViewModel.swift */; };
-		01A43DEF2886FED80025A5C4 /* DeviceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A43DED2886FED80025A5C4 /* DeviceViewModel.swift */; };
+		01A43DEE2886FED80025A5C4 /* DeviceView+ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A43DED2886FED80025A5C4 /* DeviceView+ViewModel.swift */; };
+		01A43DEF2886FED80025A5C4 /* DeviceView+ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A43DED2886FED80025A5C4 /* DeviceView+ViewModel.swift */; };
 		01A9468E28EAF9D600F40D1D /* Set+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A9468D28EAF9D600F40D1D /* Set+Ext.swift */; };
 		01A9468F28EAF9D600F40D1D /* Set+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A9468D28EAF9D600F40D1D /* Set+Ext.swift */; };
 		01A9469328ECD20D00F40D1D /* SnapshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A9469228ECD20D00F40D1D /* SnapshotHelper.swift */; };
@@ -87,11 +85,18 @@
 		01FCADC1291D4C9F0044904B /* AccessPointSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01FCADC0291D4C9F0044904B /* AccessPointSection.swift */; };
 		01FCADC329218BE50044904B /* FirstAppear.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01FCADC229218BE50044904B /* FirstAppear.swift */; };
 		01FCADC429218BE50044904B /* FirstAppear.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01FCADC229218BE50044904B /* FirstAppear.swift */; };
+		01FCADC6292512EA0044904B /* Int+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01FCADC5292512EA0044904B /* Int+Ext.swift */; };
+		01FCADC7292512EA0044904B /* Int+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01FCADC5292512EA0044904B /* Int+Ext.swift */; };
+		01FCADC9292515A80044904B /* OptionalTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01FCADC8292515A80044904B /* OptionalTests.swift */; };
+		01FCADCC292571C30044904B /* Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01FCADCB292571C30044904B /* Mock.swift */; };
+		01FCADCD292571C30044904B /* Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01FCADCB292571C30044904B /* Mock.swift */; };
+		01FCADCF292577DB0044904B /* WiFiInfo+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01FCADCE292577DB0044904B /* WiFiInfo+Ext.swift */; };
+		01FCADD0292577DB0044904B /* WiFiInfo+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01FCADCE292577DB0044904B /* WiFiInfo+Ext.swift */; };
 		339760CF1C795330A945D8CA /* CoreBluetoothTypeAliases.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33976DF4DDFF808ED30D6140 /* CoreBluetoothTypeAliases.swift */; };
 		339760D65C7C44D873D948A8 /* DeviceViewModel+Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = 339761CA515EDED3B38AB2F3 /* DeviceViewModel+Types.swift */; };
-		339760F98E06FFC4EFB82EB1 /* AccessPointListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33976AAA2657AC333AE0133B /* AccessPointListViewModel.swift */; };
+		339760F98E06FFC4EFB82EB1 /* AccessPointList+ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33976AAA2657AC333AE0133B /* AccessPointList+ViewModel.swift */; };
 		339761E5D6992A0548A2B051 /* AdoptiveDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33976123FD83A0EF2122EE5E /* AdoptiveDetailView.swift */; };
-		339763EFE61724385FE9F50B /* AccessPointListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33976AAA2657AC333AE0133B /* AccessPointListViewModel.swift */; };
+		339763EFE61724385FE9F50B /* AccessPointList+ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33976AAA2657AC333AE0133B /* AccessPointList+ViewModel.swift */; };
 		339764A344D60772B8354BA1 /* CoreBluetoothTypeAliases.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33976DF4DDFF808ED30D6140 /* CoreBluetoothTypeAliases.swift */; };
 		339766E1F365F51C4CD49F6D /* IntroViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33976A539401C3999098986C /* IntroViewModel.swift */; };
 		3397673EF437823851596518 /* AdoptiveDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33976123FD83A0EF2122EE5E /* AdoptiveDetailView.swift */; };
@@ -164,11 +169,10 @@
 		019D1D332912C201000D8BD4 /* MACAddress+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MACAddress+Ext.swift"; sourceTree = "<group>"; };
 		019D1D362912C588000D8BD4 /* Band+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Band+Ext.swift"; sourceTree = "<group>"; };
 		019DCE24288553E700E16E9F /* CGRect+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGRect+Ext.swift"; sourceTree = "<group>"; };
-		019DCE282885A15100E16E9F /* FilterList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterList.swift; sourceTree = "<group>"; };
 		01A0C29428896343000AA135 /* DeviceViewModelFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceViewModelFactory.swift; sourceTree = "<group>"; };
 		01A43DE82886CC080025A5C4 /* Provisioner */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Provisioner; sourceTree = "<group>"; };
 		01A43DEA2886FECB0025A5C4 /* DeviceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceView.swift; sourceTree = "<group>"; };
-		01A43DED2886FED80025A5C4 /* DeviceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceViewModel.swift; sourceTree = "<group>"; };
+		01A43DED2886FED80025A5C4 /* DeviceView+ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DeviceView+ViewModel.swift"; sourceTree = "<group>"; };
 		01A9468D28EAF9D600F40D1D /* Set+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Set+Ext.swift"; sourceTree = "<group>"; };
 		01A9469228ECD20D00F40D1D /* SnapshotHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SnapshotHelper.swift; path = fastlane/SnapshotHelper.swift; sourceTree = SOURCE_ROOT; };
 		01C0F0F9287DE864008BBE46 /* ScannerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerViewModel.swift; sourceTree = "<group>"; };
@@ -183,12 +187,16 @@
 		01FCADBE291D4AA00044904B /* StatusIndicatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusIndicatorView.swift; sourceTree = "<group>"; };
 		01FCADC0291D4C9F0044904B /* AccessPointSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessPointSection.swift; sourceTree = "<group>"; };
 		01FCADC229218BE50044904B /* FirstAppear.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstAppear.swift; sourceTree = "<group>"; };
+		01FCADC5292512EA0044904B /* Int+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+Ext.swift"; sourceTree = "<group>"; };
+		01FCADC8292515A80044904B /* OptionalTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionalTests.swift; sourceTree = "<group>"; };
+		01FCADCB292571C30044904B /* Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mock.swift; sourceTree = "<group>"; };
+		01FCADCE292577DB0044904B /* WiFiInfo+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WiFiInfo+Ext.swift"; sourceTree = "<group>"; };
 		33976123FD83A0EF2122EE5E /* AdoptiveDetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdoptiveDetailView.swift; sourceTree = "<group>"; };
 		339761CA515EDED3B38AB2F3 /* DeviceViewModel+Types.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "DeviceViewModel+Types.swift"; sourceTree = "<group>"; };
 		339762F1507DAF6B903DF4D1 /* BluetoothRSSI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BluetoothRSSI.swift; sourceTree = "<group>"; };
 		339767EA454996E6D30A9621 /* NavigationLink.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationLink.swift; sourceTree = "<group>"; };
 		33976A539401C3999098986C /* IntroViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntroViewModel.swift; sourceTree = "<group>"; };
-		33976AAA2657AC333AE0133B /* AccessPointListViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccessPointListViewModel.swift; sourceTree = "<group>"; };
+		33976AAA2657AC333AE0133B /* AccessPointList+ViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AccessPointList+ViewModel.swift"; sourceTree = "<group>"; };
 		33976AAF8A53D43BC33F0ED9 /* WiFiStatus+Ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "WiFiStatus+Ext.swift"; sourceTree = "<group>"; };
 		33976DF4DDFF808ED30D6140 /* CoreBluetoothTypeAliases.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreBluetoothTypeAliases.swift; sourceTree = "<group>"; };
 		33976EF9849513130301C930 /* WiFiRSSI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WiFiRSSI.swift; sourceTree = "<group>"; };
@@ -312,6 +320,7 @@
 			isa = PBXGroup;
 			children = (
 				01481AAA2852093000925FAB /* Tests_iOS.swift */,
+				01FCADC8292515A80044904B /* OptionalTests.swift */,
 				01481AAC2852093000925FAB /* Tests_iOSLaunchTests.swift */,
 			);
 			path = "Tests iOS";
@@ -330,7 +339,7 @@
 			isa = PBXGroup;
 			children = (
 				015845CB288FD5A900C7E4B7 /* AccessPointList.swift */,
-				33976AAA2657AC333AE0133B /* AccessPointListViewModel.swift */,
+				33976AAA2657AC333AE0133B /* AccessPointList+ViewModel.swift */,
 				0101F2E528DB212300AE80A9 /* ChannelPicker.swift */,
 			);
 			path = Scan;
@@ -340,9 +349,11 @@
 			isa = PBXGroup;
 			children = (
 				01682619287F16CD0040C97E /* Array+Ext.swift */,
+				01FCADC5292512EA0044904B /* Int+Ext.swift */,
 				019DCE24288553E700E16E9F /* CGRect+Ext.swift */,
 				01A9468D28EAF9D600F40D1D /* Set+Ext.swift */,
 				33976AAF8A53D43BC33F0ED9 /* WiFiStatus+Ext.swift */,
+				01FCADCE292577DB0044904B /* WiFiInfo+Ext.swift */,
 				01922CBF28A2A48300492E87 /* Label+Ext.swift */,
 				01062AD928B6592700BB41FD /* View+Mod.swift */,
 			);
@@ -390,7 +401,6 @@
 		019DCE272885A13300E16E9F /* AditionalViews */ = {
 			isa = PBXGroup;
 			children = (
-				019DCE282885A15100E16E9F /* FilterList.swift */,
 				0107FEA928F827A200693317 /* ScanResultRaw.swift */,
 			);
 			path = AditionalViews;
@@ -412,7 +422,7 @@
 				015845CA288FD54500C7E4B7 /* Scan */,
 				01A43DEA2886FECB0025A5C4 /* DeviceView.swift */,
 				01FCADB9291D47460044904B /* Sections */,
-				01A43DED2886FED80025A5C4 /* DeviceViewModel.swift */,
+				01A43DED2886FED80025A5C4 /* DeviceView+ViewModel.swift */,
 				339761CA515EDED3B38AB2F3 /* DeviceViewModel+Types.swift */,
 			);
 			path = Device;
@@ -441,6 +451,7 @@
 		01D26B58286DAE6A00FD069D /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				01FCADCA292571B30044904B /* Mock */,
 				0183EFCB2897C42E002E79A5 /* Views */,
 				01682618287F16B20040C97E /* Extensions */,
 				011A2611287CAF780004A5C4 /* Bluetooth */,
@@ -487,6 +498,14 @@
 				01FCADC0291D4C9F0044904B /* AccessPointSection.swift */,
 			);
 			path = Sections;
+			sourceTree = "<group>";
+		};
+		01FCADCA292571B30044904B /* Mock */ = {
+			isa = PBXGroup;
+			children = (
+				01FCADCB292571C30044904B /* Mock.swift */,
+			);
+			path = Mock;
 			sourceTree = "<group>";
 		};
 		339762DB6A20E141289014FD /* Modifiers */ = {
@@ -709,14 +728,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				01481ABC2852093000925FAB /* IntroView.swift in Sources */,
-				01A43DEE2886FED80025A5C4 /* DeviceViewModel.swift in Sources */,
+				01A43DEE2886FED80025A5C4 /* DeviceView+ViewModel.swift in Sources */,
 				01FCADC329218BE50044904B /* FirstAppear.swift in Sources */,
 				01922CBD28A2713100492E87 /* NavigationView.swift in Sources */,
 				01C0F0FA287DE864008BBE46 /* ScannerViewModel.swift in Sources */,
 				01062ADA28B6592700BB41FD /* View+Mod.swift in Sources */,
 				0101F2E628DB212300AE80A9 /* ChannelPicker.swift in Sources */,
 				01A43DEB2886FECB0025A5C4 /* DeviceView.swift in Sources */,
-				019DCE292885A15100E16E9F /* FilterList.swift in Sources */,
 				015D60A32875A1530048F065 /* ScannerView.swift in Sources */,
 				019DCE25288553E700E16E9F /* CGRect+Ext.swift in Sources */,
 				019D1D342912C201000D8BD4 /* MACAddress+Ext.swift in Sources */,
@@ -734,8 +752,11 @@
 				019D1D3129128F3E000D8BD4 /* ConnectionState+Ext.swift in Sources */,
 				01FCADBD291D482B0044904B /* DeviceStatusSection.swift in Sources */,
 				01A9468E28EAF9D600F40D1D /* Set+Ext.swift in Sources */,
+				01FCADCC292571C30044904B /* Mock.swift in Sources */,
 				01A0C29528896343000AA135 /* DeviceViewModelFactory.swift in Sources */,
+				01FCADC6292512EA0044904B /* Int+Ext.swift in Sources */,
 				0168261A287F16CD0040C97E /* Array+Ext.swift in Sources */,
+				01FCADCF292577DB0044904B /* WiFiInfo+Ext.swift in Sources */,
 				01D26B5B286DAE9800FD069D /* LocalizationKey.swift in Sources */,
 				01FA5912288713860008AF88 /* ReadableError.swift in Sources */,
 				0107FEAA28F827A200693317 /* ScanResultRaw.swift in Sources */,
@@ -747,7 +768,7 @@
 				339764A344D60772B8354BA1 /* CoreBluetoothTypeAliases.swift in Sources */,
 				33976EF1DCD95ADC4A0807C9 /* DeviceViewModel+Types.swift in Sources */,
 				01FCADBB291D47600044904B /* DeviceSection.swift in Sources */,
-				339763EFE61724385FE9F50B /* AccessPointListViewModel.swift in Sources */,
+				339763EFE61724385FE9F50B /* AccessPointList+ViewModel.swift in Sources */,
 				33976BAEC7C5753351244397 /* IntroViewModel.swift in Sources */,
 				339761E5D6992A0548A2B051 /* AdoptiveDetailView.swift in Sources */,
 				339769E1197BCCAF98D480E9 /* NavigationLink.swift in Sources */,
@@ -759,13 +780,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				01481ABD2852093000925FAB /* IntroView.swift in Sources */,
-				01A43DEF2886FED80025A5C4 /* DeviceViewModel.swift in Sources */,
+				01A43DEF2886FED80025A5C4 /* DeviceView+ViewModel.swift in Sources */,
 				01922CBE28A2713100492E87 /* NavigationView.swift in Sources */,
 				01C0F0FB287DE864008BBE46 /* ScannerViewModel.swift in Sources */,
 				01062ADB28B6592700BB41FD /* View+Mod.swift in Sources */,
 				0101F2E728DB212300AE80A9 /* ChannelPicker.swift in Sources */,
 				01A43DEC2886FECB0025A5C4 /* DeviceView.swift in Sources */,
-				019DCE2A2885A15100E16E9F /* FilterList.swift in Sources */,
 				015D60A42875A1530048F065 /* ScannerView.swift in Sources */,
 				019DCE26288553E700E16E9F /* CGRect+Ext.swift in Sources */,
 				019D1D352912C201000D8BD4 /* MACAddress+Ext.swift in Sources */,
@@ -773,6 +793,7 @@
 				01922CC128A2A48300492E87 /* Label+Ext.swift in Sources */,
 				01C0F0FE287DE926008BBE46 /* ScanResult.swift in Sources */,
 				019D1D382912C588000D8BD4 /* Band+Ext.swift in Sources */,
+				01FCADC7292512EA0044904B /* Int+Ext.swift in Sources */,
 				01481ABB2852093000925FAB /* nRF_Wi_Fi_ProvisionerApp.swift in Sources */,
 				015845CD288FD5A900C7E4B7 /* AccessPointList.swift in Sources */,
 				019D1D2F29128E96000D8BD4 /* AuthMode+Ext.swift in Sources */,
@@ -789,13 +810,15 @@
 				01FCADC429218BE50044904B /* FirstAppear.swift in Sources */,
 				33976EFC0D92E4D7C58060E1 /* BluetoothRSSI.swift in Sources */,
 				0183EFCA2897C196002E79A5 /* Status.swift in Sources */,
+				01FCADCD292571C30044904B /* Mock.swift in Sources */,
 				33976EBA0FF55A009B0C55ED /* WiFiRSSI.swift in Sources */,
 				339768F56D7C8EC8A0DD8B25 /* WiFiStatus+Ext.swift in Sources */,
 				339760CF1C795330A945D8CA /* CoreBluetoothTypeAliases.swift in Sources */,
 				339760D65C7C44D873D948A8 /* DeviceViewModel+Types.swift in Sources */,
-				339760F98E06FFC4EFB82EB1 /* AccessPointListViewModel.swift in Sources */,
+				339760F98E06FFC4EFB82EB1 /* AccessPointList+ViewModel.swift in Sources */,
 				339766E1F365F51C4CD49F6D /* IntroViewModel.swift in Sources */,
 				3397673EF437823851596518 /* AdoptiveDetailView.swift in Sources */,
+				01FCADD0292577DB0044904B /* WiFiInfo+Ext.swift in Sources */,
 				33976D6784AE1F2745318CFA /* NavigationLink.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -806,6 +829,7 @@
 			files = (
 				01481AAD2852093000925FAB /* Tests_iOSLaunchTests.swift in Sources */,
 				01481AAB2852093000925FAB /* Tests_iOS.swift in Sources */,
+				01FCADC9292515A80044904B /* OptionalTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

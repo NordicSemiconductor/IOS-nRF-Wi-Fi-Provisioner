@@ -2,6 +2,9 @@
 // Created by Nick Kibysh on 05/08/2022.
 //
 
+// TODO: Remove
+
+/*
 import Provisioner
 
 extension WiFiStatus: CustomStringConvertible {
@@ -48,3 +51,4 @@ extension WiFiStatus: CustomStringConvertible {
         }
     }
 }
+*/

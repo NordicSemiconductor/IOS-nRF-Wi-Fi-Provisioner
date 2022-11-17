@@ -73,6 +73,10 @@ open class Provisioner {
     open func startScan(scanParams: ScanParams) throws {
         try internalProvisioner.startScan(scanParams: scanParams)
     }
+    
+    open func stopScan() throws {
+        try internalProvisioner.stopScan()
+    }
 
     /// Start scan for Wi-Fi networks
     ///

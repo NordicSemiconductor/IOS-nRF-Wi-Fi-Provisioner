@@ -7,10 +7,18 @@
 
 import SwiftUI
 import NordicStyle
-import Provisioner
+import Provisioner2
 
 struct AccessPointList: View {
-    @StateObject var viewModel: AccessPointListViewModel
+    @StateObject private var viewModel = ViewModel()
+    
+    let provisioner: Provisioner
+    let wifiSelection: AccessPointSelection
+    
+    init(provisioner: Provisioner, wifiSelection: AccessPointSelection) {
+        self.provisioner = provisioner
+        self.wifiSelection = wifiSelection
+    }
     
     var body: some View {
         VStack {
@@ -21,15 +29,8 @@ struct AccessPointList: View {
             }
         }
         .navigationTitle("Wi-Fi")
-        .onAppear {
-            Task {
-                await viewModel.startScan()
-            }
-        }
-        .onDisappear {
-            Task {
-                try await viewModel.stopScan()
-            }
+        .onFirstAppear {
+            viewModel.setupAndScan(provisioner: provisioner, scanDelegate: viewModel, wifiSelection: wifiSelection)
         }
         .toolbar {
             ProgressView()
@@ -56,42 +57,51 @@ struct AccessPointList: View {
     }
     //*
     @ViewBuilder
-    private func channelPickerList(accessPoint: AccessPoint) -> some View {
+    private func channelPickerList(accessPoint: ViewModel.ScanResult) -> some View {
         NavigationLink {
             ChannelPicker(
-                channels: viewModel.allChannels(for: accessPoint),
+                channels: viewModel.allChannels(for: accessPoint.wifi),
                 selectedChannel: $viewModel.selectedAccessPointId
-            ).navigationTitle(accessPoint.ssid)
+            ).navigationTitle(accessPoint.wifi.ssid)
         } label: {
             HStack {
-                Label(accessPoint.ssid, systemImage: accessPoint.isOpen ? "lock.open" : "lock")
-                    .tint(Color.accentColor)
+                Label {
+                    Text(accessPoint.wifi.ssid)
+                } icon: {
+                    Image(systemName: accessPoint.wifi.isOpen ? "lock.open" : "lock")
+                        .renderingMode(.template)
+                }
+
+//                Label(accessPoint.wifi.ssid, systemImage: accessPoint.wifi.isOpen ? "lock.open" : "lock")
+//                    .tint(Color.accentColor)
                 Spacer()
-                RSSIView<WiFiRSSI>(rssi: WiFiRSSI(level: accessPoint.rssi))
-                    .frame(maxWidth: 30, maxHeight: 20)
+                accessPoint.rssi.map {
+                    RSSIView<WiFiRSSI>(rssi: WiFiRSSI(level: $0))
+                        .frame(maxWidth: 30, maxHeight: 20)
+                }
             }
         }
         .accessibility(identifier: "access_point_\(viewModel.accessPoints.firstIndex(of: accessPoint) ?? -1)")
     }
-    // */
     
-    //*
     @ViewBuilder
-    private func channelPicker(accessPoint: AccessPoint) -> some View {
+    private func channelPicker(accessPoint: ViewModel.ScanResult) -> some View {
         Picker(selection: $viewModel.selectedAccessPoint, content: {
             Section {
-                ForEach(viewModel.allChannels(for: accessPoint), id: \.id) { channel in
+                ForEach(viewModel.allChannels(for: accessPoint.wifi), id: \.id) { channel in
                     HStack {
                         VStack(alignment: .leading) {
-                            Text("Channel \(channel.channel)")
-                            Text(channel.bssid)
+                            Text("Channel \(channel.wifi.channel)")
+                            Text(channel.wifi.bssid.description)
                                 .font(.caption)
                         }
                         Spacer()
                         VStack(alignment: .trailing) {
-                            RSSIView<WiFiRSSI>(rssi: WiFiRSSI(level: channel.rssi))
-                                .frame(maxWidth: 30, maxHeight: 20)
-                            Text(channel.frequency.stringValue.description)
+                            channel.rssi.map {
+                                RSSIView<WiFiRSSI>(rssi: WiFiRSSI(level: $0))
+                                    .frame(maxWidth: 30, maxHeight: 20)
+                            }
+                            Text(channel.wifi.band?.description ?? "- GHz")
                                 .font(.caption)
                                 .foregroundColor(.secondary)
                         }
@@ -103,82 +113,61 @@ struct AccessPointList: View {
             }
         }, label: {
             HStack {
-                Label(accessPoint.ssid, systemImage: accessPoint.isOpen ? "lock.open" : "lock")
+                Label(accessPoint.wifi.ssid, systemImage: accessPoint.wifi.isOpen ? "lock.open" : "lock")
                     .tint(Color.accentColor)
                 Spacer()
-                RSSIView<WiFiRSSI>(rssi: WiFiRSSI(level: accessPoint.rssi))
-                    .frame(maxWidth: 30, maxHeight: 20)
+                accessPoint.rssi.map {
+                    RSSIView<WiFiRSSI>(rssi: WiFiRSSI(level: $0))
+                        .frame(maxWidth: 30, maxHeight: 20)
+                }
             }
         })
         .navigationBarTitle("Select Access Point")
         .accessibility(identifier: "access_point_\(viewModel.accessPoints.firstIndex(of: accessPoint) ?? -1)")
     }
-     // */
 }
 
 #if DEBUG
-/*
+
 struct AccessPointList_Previews: PreviewProvider {
-    class DummyAccessPointListViewModel: AccessPointListViewModel {
-        /*
-        override var isScanning: Bool {
-            get {
-                true
-            } set {
-                
-            }
-        }
+    struct Selection: AccessPointSelection {
+        var selectedWiFi: Provisioner2.WifiInfo?
         
-        override var accessPoints: [WifiInfo] {
-            get {
-                [
-                    AccessPoint(
-                        ssid: "Test",
-                        bssid: "bssid",
-                        id: "id",
-                        isOpen: true,
-                        channel: 1,
-                        rssi: -50, frequency: ._5GHz
-                    )
-                ]
-            } set {
-                
-            }
-        }
-        
-        override func startScan() async {
-            
-        }
-        
-        override func stopScan() async throws {
-            
-        }
-        
-        override func allChannels(for accessPoint: WifiInfo) -> [WifiInfo] {
-            [
-                AccessPoint(
-                    ssid: "Test",
-                    bssid: "bssid",
-                    id: "id",
-                    isOpen: true,
-                    channel: 1,
-                    rssi: -50,
-                    frequency: ._5GHz
-                )
+        var showAccessPointList: Bool = false
+    }
+    
+    class MockScanProvisioner: Provisioner {
+        typealias SR = AccessPointList.ViewModel.ScanResult
+        override func startScan(scanParams: ScanParams) throws {
+            let scanResults = [
+                SR(wifi: .wifi1, rssi: -40),
+                SR(wifi: .wifi2, rssi: -60),
+                SR(wifi: .wifi3, rssi: -80),
+                SR(wifi: .wifi4, rssi: -100),
             ]
+            
+            for sr in scanResults {
+                self.provisionerScanDelegate?.accessPointDiscovered(sr.wifi, rssi: sr.rssi)
+            }
         }
     }
-    */
+    
+    class DummyAccessPointListViewModel: AccessPointList.ViewModel {
+        override func setupAndScan(provisioner: Provisioner, scanDelegate: ProvisionerScanDelegate, wifiSelection: AccessPointSelection) {
+            self.provisioner = MockScanProvisioner(deviceId: "")
+            self.provisioner.provisionerScanDelegate = self
+            try? self.provisioner.startScan(scanParams: ScanParams())
+        }
+    }
+    
     static var previews: some View {
         NavigationView {
             AccessPointList(
-                viewModel: DummyAccessPointListViewModel(
-                    provisioner: MockProvisioner(),
-                    accessPointSelection: MockDeviceViewModel(fakeStatus: .connected)
-                )
+                provisioner: MockScanProvisioner(deviceId: ""),
+                wifiSelection: Selection()
             )
         }
+        .tint(.orange)
     }
 }
- */
 #endif

@@ -262,6 +262,11 @@ extension InternalProvisioner {
             return 
         case .getStatus:
             parseGetStatus(response)
+        case .startScan:
+            parseStartScan(response)
+        case .stopScan:
+            // TODO: Handle Stop Scan
+            break
         default:
             fatalError("Not implemented")
         }
@@ -280,6 +285,17 @@ extension InternalProvisioner {
             infoDelegate?.deviceStatusReceived(.success(DeviceStatus(proto: response.deviceStatus)))
         default:
             infoDelegate?.deviceStatusReceived(.failure(.deviceFailureResponse))
+        }
+    }
+    
+    func parseStartScan(_ response: Proto.Response) {
+        switch response.status {
+        case .success:
+            // TODO: Handle response
+            break
+        default:
+            // TODO: Handle response
+            break
         }
     }
 
