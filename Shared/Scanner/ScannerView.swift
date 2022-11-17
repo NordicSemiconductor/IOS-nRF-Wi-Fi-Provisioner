@@ -71,6 +71,7 @@ struct ScannerView: View {
             Placeholder(text: "Select the device", message: "Select Bluetooth device to start provisioning process", image: "bluetooth")
         }
         .setupNavBarBackground()
+        .tint(.nordicTint)
         .accentColor(.white)
         .onAppear {
             viewModel.startScan()
@@ -119,28 +120,6 @@ struct ScannerView: View {
     }
 }
 
-/*
-private struct ScanResultLabel: View {
-    let scanResult: ScannerViewModel.ScanResult
-    
-    var body: some View {
-        HStack {
-            Text(scanResult.name)
-                .lineLimit(1)
-            if scanResult.previsioned == true {
-                Image(systemName: "checkmark")
-            }
-            
-            if scanResult.version != nil {
-                Spacer()
-                Text("v\(scanResult.version!)")
-                    .foregroundColor(.secondary)
-            }
-        }
-    }
-}
- */
-
 #if DEBUG
 import Provisioner2
 
@@ -161,8 +140,6 @@ struct ScannerView_Previews: PreviewProvider {
         var version: Int?
         
         var wifiRSSI: Int?
-        
-        
     }
     
     class DummyScanViewModel: ScannerViewModel {
@@ -178,19 +155,13 @@ struct ScannerView_Previews: PreviewProvider {
         override var state: ScannerViewModel.State {
             .scanning
         }
-        
-//        override var scanResults: [any T] {
-//            return (0...3)
-//                .map { i -> any ScannerView_Previews.DummyScanViewModel.T in
-//                    MockScanResult(name: "Device \(i)", rssi: -80 + i * 10, provisioned: i % 2 == 0, connected: i == 0)
-//                }
-//        }
     }
     
     static var previews: some View {
         ScannerView(viewModel: DummyScanViewModel())
             .previewDisplayName("iPhone 14 Pro")
             .previewDevice(PreviewDevice(rawValue: "iPhone 14 Pro"))
+            .tint(.nordicBlue)
     }
 }
 #endif

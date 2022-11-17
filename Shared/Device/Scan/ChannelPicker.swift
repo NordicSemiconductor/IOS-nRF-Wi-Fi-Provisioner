@@ -6,11 +6,11 @@
 //
 
 import NordicStyle
-import Provisioner
+import Provisioner2
 import SwiftUI
 
 struct ChannelPicker: View {
-    @State var channels: [AccessPoint]
+    @State var channels: [AccessPointList.ViewModel.ScanResult]
     @Binding var selectedChannel: String?
     
     var body: some View {
@@ -19,16 +19,18 @@ struct ChannelPicker: View {
                 ForEach(channels, id: \.id) { channel in
                     HStack {
                         VStack(alignment: .leading) {
-                            Text("Channel \(channel.channel)")
+                            Text("Channel \(channel.wifi.channel)")
                                 .accessibilityIdentifier("channel_\(channels.firstIndex(of: channel) ?? -1)")
-                            Text(channel.bssid)
+                            Text(channel.wifi.bssid.description)
                                     .font(.caption)
                         }
                         Spacer()
                         VStack(alignment: .trailing) {
-                            RSSIView<WiFiRSSI>(rssi: WiFiRSSI(level: channel.rssi))
+                            channel.rssi.map {
+                                RSSIView<WiFiRSSI>(rssi: WiFiRSSI(level: $0))
                                     .frame(maxWidth: 30, maxHeight: 20)
-                            Text(channel.frequency.stringValue.description)
+                            }
+                            Text(channel.wifi.band?.description ?? "? GHz")
                                     .font(.caption)
                                     .foregroundColor(.secondary)
                         }
@@ -51,34 +53,10 @@ struct ChannelPicker_Previews: PreviewProvider {
         NavigationView {
             ChannelPicker(
                 channels: [
-                    AccessPoint(
-                        ssid: "Home",
-                        bssid: "bssid",
-                        id: "id1",
-                        isOpen: false,
-                        channel: 1,
-                        rssi: -40,
-                        frequency: ._2_4GHz
-                    ),
-                    AccessPoint(
-                        ssid: "Guest",
-                        bssid: "bssid",
-                        id: "id2",
-                        isOpen: true,
-                        channel: 1,
-                        rssi: -50,
-                        frequency: ._5GHz
-                    ),
-                    AccessPoint(
-                        ssid: "Office",
-                        bssid: "bssid",
-                        id: "id3",
-                        isOpen: false,
-                        channel: 1,
-                        rssi: -60,
-                        frequency: .any
-                    )
-                ], selectedChannel: .constant(nil)
+                    WifiInfo(ssid: "Home", bssid: .mac2, band: .band24Gh, channel: 1, auth: .open),
+                    WifiInfo(ssid: "Office", bssid: .mac1, band: .band5Gh, channel: 2, auth: .wep),
+                    WifiInfo(ssid: "Guest", bssid: .mac3, band: .band24Gh, channel: 3, auth: .wpa2Psk)
+                ].map { AccessPointList.ViewModel.ScanResult(wifi: $0, rssi: Int.random(in: (-40)...(-100))) }, selectedChannel: .constant(nil)
             )
             .navigationTitle("Office Wi-Fi")
         }

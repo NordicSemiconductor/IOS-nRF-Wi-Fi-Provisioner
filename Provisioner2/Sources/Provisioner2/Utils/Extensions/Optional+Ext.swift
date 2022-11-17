@@ -19,3 +19,45 @@ extension Optional {
         return !isNil
     }
 }
+
+/// Implementation fo `Comparable` protocol for optional.
+/// It's supposed that any value is bigger than nil
+extension Optional: Comparable where Wrapped: Comparable {
+    public static func < (lhs: Optional, rhs: Optional) -> Bool {
+        switch (lhs, rhs) {
+        case (nil, nil): return false
+        case (_?, nil): return false
+        case (nil, _?): return true
+        case (let a?, let b?): return a < b
+        }
+    }
+    
+    public static func > (lhs: Optional, rhs: Optional) -> Bool {
+        switch (lhs, rhs) {
+        case (nil, nil): return false
+        case (_?, nil): return true
+        case (nil, _?): return false
+        case (let a?, let b?): return a > b
+        }
+    }
+    
+    public static func <= (lhs: Optional, rhs: Optional) -> Bool {
+        switch (lhs, rhs) {
+        case (nil, nil): return false
+        case (_?, nil): return false
+        case (nil, _?): return true
+        case (let a?, let b?): return a <= b
+        }
+    }
+    
+    public static func >= (lhs: Optional, rhs: Optional) -> Bool {
+        switch (lhs, rhs) {
+        case (nil, nil): return false
+        case (_?, nil): return true
+        case (nil, _?): return false
+        case (let a?, let b?): return a >= b
+        }
+    }
+    
+    
+}

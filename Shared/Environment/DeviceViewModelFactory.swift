@@ -9,15 +9,17 @@ import Foundation
 import SwiftUI
 
 class DeviceViewModelFactory: ObservableObject {
-    private var viewModels: [String:DeviceViewModel] = [:]
+    private var viewModels: [String:DeviceView.ViewModel] = [:]
     
-    func viewModel(for peripheralId: String) -> DeviceViewModel {
+    func viewModel(for peripheralId: String) -> DeviceView.ViewModel {
         if let vm = viewModels[peripheralId] {
             return vm
         } else {
-            let newViewModel = DeviceViewModel(peripheralId: peripheralId)
+            let newViewModel = DeviceView.ViewModel(deviceId: peripheralId)
             viewModels[peripheralId] = newViewModel
             return newViewModel
         }
     }
 }
+
+

@@ -5,33 +5,12 @@
 import Foundation
 import NordicStyle
 
-extension DeviceViewModel {
+extension DeviceView.ViewModel {
     struct ProvisionButtonState {
         var isEnabled: Bool
         var title: String
         var style: NordicButtonStyle
     }
-/*
-    enum ConnectionState: CustomStringConvertible {
-        case disconnected
-        case connecting
-        case failed(ReadableError)
-        case connected
-
-        var description: String {
-            switch self {
-            case .disconnected:
-                return "Disconnected"
-            case .connecting:
-                return "Connecting ..."
-            case .failed(let e):
-                return e.message
-            case .connected:
-                return "Connected"
-            }
-        }
-    }
- */
 }
 
 enum PeripheralConnectionStatus {
