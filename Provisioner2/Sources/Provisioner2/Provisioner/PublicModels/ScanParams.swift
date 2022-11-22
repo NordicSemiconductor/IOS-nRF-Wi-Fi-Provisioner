@@ -21,10 +21,10 @@ public struct ScanParams {
         public static let `any`: Band = [.band24Gh, .band5Gh]
     }
     
-    var band: Band
-    var passive: Bool?
-    var periodMs: UInt?
-    var groupChannels: UInt?
+    public var band: Band
+    public var passive: Bool?
+    public var periodMs: UInt?
+    public var groupChannels: UInt?
     
     public init(band: Band = .any, passive: Bool? = nil, periodMs: UInt? = nil, groupChannels: UInt? = nil) {
         self.band = band

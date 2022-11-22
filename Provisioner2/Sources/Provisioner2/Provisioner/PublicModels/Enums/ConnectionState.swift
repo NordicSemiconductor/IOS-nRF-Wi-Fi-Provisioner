@@ -13,7 +13,7 @@ public enum ConnectionState: Equatable {
     case association
     case obtainingIp
     case connected
-    case connectionFailed
+    case connectionFailed(ConnectionFailureReason)
 }
 
 extension ConnectionState: ProtoConvertible {
@@ -30,7 +30,7 @@ extension ConnectionState: ProtoConvertible {
         case .connected:
             self = .connected
         case .connectionFailed:
-            self = .connectionFailed
+            self = .connectionFailed(.unknown)
         }
     }
     

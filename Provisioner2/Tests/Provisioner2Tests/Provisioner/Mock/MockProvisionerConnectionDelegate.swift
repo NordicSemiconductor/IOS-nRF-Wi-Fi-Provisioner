@@ -9,7 +9,7 @@ import Foundation
 import CoreBluetoothMock
 @testable import Provisioner2
 
-class MockProvisionerDelegate: ProvisionerConnectionDelegate {
+class MockProvisionerConnectionDelegate: ProvisionerConnectionDelegate {
     func connectionStateChanged(_ newState: Provisioner2.Provisioner.ConnectionState) {
         self.connectionState = newState
     }
@@ -28,6 +28,6 @@ class MockProvisionerDelegate: ProvisionerConnectionDelegate {
     }
     
     func deviceDisconnected(error: Error?) {
-        
+        // TODO: Test
     }
 }

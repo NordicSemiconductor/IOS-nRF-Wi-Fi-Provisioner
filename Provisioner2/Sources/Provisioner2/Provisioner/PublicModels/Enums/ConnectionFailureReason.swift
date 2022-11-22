@@ -23,6 +23,9 @@ public enum ConnectionFailureReason: Error, Equatable {
     
     /// Could not connect to provisioned network.
     case failConn
+    
+    /// If the device doesn't send any reason `unknown` will be set.
+    case unknown
 }
 
 extension ConnectionFailureReason: LocalizedError {
@@ -38,6 +41,8 @@ extension ConnectionFailureReason: LocalizedError {
             return "Could not obtain IP"
         case .failConn:
             return "Could not connect to provisioned network"
+        case .unknown:
+            return "Unknown failure reason"
         }
     }
 }
@@ -70,6 +75,8 @@ extension ConnectionFailureReason: ProtoConvertible {
             return .failIp
         case .failConn:
             return .failConn
+        case .unknown:
+            fatalError("There's no such reason on the device")
         }
     }
 }

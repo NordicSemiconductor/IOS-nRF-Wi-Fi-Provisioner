@@ -10,7 +10,7 @@ import CoreBluetoothMock
 @testable import Provisioner2
 
 final class ProvisionerInfoTests: XCTestCase {
-    var connectionDelegate: MockProvisionerDelegate!
+    var connectionDelegate: MockProvisionerConnectionDelegate!
     var infoDelegate: MockProvisionerInfoDelegate!
 
     override func setUpWithError() throws {
@@ -23,7 +23,7 @@ final class ProvisionerInfoTests: XCTestCase {
         ])
         CBMCentralManagerMock.simulatePowerOn()
         
-        connectionDelegate = MockProvisionerDelegate()
+        connectionDelegate = MockProvisionerConnectionDelegate()
         infoDelegate = MockProvisionerInfoDelegate()
     }
     
@@ -101,10 +101,10 @@ final class ProvisionerInfoTests: XCTestCase {
         case .success(_):
             XCTFail("Status sholud be failed")
         case .failure(let e):
-            if case .deviceFailureResponse = e {
+            if case .invalidArgument = e {
                 XCTAssert(true)
             } else {
-                XCTFail("error should be deviceFailureResponse")
+                XCTFail("error should be invalidArgument")
             }
         }
     }
@@ -123,10 +123,10 @@ final class ProvisionerInfoTests: XCTestCase {
         case .success(_):
             XCTFail("Status sholud be failed")
         case .failure(let e):
-            if case .deviceFailureResponse = e {
+            if case .failedToDecodeRequest = e {
                 XCTAssert(true)
             } else {
-                XCTFail("error should be deviceFailureResponse")
+                XCTFail("error should be failedToDecodeRequest")
             }
         }
     }
@@ -145,10 +145,10 @@ final class ProvisionerInfoTests: XCTestCase {
         case .success(_):
             XCTFail("Status sholud be failed")
         case .failure(let e):
-            if case .deviceFailureResponse = e {
+            if case .internalError = e {
                 XCTAssert(true)
             } else {
-                XCTFail("error should be deviceFailureResponse")
+                XCTFail("error should be internalError")
             }
         }
     }
@@ -181,7 +181,7 @@ final class ProvisionerInfoTests: XCTestCase {
             XCTAssertEqual(wifiInfo.channel, 1)
             
             let connectionInfo = try XCTUnwrap(status.connectionInfo)
-            XCTAssertEqual(connectionInfo.ip, IPAddress(data: Data()))
+            XCTAssertEqual(connectionInfo.ip?.description, "255.255.255.255")
             
             /*
              Look at mock in ``Tests/Provisioner2Tests/Mock/Model+Extensions/ScanParams+Ext.swift:12``

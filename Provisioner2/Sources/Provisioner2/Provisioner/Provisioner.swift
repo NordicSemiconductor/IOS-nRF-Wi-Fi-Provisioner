@@ -9,6 +9,7 @@ open class Provisioner {
     
     public init(deviceId: String) {
         self.internalProvisioner = InternalProvisioner(deviceId: deviceId)
+        self.internalProvisioner.provisioner = self
     }
     
     open var deviceId: String {
@@ -43,6 +44,15 @@ open class Provisioner {
         }
         set {
             internalProvisioner.provisionerScanDelegate = newValue
+        }
+    }
+
+    open var provisionerDelegate: ProvisionerDelegate? {
+        get {
+            internalProvisioner.provisionerDelegate
+        }
+        set {
+            internalProvisioner.provisionerDelegate = newValue
         }
     }
     
@@ -89,5 +99,14 @@ open class Provisioner {
     open func startScan(band: ScanParams.Band = .any, passive: Bool = true, period: UInt, groupChannels: UInt) throws {
         let scanParams = ScanParams(band: band, passive: passive, periodMs: period, groupChannels: groupChannels)
         try self.startScan(scanParams: scanParams)
+    }
+    
+    open func setConfig(_ config: WifiConfig) throws {
+        try internalProvisioner.setConfig(config)
+    }
+    
+    open func setConfig(wifi: WifiInfo?, passphrase: String?, volatileMemory: Bool?) throws {
+        let config = WifiConfig(wifi: wifi, passphrase: passphrase, volatileMemory: volatileMemory)
+        try self.setConfig(config)
     }
 }

@@ -16,18 +16,18 @@ class FailWifiStatusDelegate: WifiDeviceDelegate {
         self.failure = failure
     }
     
-    override func wifiStatus(_ stt: Proto.ConnectionState) -> Data {
+    override func response(deviceStatus: Proto.DeviceStatus? = nil, status: Proto.Status? = .success, requestCode: Proto.OpCode) -> Data {
         if let status = self.failure {
             var response = Proto.Response()
             response.status = status
             response.requestOpCode = .getStatus
-            var deviceStatus = Proto.DeviceStatus()
-            deviceStatus.state = stt
-            deviceStatus.provisioningInfo = wifiInfo()
+            if let deviceStatus {
+                response.deviceStatus = deviceStatus
+            }
             
             return try! response.serializedData()
         } else {
-            return super.wifiStatus(stt)
+            return super.response(deviceStatus: deviceStatus, status: status, requestCode: requestCode)
         }
     }
 }

@@ -45,12 +45,21 @@ class WifiDeviceDelegate: CBMPeripheralSpecDelegate {
             switch command {
             case .getStatus:
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                    peripheral.simulateValueUpdate(self.wifiStatus(.connected), for: .controlPoint)
+                    let response = self.response(
+                        deviceStatus: self.deviceStatus(
+                            status: .connected,
+                            connectionInfo: self.connectionInfo(ipAddress: .ip1),
+                            provisioningInfo: WifiInfo.wifi1.proto,
+                            scanInfo: ScanParams.sp1.proto
+                        ),
+                        status: .success, requestCode: .getStatus)
+                    peripheral.simulateValueUpdate(response, for: .controlPoint)
                 }
                 return Swift.Result.success(())
             case .startScan:
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                    peripheral.simulateValueUpdate(self.wifiStatus(.disconnected), for: .controlPoint)
+                    let response = self.response(status: .success, requestCode: .startScan)
+                    peripheral.simulateValueUpdate(response, for: .controlPoint)
                 }
                 
                 let aps = try accessPoints()
@@ -63,14 +72,17 @@ class WifiDeviceDelegate: CBMPeripheralSpecDelegate {
             
                 return Swift.Result.success(())
             case .stopScan:
-                peripheral.simulateValueUpdate(wifiStatus(.connected), for: .controlPoint)
+                let response = self.response(status: .success, requestCode: .stopScan)
+                peripheral.simulateValueUpdate(response, for: .controlPoint)
                 return Swift.Result.success(())
             case .setConfig:
-                peripheral.simulateValueUpdate(wifiStatus(.disconnected), for: .controlPoint)
+                let response = self.response(status: .success, requestCode: .setConfig)
+                peripheral.simulateValueUpdate(response, for: .controlPoint)
                 
-                let states = Proto.ConnectionState.allCases
+                let states = Proto.ConnectionState.allCases.dropLast(1)
+                let connectionReasons = Proto.ConnectionFailureReason.allCases
                 
-                DispatchQueue.global().async {
+                DispatchQueue.global().asyncAfter(deadline: .now() + 0.5) {
                     var iterator = states.makeIterator()
                     while let next = iterator.next() {
                         DispatchQueue.main.async {
@@ -79,7 +91,17 @@ class WifiDeviceDelegate: CBMPeripheralSpecDelegate {
                                 for: .dataOut
                             )
                         }
-                        sleep(1000)
+                        sleep(1)
+                    }
+                    
+                    for r in connectionReasons {
+                        DispatchQueue.main.async {
+                            peripheral.simulateValueUpdate(
+                                try! self.connectionStatusResult(.connectionFailed, reason: r).serializedData(),
+                                for: .dataOut
+                            )
+                        }
+                        sleep(1)
                     }
                 }
                 
@@ -103,17 +125,17 @@ class WifiDeviceDelegate: CBMPeripheralSpecDelegate {
         return Swift.Result.success(data)
     }
     
-    func wifiStatus(_ stt: Proto.ConnectionState) -> Data {
+    func response(deviceStatus: Proto.DeviceStatus? = nil, status: Proto.Status? = .success, requestCode: Proto.OpCode) -> Data {
         var response = Proto.Response()
-        response.status = .success
-        response.requestOpCode = .getStatus
-        var deviceStatus = Proto.DeviceStatus()
-        
-        deviceStatus.state = stt
-        deviceStatus.provisioningInfo = wifiInfo()
-        deviceStatus.scanInfo = scanInfo()
-        
-        response.deviceStatus = deviceStatus
+        if let status {
+            response.status = status
+        }
+
+        response.requestOpCode = requestCode
+
+        if let deviceStatus {
+            response.deviceStatus = deviceStatus
+        }
         
         return try! response.serializedData()
     }
@@ -122,20 +144,45 @@ class WifiDeviceDelegate: CBMPeripheralSpecDelegate {
         return ScanParams.sp1.proto
     }
     
-    func connectionStatusResult(_ stt: Proto.ConnectionState) -> Proto.Result {
+    func connectionStatusResult(_ stt: Proto.ConnectionState, reason: Proto.ConnectionFailureReason? = nil) -> Proto.Result {
         var result = Proto.Result()
         result.state = stt
+        
+        if let reason {
+            result.reason = reason
+        }
+        
         return result
     }
     
     func wifiInfo() -> Proto.WifiInfo {
         return WifiInfo.wifi1.proto
     }
-    
-    func emitScanResults(peripheral: CBMPeripheralSpec) throws {
-        
+
+    func deviceStatus(status: Proto.ConnectionState?, connectionInfo: Proto.ConnectionInfo?, provisioningInfo: Proto.WifiInfo?, scanInfo: Proto.ScanParams?) -> Proto.DeviceStatus {
+        var deviceStatus = Proto.DeviceStatus()
+        if let status {
+            deviceStatus.state = status
+        }
+        if let connectionInfo {
+            deviceStatus.connectionInfo = connectionInfo
+        }
+        if let provisioningInfo {
+            deviceStatus.provisioningInfo = provisioningInfo
+        }
+        if let scanInfo {
+            deviceStatus.scanInfo = scanInfo
+        }
+
+        return deviceStatus
     }
-    
+
+    func connectionInfo(ipAddress: IPAddress) -> Proto.ConnectionInfo {
+        var connectionInfo = ConnectionInfo()
+        connectionInfo.ip = ipAddress
+        return connectionInfo.proto
+    }
+
     func accessPoints() throws -> [Proto.Result] {
         let data = try Data(contentsOf: Bundle.module.url(forResource: "MockAP", withExtension: "json")!)
         return try JSONDecoder().decode([Proto.Result].self, from: data)

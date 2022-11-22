@@ -12,7 +12,7 @@ import CoreBluetoothMock
 final class ProvisionerConnectionTests: XCTestCase {
     var scanner: Provisioner2.Scanner!
     var scannerDelegate: MockScanDelegate!
-    var connectionDelegate: MockProvisionerDelegate!
+    var connectionDelegate: MockProvisionerConnectionDelegate!
 
     override func setUpWithError() throws {
         try super.setUpWithError()
@@ -23,7 +23,7 @@ final class ProvisionerConnectionTests: XCTestCase {
         ])
         
         scannerDelegate = MockScanDelegate()
-        connectionDelegate = MockProvisionerDelegate()
+        connectionDelegate = MockProvisionerConnectionDelegate()
     }
     
     override class func tearDown() {

@@ -5,27 +5,6 @@
 import Foundation
 import CoreBluetoothMock
 
-public enum ProvisionerError: Error {
-    /// Provided device id is not valid
-    case badIdentifier
-    /// Peripheral with provided deviceId is not found
-    case noPeripheralFound
-    /// Device is not connected
-    case notConnected(Error)
-    /// Bluetooth is not available
-    case bluetoothNotAvailable
-    
-    case notSupported
-
-    case unknown
-    /// Data was received but unnable to parse
-    case badData
-    /// Device failure response
-    case deviceFailureResponse
-    /// Response is successful but it's empty
-    case emptyResponse
-}
-
 /// Error that is thrown when the request to the device was sent, but the device is not connected
 public struct DeviceNotConnectedError: Error { }
 
@@ -38,6 +17,9 @@ class InternalProvisioner {
     weak var connectionDelegate: ProvisionerConnectionDelegate?
     weak var infoDelegate: ProvisionerInfoDelegate?
     weak var provisionerScanDelegate: ProvisionerScanDelegate?
+    weak var provisionerDelegate: ProvisionerDelegate?
+
+    unowned var provisioner: Provisioner!
 
     private var connectionInfo: BluetoothConnectionInfo?
     private (set) var connectionState: Provisioner.ConnectionState = .disconnected {
@@ -111,6 +93,14 @@ class InternalProvisioner {
         }
         
         try sendRequest(opCode: .stopScan)
+    }
+    
+    open func setConfig(_ config: WifiConfig) throws {
+        guard connectionInfo?.isReady == true else {
+            throw DeviceNotConnectedError()
+        }
+        
+        try sendRequest(opCode: .setConfig, config: config.proto)
     }
 }
 
@@ -208,13 +198,13 @@ extension InternalProvisioner: CBPeripheralDelegate {
             if let data = characteristic.value {
                 parseControlPointResponse(data: data)
             } else {
-                infoDelegate?.versionReceived(.failure(.emptyData))
+                // TODO: Handle empty data
             }
         } else if characteristic.uuid == connectionInfo?.dataOutCharacteristic.uuid {
             if let data = characteristic.value {
                 parseDataOutResult(data: data)
             } else {
-                infoDelegate?.versionReceived(.failure(.emptyData))
+                // TODO: Handle empty data
             }
         }
     }
@@ -236,7 +226,7 @@ extension InternalProvisioner {
             let response = try Proto.Response(serializedData: data)
             parseResponse(response)
         } catch {
-            infoDelegate?.deviceStatusReceived(.failure(.badData))
+            // TODO: Handle bad data
         }
     }
     
@@ -245,10 +235,10 @@ extension InternalProvisioner {
             let result = try Proto.Result(serializedData: data)
             if result.hasScanRecord {
                 handleScanRecord(result.scanRecord)
-            } else if result.hasState {
-
             } else if result.hasReason {
-
+                provisionerDelegate?.provisioner(provisioner, didChangeState: .connectionFailed(ConnectionFailureReason(proto: result.reason)))
+            } else if result.hasState {
+                provisionerDelegate?.provisioner(provisioner, didChangeState: ConnectionState(proto: result.state))
             }
         } catch {
             // TODO: Handle error
@@ -265,10 +255,11 @@ extension InternalProvisioner {
         case .startScan:
             parseStartScan(response)
         case .stopScan:
-            // TODO: Handle Stop Scan
-            break
-        default:
-            fatalError("Not implemented")
+            parseStopScan(response)
+        case .setConfig:
+            parseSetConfig(response)
+        case .forgetConfig:
+            parseForgetConfig(response)
         }
     }
 
@@ -284,7 +275,7 @@ extension InternalProvisioner {
             
             infoDelegate?.deviceStatusReceived(.success(DeviceStatus(proto: response.deviceStatus)))
         default:
-            infoDelegate?.deviceStatusReceived(.failure(.deviceFailureResponse))
+            infoDelegate?.deviceStatusReceived(.failure(convertResponseError(response)))
         }
     }
     
@@ -296,6 +287,48 @@ extension InternalProvisioner {
         default:
             // TODO: Handle response
             break
+        }
+    }
+
+    func parseStopScan(_ response: Proto.Response) {
+        switch response.status {
+        case .success:
+            // TODO: Handle response
+            break
+        default:
+            // TODO: Handle response
+            break
+        }
+    }
+
+    func parseSetConfig(_ response: Proto.Response) {
+        switch response.status {
+        case .success:
+            provisionerDelegate?.provisionerDidSetConfig(provisioner: provisioner, error: nil)
+        default:
+            provisionerDelegate?.provisionerDidSetConfig(provisioner: provisioner, error: convertResponseError(response))
+        }
+    }
+    
+    func parseForgetConfig(_ response: Proto.Response) {
+        switch response.status {
+        case .success:
+            provisionerDelegate?.provisionerDidUnsetConfig(provisioner: provisioner, error: nil)
+        default:
+            provisionerDelegate?.provisionerDidUnsetConfig(provisioner: provisioner, error: convertResponseError(response))
+        }
+    }
+
+    func convertResponseError(_ response: Proto.Response) -> ProvisionerError {
+        switch response.status {
+        case .success:
+            fatalError("Success response should never be passed here")
+        case .invalidArgument:
+            return ProvisionerError.invalidArgument
+        case .invalidProto:
+            return ProvisionerError.failedToDecodeRequest
+        case .internalError:
+            return ProvisionerError.internalError
         }
     }
 
