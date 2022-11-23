@@ -66,9 +66,5 @@ final class nRF_Wi_Fi_ProvisionerUITests: XCTestCase {
         snapshot("05-channel-selector")
         
         text.tap()
-        
-        let rssiView = app.otherElements["rssi_view"]
-        XCTAssertTrue(rssiView.waitForExistence(timeout: 1))
-                        snapshot("05-selected-wifi")
     }
 }

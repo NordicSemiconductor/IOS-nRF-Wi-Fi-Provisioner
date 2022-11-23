@@ -63,7 +63,8 @@ extension DeviceView {
             didSet {
                 passwordRequired = selectedWiFi?.auth?.isOpen == false
                 displayedWiFi = selectedWiFi
-                showFooter = false 
+                showFooter = false
+                showVolatileMemory = true
                 updateButtonState()
             }
         }
@@ -122,6 +123,7 @@ extension DeviceView {
                 updateButtonState()
             }
         }
+        private var forceDisableButton = false
         @Published var buttonState: ProvisionButtonState = ProvisionButtonState(isEnabled: false, title: "Connect", style: NordicButtonStyle())
         @Published(initialValue: false) var forceShowProvisionInProgress: Bool
         @Published(initialValue: false) var isScanning: Bool
@@ -136,6 +138,7 @@ extension DeviceView {
             self.provisioner = Provisioner(deviceId: deviceId)
             self.provisioner.infoDelegate = self
             self.provisioner.connectionDelegate = self
+            self.provisioner.provisionerDelegate = self 
         }
 
         let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "nordic", category: "DeviceViewModel")
@@ -165,7 +168,21 @@ extension DeviceView.ViewModel {
         }
     }
     
-    func startProvision() async throws {
+    func startProvision() throws {
+        guard let selectedWiFi else {
+            return
+        }
+        
+        if passwordRequired {
+            guard password.count >= 6 else {
+                return
+            }
+        }
+        
+        forceDisableButton = true
+        updateButtonState()
+        
+        try provisioner.setConfig(wifi: selectedWiFi, passphrase: password, volatileMemory: volatileMemory)
     }
 }
 
@@ -203,6 +220,28 @@ extension DeviceView.ViewModel: ProvisionerInfoDelegate {
     }
 }
 
+extension DeviceView.ViewModel: ProvisionerDelegate {
+    func provisionerDidSetConfig(provisioner: Provisioner2.Provisioner, error: Error?) {
+        provisioned = true
+        
+        updateButtonState()
+    }
+    
+    func provisioner(_ provisioner: Provisioner2.Provisioner, didChangeState state: Provisioner2.ConnectionState) {
+        switch state {
+        case .connected, .connectionFailed(_):
+            forceDisableButton = false
+        default:
+            break 
+        }
+        wifiState = state
+    }
+    
+    func provisionerDidUnsetConfig(provisioner: Provisioner2.Provisioner, error: Error?) {
+        
+    }
+}
+
 extension DeviceView.ViewModel {
     
     private func rethrowError(_ error: ReadableError) throws -> Never {
@@ -213,7 +252,8 @@ extension DeviceView.ViewModel {
     }
     
     private func updateButtonState() {
-        let enabled = wifiState?.isInProgress != true
+        let enabled = !forceDisableButton
+        && wifiState?.isInProgress != true
         && selectedWiFi != nil
         && (password.count >= 6 || !passwordRequired)
         
