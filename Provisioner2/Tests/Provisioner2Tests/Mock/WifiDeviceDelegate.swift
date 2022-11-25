@@ -57,24 +57,9 @@ class WifiDeviceDelegate: CBMPeripheralSpecDelegate {
                 }
                 return Swift.Result.success(())
             case .startScan:
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                    let response = self.response(status: .success, requestCode: .startScan)
-                    peripheral.simulateValueUpdate(response, for: .controlPoint)
-                }
-                
-                let aps = try accessPoints()
-                
-                DispatchQueue.global().asyncAfter(deadline: .now() + 0.5) {
-                    for sr in aps {
-                        peripheral.simulateValueUpdate(try! sr.serializedData(), for: .dataOut)
-                    }
-                }
-            
-                return Swift.Result.success(())
+                return try startScan(peripheral)
             case .stopScan:
-                let response = self.response(status: .success, requestCode: .stopScan)
-                peripheral.simulateValueUpdate(response, for: .controlPoint)
-                return Swift.Result.success(())
+                return try stopScan(peripheral)
             case .setConfig:
                 let response = self.response(status: .success, requestCode: .setConfig)
                 peripheral.simulateValueUpdate(response, for: .controlPoint)
@@ -186,6 +171,29 @@ class WifiDeviceDelegate: CBMPeripheralSpecDelegate {
     func accessPoints() throws -> [Proto.Result] {
         let data = try Data(contentsOf: Bundle.module.url(forResource: "MockAP", withExtension: "json")!)
         return try JSONDecoder().decode([Proto.Result].self, from: data)
+    }
+    
+    func startScan(_ peripheral: CBMPeripheralSpec) throws -> Swift.Result<Void, Error> {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            let response = self.response(status: .success, requestCode: .startScan)
+            peripheral.simulateValueUpdate(response, for: .controlPoint)
+        }
+        
+        let aps = try accessPoints()
+        
+        DispatchQueue.global().asyncAfter(deadline: .now() + 0.5) {
+            for sr in aps {
+                peripheral.simulateValueUpdate(try! sr.serializedData(), for: .dataOut)
+            }
+        }
+    
+        return Swift.Result.success(())
+    }
+    
+    func stopScan(_ peripheral: CBMPeripheralSpec) throws -> Swift.Result<Void, Error> {
+        let response = self.response(status: .success, requestCode: .stopScan)
+        peripheral.simulateValueUpdate(response, for: .controlPoint)
+        return Swift.Result.success(())
     }
 }
 

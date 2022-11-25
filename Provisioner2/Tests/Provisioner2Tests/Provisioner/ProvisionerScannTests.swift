@@ -19,7 +19,8 @@ final class ProvisionerScannTests: XCTestCase {
         CBMCentralManagerMock.simulateInitialState(.unknown)
         CBMCentralManagerMock.simulatePeripherals([
             noServiceDevice, badVersionDataDevice, wifiDevice,
-            invalidArgumentDevice, invalidProtoDevice, internalErrorDevice, scanResultDevice
+            invalidArgumentDevice, invalidProtoDevice, internalErrorDevice,
+            scanResultDevice, failedScanResultDevice
         ])
         CBMCentralManagerMock.simulatePowerOn()
         
@@ -33,14 +34,14 @@ final class ProvisionerScannTests: XCTestCase {
     }
     
     func testNotConnectedError() throws {
-        let provisioner = InternalProvisioner(deviceId: scanResultDevice.identifier.uuidString)
+        let provisioner = Provisioner(deviceId: scanResultDevice.identifier.uuidString)
         provisioner.provisionerScanDelegate = scanDelegate
         
         XCTAssertThrowsError(try provisioner.startScan(scanParams: ScanParams()))
     }
     
     func testScan() throws {
-        let provisioner = InternalProvisioner(deviceId: scanResultDevice.identifier.uuidString)
+        let provisioner = Provisioner(deviceId: scanResultDevice.identifier.uuidString)
         provisioner.provisionerScanDelegate = scanDelegate
         provisioner.connect()
         
@@ -50,9 +51,37 @@ final class ProvisionerScannTests: XCTestCase {
         
         wait(2)
         
+        XCTAssertEqual(scanDelegate.isScanning, true)
         XCTAssertEqual(scanDelegate.scanresults.count, 4)
         XCTAssertEqual(scanDelegate.scanresults[3].wifi.ssid, WifiInfo.wifi2.ssid)
         XCTAssertEqual(scanDelegate.scanresults[3].wifi.bssid, WifiInfo.wifi2.bssid)
         XCTAssertEqual(scanDelegate.scanresults[3].rssi, -60)
+        
+        XCTAssertNoThrow(try provisioner.stopScan())
+        
+        wait(1)
+        
+        XCTAssertEqual(scanDelegate.isScanning, false)
+        
+    }
+    
+    func testFailureStartScan() throws {
+        let provisioner = Provisioner(deviceId: failedScanResultDevice.identifier.uuidString)
+        provisioner.provisionerScanDelegate = scanDelegate
+        provisioner.connect()
+        
+        wait(1)
+        
+        XCTAssertNoThrow(try provisioner.startScan(scanParams: ScanParams()))
+        
+        wait(2)
+        
+        XCTAssertNil(scanDelegate.isScanning)
+        XCTAssertNotNil(scanDelegate.startScanError)
+        
+        XCTAssertNoThrow(try provisioner.stopScan())
+        
+        wait(1)
+        XCTAssertNotNil(scanDelegate.stopScanError)
     }
 }

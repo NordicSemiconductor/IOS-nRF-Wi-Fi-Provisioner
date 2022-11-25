@@ -19,6 +19,7 @@ let invalidArgumentDeviceUUID   = "14387800-130C-49E7-B877-2881C89CB265"
 let invalidProtoDeviceUUID      = "14387800-130C-49E7-B877-2881C89CB266"
 let internalErrorDeviceUUID     = "14387800-130C-49E7-B877-2881C89CB267"
 let scanResultDeviceUUID        = "14387800-130C-49E7-B877-2881C89CB268"
+let failedScanResultDeviceUUID  = "14387800-130C-49E7-B877-2881C89CB269"
 
 struct PeripheralFactory {
     static func build(uuid: String, name: String, delegate: CBMPeripheralSpecDelegate) -> CBMPeripheralSpec {
@@ -101,6 +102,12 @@ let scanResultDevice = PeripheralFactory.build(
     uuid: scanResultDeviceUUID,
     name: "Scan Results",
     delegate: ProvMocScannerDelegate()
+)
+
+let failedScanResultDevice = PeripheralFactory.build(
+    uuid: failedScanResultDeviceUUID,
+    name: "Failed Scan Result",
+    delegate: FailedStartStopScan()
 )
 
 /*

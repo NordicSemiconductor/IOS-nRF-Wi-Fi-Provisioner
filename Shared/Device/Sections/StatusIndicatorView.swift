@@ -59,7 +59,7 @@ struct StatusIndicatorView_Previews: PreviewProvider {
             Raw(status: .disconnected)
             Raw(status: .disconnected, forceProgress: true)
             Raw(status: .obtainingIp)
-            Raw(status: .connectionFailed)
+            Raw(status: .connectionFailed(.failConn))
             Raw(status: .association)
             Raw(status: .authentication)
         }

@@ -24,7 +24,7 @@ class InternalProvisioner {
     private var connectionInfo: BluetoothConnectionInfo?
     private (set) var connectionState: Provisioner.ConnectionState = .disconnected {
         didSet {
-            connectionDelegate?.connectionStateChanged(connectionState)
+            connectionDelegate?.provisioner(provisioner, changedConnectionState: connectionState)
         }
     }
  
@@ -33,12 +33,13 @@ class InternalProvisioner {
         category: "provisioner.internal-provisioner"
     )
 
-    init(deviceId: String, centralManager: CBCentralManager = CBCentralManagerFactory.instance()) {
+    init(deviceId: String, provisioner: Provisioner, centralManager: CBCentralManager = CBCentralManagerFactory.instance()) {
         self.centralManager = centralManager
         self.deviceId = deviceId
         
         self.centralManager.delegate = self
         self.connectionQueue.isSuspended = true
+        self.provisioner = provisioner
     }
 
     func connect() {
@@ -46,15 +47,15 @@ class InternalProvisioner {
         connectionQueue.addOperation { [weak self] in 
             guard let self = self else { return }
             guard case .poweredOn = self.centralManager.state else {
-                self.connectionDelegate?.deviceFailedToConnect(error: ProvisionerError.bluetoothNotAvailable)
+                self.connectionDelegate?.provisionerDidFailToConnect(self.provisioner, error: ProvisionerError.bluetoothNotAvailable)
                 return
             }
             guard let peripheralId = UUID(uuidString: self.deviceId) else {
-                self.connectionDelegate?.deviceFailedToConnect(error: ProvisionerError.badIdentifier)
+                self.connectionDelegate?.provisionerDidFailToConnect(self.provisioner, error: ProvisionerError.badIdentifier)
                 return
             }
             guard let peripheral = self.centralManager.retrievePeripherals(withIdentifiers: [peripheralId]).first else {
-                self.connectionDelegate?.deviceFailedToConnect(error: ProvisionerError.noPeripheralFound)
+                self.connectionDelegate?.provisionerDidFailToConnect(self.provisioner, error: ProvisionerError.noPeripheralFound)
                 return
             }
 
@@ -132,7 +133,7 @@ extension InternalProvisioner: CBCentralManagerDelegate {
             break
         case .unsupported, .unauthorized, .poweredOff:
             connectionQueue.isSuspended = true
-            connectionDelegate?.deviceFailedToConnect(error: ProvisionerError.bluetoothNotAvailable)
+            connectionDelegate?.provisionerDidFailToConnect(provisioner, error: ProvisionerError.bluetoothNotAvailable)
         case .poweredOn:
             connectionQueue.isSuspended = false
         }
@@ -146,12 +147,12 @@ extension InternalProvisioner: CBCentralManagerDelegate {
 
     func centralManager(_ central: CBMCentralManager, didFailToConnect peripheral: CBMPeripheral, error: Error?) {
         let e: Error = error ?? ProvisionerError.unknown
-        connectionDelegate?.deviceFailedToConnect(error: ProvisionerError.notConnected(e))
+        connectionDelegate?.provisionerDidFailToConnect(provisioner, error: ProvisionerError.notConnected(e))
         self.connectionState = .disconnected
     }
 
     func centralManager(_ central: CBMCentralManager, didDisconnectPeripheral peripheral: CBMPeripheral, error: Error?) {
-        connectionDelegate?.deviceDisconnected(error: error)
+        connectionDelegate?.provisionerDisconnectedDevice(provisioner, error: error)
         self.connectionState = .disconnected
     }
 }
@@ -160,7 +161,7 @@ extension InternalProvisioner: CBCentralManagerDelegate {
 extension InternalProvisioner: CBPeripheralDelegate {
     func peripheral(_ peripheral: CBMPeripheral, didDiscoverServices error: Error?) {
         guard case .none = error else {
-            connectionDelegate?.deviceFailedToConnect(error: ProvisionerError.notSupported)
+            connectionDelegate?.provisionerDidFailToConnect(provisioner, error: ProvisionerError.notSupported)
             centralManager.cancelPeripheralConnection(peripheral)
             self.connectionState = .disconnecting
             return
@@ -184,7 +185,7 @@ extension InternalProvisioner: CBPeripheralDelegate {
         self.connectionInfo?.setNotify()
 
         self.connectionState = .connected
-        connectionDelegate?.deviceConnected()
+        connectionDelegate?.provisionerConnectedDevice(provisioner)
     }
     
     func peripheral(_ peripheral: CBMPeripheral, didUpdateValueFor characteristic: CBMCharacteristic, error: Error?) {
@@ -282,22 +283,18 @@ extension InternalProvisioner {
     func parseStartScan(_ response: Proto.Response) {
         switch response.status {
         case .success:
-            // TODO: Handle response
-            break
+            provisionerScanDelegate?.pravisionerDidStartScan(provisioner, error: nil)
         default:
-            // TODO: Handle response
-            break
+            provisionerScanDelegate?.pravisionerDidStartScan(provisioner, error: convertResponseError(response))
         }
     }
 
     func parseStopScan(_ response: Proto.Response) {
         switch response.status {
         case .success:
-            // TODO: Handle response
-            break
+            provisionerScanDelegate?.pravisionerDidStopScan(provisioner, error: nil)
         default:
-            // TODO: Handle response
-            break
+            provisionerScanDelegate?.pravisionerDidStopScan(provisioner, error: convertResponseError(response))
         }
     }
 
@@ -336,6 +333,6 @@ extension InternalProvisioner {
     func handleScanRecord(_ result: Proto.ScanRecord) {
         guard result.hasWifi else { return }
         let rssi: Int? = result.hasRssi ? Int(result.rssi) : nil
-        provisionerScanDelegate?.accessPointDiscovered(WifiInfo(proto: result.wifi), rssi: rssi)
+        provisionerScanDelegate?.provisioner(provisioner, discoveredAccessPoint: WifiInfo(proto: result.wifi), rssi: rssi)
     }
 }

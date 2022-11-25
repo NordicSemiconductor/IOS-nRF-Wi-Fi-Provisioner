@@ -43,6 +43,14 @@ struct DeviceView: View {
         .onFirstAppear {
             viewModel.connect()
         }
+        .sheet(isPresented: $viewModel.showAccessPointList) {
+            NavigationView {
+                AccessPointList(provisioner: viewModel.provisioner, wifiSelection: viewModel)
+            }
+            .onDisappear {
+                try? viewModel.provisioner.stopScan()
+            }
+        }
     }
     
     @ViewBuilder
@@ -63,7 +71,7 @@ struct DeviceView: View {
                     wifiInfo: viewModel.displayedWiFi,
                     passwordRequired: viewModel.passwordRequired,
                     showFooter: viewModel.showFooter,
-                    showVolatileMemory: false,
+                    showVolatileMemory: viewModel.showVolatileMemory,
                     password: $viewModel.password,
                     volatileMemory: $viewModel.volatileMemory,
                     showAccessPointList: $viewModel.showAccessPointList
@@ -74,7 +82,7 @@ struct DeviceView: View {
             Button(viewModel.buttonState.title) {
                 Task {
                     do {
-                        try await viewModel.startProvision()
+                        try viewModel.startProvision()
                     }
                 }
             }
