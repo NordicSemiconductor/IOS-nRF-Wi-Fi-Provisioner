@@ -10,7 +10,7 @@ import CoreBluetoothMock
 @testable import Provisioner2
 
 class MockProvisionerConnectionDelegate: ProvisionerConnectionDelegate {
-    func connectionStateChanged(_ newState: Provisioner2.Provisioner.ConnectionState) {
+    func provisioner(_ provisioner: Provisioner, changedConnectionState newState: Provisioner.ConnectionState) {
         self.connectionState = newState
     }
     
@@ -18,16 +18,16 @@ class MockProvisionerConnectionDelegate: ProvisionerConnectionDelegate {
     var connectionError: Error?
     var connectionState: Provisioner.ConnectionState?
     
-    func deviceConnected() {
+    func provisionerConnectedDevice(_ provisioner: Provisioner) {
         connected = true
         connectionError = nil 
     }
     
-    func deviceFailedToConnect(error: Error) {
+    func provisionerDidFailToConnect(_ provisioner: Provisioner, error: Error) {
         connectionError = error
     }
     
-    func deviceDisconnected(error: Error?) {
+    func provisionerDisconnectedDevice(_ provisioner: Provisioner, error: Error?) {
         // TODO: Test
     }
 }

@@ -104,16 +104,20 @@ extension AccessPointList {
             try! provisioner.startScan(scanParams: ScanParams())
         }
         
-        func stopScan() {
-            try? provisioner.stopScan()
-        }
-        
     }
 }
 
 extension AccessPointList.ViewModel: ProvisionerScanDelegate {
-    func accessPointDiscovered(_ wifi: Provisioner2.WifiInfo, rssi: Int?) {
+    func provisioner(_ provisioner: Provisioner2.Provisioner, discoveredAccessPoint wifi: Provisioner2.WifiInfo, rssi: Int?) {
         let scanResult = ScanResult(wifi: wifi, rssi: rssi)
         allAccessPoints.insert(scanResult)
+    }
+    
+    func pravisionerDidStartScan(_ provisioner: Provisioner2.Provisioner, error: Error?) {
+        
+    }
+    
+    func pravisionerDidStopScan(_ provisioner: Provisioner2.Provisioner, error: Error?) {
+        
     }
 }

@@ -187,21 +187,21 @@ extension DeviceView.ViewModel {
 }
 
 extension DeviceView.ViewModel: ProvisionerConnectionDelegate {
-    func connectionStateChanged(_ newState: Provisioner2.Provisioner.ConnectionState) {
+    func provisionerDidFailToConnect(_ provisioner: Provisioner2.Provisioner, error: Error) {
+        peripheralConnectionStatus = .disconnected(.error(error))
+    }
+    
+    func provisioner(_ provisioner: Provisioner, changedConnectionState newState: Provisioner.ConnectionState) {
         
     }
     
-    func deviceConnected() {
+    func provisionerConnectedDevice(_ provisioner: Provisioner) {
         peripheralConnectionStatus = .connected
         
         try? readInformation()
     }
     
-    func deviceFailedToConnect(error: Error) {
-        peripheralConnectionStatus = .disconnected(.error(error))
-    }
-    
-    func deviceDisconnected(error: Error?) {
+    func provisionerDisconnectedDevice(_ provisioner: Provisioner, error: Error?) {
         if let error {
             peripheralConnectionStatus = .disconnected(.error(error))
         } else {

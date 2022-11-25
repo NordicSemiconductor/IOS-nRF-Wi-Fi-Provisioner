@@ -5,15 +5,12 @@
 import Foundation
 
 open class Provisioner {
-    private let internalProvisioner: InternalProvisioner
+    lazy private var internalProvisioner = InternalProvisioner(deviceId: self.deviceId, provisioner: self)
+    
+    public let deviceId: String
     
     public init(deviceId: String) {
-        self.internalProvisioner = InternalProvisioner(deviceId: deviceId)
-        self.internalProvisioner.provisioner = self
-    }
-    
-    open var deviceId: String {
-        internalProvisioner.deviceId
+        self.deviceId = deviceId
     }
     
     open var connectionState: ConnectionState {

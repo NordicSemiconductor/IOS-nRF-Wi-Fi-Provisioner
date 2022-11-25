@@ -43,6 +43,14 @@ struct DeviceView: View {
         .onFirstAppear {
             viewModel.connect()
         }
+        .sheet(isPresented: $viewModel.showAccessPointList) {
+            NavigationView {
+                AccessPointList(provisioner: viewModel.provisioner, wifiSelection: viewModel)
+            }
+            .onDisappear {
+                try? viewModel.provisioner.stopScan()
+            }
+        }
     }
     
     @ViewBuilder

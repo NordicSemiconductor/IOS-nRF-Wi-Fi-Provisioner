@@ -10,6 +10,7 @@ import NordicStyle
 import Provisioner2
 
 struct AccessPointList: View {
+    @Environment(\.presentationMode) var presentationMode
     @StateObject private var viewModel = ViewModel()
     
     let provisioner: Provisioner
@@ -33,9 +34,12 @@ struct AccessPointList: View {
             viewModel.setupAndScan(provisioner: provisioner, scanDelegate: viewModel, wifiSelection: wifiSelection)
         }
         .toolbar {
-            ProgressView()
-                .isHidden(!viewModel.isScanning, remove: true)
+            Button("Close", action: close)
         }
+    }
+    
+    func close() {
+        presentationMode.wrappedValue.dismiss()
     }
     
     @ViewBuilder
@@ -48,10 +52,14 @@ struct AccessPointList: View {
                     } else {
                         channelPicker(accessPoint: $0)
                     }
-                    
                 }
             } header: {
-                Text("Access Points")
+                HStack {
+                    Text("Access Points")
+                    Spacer()
+                    ProgressView()
+                        .isHidden(viewModel.isScanning, remove: true)
+                }
             }
         }
     }
@@ -71,9 +79,6 @@ struct AccessPointList: View {
                     Image(systemName: accessPoint.wifi.isOpen ? "lock.open" : "lock")
                         .renderingMode(.template)
                 }
-
-//                Label(accessPoint.wifi.ssid, systemImage: accessPoint.wifi.isOpen ? "lock.open" : "lock")
-//                    .tint(Color.accentColor)
                 Spacer()
                 accessPoint.rssi.map {
                     RSSIView<WiFiRSSI>(rssi: WiFiRSSI(level: $0))
@@ -147,7 +152,7 @@ struct AccessPointList_Previews: PreviewProvider {
             ]
             
             for sr in scanResults {
-                self.provisionerScanDelegate?.accessPointDiscovered(sr.wifi, rssi: sr.rssi)
+                self.provisionerScanDelegate?.provisioner(Provisioner(deviceId: ""), discoveredAccessPoint: sr.wifi, rssi: sr.rssi)
             }
         }
     }

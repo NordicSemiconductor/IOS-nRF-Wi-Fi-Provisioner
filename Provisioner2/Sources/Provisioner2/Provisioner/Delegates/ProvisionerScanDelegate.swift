@@ -13,5 +13,17 @@ public protocol ProvisionerScanDelegate: AnyObject {
     ///
     /// - parameter wifi: The Wi-Fi Info.
     /// - parameter rssi: The RSSI value. The value is in dBm.
-    func accessPointDiscovered(_ wifi: WifiInfo, rssi: Int?)
+    func provisioner(_ provisioner: Provisioner, discoveredAccessPoint wifi: WifiInfo, rssi: Int?)
+    
+    /// Notify delegate that scanning for Access Points started
+    ///
+    /// - Parameters:
+    ///   - error: Error that caused the failure. `nil` if no error occured.
+    func pravisionerDidStartScan(_ provisioner: Provisioner, error: Error?)
+    
+    /// Notify delegate that scanning for Access Points started
+    ///
+    /// - Parameters:
+    ///   - error: Error that caused the failure. `nil` if no error occured.
+    func pravisionerDidStopScan(_ provisioner: Provisioner, error: Error?)
 }

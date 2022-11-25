@@ -147,13 +147,12 @@ extension ScannerViewModel: Provisioner2.ScannerDelegate {
     }
     
     func scannerDidDiscover(_ scanResult: Provisioner2.ScanResult) {
-        if let index = scanResults.firstIndex(where: { ($0 as? DisplayableScanResult)?.sr.id == scanResult.id }) {
+        if let index = scanResults.firstIndex(where: { $0.sr.id == scanResult.id }) {
             scanResults[index] = DisplayableScanResult(rowScanResult: scanResult)
         } else {
             scanResults.append(DisplayableScanResult(rowScanResult: scanResult))
             
             scanResults
-                .compactMap { $0 as! DisplayableScanResult }
                 .forEach { dsr in
                     print(dsr.sr.id)
                 }

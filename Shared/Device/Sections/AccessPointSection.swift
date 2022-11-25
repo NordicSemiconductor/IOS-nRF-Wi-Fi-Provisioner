@@ -59,21 +59,24 @@ struct AccessPointSection: View {
     
     @ViewBuilder
     var accessPointSelector: some View {
-        NavigationLink(isActive: $showAccessPointList) {
-            AccessPointList(provisioner: viewModel.provisioner, wifiSelection: viewModel)
-        } label: {
             VStack {
                 HStack {
                     NordicLabel("Access Point", systemImage: "wifi.circle")
                     Spacer()
-                    Text(wifiInfo?.ssid ?? "Not Selected")
-                        .foregroundColor(.secondary)
+                    ReversedLabel {
+                        Text(wifiInfo?.ssid ?? "Not Selected")
+                    } image: {
+                        Image(systemName: "chevron.forward")
+                    }
+                    .foregroundColor(.secondary)
                 }
             }
             .disabled(inProgress)
-        }
-        .accessibilityIdentifier("access_point_selector")
-        .disabled(inProgress)
+            .onTapGesture {
+                showAccessPointList = true
+            }
+            .accessibilityIdentifier("access_point_selector")
+            .disabled(inProgress)
     }
     
     @ViewBuilder
