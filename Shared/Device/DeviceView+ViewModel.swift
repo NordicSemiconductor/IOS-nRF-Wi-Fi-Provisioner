@@ -85,7 +85,7 @@ extension DeviceView {
                 wifiState = deviceStatus.state
                 provisionedWiFi = deviceStatus.provisioningInfo
                 passwordRequired = false
-                provisioned = true
+                provisioned = deviceStatus.provisioningInfo != nil
             }
         }
 
@@ -127,6 +127,15 @@ extension DeviceView {
         @Published var buttonState: ProvisionButtonState = ProvisionButtonState(isEnabled: false, title: "Connect", style: NordicButtonStyle())
         @Published(initialValue: false) var forceShowProvisionInProgress: Bool
         @Published(initialValue: false) var isScanning: Bool
+        
+        var error: ReadableError? {
+            didSet {
+                if error != nil {
+                    self.showError = true
+                }
+            }
+        }
+        @Published(initialValue: false) var showError: Bool
 
         private var cancellable: Set<AnyCancellable> = []
 
@@ -139,6 +148,14 @@ extension DeviceView {
             self.provisioner.infoDelegate = self
             self.provisioner.connectionDelegate = self
             self.provisioner.provisionerDelegate = self 
+        }
+        
+        init(provisioner: Provisioner) {
+            self.deviceId = provisioner.deviceId
+            self.provisioner = provisioner
+            self.provisioner.infoDelegate = self
+            self.provisioner.connectionDelegate = self
+            self.provisioner.provisionerDelegate = self
         }
 
         let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "nordic", category: "DeviceViewModel")
@@ -184,6 +201,11 @@ extension DeviceView.ViewModel {
         
         try provisioner.setConfig(wifi: selectedWiFi, passphrase: password, volatileMemory: volatileMemory)
     }
+    
+    func unprovision() throws {
+        forceDisableButton = true
+        try provisioner.forgetConfig()
+    }
 }
 
 extension DeviceView.ViewModel: ProvisionerConnectionDelegate {
@@ -222,14 +244,23 @@ extension DeviceView.ViewModel: ProvisionerInfoDelegate {
 
 extension DeviceView.ViewModel: ProvisionerDelegate {
     func provisionerDidSetConfig(provisioner: Provisioner2.Provisioner, error: Error?) {
-        provisioned = true
-        
+        if let error {
+            self.error = TitleMessageError(error: error)
+            self.forceDisableButton = false
+        } else {
+            self.wifiState = .disconnected
+        }
         updateButtonState()
     }
     
     func provisioner(_ provisioner: Provisioner2.Provisioner, didChangeState state: Provisioner2.ConnectionState) {
         switch state {
-        case .connected, .connectionFailed(_):
+        case .connected:
+            provisioned = true
+            forceDisableButton = false
+            try? provisioner.readDeviceStatus()
+        case .connectionFailed(_):
+            provisioned = true
             forceDisableButton = false
         default:
             break 
@@ -238,19 +269,21 @@ extension DeviceView.ViewModel: ProvisionerDelegate {
     }
     
     func provisionerDidUnsetConfig(provisioner: Provisioner2.Provisioner, error: Error?) {
-        
+        if let error {
+            self.error = TitleMessageError(error: error)
+        } else {
+            self.forceShowProvisionInProgress = false
+            self.provisioned = false
+            self.deviceStatus = nil
+            self.provisionedWiFi = nil
+            self.selectedWiFi = nil
+            self.showVolatileMemory = false
+            updateButtonState()
+        }
     }
 }
 
 extension DeviceView.ViewModel {
-    
-    private func rethrowError(_ error: ReadableError) throws -> Never {
-        DispatchQueue.main.async {
-            // TODO: Show error placeholder
-        }
-        throw error
-    }
-    
     private func updateButtonState() {
         let enabled = !forceDisableButton
         && wifiState?.isInProgress != true
@@ -279,27 +312,3 @@ extension DeviceView.ViewModel {
         buttonState.title = title
     }
 }
-
-#if DEBUG
-class MockDeviceViewModel: DeviceView.ViewModel {
-    override func connect() {
-        self.wifiState = .connected
-        self.version = "14"
-    }
-    
-    override var displayedWiFi: WifiInfo? {
-        get {
-            WifiInfo(
-                ssid: "Nordic Guest",
-                bssid: MACAddress(i: 0xff_02_04_04_33_fa),
-                band: .band5Gh,
-                channel: 2,
-                auth: .wpa2Psk
-            )
-        }
-        set {
-            
-        }
-    }
-}
-#endif

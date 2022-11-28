@@ -6,9 +6,10 @@
 //
 
 import Foundation
+import Provisioner2
 
 /// Error with readable title and message ready to show for user
-protocol ReadableError: LocalizedError {
+protocol ReadableError: Error {
     var title: String? { get }
     var message: String { get }
 }
@@ -16,8 +17,32 @@ protocol ReadableError: LocalizedError {
 struct TitleMessageError: ReadableError {
     var title: String?
     var message: String
+    
+    var localizedDescription: String {
+        message
+    }
+}
 
-    var errorDescription: String? {
-        return message
+extension TitleMessageError {
+    init(title: String, message: String) {
+        self.title = title
+        self.message = message
+    }
+
+    init(title: String, error: Error) {
+        self.title = title
+        self.message = error.localizedDescription
+    }
+
+    init(error: Error) {
+        if let e = error as? ProvisionerError {
+            self.init(provError: e)
+        } else {
+            self.init(title: "Error", error: error)
+        }
+    }
+    
+    private init(provError: ProvisionerError) {
+        self.init(title: "Error", message: provError.localizedDescription)
     }
 }

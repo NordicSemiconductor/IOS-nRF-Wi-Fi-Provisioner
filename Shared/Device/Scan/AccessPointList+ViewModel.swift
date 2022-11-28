@@ -62,6 +62,15 @@ extension AccessPointList {
             }
         }
         
+        @Published(initialValue: false) var showError: Bool
+        var error: ReadableError? {
+            didSet {
+                if error != nil {
+                    showError = true
+                }
+            }
+        }
+        
         // MARK: - Private Properties
         private var allAccessPoints: Set<ScanResult> = [] {
             didSet {
@@ -114,10 +123,14 @@ extension AccessPointList.ViewModel: ProvisionerScanDelegate {
     }
     
     func pravisionerDidStartScan(_ provisioner: Provisioner2.Provisioner, error: Error?) {
-        
+        if let error {
+            self.error = TitleMessageError(error: error)
+        }
     }
     
     func pravisionerDidStopScan(_ provisioner: Provisioner2.Provisioner, error: Error?) {
-        
+        if let error {
+            self.error = TitleMessageError(error: error)
+        }
     }
 }

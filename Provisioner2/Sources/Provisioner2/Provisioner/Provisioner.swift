@@ -106,4 +106,8 @@ open class Provisioner {
         let config = WifiConfig(wifi: wifi, passphrase: passphrase, volatileMemory: volatileMemory)
         try self.setConfig(config)
     }
+    
+    open func forgetConfig() throws {
+        try internalProvisioner.forgetConfig()
+    }
 }

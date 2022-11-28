@@ -11,6 +11,7 @@ import Provisioner2
 
 struct DeviceView: View {
     @StateObject var viewModel: ViewModel
+    @State var unprovisionSheet: Bool = false
     
     var body: some View {
         VStack {
@@ -22,13 +23,42 @@ struct DeviceView: View {
                 )
             case .connected:
                 deviceInfo
+                    .confirmationDialog("Unprovision", isPresented: $unprovisionSheet) {
+                        Button("Unset", role: .destructive) {
+                            try? viewModel.unprovision()
+                        }
+                        Button("Cancel", role: .cancel) { }
+                    } message: {
+                        Text("Are you sure that you want to unset the configuration?")
+                    }
+                    .alert(viewModel.error?.title ?? "Error", isPresented: $viewModel.showError) {
+                        Button("Cancel", role: .cancel) {}
+                    } message: {
+                        if let message = viewModel.error?.message {
+                            Text(message)
+                        }
+                    }
+
+                
+
+                /*
+                    .sheet(isPresented: $unprovisionSheet) {
+                        ActionSheet(
+                            title: Text("Unprovision the Device?"),
+                            message: Text("Are you sure that you want to unset the configuration?"),
+                            buttons: [
+                                .destructive(Text("Unprovision")),
+                                .cancel()
+                            ]
+                        )
+                    }
+                 */
             case .disconnected(let reason):
                 switch reason {
                 case .byRequest:
                     Placeholder(text: "Disconnected", image: "bluetooth_disabled")
-                case .error(let e):
-                    // TODO: Change Error type
-                    Placeholder(text: e.localizedDescription, image: "bluetooth_disabled", action: {
+                case .error(_):
+                    Placeholder(text: "The device was disconnected unexpectedly.", image: "bluetooth_disabled", action: {
                         Button("Reconnect") {
                             Task {
                                 self.viewModel.connect()
@@ -62,8 +92,9 @@ struct DeviceView: View {
                     version: viewModel.version,
                     connectionStatus: viewModel.wifiState,
                     forceShowProvisionInProgress: viewModel.forceShowProvisionInProgress,
-                    provisioningError: viewModel.provisioningError,
-                    ip: viewModel.deviceStatus?.connectionInfo?.ip?.description
+                    connectionError: viewModel.provisioningError,
+                    ip: viewModel.deviceStatus?.connectionInfo?.ip?.description,
+                    provisioned: viewModel.provisioned
                 )
                 AccessPointSection(
                     viewModel: viewModel,
@@ -79,21 +110,83 @@ struct DeviceView: View {
             }
             
             Spacer()
-            Button(viewModel.buttonState.title) {
-                Task {
-                    do {
-                        try viewModel.startProvision()
+            
+            VStack {
+                Button("Unprovision") {
+                    unprovisionSheet = true
+                }
+                .buttonStyle(HollowDistructiveButtonStyle())
+                .isHidden(!viewModel.provisioned, remove: true)
+                .disabled(viewModel.provisioningInProgress)
+                
+                Button(viewModel.buttonState.title) {
+                    Task {
+                        do {
+                            try viewModel.startProvision()
+                        }
                     }
                 }
+                .disabled(!viewModel.buttonState.isEnabled || viewModel.displayedWiFi == nil)
+                .buttonStyle(viewModel.buttonState.style)
             }
-            .disabled(!viewModel.buttonState.isEnabled || viewModel.displayedWiFi == nil)
-            .buttonStyle(viewModel.buttonState.style)
             .padding()
         }
     }
 }
 
 #if DEBUG
+
+class MockDeviceViewModel: DeviceView.ViewModel {
+    override var version: String {
+        get { "14" }
+        set { }
+    }
+    
+    override var showVolatileMemory: Bool {
+        get { true }
+        set { }
+    }
+    
+    override var peripheralConnectionStatus: PeripheralConnectionStatus {
+        get { .connected }
+        set { }
+    }
+    
+    override var provisioned: Bool {
+        get { true }
+        set { }
+    }
+    
+    override var provisioningInProgress: Bool {
+        get { true }
+        set { }
+    }
+    
+    override var deviceStatus: DeviceStatus? {
+        get { DeviceStatus(
+            state: .connected,
+            provisioningInfo: WifiInfo(ssid: "Home", bssid: .mac1, channel: 3),
+            connectionInfo: ConnectionInfo(ip: IPAddress(data: 0xff_ff_ff_ff_ff_FF.toData().suffix(5))),
+            scanInfo: nil
+        ) }
+        set { }
+    }
+    
+    override var displayedWiFi: WifiInfo? {
+        get {
+            WifiInfo(
+                ssid: "Nordic Guest",
+                bssid: MACAddress(i: 0xff_02_04_04_33_fa),
+                band: .band5Gh,
+                channel: 2,
+                auth: .wpa2Psk
+            )
+        }
+        set {
+            
+        }
+    }
+}
 
 struct DeviceView_Previews: PreviewProvider {
     static var previews: some View {

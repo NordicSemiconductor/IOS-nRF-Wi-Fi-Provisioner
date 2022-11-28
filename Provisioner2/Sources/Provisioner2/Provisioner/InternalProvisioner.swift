@@ -96,12 +96,20 @@ class InternalProvisioner {
         try sendRequest(opCode: .stopScan)
     }
     
-    open func setConfig(_ config: WifiConfig) throws {
+    func setConfig(_ config: WifiConfig) throws {
         guard connectionInfo?.isReady == true else {
             throw DeviceNotConnectedError()
         }
         
         try sendRequest(opCode: .setConfig, config: config.proto)
+    }
+    
+    func forgetConfig() throws {
+        guard connectionInfo?.isReady == true else {
+            throw DeviceNotConnectedError()
+        }
+        
+        try sendRequest(opCode: .forgetConfig)
     }
 }
 

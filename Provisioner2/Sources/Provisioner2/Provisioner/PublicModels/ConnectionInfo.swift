@@ -9,6 +9,10 @@ import Foundation
 
 public struct ConnectionInfo {
     public var ip: IPAddress?
+    
+    public init(ip: IPAddress? = nil) {
+        self.ip = ip
+    }
 }
 
 extension ConnectionInfo: ProtoConvertible {

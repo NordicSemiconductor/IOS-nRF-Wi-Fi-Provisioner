@@ -12,8 +12,9 @@ struct DeviceStatusSection: View {
     let version: String
     let connectionStatus: ConnectionState?
     let forceShowProvisionInProgress: Bool
-    let provisioningError: ReadableError?
+    let connectionError: ReadableError?
     let ip: String?
+    let provisioned: Bool
     
     var body: some View {
         Section("Device Status") {
@@ -23,22 +24,24 @@ struct DeviceStatusSection: View {
                 Text(version).foregroundColor(.secondary)
             }
             
-            VStack {
-                HStack {
-                    NordicLabel("Wi-Fi Status", systemImage: "wifi")
-                    Spacer()
-                    ReversedLabel {
-                        Text(connectionStatus?.description ?? "Unprovisioned")
-                    } image: {
-                        StatusIndicatorView(status: connectionStatus, forceProgress: forceShowProvisionInProgress)
-                    }
-                    .status(connectionStatus ?? .disconnected)
-                }
-                if let e = provisioningError {
+            if provisioned {
+                VStack {
                     HStack {
-                        Text(e.message)
-                            .foregroundColor(.red)
+                        NordicLabel("Wi-Fi Status", systemImage: "wifi")
                         Spacer()
+                        ReversedLabel {
+                            Text(connectionStatus?.description ?? "Unprovisioned")
+                        } image: {
+                            StatusIndicatorView(status: connectionStatus, forceProgress: forceShowProvisionInProgress)
+                        }
+                        .status(connectionStatus ?? .disconnected)
+                    }
+                    if let e = connectionError {
+                        HStack {
+                            Text(e.message)
+                                .foregroundColor(.red)
+                            Spacer()
+                        }
                     }
                 }
             }
@@ -58,12 +61,16 @@ struct DeviceStatusSection_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
             Form {
-                DeviceStatusSection(version: "17", connectionStatus: .disconnected, forceShowProvisionInProgress: false, provisioningError: nil, ip: nil)
-                DeviceStatusSection(version: "17", connectionStatus: .disconnected, forceShowProvisionInProgress: false, provisioningError: TitleMessageError(message: "Connection Error"), ip: nil)
-                DeviceStatusSection(version: "17", connectionStatus: .connected, forceShowProvisionInProgress: false, provisioningError: nil, ip: nil)
-                DeviceStatusSection(version: "17", connectionStatus: .connected, forceShowProvisionInProgress: false, provisioningError: nil, ip: "192.168.1.1")
-                DeviceStatusSection(version: "17", connectionStatus: .obtainingIp, forceShowProvisionInProgress: false, provisioningError: nil, ip: nil)
-                DeviceStatusSection(version: "17", connectionStatus: .disconnected, forceShowProvisionInProgress: true, provisioningError: nil, ip: nil)
+                DeviceStatusSection(version: "17", connectionStatus: .disconnected, forceShowProvisionInProgress: false, connectionError: nil,
+                                    ip: nil,
+                                    provisioned: false
+                )
+                DeviceStatusSection(version: "17", connectionStatus: .disconnected, forceShowProvisionInProgress: false, connectionError: TitleMessageError(message: "Connection Error"),
+                                    ip: nil, provisioned: true)
+                DeviceStatusSection(version: "17", connectionStatus: .connected, forceShowProvisionInProgress: false, connectionError: nil, ip: nil, provisioned: true)
+                DeviceStatusSection(version: "17", connectionStatus: .connected, forceShowProvisionInProgress: false, connectionError: nil, ip: "192.168.1.1", provisioned: true)
+                DeviceStatusSection(version: "17", connectionStatus: .obtainingIp, forceShowProvisionInProgress: false, connectionError: nil, ip: nil, provisioned: true)
+                DeviceStatusSection(version: "17", connectionStatus: .disconnected, forceShowProvisionInProgress: true, connectionError: nil, ip: nil, provisioned: true)
             }
         }
         .tint(.nordicBlue)

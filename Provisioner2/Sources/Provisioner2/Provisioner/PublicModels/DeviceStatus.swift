@@ -9,6 +9,13 @@ public struct DeviceStatus {
     public var provisioningInfo: WifiInfo?
     public var connectionInfo: ConnectionInfo?
     public var scanInfo: ScanParams?
+    
+    public init(state: ConnectionState? = nil, provisioningInfo: WifiInfo? = nil, connectionInfo: ConnectionInfo? = nil, scanInfo: ScanParams? = nil) {
+        self.state = state
+        self.provisioningInfo = provisioningInfo
+        self.connectionInfo = connectionInfo
+        self.scanInfo = scanInfo
+    }
 }
 
 extension DeviceStatus: ProtoConvertible {

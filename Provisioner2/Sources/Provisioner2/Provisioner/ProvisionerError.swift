@@ -36,4 +36,33 @@ public enum ProvisionerError: Error {
 
     /// Returned in case of internal error. Hopefully never.
     case internalError
+
+    public var localizedDescription: String {
+        switch self {
+        case .badIdentifier:
+            return "Provided device id is not valid"
+        case .noPeripheralFound:
+            return "Peripheral with provided deviceId is not found"
+        case .notConnected(let error):
+            return "Device is not connected: \(error.localizedDescription)"
+        case .bluetoothNotAvailable:
+            return "Bluetooth is not available"
+        case .notSupported:
+            return "Not supported"
+        case .unknown:
+            return "Unknown error"
+        case .badData:
+            return "Data was received but unnable to parse"
+        case .deviceFailureResponse:
+            return "Device failure response"
+        case .emptyResponse:
+            return "Response is successful but it's empty"
+        case .invalidArgument:
+            return "Request cannot be processed due to invalid arguments"
+        case .failedToDecodeRequest:
+            return "Failed to decode the request"
+        case .internalError:
+            return "Internal error"
+        }
+    }
 }

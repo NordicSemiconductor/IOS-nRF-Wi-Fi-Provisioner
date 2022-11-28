@@ -36,6 +36,13 @@ struct AccessPointList: View {
         .toolbar {
             Button("Close", action: close)
         }
+        .alert(viewModel.error?.title ?? "Error", isPresented: $viewModel.showError) {
+            Button("Cancel", role: .cancel) {}
+        } message: {
+            if let message = viewModel.error?.message {
+                Text(message)
+            }
+        }
     }
     
     func close() {
