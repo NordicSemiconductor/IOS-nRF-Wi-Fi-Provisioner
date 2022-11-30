@@ -4,8 +4,8 @@
 
 import Foundation
 
-open class Provisioner {
-    lazy private var internalProvisioner = InternalProvisioner(deviceId: self.deviceId, provisioner: self)
+open class DeviceManager {
+    lazy private var internalProvisioner = InternalDeviceManager(deviceId: self.deviceId, provisioner: self)
     
     public let deviceId: String
     

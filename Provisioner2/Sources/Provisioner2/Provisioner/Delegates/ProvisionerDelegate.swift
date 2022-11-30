@@ -9,17 +9,17 @@ public protocol ProvisionerDelegate: AnyObject {
     ///
     /// - Parameters:
     ///   - error: Error that caused the failure. `nil` if no error occured.
-    func provisionerDidSetConfig(provisioner: Provisioner, error: Error?)
+    func provisionerDidSetConfig(provisioner: DeviceManager, error: Error?)
 
     /// Tells the delegate that the new Wi-Fi connection status received.
     ///
     /// - Parameters:
     ///   - state: New Wi-Fi connection state
-    func provisioner(_ provisioner: Provisioner, didChangeState state: ConnectionState)
+    func provisioner(_ provisioner: DeviceManager, didChangeState state: ConnectionState)
 
     /// Tells the delegate that the Wi-Fi configuration was erased from the device.
     ///
     /// - Parameters:
     ///   - error: Error that caused the failure. `nil` if no error occured.
-    func provisionerDidUnsetConfig(provisioner: Provisioner, error: Error?)
+    func provisionerDidUnsetConfig(provisioner: DeviceManager, error: Error?)
 }

@@ -34,14 +34,14 @@ final class ProvisionerScannTests: XCTestCase {
     }
     
     func testNotConnectedError() throws {
-        let provisioner = Provisioner(deviceId: scanResultDevice.identifier.uuidString)
+        let provisioner = DeviceManager(deviceId: scanResultDevice.identifier.uuidString)
         provisioner.provisionerScanDelegate = scanDelegate
         
         XCTAssertThrowsError(try provisioner.startScan(scanParams: ScanParams()))
     }
     
     func testScan() throws {
-        let provisioner = Provisioner(deviceId: scanResultDevice.identifier.uuidString)
+        let provisioner = DeviceManager(deviceId: scanResultDevice.identifier.uuidString)
         provisioner.provisionerScanDelegate = scanDelegate
         provisioner.connect()
         
@@ -66,7 +66,7 @@ final class ProvisionerScannTests: XCTestCase {
     }
     
     func testFailureStartScan() throws {
-        let provisioner = Provisioner(deviceId: failedScanResultDevice.identifier.uuidString)
+        let provisioner = DeviceManager(deviceId: failedScanResultDevice.identifier.uuidString)
         provisioner.provisionerScanDelegate = scanDelegate
         provisioner.connect()
         

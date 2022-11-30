@@ -8,7 +8,7 @@ import CoreBluetoothMock
 /// Error that is thrown when the request to the device was sent, but the device is not connected
 public struct DeviceNotConnectedError: Error { }
 
-class InternalProvisioner {
+class InternalDeviceManager {
     let connectionQueue = OperationQueue()
 
     let deviceId: String
@@ -19,21 +19,21 @@ class InternalProvisioner {
     weak var provisionerScanDelegate: ProvisionerScanDelegate?
     weak var provisionerDelegate: ProvisionerDelegate?
 
-    unowned var provisioner: Provisioner!
+    unowned var provisioner: DeviceManager!
 
     private var connectionInfo: BluetoothConnectionInfo?
-    private (set) var connectionState: Provisioner.ConnectionState = .disconnected {
+    private (set) var connectionState: DeviceManager.ConnectionState = .disconnected {
         didSet {
             connectionDelegate?.provisioner(provisioner, changedConnectionState: connectionState)
         }
     }
  
     let logger = Logger(
-        subsystem: Bundle(for: InternalProvisioner.self).bundleIdentifier ?? "",
+        subsystem: Bundle(for: InternalDeviceManager.self).bundleIdentifier ?? "",
         category: "provisioner.internal-provisioner"
     )
 
-    init(deviceId: String, provisioner: Provisioner, centralManager: CBCentralManager = CBCentralManagerFactory.instance()) {
+    init(deviceId: String, provisioner: DeviceManager, centralManager: CBCentralManager = CBCentralManagerFactory.instance()) {
         self.centralManager = centralManager
         self.deviceId = deviceId
         
@@ -114,7 +114,7 @@ class InternalProvisioner {
 }
 
 // MARK: - Private Methods
-extension InternalProvisioner {
+extension InternalDeviceManager {
     private func sendRequest(opCode: Proto.OpCode, config: Proto.WifiConfig? = nil, scanParam: Proto.ScanParams? = nil) throws {
         var request = Proto.Request()
         request.opCode = opCode
@@ -134,7 +134,7 @@ extension InternalProvisioner {
 }
 
 // MARK: - CBCentralManagerDelegate
-extension InternalProvisioner: CBCentralManagerDelegate {
+extension InternalDeviceManager: CBCentralManagerDelegate {
     func centralManagerDidUpdateState(_ central: CBCentralManager) {
         switch central.state {
         case .unknown, .resetting:
@@ -166,7 +166,7 @@ extension InternalProvisioner: CBCentralManagerDelegate {
 }
 
 // MARK: - CBPeripheralDelegate
-extension InternalProvisioner: CBPeripheralDelegate {
+extension InternalDeviceManager: CBPeripheralDelegate {
     func peripheral(_ peripheral: CBMPeripheral, didDiscoverServices error: Error?) {
         guard case .none = error else {
             connectionDelegate?.provisionerDidFailToConnect(provisioner, error: ProvisionerError.notSupported)
@@ -220,7 +220,7 @@ extension InternalProvisioner: CBPeripheralDelegate {
 }
 
 // MARK: - Parsing methods
-extension InternalProvisioner {
+extension InternalDeviceManager {
     func parseVersionData(data: Data) {
         do {
             let info = try Proto.Info(serializedData: data)

@@ -13,10 +13,10 @@ struct AccessPointList: View {
     @Environment(\.presentationMode) var presentationMode
     @StateObject private var viewModel = ViewModel()
     
-    let provisioner: Provisioner
+    let provisioner: DeviceManager
     let wifiSelection: AccessPointSelection
     
-    init(provisioner: Provisioner, wifiSelection: AccessPointSelection) {
+    init(provisioner: DeviceManager, wifiSelection: AccessPointSelection) {
         self.provisioner = provisioner
         self.wifiSelection = wifiSelection
     }
@@ -148,7 +148,7 @@ struct AccessPointList_Previews: PreviewProvider {
         var showAccessPointList: Bool = false
     }
     
-    class MockScanProvisioner: Provisioner {
+    class MockScanProvisioner: DeviceManager {
         typealias SR = AccessPointList.ViewModel.ScanResult
         override func startScan(scanParams: ScanParams) throws {
             let scanResults = [
@@ -159,13 +159,13 @@ struct AccessPointList_Previews: PreviewProvider {
             ]
             
             for sr in scanResults {
-                self.provisionerScanDelegate?.provisioner(Provisioner(deviceId: ""), discoveredAccessPoint: sr.wifi, rssi: sr.rssi)
+                self.provisionerScanDelegate?.provisioner(DeviceManager(deviceId: ""), discoveredAccessPoint: sr.wifi, rssi: sr.rssi)
             }
         }
     }
     
     class DummyAccessPointListViewModel: AccessPointList.ViewModel {
-        override func setupAndScan(provisioner: Provisioner, scanDelegate: ProvisionerScanDelegate, wifiSelection: AccessPointSelection) {
+        override func setupAndScan(provisioner: DeviceManager, scanDelegate: ProvisionerScanDelegate, wifiSelection: AccessPointSelection) {
             self.provisioner = MockScanProvisioner(deviceId: "")
             self.provisioner.provisionerScanDelegate = self
             try? self.provisioner.startScan(scanParams: ScanParams())

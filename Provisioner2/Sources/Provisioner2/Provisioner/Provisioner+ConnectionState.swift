@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension Provisioner {
+extension DeviceManager {
     public enum ConnectionState {
         case disconnected
         case connecting

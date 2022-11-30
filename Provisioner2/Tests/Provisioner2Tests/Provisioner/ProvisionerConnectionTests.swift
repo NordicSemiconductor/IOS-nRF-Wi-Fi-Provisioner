@@ -33,7 +33,7 @@ final class ProvisionerConnectionTests: XCTestCase {
     }
     
     func testBadIdentifierConnection() throws {
-        let failedProvisioner = Provisioner(deviceId: "")
+        let failedProvisioner = DeviceManager(deviceId: "")
         failedProvisioner.connectionDelegate = connectionDelegate
         failedProvisioner.connect()
         
@@ -54,7 +54,7 @@ final class ProvisionerConnectionTests: XCTestCase {
     }
     
     func testBadStateConnection() throws {
-        let failedProvisioner = Provisioner(deviceId: "")
+        let failedProvisioner = DeviceManager(deviceId: "")
         failedProvisioner.connectionDelegate = connectionDelegate
         failedProvisioner.connect()
         
@@ -74,7 +74,7 @@ final class ProvisionerConnectionTests: XCTestCase {
     }
     
     func testNoPeripheralFonud() throws {
-        let failedProvisioner = Provisioner(deviceId: UUID().uuidString)
+        let failedProvisioner = DeviceManager(deviceId: UUID().uuidString)
         failedProvisioner.connectionDelegate = connectionDelegate
         failedProvisioner.connect()
         
@@ -94,7 +94,7 @@ final class ProvisionerConnectionTests: XCTestCase {
     }
     
     func testNotConnected() throws {
-        let failedProvisioner = Provisioner(deviceId: notConnectableDevice.identifier.uuidString)
+        let failedProvisioner = DeviceManager(deviceId: notConnectableDevice.identifier.uuidString)
         failedProvisioner.connectionDelegate = connectionDelegate
         failedProvisioner.connect()
         
@@ -114,7 +114,7 @@ final class ProvisionerConnectionTests: XCTestCase {
     }
     
     func testSuccessConnection() {
-        let failedProvisioner = Provisioner(deviceId: wifiDevice.identifier.uuidString)
+        let failedProvisioner = DeviceManager(deviceId: wifiDevice.identifier.uuidString)
         failedProvisioner.connectionDelegate = connectionDelegate
         failedProvisioner.connect()
         
@@ -127,7 +127,7 @@ final class ProvisionerConnectionTests: XCTestCase {
     }
     
     func testBluetoothStateChanging() {
-        let failedProvisioner = Provisioner(deviceId: wifiDevice.identifier.uuidString)
+        let failedProvisioner = DeviceManager(deviceId: wifiDevice.identifier.uuidString)
         failedProvisioner.connectionDelegate = connectionDelegate
         failedProvisioner.connect()
         

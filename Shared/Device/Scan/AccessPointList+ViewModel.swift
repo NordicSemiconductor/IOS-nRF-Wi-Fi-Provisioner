@@ -38,7 +38,7 @@ extension AccessPointList {
         private let logger = Logger(subsystem: String(describing: ViewModel.self), category: "AccessPointListViewModel")
         private var cancellables = Set<AnyCancellable>()
         // MARK: - Constants
-        var provisioner: Provisioner!
+        var provisioner: DeviceManager!
         var accessPointSelection: AccessPointSelection!
         
         // MARK: - Properties
@@ -90,12 +90,12 @@ extension AccessPointList {
             }
         }
         
-        init(provisioner: Provisioner, accessPointSelection: AccessPointSelection) {
+        init(provisioner: DeviceManager, accessPointSelection: AccessPointSelection) {
             self.provisioner = provisioner
             self.accessPointSelection = accessPointSelection
         }
         
-        func setupAndScan(provisioner: Provisioner, scanDelegate: ProvisionerScanDelegate, wifiSelection: AccessPointSelection) {
+        func setupAndScan(provisioner: DeviceManager, scanDelegate: ProvisionerScanDelegate, wifiSelection: AccessPointSelection) {
             self.provisioner = provisioner
             self.provisioner.provisionerScanDelegate = scanDelegate
             self.accessPointSelection = wifiSelection
@@ -117,18 +117,18 @@ extension AccessPointList {
 }
 
 extension AccessPointList.ViewModel: ProvisionerScanDelegate {
-    func provisioner(_ provisioner: Provisioner2.Provisioner, discoveredAccessPoint wifi: Provisioner2.WifiInfo, rssi: Int?) {
+    func provisioner(_ provisioner: Provisioner2.DeviceManager, discoveredAccessPoint wifi: Provisioner2.WifiInfo, rssi: Int?) {
         let scanResult = ScanResult(wifi: wifi, rssi: rssi)
         allAccessPoints.insert(scanResult)
     }
     
-    func pravisionerDidStartScan(_ provisioner: Provisioner2.Provisioner, error: Error?) {
+    func pravisionerDidStartScan(_ provisioner: Provisioner2.DeviceManager, error: Error?) {
         if let error {
             self.error = TitleMessageError(error: error)
         }
     }
     
-    func pravisionerDidStopScan(_ provisioner: Provisioner2.Provisioner, error: Error?) {
+    func pravisionerDidStopScan(_ provisioner: Provisioner2.DeviceManager, error: Error?) {
         if let error {
             self.error = TitleMessageError(error: error)
         }

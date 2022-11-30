@@ -11,7 +11,7 @@ import Foundation
 class MockProvisionerDelegate: ProvisionerDelegate {
     
     var provisionerStarted: Bool = false
-    var provisioner: Provisioner?
+    var provisioner: DeviceManager?
     var provisionerError: Error?
     
     var states: [Provisioner2.ConnectionState] = []
@@ -19,13 +19,13 @@ class MockProvisionerDelegate: ProvisionerDelegate {
     
     var provisionerUnset: Bool = false
     
-    func provisionerDidSetConfig(provisioner: Provisioner2.Provisioner, error: Error?) {
+    func provisionerDidSetConfig(provisioner: Provisioner2.DeviceManager, error: Error?) {
         self.provisioner = provisioner
         self.provisionerError = error
         provisionerStarted = true
     }
     
-    func provisioner(_ provisioner: Provisioner2.Provisioner, didChangeState state: Provisioner2.ConnectionState) {
+    func provisioner(_ provisioner: Provisioner2.DeviceManager, didChangeState state: Provisioner2.ConnectionState) {
         self.provisioner = provisioner
         self.states.append(state)
         
@@ -34,7 +34,7 @@ class MockProvisionerDelegate: ProvisionerDelegate {
         }
     }
     
-    func provisionerDidUnsetConfig(provisioner: Provisioner2.Provisioner, error: Error?) {
+    func provisionerDidUnsetConfig(provisioner: Provisioner2.DeviceManager, error: Error?) {
         self.provisioner = provisioner
         self.provisionerError = error
         provisionerUnset = true

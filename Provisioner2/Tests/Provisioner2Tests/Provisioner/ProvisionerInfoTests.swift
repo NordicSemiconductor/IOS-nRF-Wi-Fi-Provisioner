@@ -34,7 +34,7 @@ final class ProvisionerInfoTests: XCTestCase {
     }
     
     func testNotConnectedThrowing() {
-        let failedProvisioner = Provisioner(deviceId: noServiceDevice.identifier.uuidString)
+        let failedProvisioner = DeviceManager(deviceId: noServiceDevice.identifier.uuidString)
         failedProvisioner.infoDelegate = infoDelegate
         failedProvisioner.connect()
         
@@ -45,7 +45,7 @@ final class ProvisionerInfoTests: XCTestCase {
     }
     
     func testEmptyData() throws {
-        let failedProvisioner = Provisioner(deviceId: badVersionDataDevice.identifier.uuidString)
+        let failedProvisioner = DeviceManager(deviceId: badVersionDataDevice.identifier.uuidString)
         failedProvisioner.infoDelegate = infoDelegate
         failedProvisioner.connect()
         
@@ -69,7 +69,7 @@ final class ProvisionerInfoTests: XCTestCase {
     }
     
     func testConnectVersion() throws {
-        let provisioner = Provisioner(deviceId: wifiDevice.identifier.uuidString)
+        let provisioner = DeviceManager(deviceId: wifiDevice.identifier.uuidString)
         provisioner.infoDelegate = infoDelegate
         provisioner.connect()
         
@@ -88,7 +88,7 @@ final class ProvisionerInfoTests: XCTestCase {
     
     // MARK: Test failed response
     func testInvalidArgument() throws {
-        let provisioner = Provisioner(deviceId: invalidArgumentDevice.identifier.uuidString)
+        let provisioner = DeviceManager(deviceId: invalidArgumentDevice.identifier.uuidString)
         provisioner.infoDelegate = infoDelegate
         provisioner.connect()
         
@@ -110,7 +110,7 @@ final class ProvisionerInfoTests: XCTestCase {
     }
     
     func testInvalidProto() throws {
-        let provisioner = Provisioner(deviceId: invalidProtoDevice.identifier.uuidString)
+        let provisioner = DeviceManager(deviceId: invalidProtoDevice.identifier.uuidString)
         provisioner.infoDelegate = infoDelegate
         provisioner.connect()
         
@@ -132,7 +132,7 @@ final class ProvisionerInfoTests: XCTestCase {
     }
     
     func testInternalError() throws {
-        let provisioner = Provisioner(deviceId: internalErrorDevice.identifier.uuidString)
+        let provisioner = DeviceManager(deviceId: internalErrorDevice.identifier.uuidString)
         provisioner.infoDelegate = infoDelegate
         provisioner.connect()
         
@@ -154,7 +154,7 @@ final class ProvisionerInfoTests: XCTestCase {
     }
     
     func testSucceedStatus() throws {
-        let provisioner = Provisioner(deviceId: wifiDevice.identifier.uuidString)
+        let provisioner = DeviceManager(deviceId: wifiDevice.identifier.uuidString)
         provisioner.infoDelegate = infoDelegate
         provisioner.connect()
         

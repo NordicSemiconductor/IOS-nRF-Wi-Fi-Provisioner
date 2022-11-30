@@ -10,7 +10,7 @@ import CoreBluetoothMock
 @testable import Provisioner2
 
 class MockProvisionerScanDelegate: ProvisionerScanDelegate {
-    func pravisionerDidStartScan(_ provisioner: Provisioner2.Provisioner, error: Error?) {
+    func pravisionerDidStartScan(_ provisioner: Provisioner2.DeviceManager, error: Error?) {
         if let error {
             self.startScanError = error
         } else {
@@ -18,7 +18,7 @@ class MockProvisionerScanDelegate: ProvisionerScanDelegate {
         }
     }
     
-    func pravisionerDidStopScan(_ provisioner: Provisioner2.Provisioner, error: Error?) {
+    func pravisionerDidStopScan(_ provisioner: Provisioner2.DeviceManager, error: Error?) {
         if let error {
             self.stopScanError = error
         } else {
@@ -26,7 +26,7 @@ class MockProvisionerScanDelegate: ProvisionerScanDelegate {
         }
     }
     
-    func provisioner(_ provisioner: Provisioner2.Provisioner, discoveredAccessPoint wifi: Provisioner2.WifiInfo, rssi: Int?) {
+    func provisioner(_ provisioner: Provisioner2.DeviceManager, discoveredAccessPoint wifi: Provisioner2.WifiInfo, rssi: Int?) {
         scanresults.append(ScanResult(wifi: wifi, rssi: rssi))
     }
     

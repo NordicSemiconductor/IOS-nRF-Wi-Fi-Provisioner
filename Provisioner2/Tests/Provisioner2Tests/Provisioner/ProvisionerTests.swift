@@ -28,7 +28,7 @@ final class ProvisionerTests: XCTestCase {
     }
     
     func testProvisioner() throws {
-        let provisioner = Provisioner(deviceId: wifiDevice.identifier.uuidString)
+        let provisioner = DeviceManager(deviceId: wifiDevice.identifier.uuidString)
         let provDelegate = MockProvisionerDelegate()
         provisioner.provisionerDelegate = provDelegate
         

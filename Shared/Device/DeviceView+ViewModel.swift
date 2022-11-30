@@ -72,18 +72,18 @@ extension DeviceView {
         
         private var cancellable: Set<AnyCancellable> = []
 
-        let provisioner: Provisioner
+        let provisioner: DeviceManager
         let deviceId: String
         
         init(deviceId: String) {
             self.deviceId = deviceId
-            self.provisioner = Provisioner(deviceId: deviceId)
+            self.provisioner = DeviceManager(deviceId: deviceId)
             self.provisioner.infoDelegate = self
             self.provisioner.connectionDelegate = self
             self.provisioner.provisionerDelegate = self 
         }
         
-        init(provisioner: Provisioner) {
+        init(provisioner: DeviceManager) {
             self.deviceId = provisioner.deviceId
             self.provisioner = provisioner
             self.provisioner.infoDelegate = self
@@ -136,21 +136,21 @@ extension DeviceView.ViewModel {
 }
 
 extension DeviceView.ViewModel: ProvisionerConnectionDelegate {
-    func provisionerDidFailToConnect(_ provisioner: Provisioner2.Provisioner, error: Error) {
+    func provisionerDidFailToConnect(_ provisioner: Provisioner2.DeviceManager, error: Error) {
         peripheralConnectionStatus = .disconnected(.error(error))
     }
     
-    func provisioner(_ provisioner: Provisioner, changedConnectionState newState: Provisioner.ConnectionState) {
+    func provisioner(_ provisioner: DeviceManager, changedConnectionState newState: DeviceManager.ConnectionState) {
         
     }
     
-    func provisionerConnectedDevice(_ provisioner: Provisioner) {
+    func provisionerConnectedDevice(_ provisioner: DeviceManager) {
         peripheralConnectionStatus = .connected
         
         try? readInformation()
     }
     
-    func provisionerDisconnectedDevice(_ provisioner: Provisioner, error: Error?) {
+    func provisionerDisconnectedDevice(_ provisioner: DeviceManager, error: Error?) {
         if let error {
             peripheralConnectionStatus = .disconnected(.error(error))
         } else {
@@ -223,7 +223,7 @@ extension DeviceView.ViewModel: ProvisionerInfoDelegate {
 }
 
 extension DeviceView.ViewModel: ProvisionerDelegate {
-    func provisionerDidSetConfig(provisioner: Provisioner2.Provisioner, error: Error?) {
+    func provisionerDidSetConfig(provisioner: Provisioner2.DeviceManager, error: Error?) {
         buttonConfiguration.enabledUnsetButton = true
         if let error {
             self.error = TitleMessageError(error: error)
@@ -247,7 +247,7 @@ extension DeviceView.ViewModel: ProvisionerDelegate {
         updateButtonState()
     }
     
-    func provisioner(_ provisioner: Provisioner2.Provisioner, didChangeState state: Provisioner2.ConnectionState) {
+    func provisioner(_ provisioner: Provisioner2.DeviceManager, didChangeState state: Provisioner2.ConnectionState) {
         connectionStatus.showStatus = true
         connectionStatus.status = state.description
         
@@ -256,7 +256,7 @@ extension DeviceView.ViewModel: ProvisionerDelegate {
         }
     }
     
-    func provisionerDidUnsetConfig(provisioner: Provisioner2.Provisioner, error: Error?) {
+    func provisionerDidUnsetConfig(provisioner: Provisioner2.DeviceManager, error: Error?) {
         if let error {
             self.error = TitleMessageError(error: error)
         } else {
