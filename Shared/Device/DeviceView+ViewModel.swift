@@ -135,22 +135,22 @@ extension DeviceView.ViewModel {
     }
 }
 
-extension DeviceView.ViewModel: ProvisionerConnectionDelegate {
-    func provisionerDidFailToConnect(_ provisioner: Provisioner.DeviceManager, error: Error) {
+extension DeviceView.ViewModel: ConnectionDelegate {
+    func deviceManagerDidFailToConnect(_ provisioner: Provisioner.DeviceManager, error: Error) {
         peripheralConnectionStatus = .disconnected(.error(error))
     }
     
-    func provisioner(_ provisioner: DeviceManager, changedConnectionState newState: DeviceManager.ConnectionState) {
+    func deviceManager(_ provisioner: DeviceManager, changedConnectionState newState: DeviceManager.ConnectionState) {
         
     }
     
-    func provisionerConnectedDevice(_ provisioner: DeviceManager) {
+    func deviceManagerConnectedDevice(_ provisioner: DeviceManager) {
         peripheralConnectionStatus = .connected
         
         try? readInformation()
     }
     
-    func provisionerDisconnectedDevice(_ provisioner: DeviceManager, error: Error?) {
+    func deviceManagerDisconnectedDevice(_ provisioner: DeviceManager, error: Error?) {
         if let error {
             peripheralConnectionStatus = .disconnected(.error(error))
         } else {
@@ -159,7 +159,7 @@ extension DeviceView.ViewModel: ProvisionerConnectionDelegate {
     }
 }
 
-extension DeviceView.ViewModel: ProvisionerInfoDelegate {
+extension DeviceView.ViewModel: InfoDelegate {
     func versionReceived(_ version: Result<Int, ProvisionerInfoError>) {
         switch version {
         case .success(let success):
@@ -222,8 +222,8 @@ extension DeviceView.ViewModel: ProvisionerInfoDelegate {
     }
 }
 
-extension DeviceView.ViewModel: ProvisionerDelegate {
-    func provisionerDidSetConfig(provisioner: Provisioner.DeviceManager, error: Error?) {
+extension DeviceView.ViewModel: ProvisionDelegate {
+    func deviceManagerDidSetConfig(deviceManager: Provisioner.DeviceManager, error: Error?) {
         buttonConfiguration.enabledUnsetButton = true
         if let error {
             self.error = TitleMessageError(error: error)
@@ -247,7 +247,7 @@ extension DeviceView.ViewModel: ProvisionerDelegate {
         updateButtonState()
     }
     
-    func provisioner(_ provisioner: Provisioner.DeviceManager, didChangeState state: Provisioner.ConnectionState) {
+    func deviceManager(_ provisioner: Provisioner.DeviceManager, didChangeState state: Provisioner.ConnectionState) {
         connectionStatus.showStatus = true
         connectionStatus.status = state.description
         
@@ -256,7 +256,7 @@ extension DeviceView.ViewModel: ProvisionerDelegate {
         }
     }
     
-    func provisionerDidUnsetConfig(provisioner: Provisioner.DeviceManager, error: Error?) {
+    func deviceManagerDidForgetConfig(_ deviceManager: DeviceManager, error: Error?) {
         if let error {
             self.error = TitleMessageError(error: error)
         } else {

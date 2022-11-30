@@ -4,22 +4,22 @@
 
 import Foundation
 
-public protocol ProvisionerDelegate: AnyObject {
+public protocol ProvisionDelegate: AnyObject {
     /// Tells the delegate that the new Wi-Fi configuration was sent to the device.
     ///
     /// - Parameters:
     ///   - error: Error that caused the failure. `nil` if no error occured.
-    func provisionerDidSetConfig(provisioner: DeviceManager, error: Error?)
+    func deviceManagerDidSetConfig(_ deviceManager: DeviceManager, error: Error?)
 
     /// Tells the delegate that the new Wi-Fi connection status received.
     ///
     /// - Parameters:
     ///   - state: New Wi-Fi connection state
-    func provisioner(_ provisioner: DeviceManager, didChangeState state: ConnectionState)
+    func deviceManager(_ deviceManager: DeviceManager, didChangeState state: ConnectionState)
 
     /// Tells the delegate that the Wi-Fi configuration was erased from the device.
     ///
     /// - Parameters:
     ///   - error: Error that caused the failure. `nil` if no error occured.
-    func provisionerDidUnsetConfig(provisioner: DeviceManager, error: Error?)
+    func deviceManagerDidForgetConfig(_ deviceManager: DeviceManager, error: Error?)
 }

@@ -17,7 +17,7 @@ open class DeviceManager {
         internalProvisioner.connectionState
     }
     
-    open var connectionDelegate: ProvisionerConnectionDelegate? {
+    open var connectionDelegate: ConnectionDelegate? {
         get {
             internalProvisioner.connectionDelegate
         }
@@ -26,7 +26,7 @@ open class DeviceManager {
         }
     }
     
-    open var infoDelegate: ProvisionerInfoDelegate? {
+    open var infoDelegate: InfoDelegate? {
         get {
             internalProvisioner.infoDelegate
         }
@@ -35,7 +35,7 @@ open class DeviceManager {
         }
     }
 
-    open var provisionerScanDelegate: ProvisionerScanDelegate? {
+    open var provisionerScanDelegate: ScanDelegate? {
         get {
             internalProvisioner.provisionerScanDelegate
         }
@@ -44,7 +44,7 @@ open class DeviceManager {
         }
     }
 
-    open var provisionerDelegate: ProvisionerDelegate? {
+    open var provisionerDelegate: ProvisionDelegate? {
         get {
             internalProvisioner.provisionerDelegate
         }

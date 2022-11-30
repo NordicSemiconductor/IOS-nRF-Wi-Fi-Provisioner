@@ -8,7 +8,7 @@
 import Foundation
 import Provisioner
 
-class MockProvisionerInfoDelegate: ProvisionerInfoDelegate {
+class MockProvisionerInfoDelegate: InfoDelegate {
     func deviceStatusReceived(_ status: Result<Provisioner.DeviceStatus, Provisioner.ProvisionerError>) {
         self.deviceStatus = status
     }

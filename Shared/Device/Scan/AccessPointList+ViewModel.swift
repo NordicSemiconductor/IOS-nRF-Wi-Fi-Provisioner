@@ -95,7 +95,7 @@ extension AccessPointList {
             self.accessPointSelection = accessPointSelection
         }
         
-        func setupAndScan(provisioner: DeviceManager, scanDelegate: ProvisionerScanDelegate, wifiSelection: AccessPointSelection) {
+        func setupAndScan(provisioner: DeviceManager, scanDelegate: ScanDelegate, wifiSelection: AccessPointSelection) {
             self.provisioner = provisioner
             self.provisioner.provisionerScanDelegate = scanDelegate
             self.accessPointSelection = wifiSelection
@@ -116,19 +116,19 @@ extension AccessPointList {
     }
 }
 
-extension AccessPointList.ViewModel: ProvisionerScanDelegate {
-    func provisioner(_ provisioner: Provisioner.DeviceManager, discoveredAccessPoint wifi: Provisioner.WifiInfo, rssi: Int?) {
+extension AccessPointList.ViewModel: ScanDelegate {
+    func deviceManager(_ provisioner: Provisioner.DeviceManager, discoveredAccessPoint wifi: Provisioner.WifiInfo, rssi: Int?) {
         let scanResult = ScanResult(wifi: wifi, rssi: rssi)
         allAccessPoints.insert(scanResult)
     }
     
-    func pravisionerDidStartScan(_ provisioner: Provisioner.DeviceManager, error: Error?) {
+    func deviceManagerDidStartScan(_ provisioner: Provisioner.DeviceManager, error: Error?) {
         if let error {
             self.error = TitleMessageError(error: error)
         }
     }
     
-    func pravisionerDidStopScan(_ provisioner: Provisioner.DeviceManager, error: Error?) {
+    func deviceManagerDidStopScan(_ provisioner: Provisioner.DeviceManager, error: Error?) {
         if let error {
             self.error = TitleMessageError(error: error)
         }

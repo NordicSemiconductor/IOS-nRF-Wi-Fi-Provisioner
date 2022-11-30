@@ -15,7 +15,7 @@ public enum ProvisionerInfoError: Error {
 }
 
 /// A protocol that defines a delegate for reading device info
-public protocol ProvisionerInfoDelegate: AnyObject {
+public protocol InfoDelegate: AnyObject {
     /// Tells the delegate that the version of the device is received
     ///
     /// - Parameter version: Version of the device // TODO: Check the correctness of the parameter

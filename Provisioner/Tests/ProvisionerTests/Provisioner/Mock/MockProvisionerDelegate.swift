@@ -8,7 +8,7 @@
 import Foundation
 @testable import Provisioner
 
-class MockProvisionerDelegate: ProvisionerDelegate {
+class MockProvisionerDelegate: ProvisionDelegate {
     
     var provisionerStarted: Bool = false
     var provisioner: DeviceManager?
@@ -19,13 +19,13 @@ class MockProvisionerDelegate: ProvisionerDelegate {
     
     var provisionerUnset: Bool = false
     
-    func provisionerDidSetConfig(provisioner: Provisioner.DeviceManager, error: Error?) {
-        self.provisioner = provisioner
+    func deviceManagerDidSetConfig(_ deviceManager: DeviceManager, error: Error?) {
+        self.provisioner = deviceManager
         self.provisionerError = error
         provisionerStarted = true
     }
     
-    func provisioner(_ provisioner: Provisioner.DeviceManager, didChangeState state: Provisioner.ConnectionState) {
+    func deviceManager(_ provisioner: Provisioner.DeviceManager, didChangeState state: Provisioner.ConnectionState) {
         self.provisioner = provisioner
         self.states.append(state)
         
@@ -34,8 +34,8 @@ class MockProvisionerDelegate: ProvisionerDelegate {
         }
     }
     
-    func provisionerDidUnsetConfig(provisioner: Provisioner.DeviceManager, error: Error?) {
-        self.provisioner = provisioner
+    func deviceManagerDidForgetConfig(_ deviceManager: DeviceManager, error: Error?) {
+        self.provisioner = deviceManager
         self.provisionerError = error
         provisionerUnset = true
     }
