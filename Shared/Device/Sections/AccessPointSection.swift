@@ -49,13 +49,6 @@ struct AccessPointSection: View {
             Text("Access Point")
         } footer: {
             footer.map { Text($0) }
-            /*
-            if wifiInfo == nil {
-                Text("WIFI_NOT_PROVISIONED_FOOTER")
-            } else if wifiInfo != nil && showFooter {
-                Text("PROVISIONED_DEVICE_FOOTER")
-            }
-             */
         }
     }
     

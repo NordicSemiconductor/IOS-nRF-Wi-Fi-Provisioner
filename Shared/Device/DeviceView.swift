@@ -110,7 +110,7 @@ struct DeviceView: View {
                     channel: viewModel.wifiNetwork.channel.map { "\($0)" },
                     auth: viewModel.wifiNetwork.security?.description,
                     showPassword: viewModel.wifiNetwork.showPassword,
-                    footer: "",
+                    footer: viewModel.infoFooter,
                     showVolatileMemory: viewModel.wifiNetwork.showVolatileMemory,
                     password: $viewModel.password,
                     volatileMemory: $viewModel.wifiNetwork.volatileMemory,

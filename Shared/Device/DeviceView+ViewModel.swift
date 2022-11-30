@@ -31,53 +31,13 @@ extension DeviceView {
         @Published var showError = false
         
         @Published var peripheralConnectionStatus = PeripheralConnectionStatus.disconnected(.byRequest)
+        @Published var infoFooter = ""
         
         @Published var password = "" {
             didSet {
                 buttonConfiguration.enabledProvisionButton = password.count > 6 && passwordRequired
             }
         }
-        
-        /*
-        private var versionResult: Swift.Result<Int, ProvisionerInfoError>? {
-            didSet {
-                guard let versionResult else {
-                    return
-                }
-
-                switch versionResult {
-                case .success(let success):
-                    self.version = "\(success)"
-                case .failure:
-                    self.version = "Error"
-                }
-            }
-        }
-
-        private var deviceStausResult: Swift.Result<DeviceStatus, ProvisionerError>? {
-            didSet {
-                guard let deviceStausResult else {
-                    return
-                }
-
-                switch deviceStausResult {
-                case .success(let status):
-                    self.deviceStatus = status
-                case .failure(_):
-                    // TODO: Handle bad device status
-                    break
-                }
-            }
-        }
-
-        private var provisionedWiFi: WifiInfo? {
-            didSet {
-                passwordRequired = false
-                displayedWiFi = provisionedWiFi
-                updateButtonState()
-            }
-        }
-         */
         
         var selectedWiFi: WifiInfo? {
             didSet {
@@ -90,6 +50,7 @@ extension DeviceView {
                 wifiNetwork.showVolatileMemory = true
                 wifiNetwork.showPassword = passwordRequired
                 password = ""
+                infoFooter = ""
                 
                 buttonConfiguration.enabledProvisionButton = !passwordRequired
                 
@@ -100,64 +61,7 @@ extension DeviceView {
         var passwordRequired: Bool {
             selectedWiFi?.auth?.isOpen == false
         }
-/*
-        /// The current bluetooth state of the device.
-        
 
-        @Published(initialValue: false) private (set) var provisioningInProgress: Bool
-
-        @Published(initialValue: nil) var deviceStatus: DeviceStatus? {
-            didSet {
-                guard let deviceStatus else {
-                    return
-                }
-
-                wifiState = deviceStatus.state
-                provisionedWiFi = deviceStatus.provisioningInfo
-                passwordRequired = false
-                provisioned = deviceStatus.provisioningInfo != nil
-            }
-        }
-
-        @Published(initialValue: nil) fileprivate(set) var wifiState: ConnectionState? {
-            didSet {
-                DispatchQueue.main.async { [weak self] in
-                    guard let `self` = self else {
-                        return
-                    }
-                    self.provisioningInProgress = self.wifiState?.isInProgress ?? false
-                    self.updateButtonState()
-
-                    switch self.wifiState {
-                    case .connected, .connectionFailed:
-                        self.inProgress = false
-                    default:
-                        self.provisioningError = nil
-                    }
-                }
-            }
-        }
-        @Published(initialValue: false) var inProgress: Bool
-        @Published(initialValue: nil) private (set) var provisioningError: ReadableError?
-
-        @Published(initialValue: UnknownVersion) fileprivate(set) var version: String
-
-        @Published(initialValue: false) var showAccessPointList: Bool
-        @Published(initialValue: nil) var displayedWiFi: WifiInfo?
-        @Published(initialValue: false) private(set) var passwordRequired: Bool
-        @Published(initialValue: true) private(set) var showFooter: Bool
-        @Published(initialValue: false) private(set) var showVolatileMemory: Bool
-        @Published(initialValue: false) var volatileMemory: Bool
-        @Published var password: String = "" {
-            didSet {
-                updateButtonState()
-            }
-        }
-        private var forceDisableButton = false
-        @Published var buttonState: ProvisionButtonState = ProvisionButtonState(isEnabled: false, title: "Connect", style: NordicButtonStyle())
-        @Published(initialValue: false) var forceShowProvisionInProgress: Bool
-        @Published(initialValue: false) var isScanning: Bool
-        */
         var error: ReadableError? {
             didSet {
                 if error != nil {
@@ -302,11 +206,15 @@ extension DeviceView.ViewModel: ProvisionerInfoDelegate {
                 }
                 
                 updateButtonState()
+                
+                infoFooter = NSLocalizedString("PROVISIONED_DEVICE_FOOTER", comment: "") // "PROVISIONED_DEVICE_FOOTER"
             } else {
                 provisioned = false
                 updateProvisionedComponentVisibility(provisioned: false)
                 
                 updateButtonState()
+                
+                infoFooter = NSLocalizedString("WIFI_NOT_PROVISIONED_FOOTER", comment: "")
             }
         case .failure(let failure):
             self.error = TitleMessageError(error: failure)
@@ -360,6 +268,8 @@ extension DeviceView.ViewModel: ProvisionerDelegate {
             buttonConfiguration.showUnsetButton = false
             
             wifiNetwork = WiFiNetwork()
+            
+            infoFooter = NSLocalizedString("WIFI_NOT_PROVISIONED_FOOTER", comment: "")
         }
     }
 }
@@ -381,35 +291,5 @@ extension DeviceView.ViewModel {
         } else {
             buttonConfiguration.provisionButtonTitle = "Set Configuration"
         }
-        
-        
-        
-        /*
-        let enabled = !forceDisableButton
-        && wifiState?.isInProgress != true
-        && selectedWiFi != nil
-        && (password.count >= 6 || !passwordRequired)
-        
-        buttonState.isEnabled = enabled
-        
-        let title = { () -> String in
-            let oldTitle = buttonState.title
-            let state = wifiState ?? .disconnected
-            if state.isInProgress {
-                return oldTitle
-            }
-            
-            switch state {
-            case .disconnected:
-                return provisioned ? "Re-Provision" : "Provision"
-            case .connected:
-                return "Re-provision"
-            default:
-                return oldTitle
-            }
-        }()
-        
-        buttonState.title = title
-         */
     }
 }
