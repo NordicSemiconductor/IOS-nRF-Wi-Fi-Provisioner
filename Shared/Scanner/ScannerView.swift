@@ -121,10 +121,10 @@ struct ScannerView: View {
 }
 
 #if DEBUG
-import Provisioner2
+import Provisioner
 
 struct ScannerView_Previews: PreviewProvider {
-    struct MockScanResult: Provisioner2.ScanResult {
+    struct MockScanResult: Provisioner.ScanResult {
         var id: String {
             UUID().uuidString
         }

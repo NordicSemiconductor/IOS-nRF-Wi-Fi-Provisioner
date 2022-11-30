@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import Provisioner2
+import Provisioner
 
 extension WifiInfo: Hashable {
     public static func == (lhs: WifiInfo, rhs: WifiInfo) -> Bool {

@@ -5,7 +5,7 @@
 //  Created by Nick Kibysh on 02/11/2022.
 //
 
-import Provisioner2
+import Provisioner
 
 extension Band: CustomStringConvertible {
     public var description: String {

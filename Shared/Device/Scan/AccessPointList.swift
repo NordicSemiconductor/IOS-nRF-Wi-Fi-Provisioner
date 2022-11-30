@@ -7,7 +7,7 @@
 
 import SwiftUI
 import NordicStyle
-import Provisioner2
+import Provisioner
 
 struct AccessPointList: View {
     @Environment(\.presentationMode) var presentationMode
@@ -143,7 +143,7 @@ struct AccessPointList: View {
 
 struct AccessPointList_Previews: PreviewProvider {
     struct Selection: AccessPointSelection {
-        var selectedWiFi: Provisioner2.WifiInfo?
+        var selectedWiFi: Provisioner.WifiInfo?
         
         var showAccessPointList: Bool = false
     }

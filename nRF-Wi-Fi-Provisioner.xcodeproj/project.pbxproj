@@ -11,11 +11,11 @@
 		0101F2E728DB212300AE80A9 /* ChannelPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0101F2E528DB212300AE80A9 /* ChannelPicker.swift */; };
 		01062ADA28B6592700BB41FD /* View+Mod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01062AD928B6592700BB41FD /* View+Mod.swift */; };
 		01062ADB28B6592700BB41FD /* View+Mod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01062AD928B6592700BB41FD /* View+Mod.swift */; };
-		0107FEA528F823EE00693317 /* Provisioner2 in Frameworks */ = {isa = PBXBuildFile; productRef = 0107FEA428F823EE00693317 /* Provisioner2 */; };
 		0107FEAA28F827A200693317 /* ScanResultRaw.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0107FEA928F827A200693317 /* ScanResultRaw.swift */; };
 		0107FEAB28F827A200693317 /* ScanResultRaw.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0107FEA928F827A200693317 /* ScanResultRaw.swift */; };
 		011A2613287CAF890004A5C4 /* BluetoothManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011A2612287CAF890004A5C4 /* BluetoothManager.swift */; };
 		011A2614287CAF890004A5C4 /* BluetoothManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011A2612287CAF890004A5C4 /* BluetoothManager.swift */; };
+		011AB1FE293805150040F82E /* Provisioner in Frameworks */ = {isa = PBXBuildFile; productRef = 011AB1FD293805150040F82E /* Provisioner */; };
 		01481AAB2852093000925FAB /* Tests_iOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01481AAA2852093000925FAB /* Tests_iOS.swift */; };
 		01481AAD2852093000925FAB /* Tests_iOSLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01481AAC2852093000925FAB /* Tests_iOSLaunchTests.swift */; };
 		01481AB72852093000925FAB /* Tests_macOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01481AB62852093000925FAB /* Tests_macOS.swift */; };
@@ -154,7 +154,7 @@
 		015845CB288FD5A900C7E4B7 /* AccessPointList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessPointList.swift; sourceTree = "<group>"; };
 		015D60A22875A1530048F065 /* ScannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerView.swift; sourceTree = "<group>"; };
 		01682619287F16CD0040C97E /* Array+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Ext.swift"; sourceTree = "<group>"; };
-		0179FABC28F03B0900DEBBBB /* Provisioner2 */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Provisioner2; sourceTree = "<group>"; };
+		0179FABC28F03B0900DEBBBB /* Provisioner */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Provisioner; sourceTree = "<group>"; };
 		0183EFC82897C196002E79A5 /* Status.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Status.swift; sourceTree = "<group>"; };
 		0183EFCC2897C446002E79A5 /* ReversedLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReversedLabel.swift; sourceTree = "<group>"; };
 		01922CBC28A2713100492E87 /* NavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationView.swift; sourceTree = "<group>"; };
@@ -205,8 +205,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				01DB109B28CF6404005634CF /* Markdown in Frameworks */,
-				0107FEA528F823EE00693317 /* Provisioner2 in Frameworks */,
 				01A0C289288853EB000AA135 /* NordicStyle in Frameworks */,
+				011AB1FE293805150040F82E /* Provisioner in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -260,7 +260,7 @@
 		01481A8C2852092F00925FAB = {
 			isa = PBXGroup;
 			children = (
-				0179FABC28F03B0900DEBBBB /* Provisioner2 */,
+				0179FABC28F03B0900DEBBBB /* Provisioner */,
 				019A5D8D286C77CE002D03F0 /* NordicStyle */,
 				01481A912852092F00925FAB /* Shared */,
 				01481AA02852093000925FAB /* macOS */,
@@ -529,7 +529,7 @@
 			packageProductDependencies = (
 				01A0C288288853EB000AA135 /* NordicStyle */,
 				01DB109A28CF6404005634CF /* Markdown */,
-				0107FEA428F823EE00693317 /* Provisioner2 */,
+				011AB1FD293805150040F82E /* Provisioner */,
 			);
 			productName = "nRF-Wi-Fi-Provisioner (iOS)";
 			productReference = 01481A992852093000925FAB /* nRF-Wi-Fi-Provisioner.app */;
@@ -1317,9 +1317,9 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		0107FEA428F823EE00693317 /* Provisioner2 */ = {
+		011AB1FD293805150040F82E /* Provisioner */ = {
 			isa = XCSwiftPackageProductDependency;
-			productName = Provisioner2;
+			productName = Provisioner;
 		};
 		01A0C288288853EB000AA135 /* NordicStyle */ = {
 			isa = XCSwiftPackageProductDependency;

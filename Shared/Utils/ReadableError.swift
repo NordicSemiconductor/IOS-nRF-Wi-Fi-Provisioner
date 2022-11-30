@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import Provisioner2
+import Provisioner
 
 /// Error with readable title and message ready to show for user
 protocol ReadableError: Error {

@@ -8,7 +8,7 @@
 import Combine
 import CoreBluetoothMock
 import Foundation
-import Provisioner2
+import Provisioner
 import SwiftUI
 import os
 
@@ -17,7 +17,7 @@ extension ScannerViewModel {
         case waiting, scanning, noPermission, turnedOff
     }
     
-    struct DisplayableScanResult: Provisioner2.ScanResult, Identifiable, Equatable, Hashable {
+    struct DisplayableScanResult: Provisioner.ScanResult, Identifiable, Equatable, Hashable {
         let id: String
         var name: String { sr.name }
         var rssi: Int { sr.rssi }
@@ -26,9 +26,9 @@ extension ScannerViewModel {
         var version: Int? { sr.version }
         var wifiRSSI: Int? { sr.wifiRSSI }
         
-        let sr: Provisioner2.ScanResult
+        let sr: Provisioner.ScanResult
         
-        init(rowScanResult: Provisioner2.ScanResult) {
+        init(rowScanResult: Provisioner.ScanResult) {
             self.sr = rowScanResult
             self.id = sr.id + sr.name + "\(sr.rssi)" + "\(sr.provisioned)" + "\(sr.connected)" + "\(sr.wifiRSSI ?? 0)"
         }
@@ -62,11 +62,11 @@ class ScannerViewModel: ObservableObject {
     @Published private(set) var state: State = .waiting
     @Published private(set) var scanResults: [DisplayableScanResult] = []
     
-    private let scanner: Provisioner2.Scanner
+    private let scanner: Provisioner.Scanner
     
     private var cancelable: Set<AnyCancellable> = []
     
-    init(scanner: Provisioner2.Scanner = Scanner()) {
+    init(scanner: Provisioner.Scanner = Scanner()) {
         self.scanner = scanner
         self.showStartInfo = !dontShowAgain
         
@@ -122,7 +122,7 @@ class ScannerViewModel: ObservableObject {
 }
 
 extension ScannerViewModel.State {
-    init(from bluetoothState: Provisioner2.Scanner.State) {
+    init(from bluetoothState: Provisioner.Scanner.State) {
         switch bluetoothState {
         case .poweredOn:
             self = .scanning
@@ -141,12 +141,12 @@ extension ScannerViewModel.State {
 }
 
 
-extension ScannerViewModel: Provisioner2.ScannerDelegate {
-    func scannerDidUpdateState(_ state: Provisioner2.Scanner.State) {
+extension ScannerViewModel: Provisioner.ScannerDelegate {
+    func scannerDidUpdateState(_ state: Provisioner.Scanner.State) {
         self.state = State.init(from: state)
     }
     
-    func scannerDidDiscover(_ scanResult: Provisioner2.ScanResult) {
+    func scannerDidDiscover(_ scanResult: Provisioner.ScanResult) {
         if let index = scanResults.firstIndex(where: { $0.sr.id == scanResult.id }) {
             scanResults[index] = DisplayableScanResult(rowScanResult: scanResult)
         } else {

@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import Provisioner2
+import Provisioner
 
 struct DeviceStatusSection: View {
     let version: String

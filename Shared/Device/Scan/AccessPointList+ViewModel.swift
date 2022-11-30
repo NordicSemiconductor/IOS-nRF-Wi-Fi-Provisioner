@@ -4,7 +4,7 @@
 
 import Combine
 import Foundation
-import Provisioner2
+import Provisioner
 import os
 
 extension AccessPointList {
@@ -117,18 +117,18 @@ extension AccessPointList {
 }
 
 extension AccessPointList.ViewModel: ProvisionerScanDelegate {
-    func provisioner(_ provisioner: Provisioner2.DeviceManager, discoveredAccessPoint wifi: Provisioner2.WifiInfo, rssi: Int?) {
+    func provisioner(_ provisioner: Provisioner.DeviceManager, discoveredAccessPoint wifi: Provisioner.WifiInfo, rssi: Int?) {
         let scanResult = ScanResult(wifi: wifi, rssi: rssi)
         allAccessPoints.insert(scanResult)
     }
     
-    func pravisionerDidStartScan(_ provisioner: Provisioner2.DeviceManager, error: Error?) {
+    func pravisionerDidStartScan(_ provisioner: Provisioner.DeviceManager, error: Error?) {
         if let error {
             self.error = TitleMessageError(error: error)
         }
     }
     
-    func pravisionerDidStopScan(_ provisioner: Provisioner2.DeviceManager, error: Error?) {
+    func pravisionerDidStopScan(_ provisioner: Provisioner.DeviceManager, error: Error?) {
         if let error {
             self.error = TitleMessageError(error: error)
         }

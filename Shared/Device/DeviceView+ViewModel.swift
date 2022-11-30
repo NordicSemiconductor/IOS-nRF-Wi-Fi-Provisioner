@@ -9,7 +9,7 @@ import Foundation
 import Combine
 import NordicStyle
 import os
-import Provisioner2
+import Provisioner
 
 protocol AccessPointSelection {
     var selectedWiFi: WifiInfo? { get set }
@@ -136,7 +136,7 @@ extension DeviceView.ViewModel {
 }
 
 extension DeviceView.ViewModel: ProvisionerConnectionDelegate {
-    func provisionerDidFailToConnect(_ provisioner: Provisioner2.DeviceManager, error: Error) {
+    func provisionerDidFailToConnect(_ provisioner: Provisioner.DeviceManager, error: Error) {
         peripheralConnectionStatus = .disconnected(.error(error))
     }
     
@@ -223,7 +223,7 @@ extension DeviceView.ViewModel: ProvisionerInfoDelegate {
 }
 
 extension DeviceView.ViewModel: ProvisionerDelegate {
-    func provisionerDidSetConfig(provisioner: Provisioner2.DeviceManager, error: Error?) {
+    func provisionerDidSetConfig(provisioner: Provisioner.DeviceManager, error: Error?) {
         buttonConfiguration.enabledUnsetButton = true
         if let error {
             self.error = TitleMessageError(error: error)
@@ -247,7 +247,7 @@ extension DeviceView.ViewModel: ProvisionerDelegate {
         updateButtonState()
     }
     
-    func provisioner(_ provisioner: Provisioner2.DeviceManager, didChangeState state: Provisioner2.ConnectionState) {
+    func provisioner(_ provisioner: Provisioner.DeviceManager, didChangeState state: Provisioner.ConnectionState) {
         connectionStatus.showStatus = true
         connectionStatus.status = state.description
         
@@ -256,7 +256,7 @@ extension DeviceView.ViewModel: ProvisionerDelegate {
         }
     }
     
-    func provisionerDidUnsetConfig(provisioner: Provisioner2.DeviceManager, error: Error?) {
+    func provisionerDidUnsetConfig(provisioner: Provisioner.DeviceManager, error: Error?) {
         if let error {
             self.error = TitleMessageError(error: error)
         } else {

@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import Provisioner2
+import Provisioner
 
 extension ConnectionState {
     var isInProgress: Bool {

@@ -7,7 +7,7 @@
 
 import SwiftUI
 import NordicStyle
-import Provisioner2
+import Provisioner
 
 struct DeviceView: View {
     @StateObject var viewModel: ViewModel

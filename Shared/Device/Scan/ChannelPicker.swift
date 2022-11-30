@@ -6,7 +6,7 @@
 //
 
 import NordicStyle
-import Provisioner2
+import Provisioner
 import SwiftUI
 
 struct ChannelPicker: View {
