@@ -11,11 +11,14 @@ import Provisioner2
 struct AccessPointSection: View {
     let viewModel: DeviceView.ViewModel
     
-    let inProgress: Bool
-    let wifiInfo: WifiInfo?
+    let ssid: String
+    let bssid: String?
+    let band: String?
+    let channel: String?
+    let auth: String?
     
-    let passwordRequired: Bool
-    let showFooter: Bool
+    let showPassword: Bool
+    let footer: String?
     var showVolatileMemory: Bool
     
     @Binding var password: String
@@ -26,13 +29,12 @@ struct AccessPointSection: View {
         Section {
             accessPointSelector
             
-            if let wifiInfo {
-                additionalInfo(wifiInfo: wifiInfo)
+            if !([bssid, band, channel, auth].compactMap { $0 }.isEmpty) {
+                additionalInfo()
             }
             
-            if passwordRequired {
+            if showPassword {
                 SecureField("Password", text: $password)
-                    .disabled(inProgress)
             }
             
             if showVolatileMemory {
@@ -42,18 +44,18 @@ struct AccessPointSection: View {
                     Toggle("", isOn: $volatileMemory)
                         .toggleStyle(SwitchToggleStyle(tint: .nordicBlue))
                 }
-                .disabled(inProgress)
             }
         } header: {
             Text("Access Point")
         } footer: {
+            footer.map { Text($0) }
+            /*
             if wifiInfo == nil {
                 Text("WIFI_NOT_PROVISIONED_FOOTER")
             } else if wifiInfo != nil && showFooter {
                 Text("PROVISIONED_DEVICE_FOOTER")
-            } else {
-                EmptyView()
             }
+             */
         }
     }
     
@@ -64,28 +66,26 @@ struct AccessPointSection: View {
                     NordicLabel("Access Point", systemImage: "wifi.circle")
                     Spacer()
                     ReversedLabel {
-                        Text(wifiInfo?.ssid ?? "Not Selected")
+                        Text(ssid)
                     } image: {
                         Image(systemName: "chevron.forward")
                     }
                     .foregroundColor(.secondary)
                 }
             }
-            .disabled(inProgress)
             .onTapGesture {
                 showAccessPointList = true
             }
             .accessibilityIdentifier("access_point_selector")
-            .disabled(inProgress)
     }
     
     @ViewBuilder
-    func additionalInfo(wifiInfo: WifiInfo) -> some View {
+    func additionalInfo() -> some View {
         VStack {
-            DetailRow(title: "Channel", details: "\(wifiInfo.channel)")
-            DetailRow(title: "BSSID", details: "\(wifiInfo.bssid)")
-            wifiInfo.band.map { DetailRow(title: "Band", details: "\($0)") }
-            wifiInfo.auth.map { DetailRow(title: "Security", details: "\($0)") }
+            channel.map { DetailRow(title: "Channel", details: $0) }
+            bssid.map { DetailRow(title: "BSSID", details: $0) }
+            band.map { DetailRow(title: "Band", details: $0) }
+            auth.map { DetailRow(title: "Security", details: $0) }
         }
     }
 }
@@ -133,9 +133,24 @@ struct AccessPointSection_Previews: PreviewProvider {
         Form {
             AccessPointSection(
                 viewModel: MockDeviceViewModel(deviceId: ""),
-                inProgress: false,
+                ssid: wf1.ssid,
+                bssid: wf1.bssid.description,
+                band: wf1.band!.description,
+                channel: "\(wf1.channel)",
+                auth: wf1.auth!.description,
+                showPassword: true,
+                footer: "WIFI_NOT_PROVISIONED_FOOTER",
+                showVolatileMemory: true,
+                password: .constant("qwerty"),
+                volatileMemory: .constant(true),
+                showAccessPointList: .constant(false)
+            )
+            
+            /*
+            AccessPointSection(
+                viewModel: MockDeviceViewModel(deviceId: ""),
                 wifiInfo: wf1,
-                passwordRequired: false,
+                showPassword: false,
                 showFooter: true,
                 showVolatileMemory: true,
                 password: .constant(""),
@@ -144,9 +159,8 @@ struct AccessPointSection_Previews: PreviewProvider {
             )
             AccessPointSection(
                 viewModel: MockDeviceViewModel(deviceId: ""),
-                inProgress: false,
                 wifiInfo: wf2,
-                passwordRequired: true,
+                showPassword: true,
                 showFooter: false,
                 showVolatileMemory: false,
                 password: .constant(""),
@@ -155,9 +169,8 @@ struct AccessPointSection_Previews: PreviewProvider {
             )
             AccessPointSection(
                 viewModel: MockDeviceViewModel(deviceId: ""),
-                inProgress: false,
                 wifiInfo: wf3,
-                passwordRequired: false,
+                showPassword: false,
                 showFooter: true,
                 showVolatileMemory: false,
                 password: .constant(""),
@@ -166,9 +179,8 @@ struct AccessPointSection_Previews: PreviewProvider {
             )
             AccessPointSection(
                 viewModel: MockDeviceViewModel(deviceId: ""),
-                inProgress: false,
                 wifiInfo: wf1,
-                passwordRequired: false,
+                showPassword: false,
                 showFooter: true,
                 showVolatileMemory: false,
                 password: .constant(""),
@@ -177,15 +189,16 @@ struct AccessPointSection_Previews: PreviewProvider {
             )
             AccessPointSection(
                 viewModel: MockDeviceViewModel(deviceId: ""),
-                inProgress: false,
                 wifiInfo: nil,
-                passwordRequired: false,
+                showPassword: false,
                 showFooter: true,
                 showVolatileMemory: false,
                 password: .constant(""),
                 volatileMemory: .constant(false),
                 showAccessPointList: .constant(false)
             )
+             */
+            
         }
     }
 }

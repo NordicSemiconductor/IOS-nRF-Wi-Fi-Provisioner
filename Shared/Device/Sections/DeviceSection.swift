@@ -9,6 +9,7 @@ import SwiftUI
 
 struct DeviceSection: View {
     let provisioned: Bool
+    let provisionState: StatusModifier.Status
     
     var body: some View {
         Section("Device") {
@@ -16,8 +17,8 @@ struct DeviceSection: View {
                 NordicLabel("Status", image: "bluetooth")
                 
                 Spacer()
-                Text(provisioned ? "Provisioned  ✓" : "Not Provisioned")
-                    .foregroundColor(provisioned ? .green : .secondary)
+                Text(provisioned ? "Provisioned" : "Not Provisioned")
+                    .status(provisionState)
             }
         }
     }
@@ -26,8 +27,8 @@ struct DeviceSection: View {
 struct DeviceSection_Previews: PreviewProvider {
     static var previews: some View {
         Form {
-            DeviceSection(provisioned: true)
-            DeviceSection(provisioned: false)
+            DeviceSection(provisioned: true, provisionState: .done)
+            DeviceSection(provisioned: false, provisionState: .inProgress)
         }
     }
 }

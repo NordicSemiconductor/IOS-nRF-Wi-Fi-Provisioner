@@ -10,11 +10,12 @@ import Provisioner2
 
 struct DeviceStatusSection: View {
     let version: String
-    let connectionStatus: ConnectionState?
-    let forceShowProvisionInProgress: Bool
+    let connectionStatus: String
+    let statusProgress: StatusModifier.Status
+    let showConnectionStatus: Bool
     let connectionError: ReadableError?
     let ip: String?
-    let provisioned: Bool
+    let showIp: Bool
     
     var body: some View {
         Section("Device Status") {
@@ -24,17 +25,13 @@ struct DeviceStatusSection: View {
                 Text(version).foregroundColor(.secondary)
             }
             
-            if provisioned {
+            if showConnectionStatus {
                 VStack {
                     HStack {
                         NordicLabel("Wi-Fi Status", systemImage: "wifi")
                         Spacer()
-                        ReversedLabel {
-                            Text(connectionStatus?.description ?? "Unprovisioned")
-                        } image: {
-                            StatusIndicatorView(status: connectionStatus, forceProgress: forceShowProvisionInProgress)
-                        }
-                        .status(connectionStatus ?? .disconnected)
+                        Text(connectionStatus)
+                            .status(statusProgress)
                     }
                     if let e = connectionError {
                         HStack {
@@ -46,13 +43,12 @@ struct DeviceStatusSection: View {
                 }
             }
             
-            if let ip {
-                HStack {
-                    NordicLabel("IP Address", systemImage: "network")
-                    Spacer()
-                    Text(ip).foregroundColor(.secondary)
-                }
+            HStack {
+                NordicLabel("IP Address", systemImage: "network")
+                Spacer()
+                Text(ip ?? "Unknown").foregroundColor(.secondary)
             }
+            .isHidden(!showIp, remove: true)
         }
     }
 }
@@ -61,6 +57,8 @@ struct DeviceStatusSection_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
             Form {
+                
+                /*
                 DeviceStatusSection(version: "17", connectionStatus: .disconnected, forceShowProvisionInProgress: false, connectionError: nil,
                                     ip: nil,
                                     provisioned: false
@@ -71,6 +69,7 @@ struct DeviceStatusSection_Previews: PreviewProvider {
                 DeviceStatusSection(version: "17", connectionStatus: .connected, forceShowProvisionInProgress: false, connectionError: nil, ip: "192.168.1.1", provisioned: true)
                 DeviceStatusSection(version: "17", connectionStatus: .obtainingIp, forceShowProvisionInProgress: false, connectionError: nil, ip: nil, provisioned: true)
                 DeviceStatusSection(version: "17", connectionStatus: .disconnected, forceShowProvisionInProgress: true, connectionError: nil, ip: nil, provisioned: true)
+                 */
             }
         }
         .tint(.nordicBlue)

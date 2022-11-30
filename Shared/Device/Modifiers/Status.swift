@@ -8,23 +8,41 @@
 import SwiftUI
 import Provisioner2
 
-struct WiFiStatusColorModifier: ViewModifier {
-    let status: ConnectionState
+struct StatusModifier: ViewModifier {
+    enum Status {
+        case ready, inProgress, done, error
+    }
+    
+    let status: Status
     
     func body(content: Content) -> some View {
         switch status {
-        case .connected:
-            content.foregroundColor(.green)
-        case .connectionFailed:
-            content.foregroundColor(.red)
-        default:
+        case .ready:
             content.foregroundColor(.secondary)
+        case .inProgress:
+            HStack {
+                content
+                ProgressView()
+            }
+            .foregroundColor(.secondary)
+        case .done:
+            HStack {
+                content
+                Image(systemName: "checkmark")
+            }
+            .foregroundColor(.green)
+        case .error:
+            HStack {
+                content
+                Image(systemName: "")
+            }
+            .foregroundColor(.red)
         }
     }
 }
 
 extension View {
-    func status(_ status: ConnectionState) -> some View {
-        modifier(WiFiStatusColorModifier(status: status))
+    func status(_ status: StatusModifier.Status) -> some View {
+        modifier(StatusModifier(status: status))
     }
 }

@@ -87,24 +87,33 @@ struct DeviceView: View {
     var deviceInfo: some View {
         VStack {
             Form {
-                DeviceSection(provisioned: viewModel.provisioned)
+                DeviceSection(
+                    provisioned: viewModel.provisioned,
+                    provisionState: viewModel.provisionedState
+                )
+                
                 DeviceStatusSection(
                     version: viewModel.version,
-                    connectionStatus: viewModel.wifiState,
-                    forceShowProvisionInProgress: viewModel.forceShowProvisionInProgress,
-                    connectionError: viewModel.provisioningError,
-                    ip: viewModel.deviceStatus?.connectionInfo?.ip?.description,
-                    provisioned: viewModel.provisioned
+                    connectionStatus: viewModel.connectionStatus.status,
+                    statusProgress: viewModel.connectionStatus.statusProgressState,
+                    showConnectionStatus: viewModel.connectionStatus.showStatus,
+                    connectionError: nil,
+                    ip: viewModel.connectionStatus.ipAddress,
+                    showIp: viewModel.connectionStatus.showIpAddress
                 )
+                
                 AccessPointSection(
                     viewModel: viewModel,
-                    inProgress: viewModel.inProgress,
-                    wifiInfo: viewModel.displayedWiFi,
-                    passwordRequired: viewModel.passwordRequired,
-                    showFooter: viewModel.showFooter,
-                    showVolatileMemory: viewModel.showVolatileMemory,
+                    ssid: viewModel.wifiNetwork.ssid,
+                    bssid: viewModel.wifiNetwork.bssid,
+                    band: viewModel.wifiNetwork.band,
+                    channel: viewModel.wifiNetwork.channel.map { "\($0)" },
+                    auth: viewModel.wifiNetwork.security?.description,
+                    showPassword: viewModel.wifiNetwork.showPassword,
+                    footer: "",
+                    showVolatileMemory: viewModel.wifiNetwork.showVolatileMemory,
                     password: $viewModel.password,
-                    volatileMemory: $viewModel.volatileMemory,
+                    volatileMemory: $viewModel.wifiNetwork.volatileMemory,
                     showAccessPointList: $viewModel.showAccessPointList
                 )
             }
@@ -112,22 +121,22 @@ struct DeviceView: View {
             Spacer()
             
             VStack {
-                Button("Unprovision") {
+                Button("Forget Configuration") {
                     unprovisionSheet = true
                 }
                 .buttonStyle(HollowDistructiveButtonStyle())
-                .isHidden(!viewModel.provisioned, remove: true)
-                .disabled(viewModel.provisioningInProgress)
+                .isHidden(!viewModel.buttonConfiguration.showUnsetButton, remove: true)
+                .disabled(!viewModel.buttonConfiguration.enabledUnsetButton)
                 
-                Button(viewModel.buttonState.title) {
+                Button(viewModel.buttonConfiguration.provisionButtonTitle) {
                     Task {
                         do {
                             try viewModel.startProvision()
                         }
                     }
                 }
-                .disabled(!viewModel.buttonState.isEnabled || viewModel.displayedWiFi == nil)
-                .buttonStyle(viewModel.buttonState.style)
+                .disabled(!viewModel.buttonConfiguration.enabledProvisionButton)
+                .buttonStyle(NordicButtonStyle())
             }
             .padding()
         }
@@ -142,11 +151,6 @@ class MockDeviceViewModel: DeviceView.ViewModel {
         set { }
     }
     
-    override var showVolatileMemory: Bool {
-        get { true }
-        set { }
-    }
-    
     override var peripheralConnectionStatus: PeripheralConnectionStatus {
         get { .connected }
         set { }
@@ -155,36 +159,6 @@ class MockDeviceViewModel: DeviceView.ViewModel {
     override var provisioned: Bool {
         get { true }
         set { }
-    }
-    
-    override var provisioningInProgress: Bool {
-        get { true }
-        set { }
-    }
-    
-    override var deviceStatus: DeviceStatus? {
-        get { DeviceStatus(
-            state: .connected,
-            provisioningInfo: WifiInfo(ssid: "Home", bssid: .mac1, channel: 3),
-            connectionInfo: ConnectionInfo(ip: IPAddress(data: 0xff_ff_ff_ff_ff_FF.toData().suffix(5))),
-            scanInfo: nil
-        ) }
-        set { }
-    }
-    
-    override var displayedWiFi: WifiInfo? {
-        get {
-            WifiInfo(
-                ssid: "Nordic Guest",
-                bssid: MACAddress(i: 0xff_02_04_04_33_fa),
-                band: .band5Gh,
-                channel: 2,
-                auth: .wpa2Psk
-            )
-        }
-        set {
-            
-        }
     }
 }
 
