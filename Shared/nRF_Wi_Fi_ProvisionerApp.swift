@@ -6,14 +6,9 @@
 //
 
 import SwiftUI
-import Provisioner
 
 @main
 struct nRF_Wi_Fi_ProvisionerApp: App {
-    
-    init() {
-        AppConfigurator.setup()
-    }
     
     var body: some Scene {
         WindowGroup {

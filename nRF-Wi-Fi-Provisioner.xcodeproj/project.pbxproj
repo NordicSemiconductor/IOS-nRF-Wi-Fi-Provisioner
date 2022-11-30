@@ -77,8 +77,6 @@
 		01DB109B28CF6404005634CF /* Markdown in Frameworks */ = {isa = PBXBuildFile; productRef = 01DB109A28CF6404005634CF /* Markdown */; };
 		01FA5912288713860008AF88 /* ReadableError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01FA5911288713860008AF88 /* ReadableError.swift */; };
 		01FA5913288713860008AF88 /* ReadableError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01FA5911288713860008AF88 /* ReadableError.swift */; };
-		01FA5915288809220008AF88 /* Provisioner in Frameworks */ = {isa = PBXBuildFile; productRef = 01FA5914288809220008AF88 /* Provisioner */; };
-		01FA5917288809390008AF88 /* Provisioner in Frameworks */ = {isa = PBXBuildFile; productRef = 01FA5916288809390008AF88 /* Provisioner */; };
 		01FCADBB291D47600044904B /* DeviceSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01FCADBA291D47600044904B /* DeviceSection.swift */; };
 		01FCADBD291D482B0044904B /* DeviceStatusSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01FCADBC291D482B0044904B /* DeviceStatusSection.swift */; };
 		01FCADBF291D4AA00044904B /* StatusIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01FCADBE291D4AA00044904B /* StatusIndicatorView.swift */; };
@@ -170,7 +168,6 @@
 		019D1D362912C588000D8BD4 /* Band+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Band+Ext.swift"; sourceTree = "<group>"; };
 		019DCE24288553E700E16E9F /* CGRect+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGRect+Ext.swift"; sourceTree = "<group>"; };
 		01A0C29428896343000AA135 /* DeviceViewModelFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceViewModelFactory.swift; sourceTree = "<group>"; };
-		01A43DE82886CC080025A5C4 /* Provisioner */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Provisioner; sourceTree = "<group>"; };
 		01A43DEA2886FECB0025A5C4 /* DeviceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceView.swift; sourceTree = "<group>"; };
 		01A43DED2886FED80025A5C4 /* DeviceView+ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DeviceView+ViewModel.swift"; sourceTree = "<group>"; };
 		01A9468D28EAF9D600F40D1D /* Set+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Set+Ext.swift"; sourceTree = "<group>"; };
@@ -208,7 +205,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				01DB109B28CF6404005634CF /* Markdown in Frameworks */,
-				01FA5917288809390008AF88 /* Provisioner in Frameworks */,
 				0107FEA528F823EE00693317 /* Provisioner2 in Frameworks */,
 				01A0C289288853EB000AA135 /* NordicStyle in Frameworks */,
 			);
@@ -218,7 +214,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				01FA5915288809220008AF88 /* Provisioner in Frameworks */,
 				01A0C28B288853F2000AA135 /* NordicStyle in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -266,7 +261,6 @@
 			isa = PBXGroup;
 			children = (
 				0179FABC28F03B0900DEBBBB /* Provisioner2 */,
-				01A43DE82886CC080025A5C4 /* Provisioner */,
 				019A5D8D286C77CE002D03F0 /* NordicStyle */,
 				01481A912852092F00925FAB /* Shared */,
 				01481AA02852093000925FAB /* macOS */,
@@ -533,7 +527,6 @@
 			);
 			name = "nRF-Wi-Fi-Provisioner (iOS)";
 			packageProductDependencies = (
-				01FA5916288809390008AF88 /* Provisioner */,
 				01A0C288288853EB000AA135 /* NordicStyle */,
 				01DB109A28CF6404005634CF /* Markdown */,
 				0107FEA428F823EE00693317 /* Provisioner2 */,
@@ -556,7 +549,6 @@
 			);
 			name = "nRF-Wi-Fi-Provisioner (macOS)";
 			packageProductDependencies = (
-				01FA5914288809220008AF88 /* Provisioner */,
 				01A0C28A288853F2000AA135 /* NordicStyle */,
 			);
 			productName = "nRF-Wi-Fi-Provisioner (macOS)";
@@ -1341,14 +1333,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 01DB109928CF6404005634CF /* XCRemoteSwiftPackageReference "swift-markdown" */;
 			productName = Markdown;
-		};
-		01FA5914288809220008AF88 /* Provisioner */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = Provisioner;
-		};
-		01FA5916288809390008AF88 /* Provisioner */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = Provisioner;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
