@@ -13,6 +13,11 @@ open class DeviceManager {
         self.deviceId = deviceId
     }
     
+    convenience
+    public init(scanResult: ScanResult) {
+        self.init(deviceId: scanResult.id)
+    }
+    
     open var connectionState: ConnectionState {
         internalProvisioner.connectionState
     }
@@ -35,7 +40,7 @@ open class DeviceManager {
         }
     }
 
-    open var provisionerScanDelegate: ScanDelegate? {
+    open var provisionerScanDelegate: WiFiScanerDelegate? {
         get {
             internalProvisioner.provisionerScanDelegate
         }

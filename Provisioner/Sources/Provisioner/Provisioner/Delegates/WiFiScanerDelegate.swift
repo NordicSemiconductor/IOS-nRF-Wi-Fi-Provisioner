@@ -8,7 +8,7 @@
 import Foundation
 
 /// A protocol that defines a delegate for retrieving Wi-Fi scan results.
-public protocol ScanDelegate: AnyObject {
+public protocol WiFiScanerDelegate: AnyObject {
     /// Called when the new Wi-Fi scan result is received.
     ///
     /// - parameter wifi: The Wi-Fi Info.

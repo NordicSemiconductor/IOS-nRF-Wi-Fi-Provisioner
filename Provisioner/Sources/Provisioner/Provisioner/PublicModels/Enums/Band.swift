@@ -12,6 +12,17 @@ public enum Band: Equatable {
     case band5Gh
 }
 
+extension Band: CustomStringConvertible {
+    public var description: String {
+        switch self {
+        case .band24Gh:
+            return "2.4 GHz"
+        case .band5Gh:
+            return "5 GHz"
+        }
+    }
+}
+
 extension Band: ProtoConvertible {
     typealias P = Proto.Band
     

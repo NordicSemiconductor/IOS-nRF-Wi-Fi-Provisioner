@@ -16,7 +16,7 @@ class InternalDeviceManager {
     let centralManager: CBCentralManager
     weak var connectionDelegate: ConnectionDelegate?
     weak var infoDelegate: InfoDelegate?
-    weak var provisionerScanDelegate: ScanDelegate?
+    weak var provisionerScanDelegate: WiFiScanerDelegate?
     weak var provisionerDelegate: ProvisionDelegate?
 
     unowned var provisioner: DeviceManager!
