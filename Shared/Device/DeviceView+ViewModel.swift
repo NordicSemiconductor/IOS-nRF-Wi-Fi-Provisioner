@@ -223,7 +223,7 @@ extension DeviceView.ViewModel: InfoDelegate {
 }
 
 extension DeviceView.ViewModel: ProvisionDelegate {
-    func deviceManagerDidSetConfig(deviceManager: Provisioner.DeviceManager, error: Error?) {
+    func deviceManagerDidSetConfig(_ deviceManager: Provisioner.DeviceManager, error: Error?) {
         buttonConfiguration.enabledUnsetButton = true
         if let error {
             self.error = TitleMessageError(error: error)
