@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import Provisioner
+import NordicWiFiProvisioner
 
 extension WifiInfo: Hashable {
     public static func == (lhs: WifiInfo, rhs: WifiInfo) -> Bool {

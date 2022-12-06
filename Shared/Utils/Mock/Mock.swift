@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import Provisioner
+import NordicWiFiProvisioner
 
 #if DEBUG
 extension Int {

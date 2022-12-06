@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import Provisioner
+import NordicWiFiProvisioner
 
 extension ConnectionState {
     var isInProgress: Bool {

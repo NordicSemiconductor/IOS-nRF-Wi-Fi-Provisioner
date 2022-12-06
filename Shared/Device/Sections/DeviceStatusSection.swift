@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import Provisioner
+import NordicWiFiProvisioner
 
 struct DeviceStatusSection: View {
     let version: String

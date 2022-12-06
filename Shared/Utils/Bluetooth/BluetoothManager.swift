@@ -9,7 +9,7 @@ import Combine
 import CoreBluetoothMock
 import Foundation
 import os
-import Provisioner
+import NordicWiFiProvisioner
 
 extension BluetoothManager {
     struct ScanResult: Hashable {

@@ -8,7 +8,7 @@
 import Combine
 import CoreBluetoothMock
 import Foundation
-import Provisioner
+import NordicWiFiProvisioner
 import SwiftUI
 import os
 
@@ -17,7 +17,7 @@ extension ScannerViewModel {
         case waiting, scanning, noPermission, turnedOff
     }
     
-    struct DisplayableScanResult: Provisioner.ScanResult, Identifiable, Equatable, Hashable {
+    struct DisplayableScanResult: NordicWiFiProvisioner.ScanResult, Identifiable, Equatable, Hashable {
         let id: String
         var name: String { sr.name }
         var rssi: Int { sr.rssi }
@@ -26,9 +26,9 @@ extension ScannerViewModel {
         var version: Int? { sr.version }
         var wifiRSSI: Int? { sr.wifiRSSI }
         
-        let sr: Provisioner.ScanResult
+        let sr: NordicWiFiProvisioner.ScanResult
         
-        init(rowScanResult: Provisioner.ScanResult) {
+        init(rowScanResult: NordicWiFiProvisioner.ScanResult) {
             self.sr = rowScanResult
             self.id = sr.id + sr.name + "\(sr.rssi)" + "\(sr.provisioned)" + "\(sr.connected)" + "\(sr.wifiRSSI ?? 0)"
         }
@@ -62,11 +62,11 @@ class ScannerViewModel: ObservableObject {
     @Published private(set) var state: State = .waiting
     @Published private(set) var scanResults: [DisplayableScanResult] = []
     
-    private let scanner: Provisioner.Scanner
+    private let scanner: NordicWiFiProvisioner.Scanner
     
     private var cancelable: Set<AnyCancellable> = []
     
-    init(scanner: Provisioner.Scanner = Scanner()) {
+    init(scanner: NordicWiFiProvisioner.Scanner = Scanner()) {
         self.scanner = scanner
         self.showStartInfo = !dontShowAgain
         
@@ -122,7 +122,7 @@ class ScannerViewModel: ObservableObject {
 }
 
 extension ScannerViewModel.State {
-    init(from bluetoothState: Provisioner.Scanner.State) {
+    init(from bluetoothState: NordicWiFiProvisioner.Scanner.State) {
         switch bluetoothState {
         case .poweredOn:
             self = .scanning
@@ -141,12 +141,12 @@ extension ScannerViewModel.State {
 }
 
 
-extension ScannerViewModel: Provisioner.ScannerDelegate {
-    func scannerDidUpdateState(_ state: Provisioner.Scanner.State) {
+extension ScannerViewModel: NordicWiFiProvisioner.ScannerDelegate {
+    func scannerDidUpdateState(_ state: NordicWiFiProvisioner.Scanner.State) {
         self.state = State.init(from: state)
     }
     
-    func scannerDidDiscover(_ scanResult: Provisioner.ScanResult) {
+    func scannerDidDiscover(_ scanResult: NordicWiFiProvisioner.ScanResult) {
         if let index = scanResults.firstIndex(where: { $0.sr.id == scanResult.id }) {
             scanResults[index] = DisplayableScanResult(rowScanResult: scanResult)
         } else {

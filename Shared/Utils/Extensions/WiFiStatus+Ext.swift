@@ -5,7 +5,7 @@
 // TODO: Remove
 
 /*
-import Provisioner
+import NordicWiFiProvisioner
 
 extension WiFiStatus: CustomStringConvertible {
     var isInProgress: Bool {

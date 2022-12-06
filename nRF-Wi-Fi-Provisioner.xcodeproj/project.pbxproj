@@ -15,7 +15,8 @@
 		0107FEAB28F827A200693317 /* ScanResultRaw.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0107FEA928F827A200693317 /* ScanResultRaw.swift */; };
 		011A2613287CAF890004A5C4 /* BluetoothManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011A2612287CAF890004A5C4 /* BluetoothManager.swift */; };
 		011A2614287CAF890004A5C4 /* BluetoothManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011A2612287CAF890004A5C4 /* BluetoothManager.swift */; };
-		011AB1FE293805150040F82E /* Provisioner in Frameworks */ = {isa = PBXBuildFile; productRef = 011AB1FD293805150040F82E /* Provisioner */; };
+		01379A48293F53F700429C4E /* NordicStyle in Frameworks */ = {isa = PBXBuildFile; productRef = 01379A47293F53F700429C4E /* NordicStyle */; };
+		01379A4B293F5A5200429C4E /* NordicWiFiProvisioner in Frameworks */ = {isa = PBXBuildFile; productRef = 01379A4A293F5A5200429C4E /* NordicWiFiProvisioner */; };
 		01481AAB2852093000925FAB /* Tests_iOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01481AAA2852093000925FAB /* Tests_iOS.swift */; };
 		01481AAD2852093000925FAB /* Tests_iOSLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01481AAC2852093000925FAB /* Tests_iOSLaunchTests.swift */; };
 		01481AB72852093000925FAB /* Tests_macOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01481AB62852093000925FAB /* Tests_macOS.swift */; };
@@ -50,11 +51,8 @@
 		019D1D3229128F3E000D8BD4 /* ConnectionState+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019D1D3029128F3E000D8BD4 /* ConnectionState+Ext.swift */; };
 		019D1D342912C201000D8BD4 /* MACAddress+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019D1D332912C201000D8BD4 /* MACAddress+Ext.swift */; };
 		019D1D352912C201000D8BD4 /* MACAddress+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019D1D332912C201000D8BD4 /* MACAddress+Ext.swift */; };
-		019D1D372912C588000D8BD4 /* Band+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019D1D362912C588000D8BD4 /* Band+Ext.swift */; };
-		019D1D382912C588000D8BD4 /* Band+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019D1D362912C588000D8BD4 /* Band+Ext.swift */; };
 		019DCE25288553E700E16E9F /* CGRect+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019DCE24288553E700E16E9F /* CGRect+Ext.swift */; };
 		019DCE26288553E700E16E9F /* CGRect+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019DCE24288553E700E16E9F /* CGRect+Ext.swift */; };
-		01A0C289288853EB000AA135 /* NordicStyle in Frameworks */ = {isa = PBXBuildFile; productRef = 01A0C288288853EB000AA135 /* NordicStyle */; };
 		01A0C28B288853F2000AA135 /* NordicStyle in Frameworks */ = {isa = PBXBuildFile; productRef = 01A0C28A288853F2000AA135 /* NordicStyle */; };
 		01A0C29528896343000AA135 /* DeviceViewModelFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A0C29428896343000AA135 /* DeviceViewModelFactory.swift */; };
 		01A0C29628896343000AA135 /* DeviceViewModelFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A0C29428896343000AA135 /* DeviceViewModelFactory.swift */; };
@@ -139,6 +137,7 @@
 		01062AD928B6592700BB41FD /* View+Mod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Mod.swift"; sourceTree = "<group>"; };
 		0107FEA928F827A200693317 /* ScanResultRaw.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanResultRaw.swift; sourceTree = "<group>"; };
 		011A2612287CAF890004A5C4 /* BluetoothManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BluetoothManager.swift; sourceTree = "<group>"; };
+		01379A49293F5A2700429C4E /* NordicWiFiProvisioner */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = NordicWiFiProvisioner; sourceTree = "<group>"; };
 		01481A922852092F00925FAB /* nRF_Wi_Fi_ProvisionerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = nRF_Wi_Fi_ProvisionerApp.swift; sourceTree = "<group>"; };
 		01481A932852092F00925FAB /* IntroView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroView.swift; sourceTree = "<group>"; };
 		01481A942852093000925FAB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -154,7 +153,6 @@
 		015845CB288FD5A900C7E4B7 /* AccessPointList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessPointList.swift; sourceTree = "<group>"; };
 		015D60A22875A1530048F065 /* ScannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerView.swift; sourceTree = "<group>"; };
 		01682619287F16CD0040C97E /* Array+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Ext.swift"; sourceTree = "<group>"; };
-		0179FABC28F03B0900DEBBBB /* Provisioner */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Provisioner; sourceTree = "<group>"; };
 		0183EFC82897C196002E79A5 /* Status.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Status.swift; sourceTree = "<group>"; };
 		0183EFCC2897C446002E79A5 /* ReversedLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReversedLabel.swift; sourceTree = "<group>"; };
 		01922CBC28A2713100492E87 /* NavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationView.swift; sourceTree = "<group>"; };
@@ -165,7 +163,6 @@
 		019D1D2D29128E96000D8BD4 /* AuthMode+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AuthMode+Ext.swift"; sourceTree = "<group>"; };
 		019D1D3029128F3E000D8BD4 /* ConnectionState+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ConnectionState+Ext.swift"; sourceTree = "<group>"; };
 		019D1D332912C201000D8BD4 /* MACAddress+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MACAddress+Ext.swift"; sourceTree = "<group>"; };
-		019D1D362912C588000D8BD4 /* Band+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Band+Ext.swift"; sourceTree = "<group>"; };
 		019DCE24288553E700E16E9F /* CGRect+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGRect+Ext.swift"; sourceTree = "<group>"; };
 		01A0C29428896343000AA135 /* DeviceViewModelFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceViewModelFactory.swift; sourceTree = "<group>"; };
 		01A43DEA2886FECB0025A5C4 /* DeviceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceView.swift; sourceTree = "<group>"; };
@@ -205,8 +202,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				01DB109B28CF6404005634CF /* Markdown in Frameworks */,
-				01A0C289288853EB000AA135 /* NordicStyle in Frameworks */,
-				011AB1FE293805150040F82E /* Provisioner in Frameworks */,
+				01379A4B293F5A5200429C4E /* NordicWiFiProvisioner in Frameworks */,
+				01379A48293F53F700429C4E /* NordicStyle in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -260,7 +257,7 @@
 		01481A8C2852092F00925FAB = {
 			isa = PBXGroup;
 			children = (
-				0179FABC28F03B0900DEBBBB /* Provisioner */,
+				01379A49293F5A2700429C4E /* NordicWiFiProvisioner */,
 				019A5D8D286C77CE002D03F0 /* NordicStyle */,
 				01481A912852092F00925FAB /* Shared */,
 				01481AA02852093000925FAB /* macOS */,
@@ -387,7 +384,6 @@
 				019D1D2D29128E96000D8BD4 /* AuthMode+Ext.swift */,
 				019D1D3029128F3E000D8BD4 /* ConnectionState+Ext.swift */,
 				019D1D332912C201000D8BD4 /* MACAddress+Ext.swift */,
-				019D1D362912C588000D8BD4 /* Band+Ext.swift */,
 			);
 			path = ModelExtensions;
 			sourceTree = "<group>";
@@ -527,9 +523,9 @@
 			);
 			name = "nRF-Wi-Fi-Provisioner (iOS)";
 			packageProductDependencies = (
-				01A0C288288853EB000AA135 /* NordicStyle */,
 				01DB109A28CF6404005634CF /* Markdown */,
-				011AB1FD293805150040F82E /* Provisioner */,
+				01379A47293F53F700429C4E /* NordicStyle */,
+				01379A4A293F5A5200429C4E /* NordicWiFiProvisioner */,
 			);
 			productName = "nRF-Wi-Fi-Provisioner (iOS)";
 			productReference = 01481A992852093000925FAB /* nRF-Wi-Fi-Provisioner.app */;
@@ -734,7 +730,6 @@
 				01922CC028A2A48300492E87 /* Label+Ext.swift in Sources */,
 				01C0F0FD287DE926008BBE46 /* ScanResult.swift in Sources */,
 				01FCADC1291D4C9F0044904B /* AccessPointSection.swift in Sources */,
-				019D1D372912C588000D8BD4 /* Band+Ext.swift in Sources */,
 				01FCADBF291D4AA00044904B /* StatusIndicatorView.swift in Sources */,
 				01481ABA2852093000925FAB /* nRF_Wi_Fi_ProvisionerApp.swift in Sources */,
 				015845CC288FD5A900C7E4B7 /* AccessPointList.swift in Sources */,
@@ -784,7 +779,6 @@
 				019D09F528CE1777005143D5 /* Flow.swift in Sources */,
 				01922CC128A2A48300492E87 /* Label+Ext.swift in Sources */,
 				01C0F0FE287DE926008BBE46 /* ScanResult.swift in Sources */,
-				019D1D382912C588000D8BD4 /* Band+Ext.swift in Sources */,
 				01FCADC7292512EA0044904B /* Int+Ext.swift in Sources */,
 				01481ABB2852093000925FAB /* nRF_Wi_Fi_ProvisionerApp.swift in Sources */,
 				015845CD288FD5A900C7E4B7 /* AccessPointList.swift in Sources */,
@@ -1317,13 +1311,13 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		011AB1FD293805150040F82E /* Provisioner */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = Provisioner;
-		};
-		01A0C288288853EB000AA135 /* NordicStyle */ = {
+		01379A47293F53F700429C4E /* NordicStyle */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = NordicStyle;
+		};
+		01379A4A293F5A5200429C4E /* NordicWiFiProvisioner */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = NordicWiFiProvisioner;
 		};
 		01A0C28A288853F2000AA135 /* NordicStyle */ = {
 			isa = XCSwiftPackageProductDependency;

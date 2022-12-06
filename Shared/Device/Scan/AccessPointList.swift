@@ -7,7 +7,7 @@
 
 import SwiftUI
 import NordicStyle
-import Provisioner
+import NordicWiFiProvisioner
 
 struct AccessPointList: View {
     @Environment(\.presentationMode) var presentationMode
@@ -143,7 +143,7 @@ struct AccessPointList: View {
 
 struct AccessPointList_Previews: PreviewProvider {
     struct Selection: AccessPointSelection {
-        var selectedWiFi: Provisioner.WifiInfo?
+        var selectedWiFi: NordicWiFiProvisioner.WifiInfo?
         
         var showAccessPointList: Bool = false
     }
@@ -165,7 +165,7 @@ struct AccessPointList_Previews: PreviewProvider {
     }
     
     class DummyAccessPointListViewModel: AccessPointList.ViewModel {
-        override func setupAndScan(provisioner: DeviceManager, scanDelegate: ScanDelegate, wifiSelection: AccessPointSelection) {
+        override func setupAndScan(provisioner: DeviceManager, scanDelegate: WiFiScanerDelegate, wifiSelection: AccessPointSelection) {
             self.provisioner = MockScanProvisioner(deviceId: "")
             self.provisioner.provisionerScanDelegate = self
             try? self.provisioner.startScan(scanParams: ScanParams())

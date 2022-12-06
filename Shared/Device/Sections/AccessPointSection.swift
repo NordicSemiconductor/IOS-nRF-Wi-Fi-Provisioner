@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import Provisioner
+import NordicWiFiProvisioner
 
 struct AccessPointSection: View {
     let viewModel: DeviceView.ViewModel
