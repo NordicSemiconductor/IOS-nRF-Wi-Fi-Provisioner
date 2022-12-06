@@ -137,7 +137,6 @@
 		01062AD928B6592700BB41FD /* View+Mod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Mod.swift"; sourceTree = "<group>"; };
 		0107FEA928F827A200693317 /* ScanResultRaw.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanResultRaw.swift; sourceTree = "<group>"; };
 		011A2612287CAF890004A5C4 /* BluetoothManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BluetoothManager.swift; sourceTree = "<group>"; };
-		01379A49293F5A2700429C4E /* NordicWiFiProvisioner */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = NordicWiFiProvisioner; sourceTree = "<group>"; };
 		01481A922852092F00925FAB /* nRF_Wi_Fi_ProvisionerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = nRF_Wi_Fi_ProvisionerApp.swift; sourceTree = "<group>"; };
 		01481A932852092F00925FAB /* IntroView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroView.swift; sourceTree = "<group>"; };
 		01481A942852093000925FAB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -257,7 +256,6 @@
 		01481A8C2852092F00925FAB = {
 			isa = PBXGroup;
 			children = (
-				01379A49293F5A2700429C4E /* NordicWiFiProvisioner */,
 				019A5D8D286C77CE002D03F0 /* NordicStyle */,
 				01481A912852092F00925FAB /* Shared */,
 				01481AA02852093000925FAB /* macOS */,
