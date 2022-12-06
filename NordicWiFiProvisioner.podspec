@@ -32,7 +32,10 @@ It cantains all the necessary components to scan for nRF-7 devices, connect to t
   s.ios.deployment_target = '11.0'
   s.osx.deployment_target = '10.13'
 
+  s.swift_versions = ['5.0', '5.1', '5.2', '5.3', '5.4', '5.5', '5.6']
+
   s.source_files = 'Sources/NordicWiFiProvisioner/**/*.swift'
+  s.frameworks = 'CoreBluetooth'
   
   s.dependency 'SwiftProtobuf'
   s.dependency 'CoreBluetoothMock'
