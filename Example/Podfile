@@ -1,0 +1,13 @@
+use_frameworks!
+
+platform :ios, '11.0'
+
+target 'nRF-Wi-Fi-Provisioner (iOS)' do
+  pod 'NordicWiFiProvisioner', :path => '../'
+
+  target 'Tests iOS' do
+    inherit! :search_paths
+
+    
+  end
+end
