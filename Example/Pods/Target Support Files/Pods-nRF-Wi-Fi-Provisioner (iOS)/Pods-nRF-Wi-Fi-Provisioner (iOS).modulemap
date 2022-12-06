@@ -1,0 +1,6 @@
+framework module Pods_nRF_Wi_Fi_Provisioner__iOS_ {
+  umbrella header "Pods-nRF-Wi-Fi-Provisioner (iOS)-umbrella.h"
+
+  export *
+  module * { export * }
+}

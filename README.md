@@ -4,7 +4,7 @@ An iOS library and app for provisioning [nRF 7 devices](https://www.nordicsemi.c
 
 ## Application
 
-<a href='https://play.google.com/store/apps/details?id=no.nordicsemi.android.wifi.provisioning'><img alt='Get it on Google Play' src='docs/logo.svg' width='250'/></a>
+<a href='https://apps.apple.com/app/nrf-wi-fi-provisioner/id1638948698'><img alt='Get it on AppStore' src='docs/logo.svg' width='250'/></a>
 
 ### Flow
 The application allows to communicate with a nRF 7 series device.
