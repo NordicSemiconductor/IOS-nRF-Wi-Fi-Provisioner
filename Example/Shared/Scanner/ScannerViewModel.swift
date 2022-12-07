@@ -72,52 +72,15 @@ class ScannerViewModel: ObservableObject {
         
         self.scanner.delegate = self
         self.startScan()
-        // TODO: Handle State Changing
-        /*
-        bluetoothManager.statePublisher
-            .receive(on: DispatchQueue.main)
-            .mapError { _ in fatalError() }
-            .sink(receiveValue: { [weak self] state in
-                guard let self = self else { return }
-                self.state = State(from: state)
-            })
-            .store(in: &cancelable)
-         */
     }
     
     
     func startScan() {
         self.scanner.startScan()
-        // TODO: Handle Start Scar
-        /*
-        bluetoothManager.peripheralPublisher
-            .receive(on: DispatchQueue.main)
-            .mapError { _ in fatalError() }
-            .sink(receiveValue: { [weak self] result in
-                guard let self = self else { return }
-                if !self.allScanResults.contains(result) {
-                    self.allScanResults.insert(result)
-                }
-            })
-            .store(in: &cancelable)
-         */
     }
     
     private func reset() {
-        // TODO: Handle Reset
-        /*
-        scanResults = allScanResults.filter {
-            onlyUnprovisioned ? $0.previsioned != true : true
-        }.map {
-            ScannerViewModel.ScanResult(
-                name: $0.name,
-                rssi: $0.rssi,
-                id: $0.peripheral.identifier,
-                previsioned: $0.previsioned,
-                version: $0.version
-            )
-        }
-         */
+        self.scanner.reset()
     }
 }
 

@@ -277,7 +277,6 @@ extension InternalDeviceManager {
         switch response.status {
         case .success:
             guard response.hasDeviceStatus else {
-                // TODO: Unit Test
                 infoDelegate?.deviceStatusReceived(.failure(.emptyResponse))
                 return
             }
