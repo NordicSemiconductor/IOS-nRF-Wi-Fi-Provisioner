@@ -8,6 +8,7 @@
 import Foundation
 
 extension DeviceManager {
+    /// Bluetooth Connection State.
     public enum ConnectionState {
         case disconnected
         case connecting

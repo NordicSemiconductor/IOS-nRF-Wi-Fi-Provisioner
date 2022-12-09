@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// WiFi Connection State.
 public enum ConnectionState: Equatable {
     case disconnected
     case authentication

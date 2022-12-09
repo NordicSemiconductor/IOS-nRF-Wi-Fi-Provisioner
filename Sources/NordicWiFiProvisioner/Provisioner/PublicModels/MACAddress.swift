@@ -11,7 +11,9 @@ import Foundation
 public struct MACAddress: CustomStringConvertible, Equatable, Hashable {
     let data: Data
     
-    /// Data should be 48 bit length, otherwise nil will be returned
+    /// Creates an instance of `MACAddress` from a string.
+    ///
+    /// - parameter data: 6 bytes of data. Data should be 48 bit length, otherwise nil will be returned.
     public init?(data: Data) {
         guard data.count == 6 else { return nil }
         self.data = data

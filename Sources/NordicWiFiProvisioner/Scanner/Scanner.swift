@@ -5,14 +5,17 @@
 import Foundation
 import CoreBluetoothMock
 
-/// Bluetooth Scanner for scanning for nRF-7 Devices
+/// Bluetooth Scanner for scanning for nRF-7 Devices.
+///
 /// Though this class is designed to scan for BLE devices, you don't need to deal with Bluetooth directly.
-/// Scanner provides all the necessary wrappers for CoreBluetooth, so you even don't need to import CoreBluetooth.
+///
+/// Scanner provides all the necessary wrappers for ``CoreBluetooth``, so you even don't need to import `CoreBluetooth`.
 open class Scanner {
     private (set) var scanResults: [ScanResult] = []
     
     private var internalScanner: InternalScanner
     
+    /// The delegate that you want to receive scan results.
     open var delegate: ScannerDelegate? {
         get {
             internalScanner.delegate
@@ -22,6 +25,7 @@ open class Scanner {
         }
     }
     
+    /// Initialize a new instance of the `Scanner`.
     public init(delegate: ScannerDelegate? = nil) {
         self.internalScanner = InternalScanner(
             delegate: delegate,

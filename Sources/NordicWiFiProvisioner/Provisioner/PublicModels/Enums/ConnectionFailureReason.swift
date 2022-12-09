@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// Error that can occur during connection to the network.
 public enum ConnectionFailureReason: Error, Equatable {
     
     /// Authentication error.

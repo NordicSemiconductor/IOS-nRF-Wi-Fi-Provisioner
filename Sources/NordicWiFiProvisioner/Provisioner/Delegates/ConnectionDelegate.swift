@@ -10,7 +10,6 @@ import Foundation
 /// A protocol that defines a delegate for Connection flow
 public protocol ConnectionDelegate: AnyObject {
     /// Tells the delegate that the provisioner has connected to the device
-    ///
     func deviceManagerConnectedDevice(_ deviceManager: DeviceManager)
 
     /// Tells the delegate that the provisioner was not able to connect to the device

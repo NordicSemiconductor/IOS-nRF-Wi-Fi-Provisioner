@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// WiFi Authentication Mode.
 public enum AuthMode: Equatable {
     case open
     case wep

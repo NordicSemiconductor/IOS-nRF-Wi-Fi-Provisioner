@@ -7,6 +7,8 @@
 
 import Foundation
 
+/// Radio frequency bands.
+/// Only 2.4 GHz and 5 GHz are supported now.
 public enum Band: Equatable {
     case band24Gh
     case band5Gh

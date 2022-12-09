@@ -7,7 +7,9 @@
 
 import Foundation
 
+/// A struct that contains ip address of the device.
 public struct ConnectionInfo {
+    /// IP address of the device.
     public var ip: IPAddress?
     
     public init(ip: IPAddress? = nil) {

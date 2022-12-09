@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// Wi-Fi details.
 public struct WifiInfo {
     public var ssid: String
     public var bssid: MACAddress
