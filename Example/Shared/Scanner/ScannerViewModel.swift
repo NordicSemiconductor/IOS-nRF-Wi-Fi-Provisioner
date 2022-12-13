@@ -80,7 +80,7 @@ class ScannerViewModel: ObservableObject {
     }
     
     private func reset() {
-        self.scanner.reset()
+        self.scanResults.removeAll()
     }
 }
 

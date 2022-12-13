@@ -5,14 +5,10 @@
 import Foundation
 import CoreBluetoothMock
 
-/// Bluetooth Scanner for scanning for nRF-7 Devices.
+/// An object that uses [CBCentralManager](https://developer.apple.com/documentation/corebluetooth/cbcentralmanager) to scan for peripherals and filter nRF devices.
 ///
-/// Though this class is designed to scan for BLE devices, you don't need to deal with Bluetooth directly.
-///
-/// Scanner provides all the necessary wrappers for ``CoreBluetooth``, so you even don't need to import `CoreBluetooth`.
+/// Scanner provides all the necessary methods for scanning nRF-Devices and retrieving data like version or provisioning status, so you even don't need to import  [CoreBluetooth](https://developer.apple.com/documentation/corebluetooth).
 open class Scanner {
-    private (set) var scanResults: [ScanResult] = []
-    
     private var internalScanner: InternalScanner
     
     /// The delegate that you want to receive scan results.
@@ -41,10 +37,5 @@ open class Scanner {
     /// Stops scanning for devices
     open func stopScan() {
         internalScanner.stopScan()
-    }
-
-    /// Reset scan results
-    open func reset() {
-        scanResults = []
     }
 }

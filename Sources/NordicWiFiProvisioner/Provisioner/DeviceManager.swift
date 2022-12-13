@@ -62,7 +62,7 @@ open class DeviceManager {
     }
 
     /// The object that you want to receive Wi-Fi scan results.
-    open var provisionerScanDelegate: WiFiScanerDelegate? {
+    open var wiFiScanerDelegate: WiFiScanerDelegate? {
         get {
             internalProvisioner.provisionerScanDelegate
         }
@@ -91,6 +91,15 @@ open class DeviceManager {
     /// - Precondition: Make sure that iOS or MacOS device supports bluetooth and it's turned on and ready to use.
     open func connect() {
         internalProvisioner.connect()
+    }
+    
+    /// Cancel connection.
+    ///
+    /// The connected device will cancel its connection and the result will be delivered to ``ConnectionDelegate/deviceManagerDisconnectedDevice(_:error:)``.
+    ///
+    /// If there is no connected device, nothing will happen.
+    open func disconnect() {
+        internalProvisioner.disconnect()
     }
 
     /// Read the device version.
