@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import NordicWiFiProvisioner
 
 @main
 struct nRF_Wi_Fi_ProvisionerApp: App {
@@ -14,6 +15,9 @@ struct nRF_Wi_Fi_ProvisionerApp: App {
         WindowGroup {
             ScannerView(viewModel: ScannerViewModel())
                 .environmentObject(DeviceViewModelFactory())
+                .onFirstAppear {
+                    MockManager.default.emulateDevices()
+                }
         }
                 
     }

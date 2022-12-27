@@ -27,7 +27,8 @@ public struct WifiInfo {
 extension WifiInfo: ProtoConvertible {
     init(proto: Proto.WifiInfo) {
         self.ssid = String(data: proto.ssid, encoding: .utf8)!
-        self.bssid = MACAddress(data: proto.bssid.prefix(6))!
+        let data = proto.bssid
+        self.bssid = MACAddress(data: data.prefix(6))!
         self.band = proto.hasBand ? Band(proto: proto.band) : nil
         self.channel = UInt(proto.channel)
         self.auth = proto.hasAuth ? AuthMode(proto: proto.auth) : nil

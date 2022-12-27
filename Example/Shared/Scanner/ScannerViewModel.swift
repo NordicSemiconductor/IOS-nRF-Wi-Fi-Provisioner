@@ -74,7 +74,6 @@ class ScannerViewModel: ObservableObject {
         self.startScan()
     }
     
-    
     func startScan() {
         self.scanner.startScan()
     }
