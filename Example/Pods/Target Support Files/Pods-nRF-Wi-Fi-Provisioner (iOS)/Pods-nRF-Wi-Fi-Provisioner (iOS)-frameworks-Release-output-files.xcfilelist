@@ -1,0 +1,3 @@
+${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CoreBluetoothMock.framework
+${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NordicWiFiProvisioner.framework
+${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftProtobuf.framework
