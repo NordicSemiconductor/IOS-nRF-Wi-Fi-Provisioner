@@ -47,3 +47,10 @@ You can implement your own scanner, but the library provides a ``Scanner`` class
 - ``MACAddress``
 - ``AuthMode``
 - ``Band``
+
+### Mocking
+- ``MockManager``
+- ``MockDevice``
+- ``MockProvisionDelegate``
+- ``MockScanResultProvider``
+- ``WiFiScanResultFaker``
