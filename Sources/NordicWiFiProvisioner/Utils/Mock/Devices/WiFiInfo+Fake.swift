@@ -1,11 +1,13 @@
 import Foundation
 
+/// Provider of fake WiFi scan results for ``MockDevice``.
 public protocol MockScanResultProvider {
     typealias FakeWiFiScanResult = (WifiInfo, Int)
     
     var allNetworks: [FakeWiFiScanResult] { get }
 }
 
+/// Default implementation of `MockScanResultProvider` protocol.
 public struct WiFiScanResultFaker: MockScanResultProvider {
     
     public init() {}

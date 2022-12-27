@@ -38,7 +38,9 @@ private func msleep(_ nanosec: TimeInterval) {
     usleep(UInt32(nanosec * 1_000_000))
 }
 
+/// Delegate that provides result of the provisioning process.
 public protocol MockProvisionDelegate {
+    /// Returns result of the provisioning process.
     func provisionResult(wifiConfig: WifiConfig) -> Result<ConnectionInfo, ConnectionFailureReason>
 }
 
@@ -75,9 +77,13 @@ extension MockDevice {
     )
 }
 
+/// Mock device emulates nRF-7 device.
 open class MockDevice {
+    /// Identifier of the device. Must be UUID string.
     let id: String
+    /// Name of the device.
     let name: String
+    /// Device status. Contains information about the device state and provisioning info streight after the connection.
     let deviceStatus: DeviceStatus
     lazy var provisioned: Bool = deviceStatus.provisioningInfo != nil
     lazy var connected: Bool = deviceStatus.state == .connected
@@ -100,6 +106,19 @@ open class MockDevice {
     var provisionDelegate: MockProvisionDelegate = DefaultMockProvisionDelegate()
     var searchResultProvider: MockScanResultProvider = WiFiScanResultFaker()
     
+    /**
+        Creates new instance of the MockDevice.
+        
+        - parameter id: Identifier of the device. Must be UUID string.
+        - parameter name: Name of the device.
+        - parameter deviceStatus: Device status. Contains information about the device state and provisioning info streight after the connection.
+        - parameter version: Version of the device firmware.
+        - parameter bluetoothRSSI: Bluetooth RSSI of the device. Default value is -50.
+        - parameter wifiRSSI: RSSI of the Wi-Fi network to which the device is connected. Default value is -55.
+        - parameter queue: Queue on which the delegate methods will be called.
+        - parameter provisionDelegate: Delegate that provides result of the provisioning process.
+        - parameter searchResultProvider: Provider of the Wi-Fi scan results. Default value is ``WiFiScanResultFaker``.
+    */
     public init(
         id: String = UUID().uuidString,
         name: String,
