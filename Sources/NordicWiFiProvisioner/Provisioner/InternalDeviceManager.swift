@@ -14,6 +14,8 @@ class InternalDeviceManager {
     let deviceId: String
     
     let centralManager: CBCentralManager
+    var connectedPeripheral: CBPeripheral?
+    
     weak var connectionDelegate: ConnectionDelegate?
     weak var infoDelegate: InfoDelegate?
     weak var provisionerScanDelegate: WiFiScanerDelegate?
@@ -61,6 +63,13 @@ class InternalDeviceManager {
 
             self.connectionState = .connecting
             self.centralManager.connect(peripheral)
+        }
+    }
+    
+    func disconnect() {
+        connectionQueue.addOperation { [weak self] in 
+            guard let self else { return }
+            self.connectedPeripheral.map(self.centralManager.cancelPeripheralConnection)
         }
     }
     
@@ -339,6 +348,7 @@ extension InternalDeviceManager {
     // MARK: Handle Result
     func handleScanRecord(_ result: Proto.ScanRecord) {
         guard result.hasWifi else { return }
+        guard !result.wifi.bssid.isEmpty else { return }
         let rssi: Int? = result.hasRssi ? Int(result.rssi) : nil
         provisionerScanDelegate?.deviceManager(provisioner, discoveredAccessPoint: WifiInfo(proto: result.wifi), rssi: rssi)
     }

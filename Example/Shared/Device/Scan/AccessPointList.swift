@@ -159,7 +159,7 @@ struct AccessPointList_Previews: PreviewProvider {
             ]
             
             for sr in scanResults {
-                self.provisionerScanDelegate?.deviceManager(DeviceManager(deviceId: ""), discoveredAccessPoint: sr.wifi, rssi: sr.rssi)
+                self.wiFiScanerDelegate?.deviceManager(DeviceManager(deviceId: ""), discoveredAccessPoint: sr.wifi, rssi: sr.rssi)
             }
         }
     }
@@ -167,7 +167,7 @@ struct AccessPointList_Previews: PreviewProvider {
     class DummyAccessPointListViewModel: AccessPointList.ViewModel {
         override func setupAndScan(provisioner: DeviceManager, scanDelegate: WiFiScanerDelegate, wifiSelection: AccessPointSelection) {
             self.provisioner = MockScanProvisioner(deviceId: "")
-            self.provisioner.provisionerScanDelegate = self
+            self.provisioner.wiFiScanerDelegate = self
             try? self.provisioner.startScan(scanParams: ScanParams())
         }
     }

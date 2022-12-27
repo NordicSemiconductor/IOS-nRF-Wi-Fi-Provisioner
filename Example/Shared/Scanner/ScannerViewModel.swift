@@ -74,13 +74,12 @@ class ScannerViewModel: ObservableObject {
         self.startScan()
     }
     
-    
     func startScan() {
         self.scanner.startScan()
     }
     
     private func reset() {
-        self.scanner.reset()
+        self.scanResults.removeAll()
     }
 }
 

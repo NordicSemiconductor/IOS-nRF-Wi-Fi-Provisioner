@@ -97,7 +97,7 @@ extension AccessPointList {
         
         func setupAndScan(provisioner: DeviceManager, scanDelegate: WiFiScanerDelegate, wifiSelection: AccessPointSelection) {
             self.provisioner = provisioner
-            self.provisioner.provisionerScanDelegate = scanDelegate
+            self.provisioner.wiFiScanerDelegate = scanDelegate
             self.accessPointSelection = wifiSelection
             self.startScan()
         }
