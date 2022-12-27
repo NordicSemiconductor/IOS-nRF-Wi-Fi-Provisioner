@@ -348,6 +348,7 @@ extension InternalDeviceManager {
     // MARK: Handle Result
     func handleScanRecord(_ result: Proto.ScanRecord) {
         guard result.hasWifi else { return }
+        guard !result.wifi.bssid.isEmpty else { return }
         let rssi: Int? = result.hasRssi ? Int(result.rssi) : nil
         provisionerScanDelegate?.deviceManager(provisioner, discoveredAccessPoint: WifiInfo(proto: result.wifi), rssi: rssi)
     }

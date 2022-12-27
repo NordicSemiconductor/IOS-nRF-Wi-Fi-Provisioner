@@ -8,25 +8,21 @@
 import CoreBluetoothMock
 
 open class MockManager {
-    public static let `default` = MockManager()
+    public static let `default` = MockManager(devices: [
+        MockDevice.notProvisioned,
+        MockDevice.provisionedNotConnected,
+        MockDevice.provisionedConnected
+    ])
+    public var devices: [MockDevice]
     
-    init() {
-        
+    public init(devices: [MockDevice]) {
+        self.devices = devices
     }
     
     /// Start emulating scan results
     open func emulateDevices() {
         CBMCentralManagerMock.simulateInitialState(.unknown)
-        CBMCentralManagerMock.simulatePeripherals([
-            Device(
-                name: "nRF-7",
-                uuidString: "14387800-130c-49e7-b877-2881c89cb258",
-                delegate: MockSpecDelegate(),
-                version: 17,
-                provisioned: true,
-                connected: true,
-                rssi: -50).spec
-        ])
+        CBMCentralManagerMock.simulatePeripherals(devices.map(\.spec))
         CBMCentralManagerMock.simulatePowerOn()
     }
 }

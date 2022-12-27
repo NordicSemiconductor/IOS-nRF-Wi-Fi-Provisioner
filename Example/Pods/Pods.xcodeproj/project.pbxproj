@@ -9,12 +9,8 @@
 /* Begin PBXBuildFile section */
 		00CDEB2DDA9BE2EC76E8910BD2A6A51F /* ConnectionFailureReason.swift in Sources */ = {isa = PBXBuildFile; fileRef = D65C15581331D316A58CB05AD7A0D9F5 /* ConnectionFailureReason.swift */; };
 		011AF20529535E06008B0ADF /* WiFiInfo+Fake.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011AF20329535D1D008B0ADF /* WiFiInfo+Fake.swift */; };
-		011AF20629535E21008B0ADF /* Mock+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011AF1FD29535D15008B0ADF /* Mock+Ext.swift */; };
-		011AF20729535E21008B0ADF /* MockDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 017A4345294CCCF100A74BC2 /* MockDelegate.swift */; };
 		011AF20829535E21008B0ADF /* MockManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 017A4344294CCCF100A74BC2 /* MockManager.swift */; };
-		011AF20929535E21008B0ADF /* MockDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 017A4348294CCCF100A74BC2 /* MockDevice.swift */; };
 		011AF20A29535E21008B0ADF /* MockSpecDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011AF1FE29535D15008B0ADF /* MockSpecDelegate.swift */; };
-		011AF20B29535E21008B0ADF /* MockWiFiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011AF1FC29535D15008B0ADF /* MockWiFiService.swift */; };
 		017A43242948ABED00A74BC2 /* Documentation.docc in Sources */ = {isa = PBXBuildFile; fileRef = 017A43232948ABED00A74BC2 /* Documentation.docc */; };
 		030186E5E7BF7D3827D3B30FED439BAC /* ProtobufAPIVersionCheck.swift in Sources */ = {isa = PBXBuildFile; fileRef = B60A71E4B79A37492BB939755062D5BA /* ProtobufAPIVersionCheck.swift */; };
 		03FB6F23BF38F6F1DAB28347CB43DBF2 /* ExtensionFieldValueSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43044CDB272E1B17C98A3BB7C3A29F57 /* ExtensionFieldValueSet.swift */; };
@@ -214,14 +210,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		011AF1FC29535D15008B0ADF /* MockWiFiService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockWiFiService.swift; sourceTree = "<group>"; };
-		011AF1FD29535D15008B0ADF /* Mock+Ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Mock+Ext.swift"; sourceTree = "<group>"; };
 		011AF1FE29535D15008B0ADF /* MockSpecDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockSpecDelegate.swift; sourceTree = "<group>"; };
 		011AF20329535D1D008B0ADF /* WiFiInfo+Fake.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "WiFiInfo+Fake.swift"; sourceTree = "<group>"; };
 		017A43232948ABED00A74BC2 /* Documentation.docc */ = {isa = PBXFileReference; lastKnownFileType = folder.documentationcatalog; name = Documentation.docc; path = Sources/NordicWiFiProvisioner/Documentation.docc; sourceTree = "<group>"; };
 		017A4344294CCCF100A74BC2 /* MockManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockManager.swift; sourceTree = "<group>"; };
-		017A4345294CCCF100A74BC2 /* MockDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockDelegate.swift; sourceTree = "<group>"; };
-		017A4348294CCCF100A74BC2 /* MockDevice.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockDevice.swift; sourceTree = "<group>"; };
 		02FEB95DCEDB96AF4842199994BD49B4 /* TimeUtils.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TimeUtils.swift; path = Sources/SwiftProtobuf/TimeUtils.swift; sourceTree = "<group>"; };
 		04EE334E1C66C781CD90270C8561F05B /* CBMPeripheralDelegate.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CBMPeripheralDelegate.swift; path = CoreBluetoothMock/Classes/CBMPeripheralDelegate.swift; sourceTree = "<group>"; };
 		04F8992FB48EE61208C3EF68C6D128B6 /* CBMPeripheralSpecDelegate.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CBMPeripheralSpecDelegate.swift; path = CoreBluetoothMock/Classes/CBMPeripheralSpecDelegate.swift; sourceTree = "<group>"; };
@@ -467,20 +459,12 @@
 			path = ../..;
 			sourceTree = "<group>";
 		};
-		011AF20229535D1D008B0ADF /* Fake */ = {
-			isa = PBXGroup;
-			children = (
-				011AF20329535D1D008B0ADF /* WiFiInfo+Fake.swift */,
-			);
-			path = Fake;
-			sourceTree = "<group>";
-		};
 		017A43252948AC3300A74BC2 /* Mock */ = {
 			isa = PBXGroup;
 			children = (
 				017A4347294CCCF100A74BC2 /* Devices */,
-				017A4345294CCCF100A74BC2 /* MockDelegate.swift */,
 				017A4344294CCCF100A74BC2 /* MockManager.swift */,
+				011AF1FE29535D15008B0ADF /* MockSpecDelegate.swift */,
 			);
 			path = Mock;
 			sourceTree = "<group>";
@@ -488,11 +472,7 @@
 		017A4347294CCCF100A74BC2 /* Devices */ = {
 			isa = PBXGroup;
 			children = (
-				011AF20229535D1D008B0ADF /* Fake */,
-				011AF1FD29535D15008B0ADF /* Mock+Ext.swift */,
-				011AF1FE29535D15008B0ADF /* MockSpecDelegate.swift */,
-				011AF1FC29535D15008B0ADF /* MockWiFiService.swift */,
-				017A4348294CCCF100A74BC2 /* MockDevice.swift */,
+				011AF20329535D1D008B0ADF /* WiFiInfo+Fake.swift */,
 			);
 			path = Devices;
 			sourceTree = "<group>";
@@ -1220,14 +1200,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				011AF20B29535E21008B0ADF /* MockWiFiService.swift in Sources */,
 				74F088F405E5E87C5E58CCC3C3481B58 /* AuthMode.swift in Sources */,
 				DD5E548DA89E41D132D90EFE0A3E9469 /* Band.swift in Sources */,
-				011AF20729535E21008B0ADF /* MockDelegate.swift in Sources */,
 				FC5D1A3946EE976A9F6FF154B5782B61 /* BluetoothConnectionInfo.swift in Sources */,
 				017A43242948ABED00A74BC2 /* Documentation.docc in Sources */,
 				4A081D0D9CA3890C79DC4A7B9353D1BA /* common.pb.swift in Sources */,
-				011AF20629535E21008B0ADF /* Mock+Ext.swift in Sources */,
 				8ED87028299568F3E8F1D55DA29D47F3 /* ConnectionDelegate.swift in Sources */,
 				00CDEB2DDA9BE2EC76E8910BD2A6A51F /* ConnectionFailureReason.swift in Sources */,
 				ACA677EB8CB120FEAAA7819CA6221BC6 /* ConnectionInfo.swift in Sources */,
@@ -1240,7 +1217,6 @@
 				903A69F31ED5476DF471A672904E8EDB /* InternalDeviceManager.swift in Sources */,
 				2E14C4AF4D19657E5D39D2477CEF2D9E /* InternalScanner.swift in Sources */,
 				FA760382C9EAB6436CD4BE88B5D166D9 /* IPAddress.swift in Sources */,
-				011AF20929535E21008B0ADF /* MockDevice.swift in Sources */,
 				F5A948FD760944D92815C358F2F6DACB /* Logger.swift in Sources */,
 				BA7C2878872CBDB916FCDBF7B4B32843 /* MACAddress.swift in Sources */,
 				268EA71CC56C6E9082D67A9BA10C145C /* NordicWiFiProvisioner-dummy.m in Sources */,

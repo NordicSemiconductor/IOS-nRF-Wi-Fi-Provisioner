@@ -8,7 +8,27 @@
 import Foundation
 import CoreBluetoothMock
 
-extension ConnectionState {
+// MARK: - Constants
+private extension CBMUUID {
+    static let version =        CBMUUID(string: "14387801-130c-49e7-b877-2881c89cb258")
+    static let controlPoint =   CBMUUID(string: "14387802-130c-49e7-b877-2881c89cb258")
+    static let dataOut =        CBMUUID(string: "14387803-130c-49e7-b877-2881c89cb258")
+    static let wifi =           CBMUUID(string: "14387800-130c-49e7-b877-2881c89cb258")
+}
+
+private extension CBMCharacteristicMock {
+    static let version = CBMCharacteristicMock(type: .version, properties: [.read])
+    static let controlPoint = CBMCharacteristicMock(type: .controlPoint, properties: [.write, .notify])
+    static let dataOut = CBMCharacteristicMock(type: .dataOut, properties: [.notify])
+}
+
+private extension DeviceStatus {
+    static let notProvisioned = DeviceStatus(state: .disconnected, provisioningInfo: nil)
+    static let provisionedNotConnected = DeviceStatus(state: .disconnected, provisioningInfo: WiFiScanResultFaker().allNetworks[0].0)
+    static let provisionedConnected = DeviceStatus(state: .connected, provisioningInfo: WiFiScanResultFaker().allNetworks[20].0)
+}
+
+private extension ConnectionState {
     static var successStates: [ConnectionState] = [
         .authentication, .association, .obtainingIp, .connected
     ]
@@ -18,7 +38,7 @@ private func msleep(_ nanosec: TimeInterval) {
     usleep(UInt32(nanosec * 1_000_000))
 }
 
-protocol MockProvisionDelegate {
+public protocol MockProvisionDelegate {
     func provisionResult(wifiConfig: WifiConfig) -> Result<ConnectionInfo, ConnectionFailureReason>
 }
 
@@ -32,18 +52,44 @@ class DefaultMockProvisionDelegate: MockProvisionDelegate {
     }
 }
 
-open class MockSpecDelegate {
-    let name: String = ""
-    let provisioned: Bool = true
+extension MockDevice {
+    static let notProvisioned = MockDevice(
+        id: "14387800-130c-49e7-b877-2881c89cb260",
+        name: "nRF-7 Wi-Fi (1)",
+        deviceStatus: DeviceStatus.notProvisioned,
+        version: 1
+    )
+    
+    static let provisionedNotConnected = MockDevice(
+        id: "14387800-130c-49e7-b877-2881c89cb261",
+        name: "nRF-7 Wi-Fi (2)",
+        deviceStatus: DeviceStatus.provisionedNotConnected,
+        version: 2
+    )
+    
+    static let provisionedConnected = MockDevice(
+        id: "14387800-130c-49e7-b877-2881c89cb262",
+        name: "nRF-7 Wi-Fi (3)",
+        deviceStatus: DeviceStatus.provisionedConnected,
+        version: 3
+    )
+}
+
+open class MockDevice {
+    let id: String
+    let name: String
+    let deviceStatus: DeviceStatus
+    lazy var provisioned: Bool = deviceStatus.provisioningInfo != nil
     lazy var connected: Bool = deviceStatus.state == .connected
-    let version: UInt = 17
-    let bluetoothRSSI: Int = -50
-    let wifiRSSI: Int = -50
+    let version: UInt
+    let bluetoothRSSI: Int
+    let wifiRSSI: Int?
     
-    let deviceStatus: DeviceStatus = DeviceStatus()
     
-    let queue: DispatchQueue = .main
+    let queue: DispatchQueue
     
+    /// Advertising interval, in seconds.
+    var interval: TimeInterval = 1.0
     /// Time interval between request and response
     var requestTimeInterval: TimeInterval = 0.2
     /// Time Interval between discovered Wi-Fi scan results
@@ -52,7 +98,29 @@ open class MockSpecDelegate {
     var connectionTimeInterval: TimeInterval = 0.9
     
     var provisionDelegate: MockProvisionDelegate = DefaultMockProvisionDelegate()
-    var searchResultProvider: MockScanResultProvider = WiScanResultFaker()
+    var searchResultProvider: MockScanResultProvider = WiFiScanResultFaker()
+    
+    public init(
+        id: String = UUID().uuidString,
+        name: String,
+        deviceStatus: DeviceStatus,
+        version: UInt,
+        bluetoothRSSI: Int = -50,
+        wifiRSSI: Int? = -55,
+        queue: DispatchQueue = .main,
+        provisionDelegate: MockProvisionDelegate? = nil,
+        searchResultProvider: MockScanResultProvider = WiFiScanResultFaker()
+    ) {
+        self.id = id
+        self.name = name
+        self.deviceStatus = deviceStatus
+        self.version = version
+        self.bluetoothRSSI = bluetoothRSSI
+        self.wifiRSSI = wifiRSSI
+        self.queue = queue
+        self.provisionDelegate = provisionDelegate ?? DefaultMockProvisionDelegate()
+        self.searchResultProvider = searchResultProvider
+    }
     
     // MARK: - Initial Values
     private var lastWiFiConfig: WifiConfig?
@@ -61,6 +129,48 @@ open class MockSpecDelegate {
     
     private var timer: Timer!
     
+    private (set) lazy var spec: CoreBluetoothMock.CBMPeripheralSpec = CBMPeripheralSpec
+        .simulatePeripheral(
+            identifier: UUID(uuidString: id)!,
+            proximity: .near
+        )
+        .advertising(
+            advertisementData: [
+                CBMAdvertisementDataLocalNameKey    : name,
+                CBMAdvertisementDataServiceUUIDsKey : [CBMUUID.wifi],
+                CBMAdvertisementDataIsConnectable   : true as NSNumber,
+                CBMAdvertisementDataServiceDataKey   : [
+                    CBMUUID.wifi : Data([
+                        UInt8(version), // Version
+                        0x00, // Reserved
+                        UInt8(provisioned ? 0x01 : 0x00) | (connected ? 0x02 : 0x00), // Flags
+                        UInt8(bitPattern: Int8(bluetoothRSSI))  // Wi-Fi RSSI
+                    ])
+                ]
+            ],
+            withInterval: interval,
+            alsoWhenConnected: false
+        )
+        .connectable(
+            name: name,
+            services: [
+                CBMServiceMock(
+                    type: .wifi,
+                    primary: true,
+                    characteristics: [
+                        .version,
+                        .controlPoint,
+                        .dataOut
+                    ])
+            ],
+            delegate: self,
+            connectionInterval: 0.150,
+            mtu: 23)
+        .allowForRetrieval()
+        .build()
+}
+
+extension MockDevice {
     // MARK: - Data Methods
     func parseWriteData(_ data: Data, peripheral: CBMPeripheralSpec) {
         do {
@@ -233,22 +343,21 @@ open class MockSpecDelegate {
         
         return try! result.serializedData()
     }
-    
 }
 
-extension MockSpecDelegate: CBMPeripheralSpecDelegate {
+extension MockDevice: CBMPeripheralSpecDelegate {
     public func peripheralDidReceiveConnectionRequest(_ peripheral: CBMPeripheralSpec) -> Result<Void, Error> {
         return .success(())
     }
-                                
+    
     public func peripheral(_ peripheral: CBMPeripheralSpec, didReceiveServiceDiscoveryRequest serviceUUIDs: [CBMUUID]?) -> Result<Void, Error> {
         return .success(())
     }
-                                    
+    
     public func peripheral(_ peripheral: CBMPeripheralSpec, didReceiveCharacteristicsDiscoveryRequest characteristicUUIDs: [CBMUUID]?, for service: CBMServiceMock) -> Result<Void, Error> {
         return .success(())
     }
-                                
+    
     public func peripheral(_ peripheral: CBMPeripheralSpec, didReceiveReadRequestFor characteristic: CBMCharacteristicMock) -> Result<Data, Error> {
         if characteristic.uuid == .version {
             var info = Proto.Info()
@@ -258,7 +367,7 @@ extension MockSpecDelegate: CBMPeripheralSpecDelegate {
             fatalError("peripheral(_:didReceiveReadRequestFor: \(characteristic) has not been implemented")
         }
     }
-                                
+    
     public func peripheral(_ peripheral: CBMPeripheralSpec, didReceiveWriteRequestFor characteristic: CBMCharacteristicMock, data: Data) -> Result<Void, Error> {
         if characteristic.uuid == .controlPoint {
             parseWriteData(data, peripheral: peripheral)
@@ -278,10 +387,3 @@ extension MockSpecDelegate: CBMPeripheralSpecDelegate {
         }
     }
 }
-/*
-extension MockSpecDelegate: PeripheralMock {
-    public var spec: CoreBluetoothMock.CBMPeripheralSpec {
-        
-    }
-}
-*/
