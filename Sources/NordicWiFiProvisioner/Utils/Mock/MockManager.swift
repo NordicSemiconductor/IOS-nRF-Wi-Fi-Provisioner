@@ -9,25 +9,26 @@ import CoreBluetoothMock
 
 /// Mock manager emulates nRF-7 devices and the whole process of provisioning.
 open class MockManager {
-    /// Default mock manager with 3 devices: not provisioned, provisioned but not connected, provisioned and connected.
-    public static let `default` = MockManager(devices: [
-        MockDevice.notProvisioned,
-        MockDevice.provisionedNotConnected,
-        MockDevice.provisionedConnected
-    ])
-
-    /// List of devices to emulate
-    public var devices: [MockDevice]
+    static var forceMock = false
     
-    /// Initialize mock manager with devices to emulate
-    public init(devices: [MockDevice]) {
-        self.devices = devices
-    }
-    
-    /// Start emulating scan results
-    open func emulateDevices() {
+    /// Emulates devices. 
+    ///
+    /// - Parameter devices: Devices to emulate. If `nil` then default devices will be emulated: not provisioned, provisioned but not connected, provisioned and connected.
+    open class func emulateDevices(devices: [MockDevice]? = nil, forceMock: Bool = false) {
+        self.forceMock = forceMock
+        
         CBMCentralManagerMock.simulateInitialState(.unknown)
-        CBMCentralManagerMock.simulatePeripherals(devices.map(\.spec))
+        if let devices = devices {
+            CBMCentralManagerMock.simulatePeripherals(devices.map(\.spec))
+        } else {
+            CBMCentralManagerMock.simulatePeripherals(
+                [
+                    MockDevice.notProvisioned,
+                    MockDevice.provisionedNotConnected,
+                    MockDevice.provisionedConnected
+                ].map(\.spec)
+            )
+        }
         CBMCentralManagerMock.simulatePowerOn()
     }
 }

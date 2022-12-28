@@ -98,11 +98,11 @@ struct ScannerView: View {
             Section {
                 ForEach(viewModel.scanResults, id: \.id) { scanResult in
                     NavigationLink {
-                        DeviceView(viewModel: vmFactory.viewModel(for: scanResult.sr.id))
+                        DeviceView(viewModel: vmFactory.viewModel(for: scanResult.sr.id.uuidString))
                             .navigationTitle(scanResult.name)
                             
                     } label: {
-                        ScanResultRaw(scanResult: scanResult)
+                        ScanResultRaw(scanResult: scanResult.sr)
                     }
                     .deviceAdoptiveDetail()
                     .accessibilityIdentifier("scan_result_\(viewModel.scanResults.firstIndex(where: { $0.id == scanResult.id }) ?? -1)")
@@ -124,24 +124,6 @@ struct ScannerView: View {
 import NordicWiFiProvisioner
 
 struct ScannerView_Previews: PreviewProvider {
-    struct MockScanResult: NordicWiFiProvisioner.ScanResult {
-        var id: String {
-            UUID().uuidString
-        }
-        
-        var name: String
-        
-        var rssi: Int
-        
-        var provisioned: Bool
-        
-        var connected: Bool
-        
-        var version: Int?
-        
-        var wifiRSSI: Int?
-    }
-    
     class DummyScanViewModel: ScannerViewModel {
         override var showStartInfo: Bool {
             get {

@@ -28,17 +28,19 @@ final class ProvisionerTests: XCTestCase {
     }
     
     func testProvisioner() throws {
-        let provisioner = DeviceManager(deviceId: wifiDevice.identifier.uuidString)
+        let provisioner = DeviceManager(deviceId: wifiDevice.identifier)
         let provDelegate = MockProvisionerDelegate()
         provisioner.provisionerDelegate = provDelegate
         
-        XCTAssertThrowsError(try provisioner.setConfig(wifi: .wifi1, passphrase: "passphrase", volatileMemory: true), "Should throw error if provisioner is not connected")
+        let wifi = WiFiScanResultFaker().allNetworks[0].0
+        
+        XCTAssertThrowsError(try provisioner.setConfig(wifi: wifi, passphrase: "passphrase", volatileMemory: true), "Should throw error if provisioner is not connected")
         
         provisioner.connect()
         
         wait(1)
         
-        XCTAssertNoThrow(try provisioner.setConfig(wifi: .wifi1, passphrase: "passphrase", volatileMemory: true))
+        XCTAssertNoThrow(try provisioner.setConfig(wifi: wifi, passphrase: "passphrase", volatileMemory: true))
         
         wait(10)
         

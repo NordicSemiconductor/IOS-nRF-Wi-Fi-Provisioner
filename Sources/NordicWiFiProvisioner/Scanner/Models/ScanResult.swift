@@ -10,66 +10,47 @@ import CoreBluetoothMock
 import CryptoKit
 
 /// Protocol which represents a discovered device
-public protocol ScanResult {
+public struct ScanResult {
     /// Device identifier (UUID String)
-    var id: String { get }
+    public var id: UUID
     /// Device name
-    var name: String { get }
+    public var name: String
     /// RSSI: Signal strength in dBm
-    var rssi: Int { get }
+    public var rssi: Int
     /// Returns true if the device already has the information about WiFi network
-    var provisioned: Bool { get }
+    public var provisioned: Bool
     /// Returns true if the device is currently connected to the WiFi network
-    var connected: Bool { get }
+    public var connected: Bool
     /// Version
-    var version: Int? { get }
+    public var version: Int?
     /// WiFi-RSSI: Signal strength of Wi-Fi Access Point if the device is connected
-    var wifiRSSI: Int? { get }
+    public var wifiRSSI: Int?
+    
+    public init(id: UUID, name: String, rssi: Int, provisioned: Bool, connected: Bool, version: Int? = nil, wifiRSSI: Int? = nil) {
+        self.id = id
+        self.name = name
+        self.rssi = rssi
+        self.provisioned = provisioned
+        self.connected = connected
+        self.version = version
+        self.wifiRSSI = wifiRSSI
+    }
 }
 
-struct DiscoveredDevice: ScanResult, CustomStringConvertible {
-    let peripheral: CBPeripheral
-    let advertisementData: [String: Any]
-    let serviceByteArray: [UInt8]?
-
-    public let rssi: Int
-
-    var provisioned: Bool {
-        serviceByteArray.map { $0[2] & 0x01 == 1 } ?? false
-    }
-
-    var connected: Bool {
-        serviceByteArray.map { $0[2] & 0x02 == 2 } ?? false
-    }
-
-    var name: String {
-        peripheral.name ?? ""
-    }
-
-    var id: String {
-        peripheral.identifier.uuidString
-    }
-
-    var version: Int? {
-        serviceByteArray.flatMap { Int($0[0]) }
-    }
-    
-    var wifiRSSI: Int? {
-        serviceByteArray.flatMap { Int(Int8(bitPattern: $0[3])) }
-    }
-
+extension ScanResult {
     init(peripheral: CBPeripheral, advertisementData: [String: Any], rssi: NSNumber) {
-        self.peripheral = peripheral
-        self.advertisementData = advertisementData
-        self.rssi = rssi.intValue
         
-        self.serviceByteArray = advertisementData[CBAdvertisementDataServiceDataKey]
+        let serviceByteArray: [UInt8]? = advertisementData[CBAdvertisementDataServiceDataKey]
             .flatMap { $0 as? [CBUUID : Data] }
             .flatMap { $0[CBUUID(string: "14387800-130c-49e7-b877-2881c89cb258")] }
             .map { [UInt8]($0) }
-    }
-
-    var description: String {
-        "name: \(name)|id: \(id)| rssi: \(rssi)| provisioned: \(provisioned)| connected: \(connected)| version: \(version ?? -1)| wifiRSSI: \(wifiRSSI ?? -1)"
+        
+        self.id = peripheral.identifier
+        self.name = peripheral.name ?? advertisementData[CBAdvertisementDataLocalNameKey] as? String ?? ""
+        self.rssi = rssi.intValue
+        self.provisioned = serviceByteArray.map { $0[2] & 0x01 == 1 } ?? false
+        self.connected = serviceByteArray.map { $0[2] & 0x02 == 2 } ?? false
+        self.version = serviceByteArray.flatMap { Int($0[0]) }
+        self.wifiRSSI = serviceByteArray.flatMap { Int(Int8(bitPattern: $0[3])) }
     }
 }

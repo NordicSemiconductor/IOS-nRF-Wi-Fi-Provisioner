@@ -8,18 +8,10 @@
 import Foundation
 import CoreBluetoothMock
 
-// MARK: - Constants
-private extension CBMUUID {
-    static let version =        CBMUUID(string: "14387801-130c-49e7-b877-2881c89cb258")
-    static let controlPoint =   CBMUUID(string: "14387802-130c-49e7-b877-2881c89cb258")
-    static let dataOut =        CBMUUID(string: "14387803-130c-49e7-b877-2881c89cb258")
-    static let wifi =           CBMUUID(string: "14387800-130c-49e7-b877-2881c89cb258")
-}
-
 private extension CBMCharacteristicMock {
-    static let version = CBMCharacteristicMock(type: .version, properties: [.read])
-    static let controlPoint = CBMCharacteristicMock(type: .controlPoint, properties: [.write, .notify])
-    static let dataOut = CBMCharacteristicMock(type: .dataOut, properties: [.notify])
+    static let version = CBMCharacteristicMock(type: CharacteristicID.version.cbm, properties: [.read])
+    static let controlPoint = CBMCharacteristicMock(type: CharacteristicID.controlPoint.cbm, properties: [.write, .notify])
+    static let dataOut = CBMCharacteristicMock(type: CharacteristicID.dataOut.cbm, properties: [.notify])
 }
 
 private extension DeviceStatus {
@@ -156,10 +148,10 @@ open class MockDevice {
         .advertising(
             advertisementData: [
                 CBMAdvertisementDataLocalNameKey    : name,
-                CBMAdvertisementDataServiceUUIDsKey : [CBMUUID.wifi],
+                CBMAdvertisementDataServiceUUIDsKey : [ServiceID.wifi.cbm],
                 CBMAdvertisementDataIsConnectable   : true as NSNumber,
                 CBMAdvertisementDataServiceDataKey   : [
-                    CBMUUID.wifi : Data([
+                    ServiceID.wifi.cbm : Data([
                         UInt8(version), // Version
                         0x00, // Reserved
                         UInt8(provisioned ? 0x01 : 0x00) | (connected ? 0x02 : 0x00), // Flags
@@ -174,7 +166,7 @@ open class MockDevice {
             name: name,
             services: [
                 CBMServiceMock(
-                    type: .wifi,
+                    type: ServiceID.wifi.cbm,
                     primary: true,
                     characteristics: [
                         .version,
@@ -378,7 +370,7 @@ extension MockDevice: CBMPeripheralSpecDelegate {
     }
     
     public func peripheral(_ peripheral: CBMPeripheralSpec, didReceiveReadRequestFor characteristic: CBMCharacteristicMock) -> Result<Data, Error> {
-        if characteristic.uuid == .version {
+        if characteristic.uuid == CharacteristicID.version.cbm {
             var info = Proto.Info()
             info.version = UInt32(self.version)
             return .success(try! info.serializedData())
@@ -388,7 +380,7 @@ extension MockDevice: CBMPeripheralSpecDelegate {
     }
     
     public func peripheral(_ peripheral: CBMPeripheralSpec, didReceiveWriteRequestFor characteristic: CBMCharacteristicMock, data: Data) -> Result<Void, Error> {
-        if characteristic.uuid == .controlPoint {
+        if characteristic.uuid == CharacteristicID.controlPoint.cbm {
             parseWriteData(data, peripheral: peripheral)
             return .success(())
         } else {
@@ -397,9 +389,9 @@ extension MockDevice: CBMPeripheralSpecDelegate {
     }
     
     public func peripheral(_ peripheral: CBMPeripheralSpec, didReceiveSetNotifyRequest enabled: Bool, for characteristic: CBMCharacteristicMock) -> Result<Void, Error> {
-        if characteristic.uuid == .controlPoint {
+        if characteristic.uuid == CharacteristicID.controlPoint.cbm {
             return .success(())
-        } else if characteristic.uuid == .dataOut {
+        } else if characteristic.uuid == CharacteristicID.dataOut.cbm {
             return .success(())
         } else {
             fatalError()

@@ -82,10 +82,10 @@ final class ScannerTests: XCTestCase {
         XCTAssertNotNil(scannerDelegate.scanResults.first)
         
         let firstResult = scannerDelegate.scanResults.first!
-        XCTAssertEqual((firstResult as? DiscoveredDevice)?.serviceByteArray?.count, 4)
+        
         XCTAssertEqual(firstResult.name, "nRF-Wi-Fi")
         XCTAssertEqual(firstResult.wifiRSSI, -55)
-        XCTAssertEqual(firstResult.id, perihpheralUUID)
+        XCTAssertEqual(firstResult.id, UUID(uuidString: perihpheralUUID)!)
         XCTAssertTrue(firstResult.provisioned)
         XCTAssertTrue(firstResult.connected)
         XCTAssertEqual(firstResult.version, 17)

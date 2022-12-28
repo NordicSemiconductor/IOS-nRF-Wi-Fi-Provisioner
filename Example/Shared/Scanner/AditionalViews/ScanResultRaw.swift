@@ -49,24 +49,10 @@ struct ScanResultRaw: View {
 
 #if DEBUG
 struct ScanResultRaw_Previews: PreviewProvider {
-    struct MockScanResult: ScanResult {
-        var id: String = UUID().uuidString
-        
-        var name: String
-        
-        var rssi: Int
-        
-        var provisioned: Bool
-        
-        var connected: Bool
-        
-        var version: Int? = 14
-        
-        var wifiRSSI: Int?
-        
-        static let unprov = MockScanResult(name: "Unprovisioned Device", rssi: -58, provisioned: false, connected: false)
-        static let provUnconnected = MockScanResult(name: "Provisioned Unconnected", rssi: -68, provisioned: true, connected: false)
-        static let provConnected = MockScanResult(name: "Provisioned Connected", rssi: -88, provisioned: true, connected: true, wifiRSSI: -48)
+    struct MockScanResult  {
+        static let unprov = ScanResult(id: UUID(), name: "Unprovisioned Device", rssi: -58, provisioned: false, connected: false)
+        static let provUnconnected = ScanResult(id: UUID(), name: "Provisioned Unconnected", rssi: -68, provisioned: true, connected: false)
+        static let provConnected = ScanResult(id: UUID(), name: "Provisioned Connected", rssi: -88, provisioned: true, connected: true, wifiRSSI: -48)
     }
     
     static var previews: some View {
