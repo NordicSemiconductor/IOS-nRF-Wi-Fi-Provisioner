@@ -29,7 +29,7 @@ class InternalScanner {
     
     func startScan() {
         if state == .poweredOn {
-            centralManager.scanForPeripherals(withServices: [wifiServiceUUID], options: nil)
+            centralManager.scanForPeripherals(withServices: [ServiceID.wifi.cbm], options: nil)
             delegate?.scannerStartedScanning()
         }
         isScanning = true
@@ -53,7 +53,7 @@ extension InternalScanner: CBCentralManagerDelegate {
     }
 
     func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String: Any], rssi RSSI: NSNumber) {
-        let discoveredDevice = DiscoveredDevice(
+        let discoveredDevice = ScanResult(
                 peripheral: peripheral,
                 advertisementData: advertisementData,
                 rssi: RSSI

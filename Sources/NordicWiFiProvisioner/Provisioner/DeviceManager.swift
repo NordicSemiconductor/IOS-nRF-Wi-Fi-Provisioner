@@ -12,15 +12,15 @@ import Foundation
 open class DeviceManager {
     lazy private var internalProvisioner = InternalDeviceManager(deviceId: self.deviceId, provisioner: self)
     
-    /// The device identifier. It is the same as the device's UUID.
-    public let deviceId: String
+    /// The device identifier.
+    public let deviceId: UUID
     
     /// Initialize a new instance of the `DeviceManager`.
     ///
     /// - Remark: See also: ``init(scanResult:)``
     /// - Precondition: `deviceId` should be a valid UUID String, otherwise ``connect()`` method will fail.
-    /// - Parameter deviceId: ID of the device. It's equal to the `CBPeripheral`'s UUID String.
-    public init(deviceId: String) {
+    /// - Parameter deviceId: ID of the device. It's equal to the `CBPeripheral`'s identifier
+    public init(deviceId: UUID) {
         self.deviceId = deviceId
     }
     

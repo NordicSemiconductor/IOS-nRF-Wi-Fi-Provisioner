@@ -8,8 +8,6 @@
 import Foundation
 
 public enum ProvisionerError: Error {
-    /// Provided device id is not valid
-    case badIdentifier
     /// Peripheral with provided deviceId is not found
     case noPeripheralFound
     /// Device is not connected
@@ -39,8 +37,6 @@ public enum ProvisionerError: Error {
 
     public var localizedDescription: String {
         switch self {
-        case .badIdentifier:
-            return "Provided device id is not valid"
         case .noPeripheralFound:
             return "Peripheral with provided deviceId is not found"
         case .notConnected(let error):

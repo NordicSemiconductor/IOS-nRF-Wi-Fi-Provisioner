@@ -32,29 +32,8 @@ final class ProvisionerConnectionTests: XCTestCase {
         CBMCentralManagerMock.tearDownSimulation()
     }
     
-    func testBadIdentifierConnection() throws {
-        let failedProvisioner = DeviceManager(deviceId: "")
-        failedProvisioner.connectionDelegate = connectionDelegate
-        failedProvisioner.connect()
-        
-        CBMCentralManagerMock.simulatePowerOn()
-        
-        wait(1)
-        
-        XCTAssertNotNil(self.connectionDelegate.connectionError)
-        let e = try XCTUnwrap(self.connectionDelegate.connectionError)
-        let provE = try XCTUnwrap(e as? ProvisionerError)
-        
-        switch provE {
-        case .badIdentifier:
-            XCTAssert(true)
-        default:
-            XCTFail("`badIdentifier` expected")
-        }
-    }
-    
     func testBadStateConnection() throws {
-        let failedProvisioner = DeviceManager(deviceId: "")
+        let failedProvisioner = DeviceManager(deviceId: UUID())
         failedProvisioner.connectionDelegate = connectionDelegate
         failedProvisioner.connect()
         
@@ -74,7 +53,7 @@ final class ProvisionerConnectionTests: XCTestCase {
     }
     
     func testNoPeripheralFonud() throws {
-        let failedProvisioner = DeviceManager(deviceId: UUID().uuidString)
+        let failedProvisioner = DeviceManager(deviceId: UUID())
         failedProvisioner.connectionDelegate = connectionDelegate
         failedProvisioner.connect()
         
@@ -94,7 +73,7 @@ final class ProvisionerConnectionTests: XCTestCase {
     }
     
     func testNotConnected() throws {
-        let failedProvisioner = DeviceManager(deviceId: notConnectableDevice.identifier.uuidString)
+        let failedProvisioner = DeviceManager(deviceId: notConnectableDevice.identifier)
         failedProvisioner.connectionDelegate = connectionDelegate
         failedProvisioner.connect()
         
@@ -114,7 +93,7 @@ final class ProvisionerConnectionTests: XCTestCase {
     }
     
     func testSuccessConnection() {
-        let failedProvisioner = DeviceManager(deviceId: wifiDevice.identifier.uuidString)
+        let failedProvisioner = DeviceManager(deviceId: wifiDevice.identifier)
         failedProvisioner.connectionDelegate = connectionDelegate
         failedProvisioner.connect()
         
@@ -127,7 +106,7 @@ final class ProvisionerConnectionTests: XCTestCase {
     }
     
     func testBluetoothStateChanging() {
-        let failedProvisioner = DeviceManager(deviceId: wifiDevice.identifier.uuidString)
+        let failedProvisioner = DeviceManager(deviceId: wifiDevice.identifier)
         failedProvisioner.connectionDelegate = connectionDelegate
         failedProvisioner.connect()
         

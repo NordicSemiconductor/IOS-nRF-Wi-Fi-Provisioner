@@ -11,7 +11,7 @@ public struct DeviceNotConnectedError: Error { }
 class InternalDeviceManager {
     let connectionQueue = OperationQueue()
 
-    let deviceId: String
+    let deviceId: UUID
     
     let centralManager: CBCentralManager
     var connectedPeripheral: CBPeripheral?
@@ -35,7 +35,7 @@ class InternalDeviceManager {
         category: "provisioner.internal-provisioner"
     )
 
-    init(deviceId: String, provisioner: DeviceManager, centralManager: CBCentralManager = CBCentralManagerFactory.instance()) {
+    init(deviceId: UUID, provisioner: DeviceManager, centralManager: CBCentralManager = CBCentralManagerFactory.instance()) {
         self.centralManager = centralManager
         self.deviceId = deviceId
         
@@ -52,11 +52,7 @@ class InternalDeviceManager {
                 self.connectionDelegate?.deviceManagerDidFailToConnect(self.provisioner, error: ProvisionerError.bluetoothNotAvailable)
                 return
             }
-            guard let peripheralId = UUID(uuidString: self.deviceId) else {
-                self.connectionDelegate?.deviceManagerDidFailToConnect(self.provisioner, error: ProvisionerError.badIdentifier)
-                return
-            }
-            guard let peripheral = self.centralManager.retrievePeripherals(withIdentifiers: [peripheralId]).first else {
+            guard let peripheral = self.centralManager.retrievePeripherals(withIdentifiers: [self.deviceId]).first else {
                 self.connectionDelegate?.deviceManagerDidFailToConnect(self.provisioner, error: ProvisionerError.noPeripheralFound)
                 return
             }
@@ -159,7 +155,7 @@ extension InternalDeviceManager: CBCentralManagerDelegate {
     func centralManager(_ central:   CBMCentralManager, didConnect peripheral: CBMPeripheral) {
         self.connectionInfo = BluetoothConnectionInfo(peripheral: peripheral)
         peripheral.delegate = self
-        peripheral.discoverServices([wifiServiceUUID])
+        peripheral.discoverServices([ServiceID.wifi.cbm])
     }
 
     func centralManager(_ central: CBMCentralManager, didFailToConnect peripheral: CBMPeripheral, error: Error?) {
@@ -184,16 +180,20 @@ extension InternalDeviceManager: CBPeripheralDelegate {
             return
         }
 
-        guard let wifiService = peripheral.services?.first(where: { $0.uuid == wifiServiceUUID }) else {
+        guard let wifiService = peripheral.services?.first(where: { $0.uuid == ServiceID.wifi.cbm }) else {
             return
         }
-        peripheral.discoverCharacteristics([versionCharacteristicUUID, controlPointCharacteristicUUID, dataOutCharacteristicUUID], for: wifiService)
+        peripheral.discoverCharacteristics([
+            CharacteristicID.version.cbm,
+            CharacteristicID.controlPoint.cbm,
+            CharacteristicID.dataOut.cbm
+        ], for: wifiService)
     }
 
     func peripheral(_ peripheral: CBMPeripheral, didDiscoverCharacteristicsFor service: CBMService, error: Error?) {
-        guard let versionCharacteristic = service.characteristics?.first(where: { $0.uuid == versionCharacteristicUUID }) else { return }
-        guard let controlPointCharacteristic = service.characteristics?.first(where: { $0.uuid == controlPointCharacteristicUUID }) else { return }
-        guard let dataOutCharacteristic = service.characteristics?.first(where: { $0.uuid == dataOutCharacteristicUUID }) else { return }
+        guard let versionCharacteristic = service.characteristics?.first(where: { $0.uuid == CharacteristicID.version.cbm }) else { return }
+        guard let controlPointCharacteristic = service.characteristics?.first(where: { $0.uuid == CharacteristicID.controlPoint.cbm }) else { return }
+        guard let dataOutCharacteristic = service.characteristics?.first(where: { $0.uuid == CharacteristicID.dataOut.cbm }) else { return }
         
         self.connectionInfo?.versionCharacteristic = versionCharacteristic
         self.connectionInfo?.controlPointCharacteristic = controlPointCharacteristic

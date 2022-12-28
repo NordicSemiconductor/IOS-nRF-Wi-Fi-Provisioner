@@ -16,7 +16,7 @@ struct nRF_Wi_Fi_ProvisionerApp: App {
             ScannerView(viewModel: ScannerViewModel())
                 .environmentObject(DeviceViewModelFactory())
                 .onFirstAppear {
-                    MockManager.default.emulateDevices()
+                    MockManager.emulateDevices()
                 }
         }
                 

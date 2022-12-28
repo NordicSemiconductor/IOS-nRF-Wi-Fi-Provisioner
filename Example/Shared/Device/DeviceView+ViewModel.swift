@@ -77,14 +77,14 @@ extension DeviceView {
         
         init(deviceId: String) {
             self.deviceId = deviceId
-            self.provisioner = DeviceManager(deviceId: deviceId)
+            self.provisioner = DeviceManager(deviceId: UUID(uuidString: deviceId)!)
             self.provisioner.infoDelegate = self
             self.provisioner.connectionDelegate = self
             self.provisioner.provisionerDelegate = self 
         }
         
         init(provisioner: DeviceManager) {
-            self.deviceId = provisioner.deviceId
+            self.deviceId = provisioner.deviceId.uuidString
             self.provisioner = provisioner
             self.provisioner.infoDelegate = self
             self.provisioner.connectionDelegate = self

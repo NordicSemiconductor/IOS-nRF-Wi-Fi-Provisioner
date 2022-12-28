@@ -17,7 +17,7 @@ extension ScannerViewModel {
         case waiting, scanning, noPermission, turnedOff
     }
     
-    struct DisplayableScanResult: NordicWiFiProvisioner.ScanResult, Identifiable, Equatable, Hashable {
+    struct DisplayableScanResult: Identifiable, Equatable, Hashable {
         let id: String
         var name: String { sr.name }
         var rssi: Int { sr.rssi }
@@ -30,7 +30,7 @@ extension ScannerViewModel {
         
         init(rowScanResult: NordicWiFiProvisioner.ScanResult) {
             self.sr = rowScanResult
-            self.id = sr.id + sr.name + "\(sr.rssi)" + "\(sr.provisioned)" + "\(sr.connected)" + "\(sr.wifiRSSI ?? 0)"
+            self.id = sr.id.uuidString + sr.name + "\(sr.rssi)" + "\(sr.provisioned)" + "\(sr.connected)" + "\(sr.wifiRSSI ?? 0)"
         }
         
         static func == (lhs: ScannerViewModel.DisplayableScanResult, rhs: ScannerViewModel.DisplayableScanResult) -> Bool {

@@ -11,6 +11,7 @@
 		011AF20529535E06008B0ADF /* WiFiInfo+Fake.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011AF20329535D1D008B0ADF /* WiFiInfo+Fake.swift */; };
 		011AF20829535E21008B0ADF /* MockManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 017A4344294CCCF100A74BC2 /* MockManager.swift */; };
 		011AF20A29535E21008B0ADF /* MockSpecDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011AF1FE29535D15008B0ADF /* MockSpecDelegate.swift */; };
+		017799C2295C5AB8008D2019 /* UUID+CBMUUID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 017799C1295C5AB8008D2019 /* UUID+CBMUUID.swift */; };
 		017A43242948ABED00A74BC2 /* Documentation.docc in Sources */ = {isa = PBXBuildFile; fileRef = 017A43232948ABED00A74BC2 /* Documentation.docc */; };
 		030186E5E7BF7D3827D3B30FED439BAC /* ProtobufAPIVersionCheck.swift in Sources */ = {isa = PBXBuildFile; fileRef = B60A71E4B79A37492BB939755062D5BA /* ProtobufAPIVersionCheck.swift */; };
 		03FB6F23BF38F6F1DAB28347CB43DBF2 /* ExtensionFieldValueSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43044CDB272E1B17C98A3BB7C3A29F57 /* ExtensionFieldValueSet.swift */; };
@@ -212,6 +213,7 @@
 /* Begin PBXFileReference section */
 		011AF1FE29535D15008B0ADF /* MockSpecDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockSpecDelegate.swift; sourceTree = "<group>"; };
 		011AF20329535D1D008B0ADF /* WiFiInfo+Fake.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "WiFiInfo+Fake.swift"; sourceTree = "<group>"; };
+		017799C1295C5AB8008D2019 /* UUID+CBMUUID.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UUID+CBMUUID.swift"; sourceTree = "<group>"; };
 		017A43232948ABED00A74BC2 /* Documentation.docc */ = {isa = PBXFileReference; lastKnownFileType = folder.documentationcatalog; name = Documentation.docc; path = Sources/NordicWiFiProvisioner/Documentation.docc; sourceTree = "<group>"; };
 		017A4344294CCCF100A74BC2 /* MockManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockManager.swift; sourceTree = "<group>"; };
 		02FEB95DCEDB96AF4842199994BD49B4 /* TimeUtils.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TimeUtils.swift; path = Sources/SwiftProtobuf/TimeUtils.swift; sourceTree = "<group>"; };
@@ -776,6 +778,7 @@
 				302413BEBFA457AB96CD4A5ECA37D0C7 /* Optional+Ext.swift */,
 				F01C6C0856E154DEB3B453204F1E0F7C /* proto+Codable.swift */,
 				C4B9C80866A3C70A045236DC5BD7CB40 /* String+Ext.swift */,
+				017799C1295C5AB8008D2019 /* UUID+CBMUUID.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1200,6 +1203,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				017799C2295C5AB8008D2019 /* UUID+CBMUUID.swift in Sources */,
 				74F088F405E5E87C5E58CCC3C3481B58 /* AuthMode.swift in Sources */,
 				DD5E548DA89E41D132D90EFE0A3E9469 /* Band.swift in Sources */,
 				FC5D1A3946EE976A9F6FF154B5782B61 /* BluetoothConnectionInfo.swift in Sources */,
