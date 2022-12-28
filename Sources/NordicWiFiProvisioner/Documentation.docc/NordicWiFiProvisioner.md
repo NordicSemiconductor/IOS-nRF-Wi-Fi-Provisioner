@@ -14,6 +14,9 @@ You can implement your own scanner, but the library provides a ``Scanner`` class
 
 ## Topics
 
+### Getting Started
+- <doc:GettingStarted>
+
 ### Scanner
 
 - ``Scanner``
