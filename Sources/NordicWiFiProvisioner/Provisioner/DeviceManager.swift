@@ -129,7 +129,7 @@ open class DeviceManager {
     /// - Precondition: Make sure that ``connectionState-swift.property`` is ``ConnectionState-swift.enum/connected`` before calling this method.
     /// - Parameter scanParams: Scan parameters
     /// - Throws: If the scan was request but device is not connected, this method throws ``DeviceNotConnectedError``.
-    open func startScan(scanParams: ScanParams) throws {
+    open func startScan(scanParams: ScanParams = ScanParams()) throws {
         try internalProvisioner.startScan(scanParams: scanParams)
     }
 

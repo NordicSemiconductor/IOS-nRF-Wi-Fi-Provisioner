@@ -9,9 +9,9 @@ import Foundation
 import CoreBluetoothMock
 import CryptoKit
 
-/// Protocol which represents a discovered device
+/// Struct which represents a discovered device
 public struct ScanResult {
-    /// Device identifier (UUID String)
+    /// Device identifier
     public var id: UUID
     /// Device name
     public var name: String
