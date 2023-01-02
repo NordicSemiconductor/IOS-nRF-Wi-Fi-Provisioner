@@ -1,7 +1,5 @@
 # ``NordicWiFiProvisioner/DeviceManager``
 
-## Topics
-
 ### Initializing a Device Manager
 
 - ``init(scanResult:)``
@@ -31,7 +29,7 @@ You can read the device information like version or provisioned WiFi network by 
 - ``startScan(scanParams:)``
 - ``startScan(band:passive:period:groupChannels:)``
 - ``stopScan()``
-- ``provisionerScanDelegate``
+- ``wiFiScanerDelegate``
 
 ### Provision the device with a WiFi network
 
