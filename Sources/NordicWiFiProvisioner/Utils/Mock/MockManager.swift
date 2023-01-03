@@ -14,10 +14,11 @@ open class MockManager {
     /// Emulates devices. 
     ///
     /// - Parameter devices: Devices to emulate. If `nil` then default devices will be emulated: not provisioned, provisioned but not connected, provisioned and connected.
+    /// - Parameter forceMock: If `true` then mock will be used even if real device is connected.
     open class func emulateDevices(devices: [MockDevice]? = nil, forceMock: Bool = false) {
         self.forceMock = forceMock
         
-        CBMCentralManagerMock.simulateInitialState(.unknown)
+        CBMCentralManagerMock.simulateInitialState(.poweredOff)
         if let devices = devices {
             CBMCentralManagerMock.simulatePeripherals(devices.map(\.spec))
         } else {

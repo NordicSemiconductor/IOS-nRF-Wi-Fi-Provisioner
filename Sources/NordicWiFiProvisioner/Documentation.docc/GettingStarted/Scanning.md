@@ -1,5 +1,7 @@
 # Scanning for nRF-7 Series Devices
-Check out how to use ``Scanner`` to scan for nRF-7 Series devices.
+Use ``Scanner`` to scan for nRF-7 Series devices.
+
+## Overview
 
 `NordicWiFiProvisioner` provides a ``Scanner`` class that you can use to scan for nRF-7 Series devices. This class makes all the necessary BLE calls to scan for devices and filter them. 
 
@@ -108,3 +110,4 @@ extension CustomScanner: CBCentralManagerDelegate {
     }
 }
 ```
+
