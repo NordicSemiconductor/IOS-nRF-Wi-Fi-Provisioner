@@ -14,11 +14,15 @@ However, you can use ``MockManager`` to start developing your app without a real
 
 ### Scanning
 - <doc:Scanning>
+- ``Scanner``
 
 ### Using Device Manager
 - <doc:ConnectToDevice>
 - <doc:ReadDeviceInformation>
 - <doc:WiFiScanning>
+- <doc:ProvisionTheDevice>
+- ``DeviceManager``
 
 ### Enabling Mocks
 - <doc:Mocking>
+- ``MockManager``

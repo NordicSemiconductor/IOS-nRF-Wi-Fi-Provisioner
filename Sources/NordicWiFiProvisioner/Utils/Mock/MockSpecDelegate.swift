@@ -114,7 +114,7 @@ open class MockDevice {
     public init(
         id: String = UUID().uuidString,
         name: String,
-        deviceStatus: DeviceStatus,
+        deviceStatus: DeviceStatus = DeviceStatus(),
         version: UInt,
         bluetoothRSSI: Int = -50,
         wifiRSSI: Int? = -55,
