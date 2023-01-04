@@ -48,10 +48,11 @@ final class nRF_Wi_Fi_ProvisionerUITests: XCTestCase {
         snapshot("02-scan-result")
         firstScanResult.tap()
         
-        let accessPointSelector = app.buttons["access_point_selector"]
+        let accessPointSelector = app.staticTexts["access_point_selector"].firstMatch
+        
         XCTAssertTrue(accessPointSelector.waitForExistence(timeout: 5))
         snapshot("03-device-details")
-        accessPointSelector.tap()
+                accessPointSelector.tap()
         
         // Find third access point
         // .accessibility(identifier: "access_point_\(viewModel.accessPoints.firstIndex(of: accessPoint) ?? -1)")
@@ -61,10 +62,11 @@ final class nRF_Wi_Fi_ProvisionerUITests: XCTestCase {
         snapshot("04-access-point-list")
         thirdAccessPoint.tap()
         
-        let text = app.staticTexts["Channel 11"]
+        let text = app.collectionViews.firstMatch.staticTexts.firstMatch
         XCTAssertTrue(text.waitForExistence(timeout: 2))
         snapshot("05-channel-selector")
         
-        text.tap()
+        
+                text.tap()
     }
 }

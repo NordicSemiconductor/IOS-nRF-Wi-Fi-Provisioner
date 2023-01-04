@@ -25,7 +25,7 @@ open class Scanner {
     public init(delegate: ScannerDelegate? = nil) {
         self.internalScanner = InternalScanner(
             delegate: delegate,
-            centralManager: CBMCentralManagerFactory.instance()
+            centralManager: CBMCentralManagerFactory.instance(forceMock: MockManager.forceMock)
         )
     }
 

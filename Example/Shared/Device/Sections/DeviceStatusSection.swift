@@ -72,6 +72,6 @@ struct DeviceStatusSection_Previews: PreviewProvider {
                  */
             }
         }
-        .tint(.nordicBlue)
+//        .tint(.nordicBlue)
     }
 }

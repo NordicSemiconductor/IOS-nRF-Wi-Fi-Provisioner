@@ -70,9 +70,6 @@ struct ScannerView: View {
             
             Placeholder(text: "Select the device", message: "Select Bluetooth device to start provisioning process", image: "bluetooth")
         }
-        .setupNavBarBackground()
-        .tint(.nordicTint)
-        .accentColor(.white)
         .onAppear {
             viewModel.startScan()
         }
@@ -143,7 +140,7 @@ struct ScannerView_Previews: PreviewProvider {
         ScannerView(viewModel: DummyScanViewModel())
             .previewDisplayName("iPhone 14 Pro")
             .previewDevice(PreviewDevice(rawValue: "iPhone 14 Pro"))
-            .tint(.nordicBlue)
+//            .tint(.nordicBlue)
     }
 }
 #endif

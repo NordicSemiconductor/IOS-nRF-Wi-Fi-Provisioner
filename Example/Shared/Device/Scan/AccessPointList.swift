@@ -179,7 +179,7 @@ struct AccessPointList_Previews: PreviewProvider {
                 wifiSelection: Selection()
             )
         }
-        .tint(.orange)
+//        .tint(.orange)
     }
 }
 #endif

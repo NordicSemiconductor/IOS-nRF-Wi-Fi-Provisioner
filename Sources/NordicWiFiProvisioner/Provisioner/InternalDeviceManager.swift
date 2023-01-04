@@ -35,7 +35,9 @@ class InternalDeviceManager {
         category: "provisioner.internal-provisioner"
     )
 
-    init(deviceId: UUID, provisioner: DeviceManager, centralManager: CBCentralManager = CBCentralManagerFactory.instance()) {
+    init(deviceId: UUID,
+         provisioner: DeviceManager,
+         centralManager: CBCentralManager = CBMCentralManagerFactory.instance(forceMock: MockManager.forceMock)) {
         self.centralManager = centralManager
         self.deviceId = deviceId
         

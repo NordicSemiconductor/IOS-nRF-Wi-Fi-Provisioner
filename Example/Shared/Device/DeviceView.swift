@@ -170,8 +170,8 @@ struct DeviceView_Previews: PreviewProvider {
             )
             .navigationTitle("Device Name")
         }
-        .setupNavBarBackground()
-        .tint(.nordicBlue)
+//        .setupNavBarBackground()
+//        .tint(.nordicBlue)
         .previewDisplayName("iPhone 14 Pro")
         .previewDevice(PreviewDevice(rawValue: "iPhone 14 Pro"))
     }

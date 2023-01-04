@@ -42,8 +42,6 @@
 		01922CC128A2A48300492E87 /* Label+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01922CBF28A2A48300492E87 /* Label+Ext.swift */; };
 		019262E4288039F100A69D04 /* Counter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019262E3288039F100A69D04 /* Counter.swift */; };
 		019262E5288039F100A69D04 /* Counter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019262E3288039F100A69D04 /* Counter.swift */; };
-		019D09F428CE1777005143D5 /* Flow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019D09F328CE1777005143D5 /* Flow.swift */; };
-		019D09F528CE1777005143D5 /* Flow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019D09F328CE1777005143D5 /* Flow.swift */; };
 		019D1D2E29128E96000D8BD4 /* AuthMode+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019D1D2D29128E96000D8BD4 /* AuthMode+Ext.swift */; };
 		019D1D2F29128E96000D8BD4 /* AuthMode+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019D1D2D29128E96000D8BD4 /* AuthMode+Ext.swift */; };
 		019D1D3129128F3E000D8BD4 /* ConnectionState+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019D1D3029128F3E000D8BD4 /* ConnectionState+Ext.swift */; };
@@ -157,7 +155,6 @@
 		01922CBF28A2A48300492E87 /* Label+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Label+Ext.swift"; sourceTree = "<group>"; };
 		019262E3288039F100A69D04 /* Counter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Counter.swift; sourceTree = "<group>"; };
 		019A5D8D286C77CE002D03F0 /* NordicStyle */ = {isa = PBXFileReference; lastKnownFileType = text; path = NordicStyle; sourceTree = SOURCE_ROOT; };
-		019D09F328CE1777005143D5 /* Flow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Flow.swift; sourceTree = "<group>"; };
 		019D1D2D29128E96000D8BD4 /* AuthMode+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AuthMode+Ext.swift"; sourceTree = "<group>"; };
 		019D1D3029128F3E000D8BD4 /* ConnectionState+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ConnectionState+Ext.swift"; sourceTree = "<group>"; };
 		019D1D332912C201000D8BD4 /* MACAddress+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MACAddress+Ext.swift"; sourceTree = "<group>"; };
@@ -284,7 +281,6 @@
 				01D26B58286DAE6A00FD069D /* Utils */,
 				01481A922852092F00925FAB /* nRF_Wi_Fi_ProvisionerApp.swift */,
 				01DB109828CF2C92005634CF /* Intro */,
-				019D09F328CE1777005143D5 /* Flow.swift */,
 				01481A942852093000925FAB /* Assets.xcassets */,
 				01D26B55286DA3D400FD069D /* Localizable.strings */,
 			);
@@ -807,7 +803,6 @@
 				015D60A32875A1530048F065 /* ScannerView.swift in Sources */,
 				019DCE25288553E700E16E9F /* CGRect+Ext.swift in Sources */,
 				019D1D342912C201000D8BD4 /* MACAddress+Ext.swift in Sources */,
-				019D09F428CE1777005143D5 /* Flow.swift in Sources */,
 				01922CC028A2A48300492E87 /* Label+Ext.swift in Sources */,
 				01C0F0FD287DE926008BBE46 /* ScanResult.swift in Sources */,
 				01FCADC1291D4C9F0044904B /* AccessPointSection.swift in Sources */,
@@ -856,7 +851,6 @@
 				015D60A42875A1530048F065 /* ScannerView.swift in Sources */,
 				019DCE26288553E700E16E9F /* CGRect+Ext.swift in Sources */,
 				019D1D352912C201000D8BD4 /* MACAddress+Ext.swift in Sources */,
-				019D09F528CE1777005143D5 /* Flow.swift in Sources */,
 				01922CC128A2A48300492E87 /* Label+Ext.swift in Sources */,
 				01C0F0FE287DE926008BBE46 /* ScanResult.swift in Sources */,
 				01FCADC7292512EA0044904B /* Int+Ext.swift in Sources */,
