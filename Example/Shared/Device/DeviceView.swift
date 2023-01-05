@@ -77,6 +77,7 @@ struct DeviceView: View {
             NavigationView {
                 AccessPointList(provisioner: viewModel.provisioner, wifiSelection: viewModel)
             }
+            .navigationViewStyle(.stack)
             .onDisappear {
                 try? viewModel.provisioner.stopScan()
             }
@@ -137,6 +138,7 @@ struct DeviceView: View {
                 }
                 .disabled(!viewModel.buttonConfiguration.enabledProvisionButton)
                 .buttonStyle(NordicButtonStyle())
+                .accessibilityIdentifier("prov_button")
             }
             .padding()
         }

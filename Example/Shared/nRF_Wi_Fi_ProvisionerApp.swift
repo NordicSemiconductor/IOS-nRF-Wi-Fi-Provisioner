@@ -12,7 +12,7 @@ import NordicWiFiProvisioner
 struct nRF_Wi_Fi_ProvisionerApp: App {
     
     init() {
-        MockManager.emulateDevices(forceMock: true)
+        MockManager.emulateDevices()
     }
     
     var body: some Scene {

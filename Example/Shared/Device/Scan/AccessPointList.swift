@@ -13,6 +13,7 @@ struct AccessPointList: View {
     @Environment(\.presentationMode) var presentationMode
     @StateObject private var viewModel = ViewModel()
     
+    
     let provisioner: DeviceManager
     let wifiSelection: AccessPointSelection
     
@@ -27,6 +28,7 @@ struct AccessPointList: View {
                 Placeholder(text: "Scanning", message: "Scanning for Wi-Fi", systemImage: "wifi")
             } else {
                 list()
+                    .accessibilityIdentifier("access_point_list")
             }
         }
         .navigationTitle("Wi-Fi")
@@ -77,7 +79,8 @@ struct AccessPointList: View {
             ChannelPicker(
                 channels: viewModel.allChannels(for: accessPoint.wifi),
                 selectedChannel: $viewModel.selectedAccessPointId
-            ).navigationTitle(accessPoint.wifi.ssid)
+            )
+            .navigationTitle(accessPoint.wifi.ssid)
         } label: {
             HStack {
                 Label {
@@ -93,7 +96,6 @@ struct AccessPointList: View {
                 }
             }
         }
-        .accessibility(identifier: "access_point_\(viewModel.accessPoints.firstIndex(of: accessPoint) ?? -1)")
     }
     
     @ViewBuilder
@@ -135,7 +137,6 @@ struct AccessPointList: View {
             }
         })
         .navigationBarTitle("Select Access Point")
-        .accessibility(identifier: "access_point_\(viewModel.accessPoints.firstIndex(of: accessPoint) ?? -1)")
     }
 }
 

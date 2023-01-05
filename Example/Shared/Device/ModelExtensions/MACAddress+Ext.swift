@@ -8,8 +8,10 @@
 import Foundation
 import NordicWiFiProvisioner
 
+#if DEBUG
 extension MACAddress {
     init(i: Int) {
         self.init(data: i.toData().suffix(6))!
     }
 }
+#endif 

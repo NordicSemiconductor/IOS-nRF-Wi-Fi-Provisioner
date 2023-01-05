@@ -14,9 +14,9 @@
             buildForAnalyzing = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "01481AA52852093000925FAB"
-               BuildableName = "Tests iOS.xctest"
-               BlueprintName = "Tests iOS"
+               BlueprintIdentifier = "01C1BF6A28E70BB200FDD841"
+               BuildableName = "nRF-Wi-Fi-ProvisionerUITests.xctest"
+               BlueprintName = "nRF-Wi-Fi-ProvisionerUITests"
                ReferencedContainer = "container:nRF-Wi-Fi-Provisioner.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -29,12 +29,13 @@
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
          <TestableReference
-            skipped = "NO">
+            skipped = "NO"
+            parallelizable = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "01481AA52852093000925FAB"
-               BuildableName = "Tests iOS.xctest"
-               BlueprintName = "Tests iOS"
+               BlueprintIdentifier = "01C1BF6A28E70BB200FDD841"
+               BuildableName = "nRF-Wi-Fi-ProvisionerUITests.xctest"
+               BlueprintName = "nRF-Wi-Fi-ProvisionerUITests"
                ReferencedContainer = "container:nRF-Wi-Fi-Provisioner.xcodeproj">
             </BuildableReference>
          </TestableReference>
@@ -60,9 +61,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "01481AA52852093000925FAB"
-            BuildableName = "Tests iOS.xctest"
-            BlueprintName = "Tests iOS"
+            BlueprintIdentifier = "01C1BF6A28E70BB200FDD841"
+            BuildableName = "nRF-Wi-Fi-ProvisionerUITests.xctest"
+            BlueprintName = "nRF-Wi-Fi-ProvisionerUITests"
             ReferencedContainer = "container:nRF-Wi-Fi-Provisioner.xcodeproj">
          </BuildableReference>
       </MacroExpansion>

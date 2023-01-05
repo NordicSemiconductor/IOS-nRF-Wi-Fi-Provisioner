@@ -56,17 +56,34 @@ final class nRF_Wi_Fi_ProvisionerUITests: XCTestCase {
         
         // Find third access point
         // .accessibility(identifier: "access_point_\(viewModel.accessPoints.firstIndex(of: accessPoint) ?? -1)")
-        let thirdAccessPoint = app.buttons["access_point_0"]
+        let thirdAccessPoint = app.collectionViews["access_point_list"].buttons.firstMatch
         
         XCTAssertTrue(thirdAccessPoint.waitForExistence(timeout: 2))
+        
         snapshot("04-access-point-list")
         thirdAccessPoint.tap()
         
-        let text = app.collectionViews.firstMatch.staticTexts.firstMatch
+        // Get a reference to the list
+        let list = app.staticTexts["Channel 51"]
+
+        // Get the first element in the list
+//        let firstElement = list.cells.element(boundBy: 0)
+//        let firstText = firstElement.staticTexts.firstMatch
+        XCTAssertTrue(list.waitForExistence(timeout: 2))
+        snapshot("05-channel-selector")
+        
+        list.tap()
+
+        /*
+        let text = app.collectionViews["channel_picker"]
         XCTAssertTrue(text.waitForExistence(timeout: 2))
         snapshot("05-channel-selector")
         
+        text.tap()
+         */
         
-                text.tap()
+        let provBtn = app.switches["volatile_memory_toggle"]
+        XCTAssertTrue(provBtn.waitForExistence(timeout: 2))
+        snapshot("06-selected-wifi")
     }
 }

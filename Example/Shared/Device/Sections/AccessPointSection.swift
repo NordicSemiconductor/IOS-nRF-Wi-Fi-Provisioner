@@ -43,6 +43,7 @@ struct AccessPointSection: View {
                     Spacer()
                     Toggle("", isOn: $volatileMemory)
                         .toggleStyle(SwitchToggleStyle(tint: .nordicBlue))
+                        .accessibilityIdentifier("volatile_memory_toggle")
                 }
             }
         } header: {

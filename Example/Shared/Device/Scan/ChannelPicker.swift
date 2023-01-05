@@ -20,7 +20,7 @@ struct ChannelPicker: View {
                     HStack {
                         VStack(alignment: .leading) {
                             Text("Channel \(channel.wifi.channel)")
-                                .accessibilityIdentifier("channel_\(channels.firstIndex(of: channel) ?? -1)")
+                                .accessibilityIdentifier("channel_number")
                             Text(channel.wifi.bssid.description)
                                     .font(.caption)
                         }
@@ -35,7 +35,6 @@ struct ChannelPicker: View {
                                     .foregroundColor(.secondary)
                         }
                     }
-                    .accessibilityIdentifier("channel_selector_\(channels.firstIndex(of: channel) ?? -1)")
                     .tag(Optional(channel))
                     .accessibilityIdentifier("accid")
                 }
@@ -43,6 +42,7 @@ struct ChannelPicker: View {
                 Text("Select Channel")
             }
         }
+        .accessibilityIdentifier("channel_picker")
         .navigationTitle(selectedChannel ?? "Channel")
     }
 }

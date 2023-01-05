@@ -3,15 +3,15 @@
 # A list of devices you want to take the screenshots from
 devices([
     # "iPad Air (5th generation)",
-    # "iPad Pro (12.9-inch) (6th generation)",
-    # "iPad Pro (12.9-inch) (2nd generation)",
-    # "iPad mini (6th generation)",
-    # "iPhone 8 Plus",
-    # "iPhone 13 mini",
+    "iPad Pro (12.9-inch) (6th generation)",
+    "iPad Pro (12.9-inch) (2nd generation)",
+    "iPad mini (6th generation)",
+    "iPhone 8 Plus",
+    "iPhone 13 mini",
     "iPhone 14",
-    # "iPhone 14 Plus",
-    # "iPhone 14 Pro",
-    # "iPhone SE (3rd generation)"
+    "iPhone 14 Plus",
+    "iPhone 14 Pro",
+    "iPhone SE (3rd generation)"
 ])
 
 # languages([
@@ -36,15 +36,8 @@ clear_previous_screenshots(true)
 override_status_bar(true)
 
 # Arguments to pass to the app on launch. See https://docs.fastlane.tools/actions/snapshot/#launch-arguments
-# launch_arguments([
-#     # "-AppleInterfaceStyle Dark",
-#     "-AppleInterfaceStyle Light"
-# ])
-
-concurrent_simulators(true)
+# launch_arguments(["-favColor red"])
+dark_mode(true)
 
 # For more information about all available options run
 # fastlane action snapshot
-
-erase_simulator(true)
-

@@ -233,7 +233,7 @@ extension MockDevice {
             let allResults = self.searchResultProvider.allNetworks.shuffled()
             var scanResultIterator = allResults.makeIterator()
             
-            self.timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true, block: { t in
+            self.timer = Timer.scheduledTimer(withTimeInterval: 0.01, repeats: true, block: { t in
                 guard let scanResult = scanResultIterator.next() else {
                     t.invalidate()
                     return
