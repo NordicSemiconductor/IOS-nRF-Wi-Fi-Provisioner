@@ -1,10 +1,43 @@
-# iOS-nRF-Wi-Fi-Provisioner
+# NordicWiFiProvisioner library
+`NordicWiFiProvisioner` is a library that allows to communicate with [nRF 7 devices](https://www.nordicsemi.com/Products/nRF7002).
+You can use it to connect to a device, read the information from it, and set the Wi-Fi configuration.
 
-An iOS library and app for provisioning [nRF 7 devices](https://www.nordicsemi.com/Products/nRF7002) to a Wi-Fi network.
+## Installation
+
+The library can be installed via [Swift Package Manager](https://swift.org/package-manager/) or [CocoaPods](https://cocoapods.org/).
+
+### Swift Package Manager
+
+The library can also be included as SPM package. Simply add it in Xcode: File -> Swift Packages -> Add package dependency, type https://github.com/NordicSemiconductor/IOS-nRF-Wi-Fi-Provisioner.git and set required version, branch or commit.
+
+If you have Swift.package file, include the following dependency:
+
+```swift
+dependencies: [
+    // [...]
+    .package(name: "NordicWiFiProvisioner", 
+             url: "https://github.com/NordicSemiconductor/IOS-nRF-Wi-Fi-Provisioner.git", 
+             .upToNextMajor(from: "x.y")) // Replace x.y with your required version
+]
+```
+
+### CocoaPods
+You can install the library using [CocoaPods](https://cocoapods.org/). Add the following line to your `Podfile`:
+
+```ruby
+pod 'NordicWiFiProvisioner'
+```
+
+and run `pod install` in the directory containing your `Podfile`.
+
+## Usage
+
+### Scanning for devices
+The library provides 
 
 ## Application
 
-<a href='https://apps.apple.com/app/nrf-wi-fi-provisioner/id1638948698'><img alt='Get it on AppStore' src='docs/logo.svg' width='250'/></a>
+<a href='https://apps.apple.com/app/nrf-wi-fi-provisioner/id1638948698'><img alt='Get it on AppStore' src='docs/app_store_logo.svg' width='250'/></a>
 
 ### Flow
 The application allows to communicate with a nRF 7 series device.
