@@ -1,0 +1,39 @@
+//
+// Created by Nick Kibysh on 18/10/2022.
+//
+
+import Foundation
+
+/// A struct that cantians all the information about the device status. 
+/// All the fields are optional.
+public struct DeviceStatus {
+    public var state: ConnectionState?
+    public var provisioningInfo: WifiInfo?
+    public var connectionInfo: ConnectionInfo?
+    public var scanInfo: ScanParams?
+    
+    public init(state: ConnectionState? = nil, provisioningInfo: WifiInfo? = nil, connectionInfo: ConnectionInfo? = nil, scanInfo: ScanParams? = nil) {
+        self.state = state
+        self.provisioningInfo = provisioningInfo
+        self.connectionInfo = connectionInfo
+        self.scanInfo = scanInfo
+    }
+}
+
+extension DeviceStatus: ProtoConvertible {
+    init(proto: Proto.DeviceStatus) {
+        self.state = proto.hasState ? ConnectionState(proto: proto.state) : nil
+        self.provisioningInfo = proto.hasProvisioningInfo ? WifiInfo(proto: proto.provisioningInfo) : nil
+        self.connectionInfo = proto.hasProvisioningInfo ? ConnectionInfo(proto: proto.connectionInfo) : nil
+        self.scanInfo = proto.hasScanInfo ? ScanParams(proto: proto.scanInfo) : nil
+    }
+    
+    var proto: Proto.DeviceStatus {
+        var proto = Proto.DeviceStatus()
+        self.state.map { proto.state = $0.proto }
+        self.provisioningInfo.map { proto.provisioningInfo = $0.proto }
+        self.connectionInfo.map { proto.connectionInfo = $0.proto }
+        self.scanInfo.map { proto.scanInfo = $0.proto }
+        return proto
+    }
+}

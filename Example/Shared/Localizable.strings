@@ -1,0 +1,21 @@
+/* 
+  Localizable.strings
+  nRF-Wi-Fi-Provisioner
+
+  Created by Nick Kibysh on 30/06/2022.
+  
+*/
+
+"INTRO_TEXT"="Application allows to provision Sheliak devices. After selecting device the app will connect to obtain status data. 
+
+If needed the device can be provision to one of the available Wifi’s which are visible from Sheliak. ";
+ 
+"START_PROVISIONING_BTN"="Start Provisioning";
+
+"Bluetooth permission denied"="Bluetooth permission is denied";
+
+// DEVICE VIEW
+
+// // ACCESS POINT SECTION
+"WIFI_NOT_PROVISIONED_FOOTER"="To start the provisioning process, select desired Wi-Fi Network by taping the 'Access Point' selector.";
+"PROVISIONED_DEVICE_FOOTER"="To change stored information and re-provision the device, select desired Wi-Fi Network by taping the 'Access Point' selector.";

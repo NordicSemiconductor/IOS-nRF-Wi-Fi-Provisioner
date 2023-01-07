@@ -1,0 +1,27 @@
+PODS:
+  - CoreBluetoothMock (0.14.0)
+  - NordicWiFiProvisioner (2.0.0):
+    - CoreBluetoothMock
+    - SwiftProtobuf
+  - SwiftProtobuf (1.19.0)
+
+DEPENDENCIES:
+  - NordicWiFiProvisioner (from `../`)
+
+SPEC REPOS:
+  trunk:
+    - CoreBluetoothMock
+    - SwiftProtobuf
+
+EXTERNAL SOURCES:
+  NordicWiFiProvisioner:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  CoreBluetoothMock: 2f39ab663cf05e4525d9209e269dcceb3bbd2d55
+  NordicWiFiProvisioner: 114d7e794c76cb4e04adceacca5d8b8d4106ce02
+  SwiftProtobuf: 6ef3f0e422ef90d6605ca20b21a94f6c1324d6b3
+
+PODFILE CHECKSUM: ed03649ca877a6ca9c1babe1a73b4e988005e1d8
+
+COCOAPODS: 1.11.3
