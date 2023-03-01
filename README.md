@@ -31,7 +31,7 @@ pod 'NordicWiFiProvisioner'
 and run `pod install` in the directory containing your `Podfile`.
 
 ## Usage
-Check out the [DOCUMENTATION](https://nickkibish.github.io/IOS-nRF-Wi-Fi-Provisioner/documentation/nordicwifiprovisioner) for more details.
+Check out the [DOCUMENTATION](https://nordicsemiconductor.github.io/IOS-nRF-Wi-Fi-Provisioner/documentation/nordicwifiprovisioner/) for more details.
 ### Scanning for devices
 The library provides `Scanner` that allows to scan for nRF-7 Devices. If filters discovered devices by service UUID and returns only devices that have the wifi service, so you can use it to scan for devices that support Wi-Fi provisioning and don't warry about filtering them.
 
