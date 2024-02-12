@@ -14,6 +14,9 @@ let package = Package(
         .library(
             name: "NordicWiFiProvisioner",
             targets: ["NordicWiFiProvisioner"]),
+        .library(
+            name: "SoftAPProvisioner",
+            targets: ["SoftAPProvisioner"]),
     ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-protobuf.git", from: "1.6.0"),
@@ -21,6 +24,7 @@ let package = Package(
         .package(url: "https://github.com/apple/swift-docc-plugin", from: "1.0.0")
     ],
     targets: [
+        .target(name: "SoftAPProvisioner"),
         .target(
             name: "NordicWiFiProvisioner",
             dependencies: [
