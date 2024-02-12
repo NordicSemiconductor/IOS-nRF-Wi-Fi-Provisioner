@@ -23,15 +23,26 @@ struct SelectorView: View {
         }
     }
     
-    @Binding var selected: Mode?
-    
     var body: some View {
-        Text("Select Mode")
         
-        ForEach(Mode.allCases, id: \.description) { mode in
-            Button(mode.description) {
-                selected = mode
+        VStack {
+            Text("Select Mode")
+                /*
+            NavigationLink {
+                ScannerView(viewModel: ScannerViewModel())
+            } label: {
+                Text("BLE Prov")
             }
+            .padding()
+                 */
+
+            NavigationLink {
+                Text("Wifi")
+            } label: {
+                Text("Wifi Prov")
+            }
+            .padding()
+            
         }
     }
 }

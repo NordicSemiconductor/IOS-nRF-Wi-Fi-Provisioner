@@ -19,6 +19,11 @@ struct nRF_Wi_Fi_ProvisionerApp: App {
     
     var body: some Scene {
         WindowGroup {
+            NavigationView {
+                SelectorView()
+                    .navigationTitle("Chose")
+            }
+            /*
             switch mode {
             case .none:
                 SelectorView(selected: $mode)
@@ -33,6 +38,7 @@ struct nRF_Wi_Fi_ProvisionerApp: App {
             case .provisionOverWifi:
                 Text("To-Do")
             }
+             */
         }
     }
 }
