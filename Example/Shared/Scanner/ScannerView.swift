@@ -14,7 +14,6 @@ struct ScannerView: View {
     @StateObject var viewModel: ScannerViewModel
     
     var body: some View {
-        NavigationView {
             Group {
                 switch viewModel.state {
                 case .noPermission:
@@ -67,16 +66,12 @@ struct ScannerView: View {
                           : "line.3.horizontal.decrease.circle")
                 }
             }
-            
-            Placeholder(text: "Select the device", message: "Select Bluetooth device to start provisioning process", image: "bluetooth")
-        }
-        .onAppear {
-            viewModel.startScan()
-        }
-        .sheet(isPresented: $viewModel.showStartInfo) {
-            IntroView(show: $viewModel.showStartInfo, dontShowAgain: $viewModel.dontShowAgain)
-        }
-        
+            .onAppear {
+                viewModel.startScan()
+            }
+            .sheet(isPresented: $viewModel.showStartInfo) {
+                IntroView(show: $viewModel.showStartInfo, dontShowAgain: $viewModel.dontShowAgain)
+            }
     }
     
     @ViewBuilder

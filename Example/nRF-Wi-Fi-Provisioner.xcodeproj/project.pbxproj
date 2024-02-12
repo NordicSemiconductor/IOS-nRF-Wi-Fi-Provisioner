@@ -631,7 +631,6 @@
 				TargetAttributes = {
 					01481A982852093000925FAB = {
 						CreatedOnToolsVersion = 13.2.1;
-						DevelopmentTeam = P3R8YQEV4L;
 					};
 					01481A9E2852093000925FAB = {
 						CreatedOnToolsVersion = 13.2.1;
@@ -1052,7 +1051,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = P3R8YQEV4L;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "nRF Wi-Fi Provisioner";
@@ -1089,7 +1088,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = P3R8YQEV4L;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "nRF Wi-Fi Provisioner";
