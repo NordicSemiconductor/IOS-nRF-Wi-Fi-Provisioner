@@ -27,17 +27,16 @@ struct SelectorView: View {
         
         VStack {
             Text("Select Mode")
-                /*
+
             NavigationLink {
                 ScannerView(viewModel: ScannerViewModel())
             } label: {
                 Text("BLE Prov")
             }
             .padding()
-                 */
 
             NavigationLink {
-                Text("Wifi")
+                ProvisionOverWiFiView()
             } label: {
                 Text("Wifi Prov")
             }
