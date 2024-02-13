@@ -1087,7 +1087,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = "nRF Wi-Fi Provisioner";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.developer-tools";
 				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "The app requires Bluetooth permission to be able to find and connect the nRF7002 devices to start provision process.";
-				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "Some Description";
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "Local Network Access is Needed to Provision your Wi-Fi Device.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -1127,7 +1127,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = "nRF Wi-Fi Provisioner";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.developer-tools";
 				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "The app requires Bluetooth permission to be able to find and connect the nRF7002 devices to start provision process.";
-				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "Some Description";
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "Local Network Access is Needed to Provision your Wi-Fi Device.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
