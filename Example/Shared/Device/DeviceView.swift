@@ -7,7 +7,7 @@
 
 import SwiftUI
 import NordicStyle
-import NordicWiFiProvisioner
+import NordicWiFiProvisioner_BLE
 
 struct DeviceView: View {
     @StateObject var viewModel: ViewModel

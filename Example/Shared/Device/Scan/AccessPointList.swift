@@ -7,7 +7,7 @@
 
 import SwiftUI
 import NordicStyle
-import NordicWiFiProvisioner
+import NordicWiFiProvisioner_BLE
 
 struct AccessPointList: View {
     @Environment(\.presentationMode) var presentationMode
@@ -144,7 +144,7 @@ struct AccessPointList: View {
 
 struct AccessPointList_Previews: PreviewProvider {
     struct Selection: AccessPointSelection {
-        var selectedWiFi: NordicWiFiProvisioner.WifiInfo?
+        var selectedWiFi: NordicWiFiProvisioner_BLE.WifiInfo?
         
         var showAccessPointList: Bool = false
     }

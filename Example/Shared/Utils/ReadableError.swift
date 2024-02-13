@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import NordicWiFiProvisioner
+import NordicWiFiProvisioner_BLE
 
 /// Error with readable title and message ready to show for user
 protocol ReadableError: Error {

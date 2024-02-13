@@ -6,7 +6,7 @@
 //
 
 import NordicStyle
-import NordicWiFiProvisioner
+import NordicWiFiProvisioner_BLE
 import SwiftUI
 
 struct ChannelPicker: View {

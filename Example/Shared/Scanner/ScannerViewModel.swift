@@ -8,7 +8,7 @@
 import Combine
 import CoreBluetoothMock
 import Foundation
-import NordicWiFiProvisioner
+import NordicWiFiProvisioner_BLE
 import SwiftUI
 import os
 
@@ -26,9 +26,9 @@ extension ScannerViewModel {
         var version: Int? { sr.version }
         var wifiRSSI: Int? { sr.wifiRSSI }
         
-        let sr: NordicWiFiProvisioner.ScanResult
+        let sr: NordicWiFiProvisioner_BLE.ScanResult
         
-        init(rowScanResult: NordicWiFiProvisioner.ScanResult) {
+        init(rowScanResult: NordicWiFiProvisioner_BLE.ScanResult) {
             self.sr = rowScanResult
             self.id = sr.id.uuidString + sr.name + "\(sr.rssi)" + "\(sr.provisioned)" + "\(sr.connected)" + "\(sr.wifiRSSI ?? 0)"
         }
@@ -62,11 +62,11 @@ class ScannerViewModel: ObservableObject {
     @Published private(set) var state: State = .waiting
     @Published private(set) var scanResults: [DisplayableScanResult] = []
     
-    private let scanner: NordicWiFiProvisioner.Scanner
+    private let scanner: NordicWiFiProvisioner_BLE.Scanner
     
     private var cancelable: Set<AnyCancellable> = []
     
-    init(scanner: NordicWiFiProvisioner.Scanner = Scanner()) {
+    init(scanner: NordicWiFiProvisioner_BLE.Scanner = Scanner()) {
         self.scanner = scanner
         self.showStartInfo = !dontShowAgain
         
@@ -84,7 +84,7 @@ class ScannerViewModel: ObservableObject {
 }
 
 extension ScannerViewModel.State {
-    init(from bluetoothState: NordicWiFiProvisioner.Scanner.State) {
+    init(from bluetoothState: NordicWiFiProvisioner_BLE.Scanner.State) {
         switch bluetoothState {
         case .poweredOn:
             self = .scanning
@@ -103,12 +103,12 @@ extension ScannerViewModel.State {
 }
 
 
-extension ScannerViewModel: NordicWiFiProvisioner.ScannerDelegate {
-    func scannerDidUpdateState(_ state: NordicWiFiProvisioner.Scanner.State) {
+extension ScannerViewModel: NordicWiFiProvisioner_BLE.ScannerDelegate {
+    func scannerDidUpdateState(_ state: NordicWiFiProvisioner_BLE.Scanner.State) {
         self.state = State.init(from: state)
     }
     
-    func scannerDidDiscover(_ scanResult: NordicWiFiProvisioner.ScanResult) {
+    func scannerDidDiscover(_ scanResult: NordicWiFiProvisioner_BLE.ScanResult) {
         if let index = scanResults.firstIndex(where: { $0.sr.id == scanResult.id }) {
             scanResults[index] = DisplayableScanResult(rowScanResult: scanResult)
         } else {

@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import NordicWiFiProvisioner
+import NordicWiFiProvisioner_BLE
 
 struct StatusModifier: ViewModifier {
     enum Status {

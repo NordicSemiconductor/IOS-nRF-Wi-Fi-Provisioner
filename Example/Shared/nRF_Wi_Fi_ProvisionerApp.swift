@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import NordicWiFiProvisioner
+import NordicWiFiProvisioner_BLE
 
 @main
 struct nRF_Wi_Fi_ProvisionerApp: App {

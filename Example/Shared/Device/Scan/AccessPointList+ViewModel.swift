@@ -4,7 +4,7 @@
 
 import Combine
 import Foundation
-import NordicWiFiProvisioner
+import NordicWiFiProvisioner_BLE
 import os
 
 extension AccessPointList {
@@ -117,18 +117,18 @@ extension AccessPointList {
 }
 
 extension AccessPointList.ViewModel: WiFiScanerDelegate {
-    func deviceManager(_ provisioner: NordicWiFiProvisioner.DeviceManager, discoveredAccessPoint wifi: NordicWiFiProvisioner.WifiInfo, rssi: Int?) {
+    func deviceManager(_ provisioner: NordicWiFiProvisioner_BLE.DeviceManager, discoveredAccessPoint wifi: NordicWiFiProvisioner_BLE.WifiInfo, rssi: Int?) {
         let scanResult = ScanResult(wifi: wifi, rssi: rssi)
         allAccessPoints.insert(scanResult)
     }
     
-    func deviceManagerDidStartScan(_ provisioner: NordicWiFiProvisioner.DeviceManager, error: Error?) {
+    func deviceManagerDidStartScan(_ provisioner: NordicWiFiProvisioner_BLE.DeviceManager, error: Error?) {
         if let error {
             self.error = TitleMessageError(error: error)
         }
     }
     
-    func deviceManagerDidStopScan(_ provisioner: NordicWiFiProvisioner.DeviceManager, error: Error?) {
+    func deviceManagerDidStopScan(_ provisioner: NordicWiFiProvisioner_BLE.DeviceManager, error: Error?) {
         if let error {
             self.error = TitleMessageError(error: error)
         }

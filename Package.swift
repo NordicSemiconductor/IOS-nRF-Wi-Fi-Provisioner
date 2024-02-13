@@ -7,16 +7,16 @@ let package = Package(
     name: "NordicWiFiProvisioner",
     platforms: [
         .macOS(.v10_13),
-        .iOS(.v11)
+        .iOS(.v13)
       ],
     products: [
         // Products define the executables and libraries a package produces, and make them visible to other packages.
         .library(
-            name: "NordicWiFiProvisioner",
-            targets: ["NordicWiFiProvisioner"]),
+            name: "NordicWiFiProvisioner-BLE",
+            targets: ["NordicWiFiProvisioner-BLE"]),
         .library(
-            name: "SoftAPProvisioner",
-            targets: ["SoftAPProvisioner"]),
+            name: "NordicWiFiProvisioner-SoftAP",
+            targets: ["NordicWiFiProvisioner-SoftAP"]),
     ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-protobuf.git", from: "1.6.0"),
@@ -24,9 +24,9 @@ let package = Package(
         .package(url: "https://github.com/apple/swift-docc-plugin", from: "1.0.0")
     ],
     targets: [
-        .target(name: "SoftAPProvisioner"),
+        .target(name: "NordicWiFiProvisioner-SoftAP"),
         .target(
-            name: "NordicWiFiProvisioner",
+            name: "NordicWiFiProvisioner-BLE",
             dependencies: [
                 .product(name: "SwiftProtobuf", package: "swift-protobuf"),
                 .product(name: "CoreBluetoothMock", package: "IOS-CoreBluetooth-Mock")

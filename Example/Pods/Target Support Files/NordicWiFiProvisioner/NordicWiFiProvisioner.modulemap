@@ -1,6 +1,0 @@
-framework module NordicWiFiProvisioner {
-  umbrella header "NordicWiFiProvisioner-umbrella.h"
-
-  export *
-  module * { export * }
-}

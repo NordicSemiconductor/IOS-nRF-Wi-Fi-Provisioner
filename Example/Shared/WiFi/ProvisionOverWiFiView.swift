@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import NetworkExtension
+import NordicWiFiProvisioner_SoftAP
 
 struct ProvisionOverWiFiView: View {
     
@@ -22,16 +22,13 @@ struct ProvisionOverWiFiView: View {
         switch status {
         case .notConnected:
             Button("Attempt to Connect") {
-                let manager = NEHotspotConfigurationManager.shared
-                let configuration = NEHotspotConfiguration(ssid: "mobileappsrules")
-                manager.apply(configuration) { error in
-                    if let error {
-                        status = .error(error)
-                    } else {
-                        status = .connected
+                Task {
+                    do {
+                        try await ProvisionManager().connect()
+                    } catch let e {
+                        print(e.localizedDescription)
                     }
                 }
-                print("try to connect")
             }
         case .connected:
             Text("Connected to DK")

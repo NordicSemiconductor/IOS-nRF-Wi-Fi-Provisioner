@@ -113,7 +113,7 @@ struct ScannerView: View {
 }
 
 #if DEBUG
-import NordicWiFiProvisioner
+import NordicWiFiProvisioner_BLE
 
 struct ScannerView_Previews: PreviewProvider {
     class DummyScanViewModel: ScannerViewModel {

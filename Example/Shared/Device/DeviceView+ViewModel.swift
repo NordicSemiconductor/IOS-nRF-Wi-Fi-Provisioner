@@ -9,7 +9,7 @@ import Foundation
 import Combine
 import NordicStyle
 import os
-import NordicWiFiProvisioner
+import NordicWiFiProvisioner_BLE
 
 protocol AccessPointSelection {
     var selectedWiFi: WifiInfo? { get set }
@@ -136,7 +136,7 @@ extension DeviceView.ViewModel {
 }
 
 extension DeviceView.ViewModel: ConnectionDelegate {
-    func deviceManagerDidFailToConnect(_ provisioner: NordicWiFiProvisioner.DeviceManager, error: Error) {
+    func deviceManagerDidFailToConnect(_ provisioner: NordicWiFiProvisioner_BLE.DeviceManager, error: Error) {
         peripheralConnectionStatus = .disconnected(.error(error))
     }
     
@@ -223,7 +223,7 @@ extension DeviceView.ViewModel: InfoDelegate {
 }
 
 extension DeviceView.ViewModel: ProvisionDelegate {
-    func deviceManagerDidSetConfig(_ deviceManager: NordicWiFiProvisioner.DeviceManager, error: Error?) {
+    func deviceManagerDidSetConfig(_ deviceManager: NordicWiFiProvisioner_BLE.DeviceManager, error: Error?) {
         buttonConfiguration.enabledUnsetButton = true
         if let error {
             self.error = TitleMessageError(error: error)
@@ -247,7 +247,7 @@ extension DeviceView.ViewModel: ProvisionDelegate {
         updateButtonState()
     }
     
-    func deviceManager(_ provisioner: NordicWiFiProvisioner.DeviceManager, didChangeState state: NordicWiFiProvisioner.ConnectionState) {
+    func deviceManager(_ provisioner: NordicWiFiProvisioner_BLE.DeviceManager, didChangeState state: NordicWiFiProvisioner_BLE.ConnectionState) {
         connectionStatus.showStatus = true
         connectionStatus.status = state.description
         
