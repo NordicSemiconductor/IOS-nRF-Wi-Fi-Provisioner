@@ -20,6 +20,7 @@ struct ProvisionOverWiFiView: View {
     @State private var manager = ProvisionManager()
     @State private var led1Enabled = false
     @State private var led2Enabled = false
+    @State private var ssids: [String] = []
     
     var body: some View {
         switch status {
@@ -37,6 +38,17 @@ struct ProvisionOverWiFiView: View {
                 }
             }
         case .connected:
+            List {
+                ForEach(ssids, id: \.self) {
+                    Text($0)
+                }
+                Button("Read SSID") {
+                    Task {
+                        self .ssids = try await manager.getSSIDs()
+                    }
+                }
+            }
+            /*
             VStack {
                 Button("Set LED 1") {
                     Task {
@@ -57,6 +69,7 @@ struct ProvisionOverWiFiView: View {
                     }
                 }
             }
+             */
         case .error(let error):
             Text("Error: \(error.localizedDescription)")
         }

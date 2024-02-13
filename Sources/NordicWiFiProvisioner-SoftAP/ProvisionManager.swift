@@ -30,17 +30,15 @@ open class ProvisionManager {
             }
         }
     }
-
+    
     open func setLED(ledNumber: Int, enabled: Bool) async throws {
         let url = URL(string: "\(endpoint)led/\(ledNumber)")!
         
         var request = URLRequest(url: url)
         request.httpMethod = "PUT"
         request.httpBody = "\(enabled ? 1 : 0)".data(using: .utf8)
-
-        session = URLSession.shared
         
-        var config = URLSessionConfiguration.default
+        let config = URLSessionConfiguration.default
         config.waitsForConnectivity = false
         config.requestCachePolicy = .reloadIgnoringLocalCacheData
         
@@ -50,6 +48,31 @@ open class ProvisionManager {
             print(response.0)
             print(response.1)
         }
+    }
+    
+    open func getSSIDs() async throws -> [String] {
+        let url = URL(string: "\(endpoint)wifi/ssid")!
+
+        let config = URLSessionConfiguration.default
+        config.waitsForConnectivity = false
+        config.requestCachePolicy = .reloadIgnoringLocalCacheData
+        
+        session = URLSession(configuration: config, delegate: NSURLSessionPinningDelegate.shared, delegateQueue: nil)
+        
+        guard let ssidsResponse = try await session?.data(from: url) else {
+            fatalError()
+        }
+
+        if let resp = ssidsResponse.1 as? HTTPURLResponse {
+            print(resp.statusCode)
+        }
+        
+        let strings = String(data: ssidsResponse.0, encoding: .utf8)
+        guard let ssid = strings?.split(separator: "\n").dropFirst(2) else {
+            fatalError()
+        }
+
+        return Array(ssid).map { String($0) }
     }
 }
 
