@@ -16,7 +16,7 @@
     "tag": "2.0.0"
   },
   "platforms": {
-    "ios": "13.0"
+    "ios": "15.0"
   },
   "swift_versions": [
     "5.0",
@@ -28,6 +28,11 @@
     "5.6"
   ],
   "source_files": "Sources/NordicWiFiProvisioner-SoftAP/**/*.swift",
+  "resource_bundles": {
+    "Res": [
+      "Sources/NordicWiFiProvisioner-SoftAP/cert/*.cer"
+    ]
+  },
   "frameworks": "CoreBluetooth",
   "dependencies": {
     "SwiftProtobuf": [

@@ -29,12 +29,15 @@ It cantains all the necessary components to scan for nRF-7 devices, connect to t
   s.source           = { :git => 'https://github.com/NordicSemiconductor/IOS-nRF-Wi-Fi-Provisioner.git', :tag => s.version.to_s }
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
-  s.ios.deployment_target = '13.0'
+  s.ios.deployment_target = '15.0'
   # s.osx.deployment_target = '10.15'
 
   s.swift_versions = ['5.0', '5.1', '5.2', '5.3', '5.4', '5.5', '5.6']
 
   s.source_files = 'Sources/NordicWiFiProvisioner-SoftAP/**/*.swift'
+  s.resource_bundles = {
+    'Res' => ['Sources/NordicWiFiProvisioner-SoftAP/cert/*.cer']
+  }
   s.frameworks = 'CoreBluetooth'
   
   s.dependency 'SwiftProtobuf'

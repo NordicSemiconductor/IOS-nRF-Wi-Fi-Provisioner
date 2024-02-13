@@ -136,6 +136,7 @@
 		01062AD928B6592700BB41FD /* View+Mod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Mod.swift"; sourceTree = "<group>"; };
 		0107FEA928F827A200693317 /* ScanResultRaw.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanResultRaw.swift; sourceTree = "<group>"; };
 		011A2612287CAF890004A5C4 /* BluetoothManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BluetoothManager.swift; sourceTree = "<group>"; };
+		011CBFBD2B7B71E8007466A1 /* nRF-Wi-Fi-Provisioner--iOS--Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "nRF-Wi-Fi-Provisioner--iOS--Info.plist"; sourceTree = "<group>"; };
 		01481A922852092F00925FAB /* nRF_Wi_Fi_ProvisionerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = nRF_Wi_Fi_ProvisionerApp.swift; sourceTree = "<group>"; };
 		01481A932852092F00925FAB /* IntroView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroView.swift; sourceTree = "<group>"; };
 		01481A942852093000925FAB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -263,6 +264,7 @@
 		01481A8C2852092F00925FAB = {
 			isa = PBXGroup;
 			children = (
+				011CBFBD2B7B71E8007466A1 /* nRF-Wi-Fi-Provisioner--iOS--Info.plist */,
 				AA2C119C2B7A6414003AF3E0 /* nRF-Wi-Fi-Provisioner (iOS).entitlements */,
 				019A5D8D286C77CE002D03F0 /* NordicStyle */,
 				01481A912852092F00925FAB /* Shared */,
@@ -1081,9 +1083,11 @@
 				DEVELOPMENT_TEAM = P3R8YQEV4L;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "nRF-Wi-Fi-Provisioner--iOS--Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "nRF Wi-Fi Provisioner";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.developer-tools";
 				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "The app requires Bluetooth permission to be able to find and connect the nRF7002 devices to start provision process.";
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "Some Description";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -1119,9 +1123,11 @@
 				DEVELOPMENT_TEAM = P3R8YQEV4L;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "nRF-Wi-Fi-Provisioner--iOS--Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "nRF Wi-Fi Provisioner";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.developer-tools";
 				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "The app requires Bluetooth permission to be able to find and connect the nRF7002 devices to start provision process.";
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "Some Description";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
