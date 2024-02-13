@@ -13,8 +13,6 @@ open class ProvisionManager {
     public init() {
     }
     
-    @objc private var session: URLSession? = nil
-    
     open func connect() async throws {
         let manager = NEHotspotConfigurationManager.shared
         let configuration = NEHotspotConfiguration(ssid: "mobileappsrules")
@@ -42,12 +40,12 @@ open class ProvisionManager {
         config.waitsForConnectivity = false
         config.requestCachePolicy = .reloadIgnoringLocalCacheData
         
-        session = URLSession(configuration: config, delegate: NSURLSessionPinningDelegate.shared, delegateQueue: nil)
+        let session = URLSession(configuration: config, delegate: NSURLSessionPinningDelegate.shared, delegateQueue: nil)
         
-        if let response = try await session?.data(for: request) {
-            print(response.0)
-            print(response.1)
-        }
+        let response = try await session.data(for: request)
+        
+        print(response.0)
+        print(response.1)
     }
     
     open func getSSIDs() async throws -> [String] {
@@ -57,11 +55,9 @@ open class ProvisionManager {
         config.waitsForConnectivity = false
         config.requestCachePolicy = .reloadIgnoringLocalCacheData
         
-        session = URLSession(configuration: config, delegate: NSURLSessionPinningDelegate.shared, delegateQueue: nil)
+        let session = URLSession(configuration: config, delegate: NSURLSessionPinningDelegate.shared, delegateQueue: nil)
         
-        guard let ssidsResponse = try await session?.data(from: url) else {
-            fatalError()
-        }
+        let ssidsResponse = try await session.data(from: url)
 
         if let resp = ssidsResponse.1 as? HTTPURLResponse {
             print(resp.statusCode)
@@ -73,6 +69,10 @@ open class ProvisionManager {
         }
 
         return Array(ssid).map { String($0) }
+    }
+    
+    func provision(ssid: String, password: String) async throws {
+        
     }
 }
 
