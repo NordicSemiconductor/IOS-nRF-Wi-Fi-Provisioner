@@ -9,7 +9,7 @@ import Foundation
 import NetworkExtension
 
 open class ProvisionManager {
-    private let endpoint = "https://httpserver.local/"
+    private let endpoint = "https://192.0.2.1/"
     public init() {
     }
     
@@ -32,24 +32,13 @@ open class ProvisionManager {
     }
 
     open func setLED(ledNumber: Int, enabled: Bool) async throws {
-//        let url = URL(string: "\(endpoint)led/\(ledNumber)")!
-        let url = URL(string: "https://192.0.2.1/wifi/ssid")!
-//        let url = URL(string: "https://google.com")!
-        /*
-        let response = try await URLSession.shared.data(from: url)
-        print("completed")
-        print(response.0)
-        print(response.1)
-        return;
-         */
-        print("set lod")
+        let url = URL(string: "\(endpoint)led/\(ledNumber)")!
         
         var request = URLRequest(url: url)
-        request.httpMethod = "GET"
-//        request.httpMethod = "PUT"
-//        request.httpBody = enabled ? Data([1]) : Data([0])
+        request.httpMethod = "PUT"
+        request.httpBody = "\(enabled ? 1 : 0)".data(using: .utf8)
 
-//        session = URLSession.shared
+        session = URLSession.shared
         
         var config = URLSessionConfiguration.default
         config.waitsForConnectivity = false
@@ -57,17 +46,10 @@ open class ProvisionManager {
         
         session = URLSession(configuration: config, delegate: NSURLSessionPinningDelegate.shared, delegateQueue: nil)
         
-//        let response = session?.data(for: request)
-        let response = try await session?.data(for: request)
-        print(response?.0)
-        print(response?.1)
-        
-//        session?.dataTask(with: request, completionHandler: { data, response, error in
-//            print(data)
-//            print(response)
-//            print(error)
-//        })
-        
+        if let response = try await session?.data(for: request) {
+            print(response.0)
+            print(response.1)
+        }
     }
 }
 
