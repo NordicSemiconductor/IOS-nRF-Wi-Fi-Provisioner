@@ -32,7 +32,8 @@ open class ProvisionManager {
     }
 
     open func setLED(ledNumber: Int, enabled: Bool) async throws {
-        let url = URL(string: "\(endpoint)led/\(ledNumber)")!
+//        let url = URL(string: "\(endpoint)led/\(ledNumber)")!
+        let url = URL(string: "https://192.0.2.1/wifi/ssid")!
 //        let url = URL(string: "https://google.com")!
         /*
         let response = try await URLSession.shared.data(from: url)
@@ -44,12 +45,17 @@ open class ProvisionManager {
         print("set lod")
         
         var request = URLRequest(url: url)
+        request.httpMethod = "GET"
 //        request.httpMethod = "PUT"
 //        request.httpBody = enabled ? Data([1]) : Data([0])
 
 //        session = URLSession.shared
         
-        session = URLSession(configuration: .default, delegate: NSURLSessionPinningDelegate.shared, delegateQueue: .current)
+        var config = URLSessionConfiguration.default
+        config.waitsForConnectivity = false
+        config.requestCachePolicy = .reloadIgnoringLocalCacheData
+        
+        session = URLSession(configuration: config, delegate: NSURLSessionPinningDelegate.shared, delegateQueue: nil)
         
 //        let response = session?.data(for: request)
         let response = try await session?.data(for: request)
