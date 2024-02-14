@@ -20,6 +20,22 @@ open class ProvisionManager {
     }
     
     open func connect() async throws {
+        let connectedAlready: Bool
+        do {
+            // If we're connected, this should return a response. True or false.
+            _ = try await ledStatus(ledNumber: 1)
+            connectedAlready = true
+        } catch {
+            // If it throws, the Device Firmware did not respond / we're not connected.
+            connectedAlready = false
+        }
+        guard !connectedAlready else {
+            // Nothing to do here.
+            print("Provisioning Device replied to LED Status - We're already connected.")
+            return
+        }
+        
+        // Ask the user to switch to the Provisioning Device's Wi-Fi Network.
         let manager = NEHotspotConfigurationManager.shared
         let configuration = NEHotspotConfiguration(ssid: apSSID)
         try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
@@ -47,6 +63,7 @@ open class ProvisionManager {
         let config = URLSessionConfiguration.default
         config.waitsForConnectivity = false
         config.requestCachePolicy = .reloadIgnoringLocalCacheData
+        config.timeoutIntervalForRequest = 7.0
         
         let session = URLSession(configuration: config, delegate: NSURLSessionPinningDelegate.shared, delegateQueue: nil)
         
