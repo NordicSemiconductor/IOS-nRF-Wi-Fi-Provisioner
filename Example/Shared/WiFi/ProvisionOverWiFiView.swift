@@ -39,8 +39,32 @@ struct ProvisionOverWiFiView: View {
             }
         case .connected:
             List {
-                ForEach(ssids, id: \.self) {
-                    Text($0)
+                HStack {
+                    Button {
+                        Task {
+                            try await manager.setLED(ledNumber:1, enabled: !led1Enabled)
+                            led1Enabled.toggle()
+                        }
+                    } label: {
+                        Image(systemName: led1Enabled ? "lamp.table.fill" : "lamp.table")
+                    }
+                    
+                    Button {
+                        Task {
+                            try await manager.setLED(ledNumber:2, enabled: !led2Enabled)
+                            led2Enabled.toggle()
+                        }
+                    } label: {
+                        Image(systemName: led2Enabled ? "lamp.table.fill" : "lamp.table")
+                    }
+                }
+                ForEach(ssids, id: \.self) { ssid in
+                    NavigationLink {
+                        Text(ssid)
+                            .navigationTitle(Text(ssid))
+                    } label: {
+                        Text(ssid)
+                    }
                 }
                 Button("Read SSID") {
                     Task {
@@ -48,28 +72,16 @@ struct ProvisionOverWiFiView: View {
                     }
                 }
             }
-            /*
-            VStack {
-                Button("Set LED 1") {
-                    Task {
-                        do {
-                            try await manager.setLED(ledNumber: 1, enabled: led1Enabled)
-                            led1Enabled.toggle()
-                        } catch let e {
-                            print(e.localizedDescription)
-                        }
-                    }
-                }
-                Button("Set LED 2") {
-                    Task {
-                        do {
-                            try await manager.setLED(ledNumber: 2, enabled: led2Enabled)
-                            led2Enabled.toggle()
-                        }
+            .task {
+                Task {
+                    do {
+                        led1Enabled = try await manager.ledStatus(ledNumber: 1)
+                        led2Enabled = try await manager.ledStatus(ledNumber: 2)
+                    } catch let e {
+                        print(e.localizedDescription)
                     }
                 }
             }
-             */
         case .error(let error):
             Text("Error: \(error.localizedDescription)")
         }

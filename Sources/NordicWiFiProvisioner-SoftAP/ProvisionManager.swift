@@ -10,15 +10,24 @@ import NetworkExtension
 
 open class ProvisionManager {
     private let endpoint = "https://192.0.2.1/"
+    private let apSSID = "mobileappsrules"
     public init() {
+    }
+    
+    public enum ProvisionError: Error {
+        case httpError(Int)
+        case badResponse
     }
     
     open func connect() async throws {
         let manager = NEHotspotConfigurationManager.shared
-        let configuration = NEHotspotConfiguration(ssid: "mobileappsrules")
+        let configuration = NEHotspotConfiguration(ssid: apSSID)
         try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
             manager.apply(configuration) { error in
-                if let error {
+                if let nsError = error as? NSError, nsError.code == 13 {
+                    continuation.resume()
+                    print("already connected")
+                } else if let error {
                     continuation.resume(throwing: error)
                     print(error.localizedDescription)
                 } else {
@@ -27,6 +36,39 @@ open class ProvisionManager {
                 }
             }
         }
+    }
+    
+    open func ledStatus(ledNumber: Int) async throws -> Bool {
+        let url = URL(string: "\(endpoint)led/\(ledNumber)")!
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        
+        let config = URLSessionConfiguration.default
+        config.waitsForConnectivity = false
+        config.requestCachePolicy = .reloadIgnoringLocalCacheData
+        
+        let session = URLSession(configuration: config, delegate: NSURLSessionPinningDelegate.shared, delegateQueue: nil)
+        
+        let response = try await session.data(for: request)
+        guard let httpResponse = response.1 as? HTTPURLResponse else {
+            throw ProvisionError.badResponse
+        }
+        
+        guard httpResponse.statusCode < 400 else {
+            throw ProvisionError.httpError(httpResponse.statusCode)
+        }
+        
+        guard let responseText = String(data: response.0, encoding: .utf8)?.split(separator: "\r\n").last else {
+            throw ProvisionError.badResponse
+        }
+        
+        switch responseText {
+        case "0": return false
+        case "1": return true
+        default: throw ProvisionError.badResponse
+        }
+        
     }
     
     open func setLED(ledNumber: Int, enabled: Bool) async throws {
@@ -59,8 +101,8 @@ open class ProvisionManager {
         
         let ssidsResponse = try await session.data(from: url)
 
-        if let resp = ssidsResponse.1 as? HTTPURLResponse {
-            print(resp.statusCode)
+        if let resp = ssidsResponse.1 as? HTTPURLResponse, resp.statusCode >= 400 {
+            throw ProvisionError.httpError(resp.statusCode)
         }
         
         let strings = String(data: ssidsResponse.0, encoding: .utf8)
