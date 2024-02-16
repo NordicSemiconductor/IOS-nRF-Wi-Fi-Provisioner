@@ -1104,7 +1104,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.0.0;
+				MARKETING_VERSION = 2.1;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.nordicsemi.nRF-Wi-Fi-Provisioner";
 				PRODUCT_NAME = "nRF-Wi-Fi-Provisioner";
@@ -1144,7 +1144,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.0.0;
+				MARKETING_VERSION = 2.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.nordicsemi.nRF-Wi-Fi-Provisioner";
 				PRODUCT_NAME = "nRF-Wi-Fi-Provisioner";
 				PROVISIONING_PROFILE_SPECIFIER = "";
