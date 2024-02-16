@@ -88,7 +88,7 @@ open class ProvisionManager {
         
     }
     
-    open func setLED(ledNumber: Int, enabled: Bool) async throws {
+    open func setLED(ledNumber: Int, enabled: Bool) async throws -> Result<Void, Error> {
         let url = URL(string: "\(endpoint)led/\(ledNumber)")!
         
         var request = URLRequest(url: url)
@@ -102,9 +102,11 @@ open class ProvisionManager {
         let session = URLSession(configuration: config, delegate: NSURLSessionPinningDelegate.shared, delegateQueue: nil)
         
         let response = try await session.data(for: request)
-        
-        print(response.0)
-        print(response.1)
+        guard let urlResponse = (response.1 as? HTTPURLResponse) else {
+            return .failure(ProvisionError.badResponse)
+        }
+        let error = NSError(domain: NSURLErrorDomain, code: urlResponse.statusCode)
+        return error.code == 200 ? .success(()) : .failure(error)
     }
     
     open func getSSIDs() async throws -> [String] {

@@ -43,8 +43,12 @@ struct ProvisionOverWiFiView: View {
                     Section("LED Testing") {
                         Button {
                             Task {
-                                try await manager.setLED(ledNumber: 1, enabled: !led1Enabled)
-                                led1Enabled.toggle()
+                                switch try await manager.setLED(ledNumber: 1, enabled: !led1Enabled) {
+                                case .success:
+                                    led1Enabled.toggle()
+                                default:
+                                    break
+                                }
                             }
                         } label: {
                             Label("LED 1", systemImage: led1Enabled ? "lamp.table.fill" : "lamp.table")
@@ -52,8 +56,12 @@ struct ProvisionOverWiFiView: View {
                         
                         Button {
                             Task {
-                                try await manager.setLED(ledNumber: 2, enabled: !led2Enabled)
-                                led2Enabled.toggle()
+                                switch try await manager.setLED(ledNumber: 2, enabled: !led2Enabled) {
+                                case .success:
+                                    led2Enabled.toggle()
+                                default:
+                                    break
+                                }
                             }
                         } label: {
                             Label("LED 2", systemImage: led2Enabled ? "lamp.table.fill" : "lamp.table")
