@@ -9,7 +9,6 @@ class IntroViewModel: ObservableObject {
     @Published var image: String = "nRF70-Series-nobg"
     @Published(initialValue: []) var markdown: [String]
     @Published var version: String = ""
-    @AppStorage("dontShowAgain") var dontShowAgain: Bool = false
 
     func readInfo() throws {
         markdown = try readMarkdown()

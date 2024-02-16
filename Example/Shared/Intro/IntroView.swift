@@ -56,7 +56,7 @@ struct IntroView: View {
                     .padding()
                 
                 HStack {
-                    Toggle("Don't show again", isOn: $viewModel.dontShowAgain)
+                    Toggle("Don't show again", isOn: $dontShowAgain)
                 }
                 .padding()
                 
