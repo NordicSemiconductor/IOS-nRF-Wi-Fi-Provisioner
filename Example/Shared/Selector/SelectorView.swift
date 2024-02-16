@@ -10,22 +10,25 @@ import SwiftUI
 struct SelectorView: View {
     
     var body: some View {
-        VStack {
-            Text("Select Mode")
-
-            NavigationLink {
-                ScannerView(viewModel: ScannerViewModel())
-            } label: {
-                Text("Provision over BLE")
+        List {
+            Section {
+                Text("Select Mode")
+                    .font(.subheadline)
+                    .listRowBackground(Color.clear)
+                
+                NavigationLink {
+                    ScannerView(viewModel: ScannerViewModel())
+                } label: {
+                    Label("Provision over BLE", image: "bluetooth")
+                }
+                
+                NavigationLink {
+                    ProvisionOverWiFiView()
+                } label: {
+                    Label("Provision over Wi-Fi", systemImage: "wifi")
+                }
             }
-            .padding()
-
-            NavigationLink {
-                ProvisionOverWiFiView()
-            } label: {
-                Text("Provision over Wi-Fi")
-            }
-            .padding()
         }
+        .listStyle(.insetGrouped)
     }
 }
