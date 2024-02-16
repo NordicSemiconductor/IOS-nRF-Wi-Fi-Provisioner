@@ -18,8 +18,8 @@ struct ProvisionOverWiFiView: View {
     
     @State private var status = Status.notConnected
     @State private var manager = ProvisionManager()
-    @State private var led0Enabled = false
     @State private var led1Enabled = false
+    @State private var led2Enabled = false
     @State private var ssids: [String] = []
     
     var body: some View {
@@ -44,11 +44,11 @@ struct ProvisionOverWiFiView: View {
                         HStack {
                             Button {
                                 Task {
-                                    try await manager.setLED(ledNumber: 0, enabled: !led0Enabled)
-                                    led0Enabled.toggle()
+                                    try await manager.setLED(ledNumber: 1, enabled: !led1Enabled)
+                                    led1Enabled.toggle()
                                 }
                             } label: {
-                                Label("LED 0", systemImage: led0Enabled ? "lamp.table.fill" : "lamp.table")
+                                Label("LED 1", systemImage: led1Enabled ? "lamp.table.fill" : "lamp.table")
                             }
                             .frame(maxWidth: .infinity)
                             
@@ -56,11 +56,11 @@ struct ProvisionOverWiFiView: View {
                             
                             Button {
                                 Task {
-                                    try await manager.setLED(ledNumber: 1, enabled: !led1Enabled)
-                                    led1Enabled.toggle()
+                                    try await manager.setLED(ledNumber: 2, enabled: !led2Enabled)
+                                    led2Enabled.toggle()
                                 }
                             } label: {
-                                Label("LED 1", systemImage: led1Enabled ? "lamp.table.fill" : "lamp.table")
+                                Label("LED 2", systemImage: led2Enabled ? "lamp.table.fill" : "lamp.table")
                             }
                             .frame(maxWidth: .infinity)
                         }
@@ -77,7 +77,7 @@ struct ProvisionOverWiFiView: View {
                         }
                         Button("Read SSID") {
                             Task {
-                                self .ssids = try await manager.getSSIDs()
+                                self.ssids = try await manager.getSSIDs()
                             }
                         }
                     }
@@ -85,8 +85,8 @@ struct ProvisionOverWiFiView: View {
                 .task {
                     Task {
                         do {
-                            led0Enabled = try await manager.ledStatus(ledNumber: 0)
                             led1Enabled = try await manager.ledStatus(ledNumber: 1)
+                            led2Enabled = try await manager.ledStatus(ledNumber: 2)
                         } catch let e {
                             print(e.localizedDescription)
                         }
