@@ -11,6 +11,8 @@ import NordicWiFiProvisioner_BLE
 @main
 struct nRF_Wi_Fi_ProvisionerApp: App {
     
+    @StateObject private var viewModel = AppViewModel()
+    
     init() {
         MockManager.emulateDevices()
     }
@@ -20,6 +22,10 @@ struct nRF_Wi_Fi_ProvisionerApp: App {
             NavigationView {
                 SelectorView()
                     .navigationTitle("nRF Wi-Fi Provisioner")
+            }
+            .sheet(isPresented: $viewModel.showStartInfo) {
+                IntroView(show: $viewModel.showStartInfo,
+                          dontShowAgain: $viewModel.dontShowAgain)
             }
         }
     }

@@ -69,9 +69,6 @@ struct ScannerView: View {
             .onAppear {
                 viewModel.startScan()
             }
-            .sheet(isPresented: $viewModel.showStartInfo) {
-                IntroView(show: $viewModel.showStartInfo, dontShowAgain: $viewModel.dontShowAgain)
-            }
     }
     
     @ViewBuilder
@@ -117,14 +114,6 @@ import NordicWiFiProvisioner_BLE
 
 struct ScannerView_Previews: PreviewProvider {
     class DummyScanViewModel: ScannerViewModel {
-        override var showStartInfo: Bool {
-            get {
-                false
-            }
-            set {
-                
-            }
-        }
         
         override var state: ScannerViewModel.State {
             .scanning

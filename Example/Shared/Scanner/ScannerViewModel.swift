@@ -50,9 +50,6 @@ class ScannerViewModel: ObservableObject {
         category: "scanner.scanner-view-model"
     )
     
-    // Show start info on first launch
-    @AppStorage("dontShowAgain") var dontShowAgain: Bool = false
-    @Published var showStartInfo: Bool = false
     @Published var onlyUnprovisioned: Bool = false {
         didSet {
             reset()
@@ -68,7 +65,6 @@ class ScannerViewModel: ObservableObject {
     
     init(scanner: NordicWiFiProvisioner_BLE.Scanner = Scanner()) {
         self.scanner = scanner
-        self.showStartInfo = !dontShowAgain
         
         self.scanner.delegate = self
         self.startScan()
