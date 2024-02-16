@@ -13,7 +13,7 @@ struct SelectorView: View {
         List {
             Section {
                 Text("Select Mode")
-                    .font(.subheadline)
+                    .font(.title3)
                     .listRowBackground(Color.clear)
                 
                 NavigationLink {
@@ -27,6 +27,14 @@ struct SelectorView: View {
                 } label: {
                     Label("Provision over Wi-Fi", systemImage: "wifi")
                 }
+                
+                Text("""
+                What is nRF Wi-Fi Provisioner For?
+                
+                nRF Wi-Fi Provisioner is designed to work with nRF700x DKs, or nRF700x-powered devices that are running firmware capable of being provisioned via these two methods, Bluetooth or Wi-Fi. Both have advantages & disadvantages, but the end result should be that your device can use its nRF7000x-derived capabilities to connect directly to the Internet. This App, via a provisioning process, configures nRF700x with the necessary credentials to access the Internet though the wireless network interface of your choice.
+                """)
+                .font(.footnote)
+                .listRowBackground(Color.clear)
             }
         }
         .listStyle(.insetGrouped)
