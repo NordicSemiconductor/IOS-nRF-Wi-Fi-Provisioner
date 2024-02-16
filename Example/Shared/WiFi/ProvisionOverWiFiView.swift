@@ -41,28 +41,22 @@ struct ProvisionOverWiFiView: View {
             case .connected:
                 List {
                     Section("LED Testing") {
-                        HStack {
-                            Button {
-                                Task {
-                                    try await manager.setLED(ledNumber: 1, enabled: !led1Enabled)
-                                    led1Enabled.toggle()
-                                }
-                            } label: {
-                                Label("LED 1", systemImage: led1Enabled ? "lamp.table.fill" : "lamp.table")
+                        Button {
+                            Task {
+                                try await manager.setLED(ledNumber: 1, enabled: !led1Enabled)
+                                led1Enabled.toggle()
                             }
-                            .frame(maxWidth: .infinity)
-                            
-                            Divider()
-                            
-                            Button {
-                                Task {
-                                    try await manager.setLED(ledNumber: 2, enabled: !led2Enabled)
-                                    led2Enabled.toggle()
-                                }
-                            } label: {
-                                Label("LED 2", systemImage: led2Enabled ? "lamp.table.fill" : "lamp.table")
+                        } label: {
+                            Label("LED 1", systemImage: led1Enabled ? "lamp.table.fill" : "lamp.table")
+                        }
+                        
+                        Button {
+                            Task {
+                                try await manager.setLED(ledNumber: 2, enabled: !led2Enabled)
+                                led2Enabled.toggle()
                             }
-                            .frame(maxWidth: .infinity)
+                        } label: {
+                            Label("LED 2", systemImage: led2Enabled ? "lamp.table.fill" : "lamp.table")
                         }
                     }
                     
