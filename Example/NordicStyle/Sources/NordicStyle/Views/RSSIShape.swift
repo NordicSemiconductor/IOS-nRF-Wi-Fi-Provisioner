@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-protocol BarHeightCalculator {
+protocol BarHeightCalculator: Sendable {
     // Returns relative height of bar based on bar position
     func barHeight(index: Int) -> Double
 }
