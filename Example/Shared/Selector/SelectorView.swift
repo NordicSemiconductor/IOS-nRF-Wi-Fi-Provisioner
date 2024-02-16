@@ -9,39 +9,23 @@ import SwiftUI
 
 struct SelectorView: View {
     
-    enum Mode: CustomStringConvertible, CaseIterable {
-        case provisionOverBle
-        case provisionOverWifi
-        
-        var description: String {
-            switch self {
-            case .provisionOverBle:
-                "Provision over BLE"
-            case .provisionOverWifi:
-                "Provision over Wi-Fi"
-            }
-        }
-    }
-    
     var body: some View {
-        
         VStack {
             Text("Select Mode")
 
             NavigationLink {
                 ScannerView(viewModel: ScannerViewModel())
             } label: {
-                Text("BLE Prov")
+                Text("Provision over BLE")
             }
             .padding()
 
             NavigationLink {
                 ProvisionOverWiFiView()
             } label: {
-                Text("Wifi Prov")
+                Text("Provision over Wi-Fi")
             }
             .padding()
-            
         }
     }
 }

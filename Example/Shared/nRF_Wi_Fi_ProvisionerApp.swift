@@ -11,8 +11,6 @@ import NordicWiFiProvisioner_BLE
 @main
 struct nRF_Wi_Fi_ProvisionerApp: App {
     
-    @State private var mode: SelectorView.Mode?
-    
     init() {
         MockManager.emulateDevices()
     }
@@ -21,24 +19,8 @@ struct nRF_Wi_Fi_ProvisionerApp: App {
         WindowGroup {
             NavigationView {
                 SelectorView()
-                    .navigationTitle("Chose")
+                    .navigationTitle("nRF Wi-Fi Provisioner")
             }
-            /*
-            switch mode {
-            case .none:
-                SelectorView(selected: $mode)
-            case .provisionOverBle:
-                NavigationView {
-                    ScannerView(viewModel: ScannerViewModel())
-                        .environmentObject(DeviceViewModelFactory())
-                        .onFirstAppear {
-                            
-                        }
-                }
-            case .provisionOverWifi:
-                Text("To-Do")
-            }
-             */
         }
     }
 }
