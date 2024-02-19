@@ -22,6 +22,7 @@ struct ProvisionOverWiFiView: View {
     @State private var led1Enabled = false
     @State private var led2Enabled = false
     @State private var ssids: [String] = []
+    @State private var ssidPassword: String = ""
     
     var body: some View {
         VStack {
@@ -85,7 +86,7 @@ struct ProvisionOverWiFiView: View {
                         }
                     }
                     
-                    Section("Wi-Fi Scanning") {
+                    Section("SSID") {
                         ForEach(ssids, id: \.self) { ssid in
                             NavigationLink {
                                 Text(ssid)
@@ -94,11 +95,17 @@ struct ProvisionOverWiFiView: View {
                                 Text(ssid)
                             }
                         }
-                        Button("Read SSID") {
+                        
+                        Button("Scan") {
                             Task { @MainActor in
                                 self.ssids = try await manager.getSSIDs()
                             }
                         }
+                        .frame(maxWidth: .infinity)
+                    }
+                    
+                    Section("Password") {
+                        SecureField("Type Password Here", text: $ssidPassword)
                     }
                 }
                 .task {
