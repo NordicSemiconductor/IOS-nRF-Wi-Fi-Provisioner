@@ -22,6 +22,7 @@ struct ProvisionOverWiFiView: View {
     @State private var led1Enabled = false
     @State private var led2Enabled = false
     @State private var ssids: [String] = []
+    @State private var selectedSSID: String?
     @State private var ssidScanning = false
     @State private var ssidPassword: String = ""
     
@@ -58,7 +59,7 @@ struct ProvisionOverWiFiView: View {
                 
                 Text("Connecting...")
             case .connected:
-                List {
+                List(selection: $selectedSSID) {
                     Section("LED Testing") {
                         Button {
                             Task { @MainActor in
@@ -89,12 +90,10 @@ struct ProvisionOverWiFiView: View {
                     
                     Section("SSID") {
                         ForEach(ssids, id: \.self) { ssid in
-                            NavigationLink {
-                                Text(ssid)
-                                    .navigationTitle(Text(ssid))
-                            } label: {
-                                Text(ssid)
+                            Button(ssid) {
+                                selectedSSID = ssid
                             }
+                            .tag(ssid)
                         }
                         
                         Button {
