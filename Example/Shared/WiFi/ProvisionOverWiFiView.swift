@@ -54,7 +54,7 @@ struct ProvisionOverWiFiView: View {
                     Section("LED Testing") {
                         Button {
                             Task { @MainActor in
-                                switch try await manager.setLED(ledNumber: 1, enabled: !led1Enabled) {
+                                switch await manager.setLED(ledNumber: 1, enabled: !led1Enabled) {
                                 case .success:
                                     led1Enabled.toggle()
                                 case .failure(let error):
@@ -67,7 +67,7 @@ struct ProvisionOverWiFiView: View {
                         
                         Button {
                             Task { @MainActor in
-                                switch try await manager.setLED(ledNumber: 2, enabled: !led2Enabled) {
+                                switch await manager.setLED(ledNumber: 2, enabled: !led2Enabled) {
                                 case .success:
                                     led2Enabled.toggle()
                                 case .failure(let error):
