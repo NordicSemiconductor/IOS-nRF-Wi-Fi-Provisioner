@@ -26,7 +26,11 @@ struct ProvisionOverWiFiView: View {
     var body: some View {
         VStack {
             switch status {
-            case .notConnected:
+            case .notConnected, .error:
+                if case let .error(error) = status {
+                    Text("Error: \(error.localizedDescription)")
+                }
+                
                 Button("Attempt to Connect") {
                     Task { @MainActor in
                         do {
@@ -112,8 +116,6 @@ struct ProvisionOverWiFiView: View {
                         }
                     }
                 }
-            case .error(let error):
-                Text("Error: \(error.localizedDescription)")
             }
         }
         .navigationTitle("Provision over Wi-Fi")
