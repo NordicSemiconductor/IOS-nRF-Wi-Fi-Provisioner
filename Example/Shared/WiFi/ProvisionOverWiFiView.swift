@@ -12,6 +12,7 @@ struct ProvisionOverWiFiView: View {
     
     enum Status {
         case notConnected
+        case connecting
         case connected
         case error(_ error: Error)
     }
@@ -23,31 +24,41 @@ struct ProvisionOverWiFiView: View {
     @State private var ssids: [String] = []
     
     var body: some View {
-        ZStack {
+        VStack {
             switch status {
             case .notConnected:
                 Button("Attempt to Connect") {
-                    Task {
+                    Task { @MainActor in
                         do {
+                            status = .connecting
                             try await manager.connect()
                             status = .connected
-                        } catch let e as NSError {
-                            if e.code == 13 {
+                        } catch let nsError as NSError {
+                            guard nsError.code != 13 else {
                                 status = .connected
+                                return
                             }
+                            status = .error(nsError)
+                        } catch {
+                            status = .error(error)
                         }
                     }
                 }
+            case .connecting:
+                ProgressView()
+                    .progressViewStyle(.circular)
+                
+                Text("Connecting...")
             case .connected:
                 List {
                     Section("LED Testing") {
                         Button {
-                            Task {
+                            Task { @MainActor in
                                 switch try await manager.setLED(ledNumber: 1, enabled: !led1Enabled) {
                                 case .success:
                                     led1Enabled.toggle()
-                                default:
-                                    break
+                                case .failure(let error):
+                                    status = .error(error)
                                 }
                             }
                         } label: {
@@ -55,12 +66,12 @@ struct ProvisionOverWiFiView: View {
                         }
                         
                         Button {
-                            Task {
+                            Task { @MainActor in
                                 switch try await manager.setLED(ledNumber: 2, enabled: !led2Enabled) {
                                 case .success:
                                     led2Enabled.toggle()
-                                default:
-                                    break
+                                case .failure(let error):
+                                    status = .error(error)
                                 }
                             }
                         } label: {
@@ -78,7 +89,7 @@ struct ProvisionOverWiFiView: View {
                             }
                         }
                         Button("Read SSID") {
-                            Task {
+                            Task { @MainActor in
                                 self.ssids = try await manager.getSSIDs()
                             }
                         }
