@@ -22,6 +22,7 @@ struct ProvisionOverWiFiView: View {
     @State private var led1Enabled = false
     @State private var led2Enabled = false
     @State private var ssids: [String] = []
+    @State private var ssidScanning = false
     @State private var ssidPassword: String = ""
     
     var body: some View {
@@ -96,9 +97,18 @@ struct ProvisionOverWiFiView: View {
                             }
                         }
                         
-                        Button("Scan") {
+                        Button {
                             Task { @MainActor in
+                                self.ssidScanning = true
                                 self.ssids = try await manager.getSSIDs()
+                                self.ssidScanning = false
+                            }
+                        } label: {
+                            if ssidScanning {
+                                ProgressView()
+                                    .progressViewStyle(.circular)
+                            } else {
+                                Text("Scan")
                             }
                         }
                         .frame(maxWidth: .infinity)
