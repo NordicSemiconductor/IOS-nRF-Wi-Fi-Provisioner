@@ -28,7 +28,9 @@ struct ProvisionOverWiFiView: View {
             switch status {
             case .notConnected, .error:
                 if case let .error(error) = status {
-                    Text("Error: \(error.localizedDescription)")
+                    Label("Error: \(error.localizedDescription)", systemImage: "xmark.octagon")
+                        .foregroundStyle(.nordicRed)
+                        .padding()
                 }
                 
                 Button("Attempt to Connect") {
