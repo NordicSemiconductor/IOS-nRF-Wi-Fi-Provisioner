@@ -21,14 +21,14 @@ open class ProvisionManager {
     
     open func connect() async throws {
         let connectedAlready: Bool
-        do {
-            // If we're connected, this should return a response. True or false.
-            _ = try await ledStatus(ledNumber: 1)
+        // If we're connected, this should return a response. True or false.
+        switch await ledStatus(ledNumber: 1) {
+        case .success:
             connectedAlready = true
-        } catch {
-            // If it throws, the Device Firmware did not respond / we're not connected.
+        case .failure:
             connectedAlready = false
         }
+        
         guard !connectedAlready else {
             // Nothing to do here.
             print("Provisioning Device replied to LED Status - We're already connected.")
@@ -54,7 +54,7 @@ open class ProvisionManager {
         }
     }
     
-    open func ledStatus(ledNumber: Int) async throws -> Bool {
+    open func ledStatus(ledNumber: Int) async -> Result<Bool, Error> {
         let url = URL(string: "\(endpoint)led/\(ledNumber)")!
         
         var request = URLRequest(url: url)
@@ -67,25 +67,31 @@ open class ProvisionManager {
         
         let session = URLSession(configuration: config, delegate: NSURLSessionPinningDelegate.shared, delegateQueue: nil)
         
-        let response = try await session.data(for: request)
-        guard let httpResponse = response.1 as? HTTPURLResponse else {
-            throw ProvisionError.badResponse
+        do {
+            let response = try await session.data(for: request)
+            guard let httpResponse = response.1 as? HTTPURLResponse else {
+                return .failure(ProvisionError.badResponse)
+            }
+            
+            guard httpResponse.statusCode < 400 else {
+                return .failure(ProvisionError.httpError(httpResponse.statusCode))
+            }
+            
+            guard let responseText = String(data: response.0, encoding: .utf8)?.split(separator: "\r\n").last else {
+                return .failure(ProvisionError.badResponse)
+            }
+            
+            switch responseText {
+            case "0": 
+                return .success(false)
+            case "1": 
+                return .success(true)
+            default: 
+                return .failure(ProvisionError.badResponse)
+            }
+        } catch {
+            return .failure(error)
         }
-        
-        guard httpResponse.statusCode < 400 else {
-            throw ProvisionError.httpError(httpResponse.statusCode)
-        }
-        
-        guard let responseText = String(data: response.0, encoding: .utf8)?.split(separator: "\r\n").last else {
-            throw ProvisionError.badResponse
-        }
-        
-        switch responseText {
-        case "0": return false
-        case "1": return true
-        default: throw ProvisionError.badResponse
-        }
-        
     }
     
     open func setLED(ledNumber: Int, enabled: Bool) async -> Result<Void, Error> {

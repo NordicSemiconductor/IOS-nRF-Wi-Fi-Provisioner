@@ -97,11 +97,18 @@ struct ProvisionOverWiFiView: View {
                 }
                 .task {
                     Task {
-                        do {
-                            led1Enabled = try await manager.ledStatus(ledNumber: 1)
-                            led2Enabled = try await manager.ledStatus(ledNumber: 2)
-                        } catch let e {
-                            print(e.localizedDescription)
+                        switch await manager.ledStatus(ledNumber: 1) {
+                        case .success(let result):
+                            led1Enabled = result
+                        case .failure(let error):
+                            status = .error(error)
+                        }
+                        
+                        switch await manager.ledStatus(ledNumber: 2) {
+                        case .success(let result):
+                            led2Enabled = result
+                        case .failure(let error):
+                            status = .error(error)
                         }
                     }
                 }
