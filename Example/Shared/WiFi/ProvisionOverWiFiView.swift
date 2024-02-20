@@ -7,6 +7,7 @@
 
 import SwiftUI
 import NordicWiFiProvisioner_SoftAP
+import NordicStyle
 
 struct ProvisionOverWiFiView: View {
     
@@ -63,10 +64,10 @@ struct ProvisionOverWiFiView: View {
                     Section("LED Testing") {
                         Button {
                             Task { @MainActor in
-                                switch await manager.setLED(ledNumber: 1, enabled: !led1Enabled) {
-                                case .success:
+                                do {
+                                    try await manager.setLED(ledNumber: 1, enabled: !led1Enabled)
                                     led1Enabled.toggle()
-                                case .failure(let error):
+                                } catch {
                                     status = .error(error)
                                 }
                             }
@@ -76,10 +77,10 @@ struct ProvisionOverWiFiView: View {
                         
                         Button {
                             Task { @MainActor in
-                                switch await manager.setLED(ledNumber: 2, enabled: !led2Enabled) {
-                                case .success:
+                                do {
+                                    try await manager.setLED(ledNumber: 2, enabled: !led2Enabled)
                                     led2Enabled.toggle()
-                                case .failure(let error):
+                                } catch {
                                     status = .error(error)
                                 }
                             }
@@ -88,58 +89,20 @@ struct ProvisionOverWiFiView: View {
                         }
                     }
                     
-                    Section("SSID") {
-                        ForEach(ssids) { ssid in
-                            Button {
-                                selectedSSID = ssid
-                            } label: {
-                                HStack {
-                                    Text(ssid.ssid)
-                                    
-                                    Spacer()
-                                    
-                                    if ssid == selectedSSID {
-                                        Image(systemName: "checkmark")
-                                    }
-                                }
-                                .tag(ssid)
-                            }
-                        }
-                        
-                        Button {
-                            Task { @MainActor in
-                                self.ssidScanning = true
-                                self.ssids = try await manager.getSSIDs()
-                                self.ssidScanning = false
-                            }
-                        } label: {
-                            if ssidScanning {
-                                ProgressView()
-                                    .progressViewStyle(.circular)
-                            } else {
-                                Text("Scan")
-                            }
-                        }
-                        .frame(maxWidth: .infinity)
-                    }
+                    ssidSection()
+                    
                     
                     Section("Password") {
                         SecureField("Type Password Here", text: $ssidPassword)
+                        provisionButton()
                     }
                 }
                 .task {
                     Task {
-                        switch await manager.ledStatus(ledNumber: 1) {
-                        case .success(let result):
-                            led1Enabled = result
-                        case .failure(let error):
-                            status = .error(error)
-                        }
-                        
-                        switch await manager.ledStatus(ledNumber: 2) {
-                        case .success(let result):
-                            led2Enabled = result
-                        case .failure(let error):
+                        do {
+                            led1Enabled = try await manager.ledStatus(ledNumber: 1)
+                            led2Enabled = try await manager.ledStatus(ledNumber: 2)
+                        } catch {
                             status = .error(error)
                         }
                     }
@@ -147,6 +110,51 @@ struct ProvisionOverWiFiView: View {
             }
         }
         .navigationTitle("Provision over Wi-Fi")
+    }
+    
+    @ViewBuilder
+    private func ssidSection() -> some View {
+        Section("SSID") {
+            ForEach(ssids) { ssid in
+                HStack {
+                    Text(ssid.ssid)
+                    Spacer()
+                    if ssid == selectedSSID {
+                        Image(systemName: "checkmark")
+                    }
+                }
+                .onTapGesture {
+                    selectedSSID = ssid
+                }
+            }
+            
+            Button {
+                Task { @MainActor in
+                    self.ssidScanning = true
+                    self.ssids = try await manager.getSSIDs()
+                    self.ssidScanning = false
+                }
+            } label: {
+                if ssidScanning {
+                    ProgressView()
+                        .progressViewStyle(.circular)
+                } else {
+                    Text("Scan")
+                }
+            }
+            .frame(maxWidth: .infinity)
+        }
+    }
+    
+    @ViewBuilder
+    private func provisionButton() -> some View {
+        Button(action: {
+            
+        }, label: {
+            Text("Start Provisioning")
+        })
+        .disabled(selectedSSID == nil)
+        .buttonStyle(NordicButtonStyle())
     }
 }
 

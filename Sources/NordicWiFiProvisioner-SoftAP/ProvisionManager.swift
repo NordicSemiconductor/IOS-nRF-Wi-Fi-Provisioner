@@ -7,34 +7,47 @@
 
 import Foundation
 import NetworkExtension
+import OSLog
+
+private extension URL {
+    static let endpointStr = "https://192.0.2.1/"
+    
+    static let ssid = URL(string: "\(endpointStr)wifi/ssid")!
+    static let prov = URL(string: "\(endpointStr)wifi/prov")!
+    
+    static func led(_ ledNumber: Int) -> URL {
+        let url = URL(string: "\(endpointStr)led/")!
+        if #available(iOS 16, *) {
+            return url.appending(component: "\(ledNumber)")
+        } else {
+            return url.appendingPathComponent("\(ledNumber)")
+        }
+    }
+}
 
 open class ProvisionManager {
-    private let endpoint = "https://192.0.2.1/"
     private let apSSID = "mobileappsrules"
     public init() {
     }
     
     public enum ProvisionError: Error {
-        case httpError(Int)
         case badResponse
     }
     
+    public struct HTTPError: Error {
+        let code: Int
+        let responseData: Data?
+        
+        init(code: Int, responseData: Data?) {
+            assert(code >= 400)
+            self.code = code
+            self.responseData = responseData
+        }
+    }
+    
+    private let l = Logger(subsystem: "com.nordicsemi.NordicWiFiProvisioner-SoftAP", category: "SoftAP-Provisioner")
+    
     open func connect() async throws {
-        let connectedAlready: Bool
-        // If we're connected, this should return a response. True or false.
-        switch await ledStatus(ledNumber: 1) {
-        case .success:
-            connectedAlready = true
-        case .failure:
-            connectedAlready = false
-        }
-        
-        guard !connectedAlready else {
-            // Nothing to do here.
-            print("Provisioning Device replied to LED Status - We're already connected.")
-            return
-        }
-        
         // Ask the user to switch to the Provisioning Device's Wi-Fi Network.
         let manager = NEHotspotConfigurationManager.shared
         let configuration = NEHotspotConfiguration(ssid: apSSID)
@@ -42,22 +55,21 @@ open class ProvisionManager {
             manager.apply(configuration) { error in
                 if let nsError = error as? NSError, nsError.code == 13 {
                     continuation.resume()
-                    print("already connected")
+                    self.l.info("Already Connected")
+                    
                 } else if let error {
                     continuation.resume(throwing: error)
-                    print(error.localizedDescription)
+                    self.l.error("\(error.localizedDescription)")
                 } else {
                     continuation.resume()
-                    print("connected")
+                    self.l.info("Connected")
                 }
             }
         }
     }
     
-    open func ledStatus(ledNumber: Int) async -> Result<Bool, Error> {
-        let url = URL(string: "\(endpoint)led/\(ledNumber)")!
-        
-        var request = URLRequest(url: url)
+    open func ledStatus(ledNumber: Int) async throws -> Bool {
+        var request = URLRequest(url: .led(ledNumber))
         request.httpMethod = "GET"
         
         let config = URLSessionConfiguration.default
@@ -70,34 +82,32 @@ open class ProvisionManager {
         do {
             let response = try await session.data(for: request)
             guard let httpResponse = response.1 as? HTTPURLResponse else {
-                return .failure(ProvisionError.badResponse)
+                throw ProvisionError.badResponse
             }
             
             guard httpResponse.statusCode < 400 else {
-                return .failure(ProvisionError.httpError(httpResponse.statusCode))
+                throw HTTPError(code: httpResponse.statusCode, responseData: response.0)
             }
             
             guard let responseText = String(data: response.0, encoding: .utf8)?.split(separator: "\r\n").last else {
-                return .failure(ProvisionError.badResponse)
+                throw ProvisionError.badResponse
             }
             
             switch responseText {
             case "0": 
-                return .success(false)
-            case "1": 
-                return .success(true)
-            default: 
-                return .failure(ProvisionError.badResponse)
+                return false
+            case "1":
+                return true
+            default:
+                throw ProvisionError.badResponse
             }
         } catch {
-            return .failure(error)
+            throw error
         }
     }
     
-    open func setLED(ledNumber: Int, enabled: Bool) async -> Result<Void, Error> {
-        let url = URL(string: "\(endpoint)led/\(ledNumber)")!
-        
-        var request = URLRequest(url: url)
+    open func setLED(ledNumber: Int, enabled: Bool) async throws {
+        var request = URLRequest(url: .led(ledNumber))
         request.httpMethod = "PUT"
         request.httpBody = "\(enabled ? 1 : 0)".data(using: .utf8)
         
@@ -109,32 +119,38 @@ open class ProvisionManager {
         do {
             let response = try await session.data(for: request)
             guard let urlResponse = (response.1 as? HTTPURLResponse) else {
-                return .failure(ProvisionError.badResponse)
+                throw ProvisionError.badResponse
             }
-            let error = NSError(domain: NSURLErrorDomain, code: urlResponse.statusCode)
-            return error.code == 200 ? .success(()) : .failure(error)
+            
+            guard urlResponse.statusCode < 400 else {
+                throw HTTPError(code: urlResponse.statusCode, responseData: response.0)
+            }
         } catch {
-            return .failure(error)
+            throw error
         }
     }
     
     open func getSSIDs() async throws -> [ReportedSSID] {
-        let url = URL(string: "\(endpoint)wifi/ssid")!
-
         let config = URLSessionConfiguration.default
         config.waitsForConnectivity = false
         config.requestCachePolicy = .reloadIgnoringLocalCacheData
         
         let session = URLSession(configuration: config, delegate: NSURLSessionPinningDelegate.shared, delegateQueue: nil)
         
-        let ssidsResponse = try await session.data(from: url)
+        let ssidsResponse = try await session.data(from: .ssid)
 
         if let resp = ssidsResponse.1 as? HTTPURLResponse, resp.statusCode >= 400 {
-            throw ProvisionError.httpError(resp.statusCode)
+            throw HTTPError(code: resp.statusCode, responseData: ssidsResponse.0)
         }
         
         let strings = String(data: ssidsResponse.0, encoding: .utf8)
-        guard let ssid = strings?.split(separator: "\n").dropFirst(2) else {
+        
+        guard let splitContent = strings?.split(separator: "\r\n") else {
+            throw ProvisionError.badResponse
+        }
+        
+        let contentLength = splitContent.first
+        guard let ssid = splitContent.last?.split(separator: "\n") else {
             throw ProvisionError.badResponse
         }
 
