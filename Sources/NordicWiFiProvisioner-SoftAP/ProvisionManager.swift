@@ -70,7 +70,6 @@ open class ProvisionManager {
     
     open func ledStatus(ledNumber: Int) async throws -> Bool {
         var request = URLRequest(url: .led(ledNumber))
-        request.httpMethod = "GET"
         
         let config = URLSessionConfiguration.default
         config.waitsForConnectivity = false
