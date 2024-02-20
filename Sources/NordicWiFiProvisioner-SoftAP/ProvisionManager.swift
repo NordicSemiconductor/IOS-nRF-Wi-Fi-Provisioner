@@ -118,7 +118,7 @@ open class ProvisionManager {
         }
     }
     
-    open func getSSIDs() async throws -> [String] {
+    open func getSSIDs() async throws -> [ReportedSSID] {
         let url = URL(string: "\(endpoint)wifi/ssid")!
 
         let config = URLSessionConfiguration.default
@@ -135,14 +135,24 @@ open class ProvisionManager {
         
         let strings = String(data: ssidsResponse.0, encoding: .utf8)
         guard let ssid = strings?.split(separator: "\n").dropFirst(2) else {
-            fatalError()
+            throw ProvisionError.badResponse
         }
 
-        return Array(ssid).map { String($0) }
+        return ssid.map { ReportedSSID(String($0)) }
     }
     
     func provision(ssid: String, password: String) async throws {
         
+    }
+}
+
+public struct ReportedSSID: Identifiable, Hashable {
+    public var id: String { ssid }
+    
+    public var ssid: String
+    
+    init(_ ssid: String) {
+        self.ssid = ssid
     }
 }
 

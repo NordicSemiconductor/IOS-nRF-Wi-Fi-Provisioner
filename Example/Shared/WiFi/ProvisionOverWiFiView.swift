@@ -21,8 +21,8 @@ struct ProvisionOverWiFiView: View {
     @State private var manager = ProvisionManager()
     @State private var led1Enabled = false
     @State private var led2Enabled = false
-    @State private var ssids: [String] = []
-    @State private var selectedSSID: String?
+    @State private var ssids: [ReportedSSID] = []
+    @State private var selectedSSID: ReportedSSID?
     @State private var ssidScanning = false
     @State private var ssidPassword: String = ""
     
@@ -89,11 +89,21 @@ struct ProvisionOverWiFiView: View {
                     }
                     
                     Section("SSID") {
-                        ForEach(ssids, id: \.self) { ssid in
-                            Button(ssid) {
+                        ForEach(ssids) { ssid in
+                            Button {
                                 selectedSSID = ssid
+                            } label: {
+                                HStack {
+                                    Text(ssid.ssid)
+                                    
+                                    Spacer()
+                                    
+                                    if ssid == selectedSSID {
+                                        Image(systemName: "checkmark")
+                                    }
+                                }
+                                .tag(ssid)
                             }
-                            .tag(ssid)
                         }
                         
                         Button {
