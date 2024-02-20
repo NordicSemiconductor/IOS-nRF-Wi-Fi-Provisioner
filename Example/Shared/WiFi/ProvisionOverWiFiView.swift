@@ -128,20 +128,18 @@ struct ProvisionOverWiFiView: View {
                     }
                 }
                 .task {
-                    Task {
-                        switch await manager.ledStatus(ledNumber: 1) {
-                        case .success(let result):
-                            led1Enabled = result
-                        case .failure(let error):
-                            status = .error(error)
-                        }
-                        
-                        switch await manager.ledStatus(ledNumber: 2) {
-                        case .success(let result):
-                            led2Enabled = result
-                        case .failure(let error):
-                            status = .error(error)
-                        }
+                    switch await manager.ledStatus(ledNumber: 1) {
+                    case .success(let result):
+                        led1Enabled = result
+                    case .failure(let error):
+                        status = .error(error)
+                    }
+                    
+                    switch await manager.ledStatus(ledNumber: 2) {
+                    case .success(let result):
+                        led2Enabled = result
+                    case .failure(let error):
+                        status = .error(error)
                     }
                 }
             }
