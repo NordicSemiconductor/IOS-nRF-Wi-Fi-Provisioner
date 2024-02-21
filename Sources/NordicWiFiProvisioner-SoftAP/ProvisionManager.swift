@@ -34,7 +34,7 @@ open class ProvisionManager {
         case badResponse
     }
     
-    public struct HTTPError: Error {
+    public struct HTTPError: Error, LocalizedError {
         let code: Int
         let responseData: Data?
         
@@ -42,6 +42,14 @@ open class ProvisionManager {
             assert(code >= 400)
             self.code = code
             self.responseData = responseData
+        }
+        
+        public var errorDescription: String? {
+            if let responseData, let message = String(data: responseData, encoding: .utf8), !message.isEmpty {
+                return "\(code): \(message)"
+            } else {
+                return "\(code)"
+            }
         }
     }
     
@@ -108,7 +116,8 @@ open class ProvisionManager {
     open func setLED(ledNumber: Int, enabled: Bool) async throws {
         var request = URLRequest(url: .led(ledNumber))
         request.httpMethod = "PUT"
-        request.httpBody = "\(enabled ? 1 : 0)".data(using: .utf8)
+        request.addValue("text/plain; charset=utf-8", forHTTPHeaderField: "Content-Type")
+        request.httpBody = "\(enabled ? 1 : 0)".data(using: .utf8, allowLossyConversion: true)
         
         let config = URLSessionConfiguration.default
         config.waitsForConnectivity = false

@@ -7,6 +7,7 @@
 
 import SwiftUI
 import NordicWiFiProvisioner_SoftAP
+import OSLog
 
 extension ProvisionOverWiFiView {
     @MainActor
@@ -16,7 +17,7 @@ extension ProvisionOverWiFiView {
             
             var disabled: Bool {
                 switch self {
-                case .on, .off: return false
+                case .on, .off, .error: return false
                 default: return true
                 }
             }
@@ -40,6 +41,8 @@ extension ProvisionOverWiFiView {
         
         @Published private (set) var alertError: TitleMessageError? = nil
         @Published var showAlert: Bool = false
+        
+        private let nl = OSLog.networking
     }
 }
 
@@ -51,6 +54,8 @@ extension ProvisionOverWiFiView.ViewModel {
             status = .connected
         } catch {
             status = .error(error)
+            
+            nl.error("Connection Error: \(error.localizedDescription)")
         }
     }
     
@@ -61,6 +66,8 @@ extension ProvisionOverWiFiView.ViewModel {
             led1Status = .error(error)
             alertError = TitleMessageError(title: "Can't read LED 1 Status", error: error)
             showAlert = true
+            
+            nl.error("LED 1 get: \(error.localizedDescription)")
         }
         
         do {
@@ -69,6 +76,8 @@ extension ProvisionOverWiFiView.ViewModel {
             led2Status = .error(error)
             alertError = TitleMessageError(title: "Can't read LED 2 Status", error: error)
             showAlert = true
+            
+            nl.error("LED 2 get: \(error.localizedDescription)")
         }
     }
     
@@ -81,7 +90,9 @@ extension ProvisionOverWiFiView.ViewModel {
     }
     
     private func updateLedStatus(ledNumber: Int, currentStatus: LedStatus) async -> LedStatus {
-        guard !currentStatus.disabled else { return currentStatus }
+        if case .notDetermined = currentStatus {
+            return currentStatus
+        }
         
         var status = currentStatus
         
@@ -92,10 +103,15 @@ extension ProvisionOverWiFiView.ViewModel {
             } else if case .off = currentStatus {
                 try await manager.setLED(ledNumber: ledNumber, enabled: true)
                 status = .on
+            } else if case .error = status {
+                try await manager.setLED(ledNumber: ledNumber, enabled: true)
+                status = .on
             }
         } catch {
             alertError = TitleMessageError(title: "Can't toggle LED", error: error)
             showAlert = true
+            
+            nl.error("LED \(ledNumber) set: \(error.localizedDescription)")
         }
         
         return status
@@ -107,6 +123,8 @@ extension ProvisionOverWiFiView.ViewModel {
         } catch {
             alertError = TitleMessageError(title: "Can't scan for wifi networks", error: error)
             showAlert = true
+            
+            nl.error("SSID: \(error.localizedDescription)")
         }
     }
 }
