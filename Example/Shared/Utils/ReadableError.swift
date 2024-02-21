@@ -46,3 +46,13 @@ extension TitleMessageError {
         self.init(title: "Error", message: provError.localizedDescription)
     }
 }
+
+extension TitleMessageError: LocalizedError {
+    var errorDescription: String? {
+        if let title {
+            return title + ": " + message
+        } else {
+            return message
+        }
+    }
+}

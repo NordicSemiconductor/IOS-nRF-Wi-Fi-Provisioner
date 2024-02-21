@@ -6,52 +6,23 @@
 //
 
 import SwiftUI
-import NordicWiFiProvisioner_SoftAP
+import NordicStyle
 
 struct ProvisionOverWiFiView: View {
     
-    enum Status {
-        case notConnected
-        case connecting
-        case connected
-        case error(_ error: Error)
-    }
-    
-    @State private var status = Status.notConnected
-    @State private var manager = ProvisionManager()
-    @State private var led1Enabled = false
-    @State private var led2Enabled = false
-    @State private var ssids: [ReportedSSID] = []
-    @State private var selectedSSID: ReportedSSID?
-    @State private var ssidScanning = false
-    @State private var ssidPassword: String = ""
+    @StateObject var viewModel = ViewModel()
     
     var body: some View {
         VStack {
-            switch status {
+            switch viewModel.status {
             case .notConnected, .error:
-                if case let .error(error) = status {
+                if case let .error(error) = viewModel.status {
                     Label("Error: \(error.localizedDescription)", systemImage: "xmark.octagon")
                         .foregroundStyle(.nordicRed)
                         .padding()
                 }
-                
-                Button("Attempt to Connect") {
-                    Task { @MainActor in
-                        do {
-                            status = .connecting
-                            try await manager.connect()
-                            status = .connected
-                        } catch let nsError as NSError {
-                            guard nsError.code != 13 else {
-                                status = .connected
-                                return
-                            }
-                            status = .error(nsError)
-                        } catch {
-                            status = .error(error)
-                        }
-                    }
+                AsyncButton("Attempt to Connect") {
+                    await viewModel.connect()
                 }
             case .connecting:
                 ProgressView()
@@ -59,95 +30,85 @@ struct ProvisionOverWiFiView: View {
                 
                 Text("Connecting...")
             case .connected:
-                List(selection: $selectedSSID) {
+                List(selection: $viewModel.selectedSSID) {
                     Section("LED Testing") {
-                        Button {
-                            Task { @MainActor in
-                                switch await manager.setLED(ledNumber: 1, enabled: !led1Enabled) {
-                                case .success:
-                                    led1Enabled.toggle()
-                                case .failure(let error):
-                                    status = .error(error)
-                                }
-                            }
+                        AsyncButton {
+                            await viewModel.toggleLedStatus(ledNumber: 1)
                         } label: {
-                            Label("LED 1", systemImage: led1Enabled ? "lamp.table.fill" : "lamp.table")
+                            Label("LED 1", systemImage: ledSystemImage(status: viewModel.led1Status))
                         }
+                        .disabled(viewModel.led1Status.disabled)
                         
-                        Button {
-                            Task { @MainActor in
-                                switch await manager.setLED(ledNumber: 2, enabled: !led2Enabled) {
-                                case .success:
-                                    led2Enabled.toggle()
-                                case .failure(let error):
-                                    status = .error(error)
-                                }
-                            }
+                        AsyncButton {
+                            await viewModel.toggleLedStatus(ledNumber: 2)
                         } label: {
-                            Label("LED 2", systemImage: led2Enabled ? "lamp.table.fill" : "lamp.table")
+                            Label("LED 2", systemImage: ledSystemImage(status: viewModel.led2Status))
                         }
+                        .disabled(viewModel.led2Status.disabled)
                     }
                     
-                    Section("SSID") {
-                        ForEach(ssids) { ssid in
-                            Button {
-                                selectedSSID = ssid
-                            } label: {
-                                HStack {
-                                    Text(ssid.ssid)
-                                    
-                                    Spacer()
-                                    
-                                    if ssid == selectedSSID {
-                                        Image(systemName: "checkmark")
-                                    }
-                                }
-                                .tag(ssid)
-                            }
-                        }
-                        
-                        Button {
-                            Task { @MainActor in
-                                self.ssidScanning = true
-                                self.ssids = try await manager.getSSIDs()
-                                self.ssidScanning = false
-                            }
-                        } label: {
-                            if ssidScanning {
-                                ProgressView()
-                                    .progressViewStyle(.circular)
-                            } else {
-                                Text("Scan")
-                            }
-                        }
-                        .frame(maxWidth: .infinity)
-                    }
+                    ssidSection()
                     
                     Section("Password") {
-                        SecureField("Type Password Here", text: $ssidPassword)
+                        SecureField("Type Password Here", text: $viewModel.ssidPassword)
+                        provisionButton()
                     }
                 }
                 .task {
-                    switch await manager.ledStatus(ledNumber: 1) {
-                    case .success(let result):
-                        led1Enabled = result
-                    case .failure(let error):
-                        status = .error(error)
-                    }
-                    
-                    switch await manager.ledStatus(ledNumber: 2) {
-                    case .success(let result):
-                        led2Enabled = result
-                    case .failure(let error):
-                        status = .error(error)
-                    }
+                    await viewModel.readLedStatus()
                 }
             }
         }
         .navigationTitle("Provision over Wi-Fi")
+        .alert(isPresented: $viewModel.showAlert, error: viewModel.alertError) {
+            Button("OK", role: .cancel) {  }
+        }
+
+    }
+    
+    @ViewBuilder
+    private func ssidSection() -> some View {
+        Section("SSID") {
+            ForEach(viewModel.ssids) { ssid in
+                HStack {
+                    Text(ssid.ssid)
+                    Spacer()
+                    if ssid == viewModel.selectedSSID {
+                        Image(systemName: "checkmark")
+                    }
+                }
+                .onTapGesture {
+                    viewModel.selectedSSID = ssid
+                }
+            }
+            
+            AsyncButton("Scan") {
+                await viewModel.getSSIDs()
+            }
+            .frame(maxWidth: .infinity)
+        }
+    }
+    
+    @ViewBuilder
+    private func provisionButton() -> some View {
+        AsyncButton(action: {
+            
+        }, label: {
+            Text("Start Provisioning")
+        })
+        .disabled(viewModel.selectedSSID == nil)
+        .buttonStyle(NordicButtonStyle())
+    }
+    
+    private func ledSystemImage(status: ViewModel.LedStatus) -> String {
+        switch status {
+        case .on:
+            return "lightbulb.fill"
+        case .off:
+            return "lightbulb"
+        default:
+            return "lightbulb.slash"
+        }
     }
 }
 
-#Preview {
-    ProvisionOverWiFiView()
-}
