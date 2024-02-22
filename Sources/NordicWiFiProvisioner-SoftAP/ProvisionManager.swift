@@ -53,6 +53,13 @@ open class ProvisionManager {
         }
     }
     
+    private var sessionConfig: URLSessionConfiguration {
+        let config = URLSessionConfiguration.default
+        config.waitsForConnectivity = false
+        config.requestCachePolicy = .reloadIgnoringLocalCacheData
+        return config
+    }
+    
     private let l = Logger(subsystem: "com.nordicsemi.NordicWiFiProvisioner-SoftAP", category: "SoftAP-Provisioner")
     
     open func connect() async throws {
@@ -64,7 +71,6 @@ open class ProvisionManager {
                 if let nsError = error as? NSError, nsError.code == 13 {
                     continuation.resume()
                     self.l.info("Already Connected")
-                    
                 } else if let error {
                     continuation.resume(throwing: error)
                     self.l.error("\(error.localizedDescription)")
@@ -77,38 +83,36 @@ open class ProvisionManager {
     }
     
     open func ledStatus(ledNumber: Int) async throws -> Bool {
-        var request = URLRequest(url: .led(ledNumber))
-        
-        let config = URLSessionConfiguration.default
-        config.waitsForConnectivity = false
-        config.requestCachePolicy = .reloadIgnoringLocalCacheData
-        config.timeoutIntervalForRequest = 7.0
-        
-        let session = URLSession(configuration: config, delegate: NSURLSessionPinningDelegate.shared, delegateQueue: nil)
+        let session = URLSession(configuration: .default, delegate: NSURLSessionPinningDelegate.shared, delegateQueue: nil)
         
         do {
-            let response = try await session.data(for: request)
+            let response = try await session.data(from: .led(ledNumber))
             guard let httpResponse = response.1 as? HTTPURLResponse else {
+                l.error("\(#line) Bad Response")
                 throw ProvisionError.badResponse
             }
             
             guard httpResponse.statusCode < 400 else {
+                l.error("\(httpResponse.statusCode): \(String(data: response.0, encoding: .utf8) ?? "no data")")
                 throw HTTPError(code: httpResponse.statusCode, responseData: response.0)
             }
             
             guard let responseText = String(data: response.0, encoding: .utf8)?.split(separator: "\r\n").last else {
+                l.error("no response body")
                 throw ProvisionError.badResponse
             }
             
             switch responseText {
-            case "0": 
+            case "0":
                 return false
             case "1":
                 return true
             default:
+                l.error("unexpected response value")
                 throw ProvisionError.badResponse
             }
         } catch {
+            l.error("\(#line): \(error.localizedDescription)")
             throw error
         }
     }
@@ -119,11 +123,7 @@ open class ProvisionManager {
         request.addValue("text/plain; charset=utf-8", forHTTPHeaderField: "Content-Type")
         request.httpBody = "\(enabled ? 1 : 0)".data(using: .utf8, allowLossyConversion: true)
         
-        let config = URLSessionConfiguration.default
-        config.waitsForConnectivity = false
-        config.requestCachePolicy = .reloadIgnoringLocalCacheData
-        
-        let session = URLSession(configuration: config, delegate: NSURLSessionPinningDelegate.shared, delegateQueue: nil)
+        let session = URLSession(configuration: .default, delegate: NSURLSessionPinningDelegate.shared, delegateQueue: nil)
         do {
             let response = try await session.data(for: request)
             guard let urlResponse = (response.1 as? HTTPURLResponse) else {
@@ -139,14 +139,10 @@ open class ProvisionManager {
     }
     
     open func getSSIDs() async throws -> [ReportedSSID] {
-        let config = URLSessionConfiguration.default
-        config.waitsForConnectivity = false
-        config.requestCachePolicy = .reloadIgnoringLocalCacheData
-        
-        let session = URLSession(configuration: config, delegate: NSURLSessionPinningDelegate.shared, delegateQueue: nil)
+        let session = URLSession(configuration: .default, delegate: NSURLSessionPinningDelegate.shared, delegateQueue: nil)
         
         let ssidsResponse = try await session.data(from: .ssid)
-
+        
         if let resp = ssidsResponse.1 as? HTTPURLResponse, resp.statusCode >= 400 {
             throw HTTPError(code: resp.statusCode, responseData: ssidsResponse.0)
         }
@@ -157,16 +153,41 @@ open class ProvisionManager {
             throw ProvisionError.badResponse
         }
         
-        let contentLength = splitContent.first
         guard let ssid = splitContent.last?.split(separator: "\n") else {
             throw ProvisionError.badResponse
         }
-
+        
         return ssid.map { ReportedSSID(String($0)) }
     }
     
-    func provision(ssid: String, password: String) async throws {
+    open func provision(ssid: String, password: String?) async throws {
+        var request = URLRequest(url: .prov)
+        request.httpMethod = "PUT"
+        request.addValue("text/plain; charset=utf-8", forHTTPHeaderField: "Content-Type")
         
+        let bodyString = {
+            if let password {
+                "\(ssid) \(password)"
+            } else {
+                "\(ssid)"
+            }
+        }()
+        
+        request.httpBody = bodyString.data(using: .utf8, allowLossyConversion: true)
+        
+        let session = URLSession(configuration: .default, delegate: NSURLSessionPinningDelegate.shared, delegateQueue: nil)
+        do {
+            let response = try await session.data(for: request)
+            guard let urlResponse = (response.1 as? HTTPURLResponse) else {
+                throw ProvisionError.badResponse
+            }
+            
+            guard urlResponse.statusCode < 400 else {
+                throw HTTPError(code: urlResponse.statusCode, responseData: response.0)
+            }
+        } catch {
+            throw error
+        }
     }
 }
 

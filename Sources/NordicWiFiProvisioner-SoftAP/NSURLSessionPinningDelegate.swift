@@ -7,6 +7,7 @@
 
 import Foundation
 import NetworkExtension
+import OSLog
 
 class NSURLSessionPinningDelegate: NSObject, URLSessionDelegate {
     static let shared = NSURLSessionPinningDelegate()
@@ -14,6 +15,8 @@ class NSURLSessionPinningDelegate: NSObject, URLSessionDelegate {
     override init() {
         super.init()
     }
+    
+    private let l = Logger(subsystem: "com.nordicsemi.NordicWiFiProvisioner-SoftAP", category: "NSURLSessionPinningDelegate")
     
     func urlSession(_ session: URLSession,
                       didReceive challenge: URLAuthenticationChallenge,
@@ -48,6 +51,7 @@ class NSURLSessionPinningDelegate: NSObject, URLSessionDelegate {
         let trust = try secCall { SecTrustCreateWithCertificates(chain as NSArray, policy, $0) }
         let err = SecTrustSetAnchorCertificates(trust, [anchor] as NSArray)
         guard err == errSecSuccess else {
+            l.error("SecTrustSetAnchorCertificates Error: \(err)")
             throw NSError(domain: NSOSStatusErrorDomain, code: Int(err), userInfo: nil)
         }
 
@@ -61,6 +65,7 @@ class NSURLSessionPinningDelegate: NSObject, URLSessionDelegate {
         do {
             return try await shouldAllowHTTPSConnection(chain: chain)
         } catch {
+            l.error("shouldAllowHTTPSConnection Error: \(error.localizedDescription)")
             return false
         }
     }
@@ -70,6 +75,7 @@ class NSURLSessionPinningDelegate: NSObject, URLSessionDelegate {
         let err = body(&result)
 
         guard err == errSecSuccess else {
+            l.error("secCall Error: \(err)")
             throw NSError(domain: NSOSStatusErrorDomain, code: Int(err), userInfo: nil)
         }
         return result!

@@ -15,20 +15,31 @@ struct ProvisionOverWiFiView: View {
     var body: some View {
         VStack {
             switch viewModel.status {
-            case .notConnected, .error:
+            case .error(let e):
+                NoContentView(title: "Error: \(e.localizedDescription)", systemImage: "exclamationmark.triangle") {
+                    AsyncButton("Reconnect") {
+                        await viewModel.connect()
+                    }
+                }
+                .foregroundStyle(.red
+                )
+            case .notConnected:
                 if case let .error(error) = viewModel.status {
                     Label("Error: \(error.localizedDescription)", systemImage: "xmark.octagon")
                         .foregroundStyle(.nordicRed)
                         .padding()
                 }
-                AsyncButton("Attempt to Connect") {
-                    await viewModel.connect()
+                
+                NoContentView(title: "Not Connected", systemImage: "point.3.connected.trianglepath.dotted") {
+                    AsyncButton("Attempt to Connect") {
+                        await viewModel.connect()
+                    }
                 }
             case .connecting:
-                ProgressView()
-                    .progressViewStyle(.circular)
-                
-                Text("Connecting...")
+                NoContentView(title: "Connecting . . .", systemImage: "point.3.connected.trianglepath.dotted") {
+                    ProgressView()
+                        .progressViewStyle(.circular)
+                }
             case .connected:
                 List(selection: $viewModel.selectedSSID) {
                     Section("LED Testing") {
@@ -56,6 +67,12 @@ struct ProvisionOverWiFiView: View {
                 }
                 .task {
                     await viewModel.readLedStatus()
+                }
+            case .provisioned:
+                NoContentView(title: "Provisioned", description: "Provisioning Completed", systemImage: "hand.thumbsup.fill") {
+                    AsyncButton("Attempt to Connect") {
+                        await viewModel.connect()
+                    }
                 }
             }
         }
@@ -92,7 +109,7 @@ struct ProvisionOverWiFiView: View {
     @ViewBuilder
     private func provisionButton() -> some View {
         AsyncButton(action: {
-            
+            await viewModel.provision()
         }, label: {
             Text("Start Provisioning")
         })

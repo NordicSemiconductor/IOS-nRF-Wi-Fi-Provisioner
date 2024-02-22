@@ -27,6 +27,7 @@ extension ProvisionOverWiFiView {
             case notConnected
             case connecting
             case connected
+            case provisioned
             case error(_ error: Error)
         }
         
@@ -125,6 +126,24 @@ extension ProvisionOverWiFiView.ViewModel {
             showAlert = true
             
             nl.error("SSID: \(error.localizedDescription)")
+        }
+    }
+    
+    func provision() async {
+        do {
+            guard let ssid = selectedSSID?.ssid else {
+                throw TitleMessageError(message: "SSID is not selected")
+            }
+            
+            let password = ssidPassword.isEmpty ? nil : ssidPassword
+            try await manager.provision(ssid: ssid, password: password)
+            
+            status = .provisioned
+        } catch {
+            alertError = TitleMessageError(title: "Can't provision AP", error: error)
+            showAlert = true
+            
+            nl.error("Provision: \(error.localizedDescription)")
         }
     }
 }
