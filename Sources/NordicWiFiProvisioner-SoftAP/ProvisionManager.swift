@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Network
 import NetworkExtension
 import OSLog
 
@@ -32,6 +33,7 @@ open class ProvisionManager {
     
     public enum ProvisionError: Error {
         case badResponse
+        case cancelled
     }
     
     public struct HTTPError: Error, LocalizedError {
@@ -66,6 +68,48 @@ open class ProvisionManager {
         // Ask the user to switch to the Provisioning Device's Wi-Fi Network.
         let manager = NEHotspotConfigurationManager.shared
         let configuration = NEHotspotConfiguration(ssid: apSSID)
+        try await switchWiFiEndpoint(using: manager, with: configuration)
+        
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
+            let parameters = NWParameters()
+            parameters.allowLocalEndpointReuse = true
+            parameters.acceptLocalOnly = true
+            parameters.allowFastOpen = true
+            
+            let browser = NWBrowser(for: .bonjour(type: "_httpserver._tcp", domain: "local"), using: parameters)
+            browser.stateUpdateHandler = { newState in
+                switch newState {
+                case .setup:
+                    print("Setting up connection")
+                case .ready:
+                    print("Ready?")
+                    
+                case .failed(let error):
+                    print(error.localizedDescription)
+                    continuation.resume(throwing: error)
+                case .cancelled:
+                    print("Cancelled")
+                    continuation.resume(throwing: ProvisionError.cancelled)
+                case .waiting(let nwError):
+                    print("Waiting for \(nwError.localizedDescription)?")
+                default:
+                    break
+                }
+            }
+            browser.browseResultsChangedHandler = { results, changes in
+                for result in results {
+                    print(result.endpoint)
+                }
+                continuation.resume()
+            }
+            
+            browser.start(queue: .main)
+            //browser.cancel() // TODO
+        }
+    }
+    
+    private func switchWiFiEndpoint(using manager: NEHotspotConfigurationManager,
+                                    with configuration: NEHotspotConfiguration) async throws {
         try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
             manager.apply(configuration) { error in
                 if let nsError = error as? NSError, nsError.code == 13 {
