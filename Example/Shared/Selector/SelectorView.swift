@@ -19,19 +19,35 @@ struct SelectorView: View {
                 NavigationLink {
                     ScannerView(viewModel: ScannerViewModel())
                 } label: {
-                    Label("Provision over BLE", image: "bluetooth")
+                    Label("Provision Over BLE", image: "bluetooth")
                 }
+                
+                Text("""
+                This Mode Allows for Constant Communication With the Provisioning Device Since It Keeps Our Wi-Fi Usage Exclusive to the Provisioning Process.
+                """)
+                .font(.footnote)
+                .listRowBackground(Color.clear)
                 
                 NavigationLink {
                     ProvisionOverWiFiView()
                 } label: {
-                    Label("Provision over Wi-Fi", systemImage: "wifi")
+                    Label("Provision Over Wi-Fi", systemImage: "wifi")
                 }
                 
                 Text("""
-                What is nRF Wi-Fi Provisioner For?
+                This Mode Requires Your iPhone To Switch to the Same Wi-Fi Network As the Device We Want to Provision, Communicate With It, and Then Wait for It To Connect to the Network We’d Like to Provision It To.
+                """)
+                .font(.footnote)
+                .listRowBackground(Color.clear)
+            }
+            
+            Section {
+                Text("What is nRF Wi-Fi Provisioner For?")
+                    .font(.title3)
+                    .listRowBackground(Color.clear)
                 
-                nRF Wi-Fi Provisioner is designed to work with nRF700x DKs, or nRF700x-powered devices that are running firmware capable of being provisioned via these two methods, Bluetooth or Wi-Fi. Both have advantages & disadvantages, but the end result should be that your device can use its nRF7000x-derived capabilities to connect directly to the Internet. This App, via a provisioning process, configures nRF700x with the necessary credentials to access the Internet though the wireless network interface of your choice.
+                Text("""
+                nRF Wi-Fi Provisioner Is Designed To Work With nRF700x DKs, or nRF700x-Powered Devices That Are Running Firmware Capable of Being Provisioned. This App, via a Provisioning Process, Configures nRF700x With the Necessary Credentials To Access the Internet Though the Wireless Network Interface of Your Choice.
                 """)
                 .font(.footnote)
                 .listRowBackground(Color.clear)
