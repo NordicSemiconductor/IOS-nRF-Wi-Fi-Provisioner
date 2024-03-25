@@ -70,13 +70,13 @@ open class ProvisionManager {
         let configuration = NEHotspotConfiguration(ssid: apSSID)
         try await switchWiFiEndpoint(using: manager, with: configuration)
         
+        let parameters = NWParameters()
+        parameters.allowLocalEndpointReuse = true
+        parameters.acceptLocalOnly = true
+        parameters.allowFastOpen = true
+        
+        let browser = NWBrowser(for: .bonjour(type: "_http._tcp.", domain: "local"), using: parameters)
         try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
-            let parameters = NWParameters()
-            parameters.allowLocalEndpointReuse = true
-            parameters.acceptLocalOnly = true
-            parameters.allowFastOpen = true
-            
-            let browser = NWBrowser(for: .bonjour(type: "_http._tcp.", domain: "local"), using: parameters)
             browser.stateUpdateHandler = { newState in
                 switch newState {
                 case .setup:
@@ -87,18 +87,20 @@ open class ProvisionManager {
                     print(error.localizedDescription)
                     continuation.resume(throwing: error)
                 case .cancelled:
-                    print("Cancelled")
-                    continuation.resume(throwing: ProvisionError.cancelled)
+                    print("Stopped / Cancelled")
                 case .waiting(let nwError):
                     print("Waiting for \(nwError.localizedDescription)?")
                 default:
                     break
                 }
             }
+            
             browser.browseResultsChangedHandler = { results, changes in
-                for result in results {
-                    print(result.endpoint)
+                guard let endpoint = results.first?.endpoint else {
+                    continuation.resume(throwing: ProvisionError.badResponse)
+                    return
                 }
+                print(endpoint)
                 continuation.resume()
             }
             browser.start(queue: .main)
