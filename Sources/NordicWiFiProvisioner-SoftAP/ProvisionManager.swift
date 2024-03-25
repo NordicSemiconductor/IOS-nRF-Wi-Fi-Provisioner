@@ -76,14 +76,13 @@ open class ProvisionManager {
             parameters.acceptLocalOnly = true
             parameters.allowFastOpen = true
             
-            let browser = NWBrowser(for: .bonjour(type: "_httpserver._tcp", domain: "local"), using: parameters)
+            let browser = NWBrowser(for: .bonjour(type: "_http._tcp.", domain: "local"), using: parameters)
             browser.stateUpdateHandler = { newState in
                 switch newState {
                 case .setup:
                     print("Setting up connection")
                 case .ready:
                     print("Ready?")
-                    
                 case .failed(let error):
                     print(error.localizedDescription)
                     continuation.resume(throwing: error)
@@ -102,10 +101,9 @@ open class ProvisionManager {
                 }
                 continuation.resume()
             }
-            
             browser.start(queue: .main)
-            //browser.cancel() // TODO
         }
+        browser.cancel()
     }
     
     private func switchWiFiEndpoint(using manager: NEHotspotConfigurationManager,
