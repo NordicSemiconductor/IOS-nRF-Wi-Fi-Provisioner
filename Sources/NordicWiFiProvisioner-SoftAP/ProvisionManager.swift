@@ -11,13 +11,13 @@ import NetworkExtension
 import OSLog
 
 private extension URL {
-    static let endpointStr = "https://192.0.2.1/"
+    static let endpointStr = "https://192.0.2.1"
     
-    static let ssid = URL(string: "\(endpointStr)wifi/ssid")!
-    static let prov = URL(string: "\(endpointStr)wifi/prov")!
+    static let ssid = URL(string: "\(endpointStr)/prov/networks")!
+    static let prov = URL(string: "\(endpointStr)/prov/configure")!
     
     static func led(_ ledNumber: Int) -> URL {
-        let url = URL(string: "\(endpointStr)led/")!
+        let url = URL(string: "\(endpointStr)/led/")!
         if #available(iOS 16, *) {
             return url.appending(component: "\(ledNumber)")
         } else {
