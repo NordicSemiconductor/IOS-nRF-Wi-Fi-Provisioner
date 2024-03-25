@@ -6,7 +6,7 @@
       "location" : "https://github.com/apple/swift-cmark.git",
       "state" : {
         "branch" : "gfm",
-        "revision" : "476f7b4fcf12eba381b4aaed8987006fd8fcec9c"
+        "revision" : "2c47322cb32cbed555f13bf5cbfaa488cc30a785"
       }
     },
     {
@@ -15,7 +15,7 @@
       "location" : "https://github.com/apple/swift-markdown.git",
       "state" : {
         "branch" : "main",
-        "revision" : "52563fc74a540b29854fde20e836b27394be2749"
+        "revision" : "907674c2ae2d24c32fba50101821b1a7fdd291e2"
       }
     }
   ],
