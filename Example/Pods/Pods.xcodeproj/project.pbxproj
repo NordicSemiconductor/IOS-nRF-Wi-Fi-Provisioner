@@ -19,6 +19,7 @@
 		13956AB6667A7874A39B846BEF131F8D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7566FCDAC605EB3D2581B3964A2F6ACB /* Foundation.framework */; };
 		139BDC53F4A1F7D9EBC02AA6FB12F0FD /* BluetoothConnectionInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD681C7CD7F03D652B36FA08CD8CAB6D /* BluetoothConnectionInfo.swift */; };
 		13B9D09A242999FFCF24479D7F6A6EA7 /* CBMPeripheralSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB84F28E106350F4E82ADDD685A1F5A0 /* CBMPeripheralSpec.swift */; };
+		164F5A240B8C4EB19CA97F1FFD3C2E40 /* NordicWiFiProvisioner-SoftAP-Res in Resources */ = {isa = PBXBuildFile; fileRef = 08BFBE134914EA77BCA71FA1E4E4FAFC /* NordicWiFiProvisioner-SoftAP-Res */; };
 		169DA6738714C00616EA0C966B605E3B /* FieldTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBBD82B19A4F93EB187E623D15357098 /* FieldTypes.swift */; };
 		19BED8BEB4B003981275FAC91FF3D9C0 /* Google_Protobuf_Wrappers+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70A47833B78B4A82CDF3E630BE925E2 /* Google_Protobuf_Wrappers+Extensions.swift */; };
 		1E5EC2336A6C3893BD15AF6FBAA84FFE /* wrappers.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EE3F279A6BDFB41F82EC83223091AA8 /* wrappers.pb.swift */; };
@@ -29,8 +30,10 @@
 		22340ADBB759B6415F38162A20240B93 /* NordicWiFiProvisioner-BLE-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 389B00559CB7C704B76C4E49197514F0 /* NordicWiFiProvisioner-BLE-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		24A46D17EAF26860ACCC46B887000CA7 /* Version.swift in Sources */ = {isa = PBXBuildFile; fileRef = 860C5191DFB7CC64F63BC9C44E613871 /* Version.swift */; };
 		25402DAD262AA65C25D290D26BEA5F72 /* CBMPeripheralDelegateProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD20ADFC626D0282AB3310A72C7D1D6 /* CBMPeripheralDelegateProxy.swift */; };
+		2598FAE4CC5336DE2D53E86CC2DC3F68 /* Pods-nRF-Wi-Fi-Provisioner (iOS)-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 13DFDF5294EE4F40A58F9D06A4863E67 /* Pods-nRF-Wi-Fi-Provisioner (iOS)-dummy.m */; };
 		25CD1E200A7A9F02F2A8D3566189E7D1 /* CBMCentralManagerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67E6778BA3E3B544BE05B1524A16CC0C /* CBMCentralManagerDelegate.swift */; };
 		25EF933503049B25735755D762969EB4 /* ConnectionState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ED8671F67C3A2C9B7843A46E7BD9148 /* ConnectionState.swift */; };
+		25F4B99910A201D6BE6996BFA88A896B /* ProvisionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68EB7C538EF49CD75FF2538183AE944F /* ProvisionManager.swift */; };
 		264EB193F9279ADD4A139A22C9811EE1 /* MathUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22F1BFAE92E2FB23ED7A67EEB40EA0D6 /* MathUtils.swift */; };
 		2825333E6F806D9E77EECF698C4D2147 /* Proto.swift in Sources */ = {isa = PBXBuildFile; fileRef = C786DF81E7125193FED7CE8F5E75B592 /* Proto.swift */; };
 		288F7E76E8C468CB7A29F6F5E6273E44 /* InternalScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E849A53608A40CEA7975B1B3B9F5F3E /* InternalScanner.swift */; };
@@ -39,7 +42,6 @@
 		2A574050A0F84627963DBB73763651B4 /* ProtoConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C0E1F3589FF6375C7DBA2DDA1197A95 /* ProtoConvertible.swift */; };
 		2ACFCB4AA2F8398C9A0BC52095A84200 /* WiFiScanerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 991C8022181253B0E8DCD8E5738F0BE0 /* WiFiScanerDelegate.swift */; };
 		2AE6DC76750D2BCE7426CF9E3A359B25 /* CBMPeripheral.swift in Sources */ = {isa = PBXBuildFile; fileRef = C934F05AD5B0474B20756011ED74E0DD /* CBMPeripheral.swift */; };
-		2B908D8AFACBE85733A9DAF05878E7F6 /* Pods-nRF-Wi-Fi-Provisioner (iOS)-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 13DFDF5294EE4F40A58F9D06A4863E67 /* Pods-nRF-Wi-Fi-Provisioner (iOS)-dummy.m */; };
 		2BE90FCEB09EFBD367C388A724A467DB /* ScanResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B905EE898228EDEDDCF628D7D46B77A /* ScanResult.swift */; };
 		2BF6EF7D4A02C32AC3CDED37D5DC7E6A /* SwiftProtobuf-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = CABA08CBE37DC51519390793C96A3CCD /* SwiftProtobuf-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2D9A3762DF1012DC8CCF6407BAA78900 /* ExtensionMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 870FA0724168626FF17CA68403F7B92C /* ExtensionMap.swift */; };
@@ -51,7 +53,6 @@
 		36AD57B42186C538D08D79AB13CE6DFE /* Data+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE710EC2297188FAE881E139D7959727 /* Data+Extensions.swift */; };
 		38889B19416DF20FDB1D032D0D8AEED0 /* Varint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCD952DBF9AF0B6C7BBBF91CAAD977C /* Varint.swift */; };
 		3A4C53FEFE928CFC5EE3816260509471 /* BinaryDelimited.swift in Sources */ = {isa = PBXBuildFile; fileRef = E77CCAF77128D3CDD191DEE90314CBAB /* BinaryDelimited.swift */; };
-		3E47194DBA504B0CA75791D0B7FA0A30 /* Pods-nRF-Wi-Fi-Provisioner (iOS)-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 59CE72101420B1AEF29192935FF78BE2 /* Pods-nRF-Wi-Fi-Provisioner (iOS)-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		3F940BEA49CAE408ABCD685632902653 /* source_context.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0001DCA033940E1291BFAA8509382B6 /* source_context.pb.swift */; };
 		4096B63E1F088F56E157A1FAF85AEAE2 /* CoreBluetoothTypeAliases.swift in Sources */ = {isa = PBXBuildFile; fileRef = E308FBDCE701BCBB77BA519277490F41 /* CoreBluetoothTypeAliases.swift */; };
 		4521F7370EA22DA78E4A665D23457870 /* WiFiInfo+Fake.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E5E7AE4C7B731943E1224DBDAD3027D /* WiFiInfo+Fake.swift */; };
@@ -66,13 +67,12 @@
 		54D6E1297FBBF17E2698AE7DC67F9596 /* ProtoNameProviding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 728ECA17192E28811181482F508714DF /* ProtoNameProviding.swift */; };
 		584CBF281B05E7C3E419CE720420F734 /* JSONEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC20C5BB72EFC48CDF46E98AB9B8A44B /* JSONEncoder.swift */; };
 		58937CC079AC56EE51B2F6E4908F5FE7 /* ExtensibleMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0147524E811584B0ADAC267F983B7A6F /* ExtensibleMessage.swift */; };
-		58E7938D2C8A183EC360F06DC1C9037C /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 99E4023520A82EAF89BE8E4F936C4452 /* CoreBluetooth.framework */; };
 		59D2BC89EA6A0E537226E05858306F37 /* AnyMessageStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 725D464B589B7D37FB80200706349D64 /* AnyMessageStorage.swift */; };
+		5A476AD79E071B69BDD61A2368178753 /* NordicWiFiProvisioner-SoftAP-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEC4219F69C4FA8A196AC5B16530C74 /* NordicWiFiProvisioner-SoftAP-dummy.m */; };
 		5B9DFD19900176B73547610199A00A14 /* BinaryEncodingSizeVisitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70DB84C44110DEE2807C97C5A12DB646 /* BinaryEncodingSizeVisitor.swift */; };
 		5D836B69074ED525137FE327942F0416 /* ProtobufAPIVersionCheck.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30E660A063238CD3664D663EC858794F /* ProtobufAPIVersionCheck.swift */; };
 		5F7CF6B5E9E2C026FCD901EF18C44CF7 /* Google_Protobuf_Duration+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ECAABEF914477C0E901C3EE50BA8A5C /* Google_Protobuf_Duration+Extensions.swift */; };
 		60B23444573941D90C3D94BB89AB9F69 /* IPAddress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67FCDC813253AC891207800CAB471105 /* IPAddress.swift */; };
-		61C348F66F517DCEA1161AC3208BB7D1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7566FCDAC605EB3D2581B3964A2F6ACB /* Foundation.framework */; };
 		63EE7F0BBFE9967E133C0904B49425DA /* BinaryEncodingError.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEA3D8FFE9CBE60617F835258861A78C /* BinaryEncodingError.swift */; };
 		64A5B371360D423B2DD1911745BE0046 /* BinaryEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16A0301F32C413B993A2B7DC2FBA9425 /* BinaryEncoder.swift */; };
 		65265192B4E591A13B9FB52CC1F586D0 /* Provisioner+ConnectionState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A1B8180331FD17C8D06B4B942ED51E1 /* Provisioner+ConnectionState.swift */; };
@@ -92,8 +92,8 @@
 		7F6FC449D63D6080845F7491270CD1F7 /* CBMPeripheralDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 381B678941D53378540824922BCE4287 /* CBMPeripheralDelegate.swift */; };
 		801A73789658641AE51DA4607211F4D4 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = E08F1DC6603DF26B243FC7DF93453AA2 /* Constants.swift */; };
 		8874865DADC2C3E3849F4D5F6A43F9D4 /* BinaryDecodingOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE46BBF2295D1DAC56513B57B698FC91 /* BinaryDecodingOptions.swift */; };
-		8A46701A2BABAE6292F0709796D3E9DE /* NordicWiFiProvisioner-SoftAP-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 7BBCB4B0283BF7B42DDAF6BC6F2D6DF1 /* NordicWiFiProvisioner-SoftAP-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8A877D1EEDA15804AE4D69E7334872E7 /* DeviceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC38BD679464BB482A5E88180CFAC81 /* DeviceManager.swift */; };
+		8C103AD7681CADD47164B7697A8156C5 /* NSURLSessionPinningDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3FBA178DD366F64FFC41F77BF10AC08 /* NSURLSessionPinningDelegate.swift */; };
 		8CD287D8508C7FE2074D7D79CC0EA915 /* JSONEncodingVisitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5B043DD61A1832FD03F7A2B277DA5F /* JSONEncodingVisitor.swift */; };
 		8CD37884F9F154505E75C1246AB0306C /* CBMPeripheralSpecDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E37C70F5BE260009154469CA55BFD465 /* CBMPeripheralSpecDelegate.swift */; };
 		8D1629D950AB82AF8ED44CE996F15112 /* Band.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B2B1639A07D7D23F91380F96B60EE5B /* Band.swift */; };
@@ -106,33 +106,33 @@
 		951AEEBF4EA912DC637186463BED9A0A /* empty.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = 258229E827A155C6F725292DDB028FE2 /* empty.pb.swift */; };
 		96ADB879CEB5B21B63613995B7F64BDA /* FieldTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = D686488AD84E68E3DF7C2E21A9B7589D /* FieldTag.swift */; };
 		97E66E0BFE791D1093F763729B8E47CB /* api.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72AE81FE254242289852EDAD60564238 /* api.pb.swift */; };
+		9A60ABE5B0258BF3C80A18BEA0405201 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7566FCDAC605EB3D2581B3964A2F6ACB /* Foundation.framework */; };
 		9A7EB4976C780779121169B46E095E73 /* CBMPeer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF40FC7BD50B31C5651DD505624278D1 /* CBMPeer.swift */; };
 		9F88099E21F978D18802129244BA3C70 /* AuthMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DDD4298B65EA80D74CBADFFE2D54746 /* AuthMode.swift */; };
+		A3272B1A474C84E3BC282C1C0CC98DBF /* NordicWiFiProvisioner-SoftAP-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = E742D7E643C3DC33222579271076135C /* NordicWiFiProvisioner-SoftAP-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A69B69BC3C5149192AA8AA2F8D3F80CE /* AnyUnpackError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EBB8A0BF73EB709538953C3C2083B8 /* AnyUnpackError.swift */; };
 		A6BAA8EBC821FEFC41AA66783B3F305D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7566FCDAC605EB3D2581B3964A2F6ACB /* Foundation.framework */; };
 		A7B2544F5EE962321E6CA43CBD24DEB9 /* response.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = 958DE470A15C6D9BA093632A6C89588C /* response.pb.swift */; };
 		A94C92A1FECC4AAEC6DB45CC349A9F4F /* TextFormatDecodingError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C72E5E47AFA1020162951E3C42D2D2A /* TextFormatDecodingError.swift */; };
-		AA43D0722BB2DFD500AE1728 /* certificate.cer in Resources */ = {isa = PBXBuildFile; fileRef = AA43D0712BB2DFD500AE1728 /* certificate.cer */; };
-		AAAAE6C82B7F8AFF000BB569 /* NSURLSessionPinningDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAAAE6C72B7F8AFF000BB569 /* NSURLSessionPinningDelegate.swift */; };
 		ADB6F9AAA157D4300FD5E9BF5BB53DD5 /* SelectiveVisitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47660021517A9BA9E9841836368EC3D8 /* SelectiveVisitor.swift */; };
 		ADF218A8E880E18AECE9BF80404FCBE8 /* Internal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02902B93EA4E541397C92FB445D0A7C5 /* Internal.swift */; };
 		AF171D00C9AF5B93E716A32D191DDA48 /* descriptor.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6263F071BA1B3C5336AC7DCE8250D831 /* descriptor.pb.swift */; };
 		B01023C85FC9D35931D11D43ECD3FA19 /* JSONScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C56931E2C1487AD967D5D222AF21B09 /* JSONScanner.swift */; };
+		B15E9065A041E08C90239655AADB5FA9 /* Pods-nRF-Wi-Fi-Provisioner (iOS)-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 59CE72101420B1AEF29192935FF78BE2 /* Pods-nRF-Wi-Fi-Provisioner (iOS)-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B16D2BB46A12F462EE0E05011CF266A7 /* CBMCentralManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE3C4435C8EC5FB2DFFD34FDACAE5CE /* CBMCentralManager.swift */; };
 		B1F117B5FFAF874EDF8320786A942FED /* ExtensionFields.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9F3C84CCC8DE835CCB445DFB34A8E5B /* ExtensionFields.swift */; };
 		B2662002E33192C4D58EC6674D118679 /* Message+AnyAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 278C15BB1D9E2ADEAA9CDD9C9FD76ED5 /* Message+AnyAdditions.swift */; };
-		B3B9E9816E625AFA0E8F00840835E28B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7566FCDAC605EB3D2581B3964A2F6ACB /* Foundation.framework */; };
 		B502477BA67E52F7384F9C07C7AC77A5 /* SimpleExtensionMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA80DF4440D1B798660840A4CC5623F9 /* SimpleExtensionMap.swift */; };
 		B6EC32AAE7778BDEBD10D684757931FC /* Google_Protobuf_Timestamp+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA876D3426FBD4BA772EA21B7082343 /* Google_Protobuf_Timestamp+Extensions.swift */; };
 		B6F664576A40B6987196665C12B8562F /* CBMAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3609B269CB647508C42AA1A07C0590F0 /* CBMAttributes.swift */; };
 		B7A26B59226D1B4A650C072A424E616A /* request.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34E287F22BA7E2C5A2922C5533F14C10 /* request.pb.swift */; };
+		B8BB181AD9532CCB5FE9F70AADD89506 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7566FCDAC605EB3D2581B3964A2F6ACB /* Foundation.framework */; };
 		B917DB4E5736DD92CB536299EA705AC3 /* ProvisionerError.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDCF1BEBB46BFC0A69B4F8F0794FBAD9 /* ProvisionerError.swift */; };
 		BA4D7B91A41F9C63F22756A413D7C74A /* TextFormatEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61CB35554520BBF56F52387F868F66B8 /* TextFormatEncoder.swift */; };
 		BA9EA16F165712CC4E43559406EFBD9D /* TextFormatScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2173BD2DFAE8325299C95D90F82BC4B /* TextFormatScanner.swift */; };
 		BD627D95A94C4A7532DF96EC59BED36E /* UnknownStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE599FBE258326CCB02223DE6CFBC320 /* UnknownStorage.swift */; };
 		BD646F17F0438A3058C3554613FF8F63 /* CBMManagerTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D0DF42942CA5421BEA81EDD0B81CB68 /* CBMManagerTypes.swift */; };
 		C21B541981E286F44111E30FFCA1184B /* any.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C25A965958B10EB3627443583EEA0FA /* any.pb.swift */; };
-		C4E774D62B65250AA3F5E430B4488A10 /* NordicWiFiProvisioner-SoftAP-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E3FDEEAAF4BE0A5DAE716468D8E8E24 /* NordicWiFiProvisioner-SoftAP-dummy.m */; };
 		C7B4A6C8DAB78911E4CD3C1CAB712B45 /* Optional+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18DCDD1C0BB7A2423AB3814B68F0E828 /* Optional+Ext.swift */; };
 		C7DAF919D18C82A9FC70A371E5DE9D9C /* TextFormatDecodingOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA4243A9B774667F1218F9132B99C6C9 /* TextFormatDecodingOptions.swift */; };
 		C8CB3A566E76C565FB2028F8451A0010 /* type.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = 747CB13013D6180C39269D6EACFA83A7 /* type.pb.swift */; };
@@ -151,7 +151,6 @@
 		D79751C68DDDE08F42921E6D34638E84 /* StringUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8B07BC532BDF47A9FBF2C5DC0B60105 /* StringUtils.swift */; };
 		D7C912A99043FE0E0E74EE5C02330A64 /* Google_Protobuf_Any+Registry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 321B82A7ADE90174A6D96CBFA5B996CA /* Google_Protobuf_Any+Registry.swift */; };
 		D9F06BDF62AC0F794949403313361486 /* CBMCentralManagerFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5509B86C65FA1F1E0256B51B6ADC2E3 /* CBMCentralManagerFactory.swift */; };
-		DA83BE8C1DBC99ADB1E1FC5B3C32E06F /* ProvisionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0AFE30A34A3FBCAC622361E0B2C6487 /* ProvisionManager.swift */; };
 		DA90DE753535DF3CAB805492D250D0ED /* ConnectionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35179CC2F277051CEA4D2CD8AC8F74F6 /* ConnectionDelegate.swift */; };
 		DC053FDEE30F653E64C4B30696E7D0E2 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = C34039628B624BA193EB17F9C1D51DFA /* Logger.swift */; };
 		DC3876F5053F9FBF3429CED28C9216E0 /* BinaryEncodingOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C4C78BF4D9A6E98E0301A4ACBA63F27 /* BinaryEncodingOptions.swift */; };
@@ -170,7 +169,6 @@
 		F15220D9F26C38D19459FA170960A9E9 /* CBMCentralManagerDelegateProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = E204BAB83E91CD4F50C816B5DD06BE97 /* CBMCentralManagerDelegateProxy.swift */; };
 		F33E3AC84D17A489CD7B30AC82D94414 /* JSONDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96991B21A9726179ADFFF31E1D843D6C /* JSONDecoder.swift */; };
 		F420FE214E68835C2A8C7934DADC624C /* JSONEncodingError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 874181A38C9A0A286C7E51ACE9CF4A99 /* JSONEncodingError.swift */; };
-		F57D505982E7B7C70A5FECDEE9DE05D2 /* NordicWiFiProvisioner-SoftAP-Res in Resources */ = {isa = PBXBuildFile; fileRef = 08BFBE134914EA77BCA71FA1E4E4FAFC /* NordicWiFiProvisioner-SoftAP-Res */; };
 		F6CAECA6F4B43FBB13C84902FE989913 /* CustomJSONCodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 947485FE3CC92E8371DBAF9141BF5780 /* CustomJSONCodable.swift */; };
 		FB7733BC3C6CDF6C6D6BAAB3F1D86BAD /* InternalDeviceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F2E24B689A41FC11BFB2CF6B26C8454 /* InternalDeviceManager.swift */; };
 		FC0C2F921C4D09766002AF691D75572F /* proto+Codable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F9353CA8000B10D1FF4A6D1016434A0 /* proto+Codable.swift */; };
@@ -178,54 +176,47 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		16FD9272E30C6DFEB0B11B6A094598ED /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = EC73AA0D20AF4E22CB90440C0A56D199;
-			remoteInfo = "NordicWiFiProvisioner-SoftAP";
-		};
-		20D916EB2F246F2D8ADC4BC281B244D8 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = A5F702E0DA383BC1479572581615A916;
-			remoteInfo = SwiftProtobuf;
-		};
-		37B125DEB3ECB5035019F5F650C505BE /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = A5F702E0DA383BC1479572581615A916;
-			remoteInfo = SwiftProtobuf;
-		};
-		4164B69536334785151BD56D8505B45C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 5647B3702CC9BCAD6F81C5D3E7417452;
-			remoteInfo = CoreBluetoothMock;
-		};
-		8ED6352D2C064E431BB8725165DEB0CD /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 6442945899E6FAA34E809DA2F6A1EA55;
-			remoteInfo = "Pods-nRF-Wi-Fi-Provisioner (iOS)";
-		};
-		ABBE2F1E6ACADD306457D55EE0EFCF2D /* PBXContainerItemProxy */ = {
+		005DC1143B2C3BE7AC06FA0AF334F064 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 7B6583C9B7B23D9A41EF671E154BEF8C;
 			remoteInfo = "NordicWiFiProvisioner-BLE";
 		};
-		C40CA34331E48B6BBC800F9C48DE76FC /* PBXContainerItemProxy */ = {
+		2B153817C49E70B5B36E04AB9FCF33A7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A5F702E0DA383BC1479572581615A916;
+			remoteInfo = SwiftProtobuf;
+		};
+		6A481C52DAA403D81D8AE1095F2904C9 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 5647B3702CC9BCAD6F81C5D3E7417452;
 			remoteInfo = CoreBluetoothMock;
+		};
+		805DCBBE09702E1814105F53A3BBF5A3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = EC73AA0D20AF4E22CB90440C0A56D199;
+			remoteInfo = "NordicWiFiProvisioner-SoftAP";
+		};
+		806EF2BA5701A1E397DC586966A62F8F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 6442945899E6FAA34E809DA2F6A1EA55;
+			remoteInfo = "Pods-nRF-Wi-Fi-Provisioner (iOS)";
+		};
+		8CCBAAFC68A194FD7A35FEE192A057C6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 45C91BEA8F6BAAE68C09619F6D4099E8;
+			remoteInfo = "NordicWiFiProvisioner-SoftAP-Res";
 		};
 		D2D6A7E2FB289EA336D1EB9EB6580409 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -234,12 +225,12 @@
 			remoteGlobalIDString = 5647B3702CC9BCAD6F81C5D3E7417452;
 			remoteInfo = CoreBluetoothMock;
 		};
-		E30C5B9CAD7CA14FAEF05B8E3049A2BB /* PBXContainerItemProxy */ = {
+		DEA3D6598E85373FF097496D1A5FA69D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 45C91BEA8F6BAAE68C09619F6D4099E8;
-			remoteInfo = "NordicWiFiProvisioner-SoftAP-Res";
+			remoteGlobalIDString = A5F702E0DA383BC1479572581615A916;
+			remoteInfo = SwiftProtobuf;
 		};
 		F4FDD76011193EF97864E3DE65E78759 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -258,14 +249,10 @@
 		08BFBE134914EA77BCA71FA1E4E4FAFC /* NordicWiFiProvisioner-SoftAP-Res */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = "NordicWiFiProvisioner-SoftAP-Res"; path = Res.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		0C623592F2A580597611BD5EEBCAAB1C /* Pods-Tests iOS-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-Tests iOS-dummy.m"; sourceTree = "<group>"; };
 		0C6A1E2EF041AC4C61202515F459B30C /* timestamp.pb.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = timestamp.pb.swift; path = Sources/SwiftProtobuf/timestamp.pb.swift; sourceTree = "<group>"; };
-		0DB932066F5C57F965F4B172B78ED823 /* NordicWiFiProvisioner-SoftAP.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "NordicWiFiProvisioner-SoftAP.release.xcconfig"; sourceTree = "<group>"; };
-		0E3FDEEAAF4BE0A5DAE716468D8E8E24 /* NordicWiFiProvisioner-SoftAP-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "NordicWiFiProvisioner-SoftAP-dummy.m"; sourceTree = "<group>"; };
 		0EE3C4435C8EC5FB2DFFD34FDACAE5CE /* CBMCentralManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CBMCentralManager.swift; path = CoreBluetoothMock/CBMCentralManager.swift; sourceTree = "<group>"; };
 		0F72551EA8B1D7AE8FE58164C1B28A6F /* DeviceStatus.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DeviceStatus.swift; sourceTree = "<group>"; };
-		0FE0D99FD5C9AF12744DD59B0F3957F5 /* ResourceBundle-Res-NordicWiFiProvisioner-SoftAP-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "ResourceBundle-Res-NordicWiFiProvisioner-SoftAP-Info.plist"; sourceTree = "<group>"; };
-		126B31569F974FA40C35A6101BB712F4 /* NordicWiFiProvisioner-BLE.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; path = "NordicWiFiProvisioner-BLE.podspec"; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		126B31569F974FA40C35A6101BB712F4 /* NordicWiFiProvisioner-BLE.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; path = "NordicWiFiProvisioner-BLE.podspec"; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		13DFDF5294EE4F40A58F9D06A4863E67 /* Pods-nRF-Wi-Fi-Provisioner (iOS)-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-nRF-Wi-Fi-Provisioner (iOS)-dummy.m"; sourceTree = "<group>"; };
-		157CE94DB6EC86EB381CBF54E5AF1CCA /* NordicWiFiProvisioner-SoftAP.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "NordicWiFiProvisioner-SoftAP.debug.xcconfig"; sourceTree = "<group>"; };
 		1601C8308E99975B5A4AE230A627D326 /* common.pb.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = common.pb.swift; sourceTree = "<group>"; };
 		16A0301F32C413B993A2B7DC2FBA9425 /* BinaryEncoder.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BinaryEncoder.swift; path = Sources/SwiftProtobuf/BinaryEncoder.swift; sourceTree = "<group>"; };
 		16CD4A39C803A33CCC992CC7C4ED3749 /* CoreBluetoothMock.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = CoreBluetoothMock.debug.xcconfig; sourceTree = "<group>"; };
@@ -275,6 +262,7 @@
 		1A358759D9F396ABCAB4ACB6BE67F840 /* Pods-nRF-Wi-Fi-Provisioner (iOS)-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-nRF-Wi-Fi-Provisioner (iOS)-Info.plist"; sourceTree = "<group>"; };
 		1DDD4298B65EA80D74CBADFFE2D54746 /* AuthMode.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AuthMode.swift; sourceTree = "<group>"; };
 		1FCD952DBF9AF0B6C7BBBF91CAAD977C /* Varint.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Varint.swift; path = Sources/SwiftProtobuf/Varint.swift; sourceTree = "<group>"; };
+		211B9718BB352F2ABE00D45EE7AF3EAE /* NordicWiFiProvisioner-SoftAP-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "NordicWiFiProvisioner-SoftAP-Info.plist"; sourceTree = "<group>"; };
 		22F1BFAE92E2FB23ED7A67EEB40EA0D6 /* MathUtils.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MathUtils.swift; path = Sources/SwiftProtobuf/MathUtils.swift; sourceTree = "<group>"; };
 		2308E1C5BBBCE851304971DDC7977304 /* ScanParams.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ScanParams.swift; sourceTree = "<group>"; };
 		258229E827A155C6F725292DDB028FE2 /* empty.pb.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = empty.pb.swift; path = Sources/SwiftProtobuf/empty.pb.swift; sourceTree = "<group>"; };
@@ -284,7 +272,6 @@
 		2C6A5492302DC38CC4D334C4156E3A2C /* SwiftProtobuf.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = SwiftProtobuf.release.xcconfig; sourceTree = "<group>"; };
 		2CFE7A16747101DDCC48D1FD22F2420C /* WifiInfo.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WifiInfo.swift; sourceTree = "<group>"; };
 		2D4D203EB33BCE2A9AB75EBE070E3B4F /* NordicWiFiProvisioner-BLE-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "NordicWiFiProvisioner-BLE-Info.plist"; sourceTree = "<group>"; };
-		2DB638F5316CEB352F5D317F24A7EC29 /* NordicWiFiProvisioner-SoftAP.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "NordicWiFiProvisioner-SoftAP.modulemap"; sourceTree = "<group>"; };
 		2E5E7AE4C7B731943E1224DBDAD3027D /* WiFiInfo+Fake.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "WiFiInfo+Fake.swift"; sourceTree = "<group>"; };
 		2ED8671F67C3A2C9B7843A46E7BD9148 /* ConnectionState.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ConnectionState.swift; sourceTree = "<group>"; };
 		3073E178CEF35F9FD768FB4EDC3CC830 /* NordicWiFiProvisioner-BLE.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "NordicWiFiProvisioner-BLE.release.xcconfig"; sourceTree = "<group>"; };
@@ -298,6 +285,8 @@
 		381B678941D53378540824922BCE4287 /* CBMPeripheralDelegate.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CBMPeripheralDelegate.swift; path = CoreBluetoothMock/CBMPeripheralDelegate.swift; sourceTree = "<group>"; };
 		389B00559CB7C704B76C4E49197514F0 /* NordicWiFiProvisioner-BLE-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "NordicWiFiProvisioner-BLE-umbrella.h"; sourceTree = "<group>"; };
 		392A860B1DF7FEB343E31AEC83F34CCD /* NordicWiFiProvisioner-SoftAP */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = "NordicWiFiProvisioner-SoftAP"; path = NordicWiFiProvisioner_SoftAP.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		3972E3C055D0BE3A40C33901CF275D49 /* NordicWiFiProvisioner-SoftAP-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "NordicWiFiProvisioner-SoftAP-prefix.pch"; sourceTree = "<group>"; };
+		3AF894C38D31C65BBD7CBF3F7F8172A9 /* NordicWiFiProvisioner-SoftAP.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "NordicWiFiProvisioner-SoftAP.debug.xcconfig"; sourceTree = "<group>"; };
 		3D8AF7B7C8D50D5F040857B2C65D9213 /* Pods-Tests iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Tests iOS.release.xcconfig"; sourceTree = "<group>"; };
 		3E849A53608A40CEA7975B1B3B9F5F3E /* InternalScanner.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = InternalScanner.swift; sourceTree = "<group>"; };
 		3FF66F12715C5AF055B7C1B12DE065A9 /* JSONDecodingOptions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = JSONDecodingOptions.swift; path = Sources/SwiftProtobuf/JSONDecodingOptions.swift; sourceTree = "<group>"; };
@@ -306,7 +295,6 @@
 		47660021517A9BA9E9841836368EC3D8 /* SelectiveVisitor.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SelectiveVisitor.swift; path = Sources/SwiftProtobuf/SelectiveVisitor.swift; sourceTree = "<group>"; };
 		4776EE9361957B63152888E10EE84AF7 /* BinaryDecoder.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BinaryDecoder.swift; path = Sources/SwiftProtobuf/BinaryDecoder.swift; sourceTree = "<group>"; };
 		4B1A745D22AFA64B65F0706D3430948B /* NordicWiFiProvisioner-BLE-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "NordicWiFiProvisioner-BLE-dummy.m"; sourceTree = "<group>"; };
-		4B208F857F5DFEA368D7F1DE6480C603 /* NordicWiFiProvisioner-SoftAP.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; path = "NordicWiFiProvisioner-SoftAP.podspec"; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		4B905EE898228EDEDDCF628D7D46B77A /* ScanResult.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ScanResult.swift; sourceTree = "<group>"; };
 		4C0E1F3589FF6375C7DBA2DDA1197A95 /* ProtoConvertible.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ProtoConvertible.swift; sourceTree = "<group>"; };
 		4C25A965958B10EB3627443583EEA0FA /* any.pb.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = any.pb.swift; path = Sources/SwiftProtobuf/any.pb.swift; sourceTree = "<group>"; };
@@ -332,6 +320,7 @@
 		66EB6478665049A0BE70D5E624C79331 /* ExtensionFieldValueSet.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExtensionFieldValueSet.swift; path = Sources/SwiftProtobuf/ExtensionFieldValueSet.swift; sourceTree = "<group>"; };
 		67E6778BA3E3B544BE05B1524A16CC0C /* CBMCentralManagerDelegate.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CBMCentralManagerDelegate.swift; path = CoreBluetoothMock/CBMCentralManagerDelegate.swift; sourceTree = "<group>"; };
 		67FCDC813253AC891207800CAB471105 /* IPAddress.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = IPAddress.swift; sourceTree = "<group>"; };
+		68EB7C538EF49CD75FF2538183AE944F /* ProvisionManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ProvisionManager.swift; path = "Sources/NordicWiFiProvisioner-SoftAP/ProvisionManager.swift"; sourceTree = "<group>"; };
 		68F063A648E1F45351F8E1A48AA017BC /* CBMPeripheralPreview.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CBMPeripheralPreview.swift; path = CoreBluetoothMock/CBMPeripheralPreview.swift; sourceTree = "<group>"; };
 		6A7CECA353035BEDCE14188285AA10EE /* JSONEncodingOptions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = JSONEncodingOptions.swift; path = Sources/SwiftProtobuf/JSONEncodingOptions.swift; sourceTree = "<group>"; };
 		6C72E5E47AFA1020162951E3C42D2D2A /* TextFormatDecodingError.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TextFormatDecodingError.swift; path = Sources/SwiftProtobuf/TextFormatDecodingError.swift; sourceTree = "<group>"; };
@@ -341,7 +330,6 @@
 		6F9353CA8000B10D1FF4A6D1016434A0 /* proto+Codable.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "proto+Codable.swift"; sourceTree = "<group>"; };
 		709EEB7C33B2C3584D7CD721B9558109 /* Pods-Tests iOS-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-Tests iOS-acknowledgements.markdown"; sourceTree = "<group>"; };
 		70DB84C44110DEE2807C97C5A12DB646 /* BinaryEncodingSizeVisitor.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BinaryEncodingSizeVisitor.swift; path = Sources/SwiftProtobuf/BinaryEncodingSizeVisitor.swift; sourceTree = "<group>"; };
-		7101D7D5705CBBBC4652D03D01059095 /* NordicWiFiProvisioner-SoftAP-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "NordicWiFiProvisioner-SoftAP-prefix.pch"; sourceTree = "<group>"; };
 		71CF74E584B7C941642D4B0ABE1F590F /* TextFormatDecoder.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TextFormatDecoder.swift; path = Sources/SwiftProtobuf/TextFormatDecoder.swift; sourceTree = "<group>"; };
 		723F89A9184E164146EB22306AF4D4AF /* Message+JSONAdditions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "Message+JSONAdditions.swift"; path = "Sources/SwiftProtobuf/Message+JSONAdditions.swift"; sourceTree = "<group>"; };
 		725D464B589B7D37FB80200706349D64 /* AnyMessageStorage.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AnyMessageStorage.swift; path = Sources/SwiftProtobuf/AnyMessageStorage.swift; sourceTree = "<group>"; };
@@ -353,7 +341,7 @@
 		7566FCDAC605EB3D2581B3964A2F6ACB /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		776F2FE7CD856D91C0B34B7523CC693F /* Google_Protobuf_Any+Extensions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "Google_Protobuf_Any+Extensions.swift"; path = "Sources/SwiftProtobuf/Google_Protobuf_Any+Extensions.swift"; sourceTree = "<group>"; };
 		779567A4B02AC0655BAD2A631CED3E38 /* CoreBluetoothMock */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = CoreBluetoothMock; path = CoreBluetoothMock.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		7BBCB4B0283BF7B42DDAF6BC6F2D6DF1 /* NordicWiFiProvisioner-SoftAP-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "NordicWiFiProvisioner-SoftAP-umbrella.h"; sourceTree = "<group>"; };
+		7BEC4219F69C4FA8A196AC5B16530C74 /* NordicWiFiProvisioner-SoftAP-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "NordicWiFiProvisioner-SoftAP-dummy.m"; sourceTree = "<group>"; };
 		7F7B59FB644D7E4C63B189C577D0C9A9 /* ZigZag.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ZigZag.swift; path = Sources/SwiftProtobuf/ZigZag.swift; sourceTree = "<group>"; };
 		813FBD03E3E8888592F18AF43DED7A4A /* UUID+CBMUUID.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "UUID+CBMUUID.swift"; sourceTree = "<group>"; };
 		853ED8DAEE1F07B32860A0D5FC9B48C3 /* CoreBluetoothMock.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = CoreBluetoothMock.modulemap; sourceTree = "<group>"; };
@@ -378,18 +366,17 @@
 		9A1B8180331FD17C8D06B4B942ED51E1 /* Provisioner+ConnectionState.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "Provisioner+ConnectionState.swift"; sourceTree = "<group>"; };
 		9B29E6B7323E8A6EAE6872A9474693A7 /* UnsafeRawPointer+Shims.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "UnsafeRawPointer+Shims.swift"; path = "Sources/SwiftProtobuf/UnsafeRawPointer+Shims.swift"; sourceTree = "<group>"; };
 		9C4C78BF4D9A6E98E0301A4ACBA63F27 /* BinaryEncodingOptions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BinaryEncodingOptions.swift; path = Sources/SwiftProtobuf/BinaryEncodingOptions.swift; sourceTree = "<group>"; };
-		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		9F91B9F98FEA95F0DAE5B35040B7C5DE /* CBMCentralManagerMock.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CBMCentralManagerMock.swift; path = CoreBluetoothMock/CBMCentralManagerMock.swift; sourceTree = "<group>"; };
 		9FE960E2DDE270A1DEA0FD1C04E27A53 /* NordicWiFiProvisioner-BLE */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = "NordicWiFiProvisioner-BLE"; path = NordicWiFiProvisioner_BLE.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A3CAEFE53713F67CD2164A91B0C1ED1A /* NordicWiFiProvisioner-BLE.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "NordicWiFiProvisioner-BLE.modulemap"; sourceTree = "<group>"; };
 		A3EA1B2E97C6802E2A46F66C31C8D1CA /* CoreBluetoothMock-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "CoreBluetoothMock-dummy.m"; sourceTree = "<group>"; };
 		A63D6E85F7B45824867202807669D512 /* SwiftProtobuf-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "SwiftProtobuf-dummy.m"; sourceTree = "<group>"; };
-		AA43D0712BB2DFD500AE1728 /* certificate.cer */ = {isa = PBXFileReference; lastKnownFileType = file; name = certificate.cer; path = ../../../Desktop/certificate.cer; sourceTree = "<group>"; };
-		AAAAE6C72B7F8AFF000BB569 /* NSURLSessionPinningDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = NSURLSessionPinningDelegate.swift; path = "Sources/NordicWiFiProvisioner-SoftAP/NSURLSessionPinningDelegate.swift"; sourceTree = "<group>"; };
 		AD5AD14792E444A48771F9B127D669E3 /* NordicWiFiProvisioner-BLE-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "NordicWiFiProvisioner-BLE-prefix.pch"; sourceTree = "<group>"; };
 		AD681C7CD7F03D652B36FA08CD8CAB6D /* BluetoothConnectionInfo.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BluetoothConnectionInfo.swift; sourceTree = "<group>"; };
 		AE599FBE258326CCB02223DE6CFBC320 /* UnknownStorage.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = UnknownStorage.swift; path = Sources/SwiftProtobuf/UnknownStorage.swift; sourceTree = "<group>"; };
 		B256E2B512096AFDB256B9EBFF8EF1CE /* CoreBluetoothMock.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = CoreBluetoothMock.release.xcconfig; sourceTree = "<group>"; };
+		B51CC5F83735544B75362A5D033B1C5D /* NordicWiFiProvisioner-SoftAP.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "NordicWiFiProvisioner-SoftAP.modulemap"; sourceTree = "<group>"; };
 		B70A47833B78B4A82CDF3E630BE925E2 /* Google_Protobuf_Wrappers+Extensions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "Google_Protobuf_Wrappers+Extensions.swift"; path = "Sources/SwiftProtobuf/Google_Protobuf_Wrappers+Extensions.swift"; sourceTree = "<group>"; };
 		B7E65BFA7C8B96B33F8801AFADA582DF /* ConnectionInfo.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ConnectionInfo.swift; sourceTree = "<group>"; };
 		B7EBB8A0BF73EB709538953C3C2083B8 /* AnyUnpackError.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AnyUnpackError.swift; path = Sources/SwiftProtobuf/AnyUnpackError.swift; sourceTree = "<group>"; };
@@ -402,11 +389,10 @@
 		BEA3D8FFE9CBE60617F835258861A78C /* BinaryEncodingError.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BinaryEncodingError.swift; path = Sources/SwiftProtobuf/BinaryEncodingError.swift; sourceTree = "<group>"; };
 		BF0AF90A7B7E76AC459ECB5A702635B4 /* WifiConfig.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WifiConfig.swift; sourceTree = "<group>"; };
 		BF40FC7BD50B31C5651DD505624278D1 /* CBMPeer.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CBMPeer.swift; path = CoreBluetoothMock/CBMPeer.swift; sourceTree = "<group>"; };
-		C029325FB66A9BB2B2D5B4F2D66E9166 /* NordicWiFiProvisioner-SoftAP-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "NordicWiFiProvisioner-SoftAP-Info.plist"; sourceTree = "<group>"; };
 		C34039628B624BA193EB17F9C1D51DFA /* Logger.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		C541179274ADB20E2BA723140DBBD92C /* ProtobufMap.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ProtobufMap.swift; path = Sources/SwiftProtobuf/ProtobufMap.swift; sourceTree = "<group>"; };
 		C597802BFE384F8FFB5B3E4F943803FF /* Decoder.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Decoder.swift; path = Sources/SwiftProtobuf/Decoder.swift; sourceTree = "<group>"; };
-		C6E503F18064ABD418304DFBB76E1F8B /* Documentation.docc */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder.documentationcatalog; name = Documentation.docc; path = CoreBluetoothMock/Documentation.docc; sourceTree = "<group>"; };
+		C6E503F18064ABD418304DFBB76E1F8B /* Documentation.docc */ = {isa = PBXFileReference; includeInIndex = 1; name = Documentation.docc; path = CoreBluetoothMock/Documentation.docc; sourceTree = "<group>"; };
 		C744497281866FE5B6A2CBC73D9581E4 /* Google_Protobuf_Value+Extensions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "Google_Protobuf_Value+Extensions.swift"; path = "Sources/SwiftProtobuf/Google_Protobuf_Value+Extensions.swift"; sourceTree = "<group>"; };
 		C786DF81E7125193FED7CE8F5E75B592 /* Proto.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Proto.swift; sourceTree = "<group>"; };
 		C934F05AD5B0474B20756011ED74E0DD /* CBMPeripheral.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CBMPeripheral.swift; path = CoreBluetoothMock/CBMPeripheral.swift; sourceTree = "<group>"; };
@@ -435,22 +421,26 @@
 		DFC1617F738F414F63DFB66AAEDB123C /* NameMap.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = NameMap.swift; path = Sources/SwiftProtobuf/NameMap.swift; sourceTree = "<group>"; };
 		E08F1DC6603DF26B243FC7DF93453AA2 /* Constants.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Constants.swift; path = "Sources/NordicWiFiProvisioner-BLE/Constants.swift"; sourceTree = "<group>"; };
 		E0A8A732EADCC09E2E84C83854A57EE4 /* Visitor.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Visitor.swift; path = Sources/SwiftProtobuf/Visitor.swift; sourceTree = "<group>"; };
-		E0AFE30A34A3FBCAC622361E0B2C6487 /* ProvisionManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ProvisionManager.swift; path = "Sources/NordicWiFiProvisioner-SoftAP/ProvisionManager.swift"; sourceTree = "<group>"; };
 		E204BAB83E91CD4F50C816B5DD06BE97 /* CBMCentralManagerDelegateProxy.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CBMCentralManagerDelegateProxy.swift; path = CoreBluetoothMock/CBMCentralManagerDelegateProxy.swift; sourceTree = "<group>"; };
 		E2173BD2DFAE8325299C95D90F82BC4B /* TextFormatScanner.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TextFormatScanner.swift; path = Sources/SwiftProtobuf/TextFormatScanner.swift; sourceTree = "<group>"; };
 		E308FBDCE701BCBB77BA519277490F41 /* CoreBluetoothTypeAliases.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CoreBluetoothTypeAliases.swift; sourceTree = "<group>"; };
 		E34E191CD2E96FCCE396BD256BB9F504 /* Google_Protobuf_FieldMask+Extensions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "Google_Protobuf_FieldMask+Extensions.swift"; path = "Sources/SwiftProtobuf/Google_Protobuf_FieldMask+Extensions.swift"; sourceTree = "<group>"; };
 		E37C70F5BE260009154469CA55BFD465 /* CBMPeripheralSpecDelegate.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CBMPeripheralSpecDelegate.swift; path = CoreBluetoothMock/CBMPeripheralSpecDelegate.swift; sourceTree = "<group>"; };
+		E742D7E643C3DC33222579271076135C /* NordicWiFiProvisioner-SoftAP-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "NordicWiFiProvisioner-SoftAP-umbrella.h"; sourceTree = "<group>"; };
 		E77CCAF77128D3CDD191DEE90314CBAB /* BinaryDelimited.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BinaryDelimited.swift; path = Sources/SwiftProtobuf/BinaryDelimited.swift; sourceTree = "<group>"; };
 		E841A3566E3D612ABCC0AB9F7FEFBA92 /* MACAddress.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MACAddress.swift; sourceTree = "<group>"; };
+		E8831523A4DFFDE15B83CA54E2E8BB30 /* NordicWiFiProvisioner-SoftAP.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "NordicWiFiProvisioner-SoftAP.release.xcconfig"; sourceTree = "<group>"; };
 		E9924D60B53D57980F16231B6D8ED662 /* WireFormat.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = WireFormat.swift; path = Sources/SwiftProtobuf/WireFormat.swift; sourceTree = "<group>"; };
 		E9F3C84CCC8DE835CCB445DFB34A8E5B /* ExtensionFields.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExtensionFields.swift; path = Sources/SwiftProtobuf/ExtensionFields.swift; sourceTree = "<group>"; };
 		EC14BA7EDC4CFEF814C8DC3570FDFDEB /* Int+Ext.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "Int+Ext.swift"; sourceTree = "<group>"; };
 		EC20C5BB72EFC48CDF46E98AB9B8A44B /* JSONEncoder.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = JSONEncoder.swift; path = Sources/SwiftProtobuf/JSONEncoder.swift; sourceTree = "<group>"; };
+		ECC1F0338E01D01B4A8A13D3FCD859B5 /* NordicWiFiProvisioner-SoftAP.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; path = "NordicWiFiProvisioner-SoftAP.podspec"; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		EDCF1BEBB46BFC0A69B4F8F0794FBAD9 /* ProvisionerError.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ProvisionerError.swift; sourceTree = "<group>"; };
 		EE46BBF2295D1DAC56513B57B698FC91 /* BinaryDecodingOptions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BinaryDecodingOptions.swift; path = Sources/SwiftProtobuf/BinaryDecodingOptions.swift; sourceTree = "<group>"; };
 		EF4AAFE4507BA84AF8C46DA7B22E5378 /* SwiftProtobuf-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "SwiftProtobuf-prefix.pch"; sourceTree = "<group>"; };
 		F0001DCA033940E1291BFAA8509382B6 /* source_context.pb.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = source_context.pb.swift; path = Sources/SwiftProtobuf/source_context.pb.swift; sourceTree = "<group>"; };
+		F3FBA178DD366F64FFC41F77BF10AC08 /* NSURLSessionPinningDelegate.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = NSURLSessionPinningDelegate.swift; path = "Sources/NordicWiFiProvisioner-SoftAP/NSURLSessionPinningDelegate.swift"; sourceTree = "<group>"; };
+		F54EF1D624A7D975CEE0F3B44A93B38F /* ResourceBundle-Res-NordicWiFiProvisioner-SoftAP-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "ResourceBundle-Res-NordicWiFiProvisioner-SoftAP-Info.plist"; sourceTree = "<group>"; };
 		F5DF1BE7F9ADDF05B8C07344F252707D /* Pods-nRF-Wi-Fi-Provisioner (iOS)-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-nRF-Wi-Fi-Provisioner (iOS)-acknowledgements.plist"; sourceTree = "<group>"; };
 		F81F556F5026052C7401C9D26EC7A555 /* version.pb.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = version.pb.swift; sourceTree = "<group>"; };
 		F8B07BC532BDF47A9FBF2C5DC0B60105 /* StringUtils.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = StringUtils.swift; path = Sources/SwiftProtobuf/StringUtils.swift; sourceTree = "<group>"; };
@@ -459,6 +449,21 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		039B137DBDEBF101BF662D433ABB8C75 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1CDACE26E4D8011B88E720CEB7FDAB31 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B8BB181AD9532CCB5FE9F70AADD89506 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		488FF9A5A4E81E05DF0FC25B54D85B64 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -475,18 +480,11 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		4DC3111790CC843FBDA1BD948C3C28FF /* Frameworks */ = {
+		A0AC3A94F29AE118471F37850BF951C5 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				61C348F66F517DCEA1161AC3208BB7D1 /* Foundation.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		650A2B291F538781B16A860B34909243 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
+				9A60ABE5B0258BF3C80A18BEA0405201 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -507,23 +505,26 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		E23EED397441410B4278B631E3FFB236 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				58E7938D2C8A183EC360F06DC1C9037C /* CoreBluetooth.framework in Frameworks */,
-				B3B9E9816E625AFA0E8F00840835E28B /* Foundation.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0E6DC245040FD5CC7C9046D29E823502 /* NordicWiFiProvisioner-SoftAP */ = {
+			isa = PBXGroup;
+			children = (
+				F3FBA178DD366F64FFC41F77BF10AC08 /* NSURLSessionPinningDelegate.swift */,
+				68EB7C538EF49CD75FF2538183AE944F /* ProvisionManager.swift */,
+				3E603C0A67ADF4869899690582B5BCA3 /* Pod */,
+				A456C879ADB1D394BC1001A930B7EC6B /* Support Files */,
+			);
+			name = "NordicWiFiProvisioner-SoftAP";
+			path = ../..;
+			sourceTree = "<group>";
+		};
 		0E97A42859070A4D388B12B8052A324C /* Development Pods */ = {
 			isa = PBXGroup;
 			children = (
 				96E4A6D378F02A906036DE0BDCFF6981 /* NordicWiFiProvisioner-BLE */,
-				60FD2C2AC71A758AB071FA78563D3B06 /* NordicWiFiProvisioner-SoftAP */,
+				0E6DC245040FD5CC7C9046D29E823502 /* NordicWiFiProvisioner-SoftAP */,
 			);
 			name = "Development Pods";
 			sourceTree = "<group>";
@@ -559,6 +560,7 @@
 				4B905EE898228EDEDDCF628D7D46B77A /* ScanResult.swift */,
 				2A205E8A24FECA727D61C4EE18C3740C /* State.swift */,
 			);
+			name = Models;
 			path = Models;
 			sourceTree = "<group>";
 		};
@@ -583,6 +585,7 @@
 				3E5D3EA74E552C0B573627377AA52CDA /* Enums */,
 				8F632076B947913A9B2A8501D87C2A40 /* Internal */,
 			);
+			name = PublicModels;
 			path = PublicModels;
 			sourceTree = "<group>";
 		};
@@ -602,6 +605,7 @@
 				8C0590BE1A3113797497FC78EA6E8EAC /* MockSpecDelegate.swift */,
 				4C1E4D712B36068A588720D253FE650F /* Devices */,
 			);
+			name = Mock;
 			path = Mock;
 			sourceTree = "<group>";
 		};
@@ -613,7 +617,16 @@
 				2806BAAE84C2AAC7305FC13FD81DFD0F /* ConnectionFailureReason.swift */,
 				2ED8671F67C3A2C9B7843A46E7BD9148 /* ConnectionState.swift */,
 			);
+			name = Enums;
 			path = Enums;
+			sourceTree = "<group>";
+		};
+		3E603C0A67ADF4869899690582B5BCA3 /* Pod */ = {
+			isa = PBXGroup;
+			children = (
+				ECC1F0338E01D01B4A8A13D3FCD859B5 /* NordicWiFiProvisioner-SoftAP.podspec */,
+			);
+			name = Pod;
 			sourceTree = "<group>";
 		};
 		4C1E4D712B36068A588720D253FE650F /* Devices */ = {
@@ -621,20 +634,8 @@
 			children = (
 				2E5E7AE4C7B731943E1224DBDAD3027D /* WiFiInfo+Fake.swift */,
 			);
+			name = Devices;
 			path = Devices;
-			sourceTree = "<group>";
-		};
-		60FD2C2AC71A758AB071FA78563D3B06 /* NordicWiFiProvisioner-SoftAP */ = {
-			isa = PBXGroup;
-			children = (
-				E0AFE30A34A3FBCAC622361E0B2C6487 /* ProvisionManager.swift */,
-				AAAAE6C72B7F8AFF000BB569 /* NSURLSessionPinningDelegate.swift */,
-				AA43D0712BB2DFD500AE1728 /* certificate.cer */,
-				B5513679055B10EDB0EBA5C8A8C144DE /* Pod */,
-				B3B3E1C760AC0F96F679A5CA0E5CD726 /* Support Files */,
-			);
-			name = "NordicWiFiProvisioner-SoftAP";
-			path = ../..;
 			sourceTree = "<group>";
 		};
 		612ABC8B5E0AFBF556FCF729538FD99B /* Products */ = {
@@ -721,6 +722,7 @@
 				BCCC1D2C5C4518F5A0036D47D13B3380 /* String+Ext.swift */,
 				813FBD03E3E8888592F18AF43DED7A4A /* UUID+CBMUUID.swift */,
 			);
+			name = Extensions;
 			path = Extensions;
 			sourceTree = "<group>";
 		};
@@ -729,6 +731,7 @@
 			children = (
 				4C0E1F3589FF6375C7DBA2DDA1197A95 /* ProtoConvertible.swift */,
 			);
+			name = Internal;
 			path = Internal;
 			sourceTree = "<group>";
 		};
@@ -762,34 +765,26 @@
 			path = "../Target Support Files/SwiftProtobuf";
 			sourceTree = "<group>";
 		};
-		ABA1DBE216E7ADC7E99CF7B4FCFB51C9 /* Pod */ = {
+		A456C879ADB1D394BC1001A930B7EC6B /* Support Files */ = {
 			isa = PBXGroup;
 			children = (
-				126B31569F974FA40C35A6101BB712F4 /* NordicWiFiProvisioner-BLE.podspec */,
-			);
-			name = Pod;
-			sourceTree = "<group>";
-		};
-		B3B3E1C760AC0F96F679A5CA0E5CD726 /* Support Files */ = {
-			isa = PBXGroup;
-			children = (
-				2DB638F5316CEB352F5D317F24A7EC29 /* NordicWiFiProvisioner-SoftAP.modulemap */,
-				0E3FDEEAAF4BE0A5DAE716468D8E8E24 /* NordicWiFiProvisioner-SoftAP-dummy.m */,
-				C029325FB66A9BB2B2D5B4F2D66E9166 /* NordicWiFiProvisioner-SoftAP-Info.plist */,
-				7101D7D5705CBBBC4652D03D01059095 /* NordicWiFiProvisioner-SoftAP-prefix.pch */,
-				7BBCB4B0283BF7B42DDAF6BC6F2D6DF1 /* NordicWiFiProvisioner-SoftAP-umbrella.h */,
-				157CE94DB6EC86EB381CBF54E5AF1CCA /* NordicWiFiProvisioner-SoftAP.debug.xcconfig */,
-				0DB932066F5C57F965F4B172B78ED823 /* NordicWiFiProvisioner-SoftAP.release.xcconfig */,
-				0FE0D99FD5C9AF12744DD59B0F3957F5 /* ResourceBundle-Res-NordicWiFiProvisioner-SoftAP-Info.plist */,
+				B51CC5F83735544B75362A5D033B1C5D /* NordicWiFiProvisioner-SoftAP.modulemap */,
+				7BEC4219F69C4FA8A196AC5B16530C74 /* NordicWiFiProvisioner-SoftAP-dummy.m */,
+				211B9718BB352F2ABE00D45EE7AF3EAE /* NordicWiFiProvisioner-SoftAP-Info.plist */,
+				3972E3C055D0BE3A40C33901CF275D49 /* NordicWiFiProvisioner-SoftAP-prefix.pch */,
+				E742D7E643C3DC33222579271076135C /* NordicWiFiProvisioner-SoftAP-umbrella.h */,
+				3AF894C38D31C65BBD7CBF3F7F8172A9 /* NordicWiFiProvisioner-SoftAP.debug.xcconfig */,
+				E8831523A4DFFDE15B83CA54E2E8BB30 /* NordicWiFiProvisioner-SoftAP.release.xcconfig */,
+				F54EF1D624A7D975CEE0F3B44A93B38F /* ResourceBundle-Res-NordicWiFiProvisioner-SoftAP-Info.plist */,
 			);
 			name = "Support Files";
 			path = "Example/Pods/Target Support Files/NordicWiFiProvisioner-SoftAP";
 			sourceTree = "<group>";
 		};
-		B5513679055B10EDB0EBA5C8A8C144DE /* Pod */ = {
+		ABA1DBE216E7ADC7E99CF7B4FCFB51C9 /* Pod */ = {
 			isa = PBXGroup;
 			children = (
-				4B208F857F5DFEA368D7F1DE6480C603 /* NordicWiFiProvisioner-SoftAP.podspec */,
+				126B31569F974FA40C35A6101BB712F4 /* NordicWiFiProvisioner-BLE.podspec */,
 			);
 			name = Pod;
 			sourceTree = "<group>";
@@ -839,6 +834,7 @@
 				88D55DD0331FD777833E2550F2D678BA /* ProvisionDelegate.swift */,
 				991C8022181253B0E8DCD8E5738F0BE0 /* WiFiScanerDelegate.swift */,
 			);
+			name = Delegates;
 			path = Delegates;
 			sourceTree = "<group>";
 		};
@@ -872,6 +868,7 @@
 				C6E503F18064ABD418304DFBB76E1F8B /* Documentation.docc */,
 				720114284815CEA8B43DD28F8D681F1A /* Support Files */,
 			);
+			name = CoreBluetoothMock;
 			path = CoreBluetoothMock;
 			sourceTree = "<group>";
 		};
@@ -979,12 +976,21 @@
 				7F7B59FB644D7E4C63B189C577D0C9A9 /* ZigZag.swift */,
 				9AB30D4DDDE5A685EEBB2B78DFDA10E5 /* Support Files */,
 			);
+			name = SwiftProtobuf;
 			path = SwiftProtobuf;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
+		34FF5F9A0D2E0FA1C5C6B510D3CEA8A4 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B15E9065A041E08C90239655AADB5FA9 /* Pods-nRF-Wi-Fi-Provisioner (iOS)-umbrella.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		5C26F58DA5675A6AA35C3B5E06864871 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -1017,19 +1023,11 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		ACBD592DBEC74EFBF9222B2B732481D7 /* Headers */ = {
+		B0E806633C8E81A4B68F1B675092F829 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3E47194DBA504B0CA75791D0B7FA0A30 /* Pods-nRF-Wi-Fi-Provisioner (iOS)-umbrella.h in Headers */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		DC96C464B46B4F75CC3EF925A1A174EB /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				8A46701A2BABAE6292F0709796D3E9DE /* NordicWiFiProvisioner-SoftAP-umbrella.h in Headers */,
+				A3272B1A474C84E3BC282C1C0CC98DBF /* NordicWiFiProvisioner-SoftAP-umbrella.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1048,7 +1046,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				669CD4B838F92F01D36FB4C92461ED7B /* PBXTargetDependency */,
+				EFC72AE0F660309C3D4F81371CB291B0 /* PBXTargetDependency */,
 			);
 			name = "Pods-Tests iOS";
 			productName = Pods_Tests_iOS;
@@ -1057,11 +1055,11 @@
 		};
 		45C91BEA8F6BAAE68C09619F6D4099E8 /* NordicWiFiProvisioner-SoftAP-Res */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 7631AE165D9936A3485EA82C2A6C32BB /* Build configuration list for PBXNativeTarget "NordicWiFiProvisioner-SoftAP-Res" */;
+			buildConfigurationList = F79CFD5DB8E66D1E66AC6D2858BCAD8B /* Build configuration list for PBXNativeTarget "NordicWiFiProvisioner-SoftAP-Res" */;
 			buildPhases = (
-				97F97FCFB2532C8CFDFCB59DCBD20CB3 /* Sources */,
-				650A2B291F538781B16A860B34909243 /* Frameworks */,
-				E000EF3B2BF00C0668B01D41C9FFF215 /* Resources */,
+				A809A167A57FCF8E959DD8C2D32E2CBE /* Sources */,
+				039B137DBDEBF101BF662D433ABB8C75 /* Frameworks */,
+				9FD7F5B30C862110592476C9CA9222BA /* Resources */,
 			);
 			buildRules = (
 			);
@@ -1092,20 +1090,20 @@
 		};
 		6442945899E6FAA34E809DA2F6A1EA55 /* Pods-nRF-Wi-Fi-Provisioner (iOS) */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 37A33F908498331BF12C95F285AE0E23 /* Build configuration list for PBXNativeTarget "Pods-nRF-Wi-Fi-Provisioner (iOS)" */;
+			buildConfigurationList = CC3DE684847528B510AD7B458E793CEF /* Build configuration list for PBXNativeTarget "Pods-nRF-Wi-Fi-Provisioner (iOS)" */;
 			buildPhases = (
-				ACBD592DBEC74EFBF9222B2B732481D7 /* Headers */,
-				620F012BA4BF18CB23A5F38ECD077FB6 /* Sources */,
-				4DC3111790CC843FBDA1BD948C3C28FF /* Frameworks */,
-				032DE114ADAC8D6E300555C2F2D6BE78 /* Resources */,
+				34FF5F9A0D2E0FA1C5C6B510D3CEA8A4 /* Headers */,
+				A15A267C319A461A4B6F7E5929DBF285 /* Sources */,
+				A0AC3A94F29AE118471F37850BF951C5 /* Frameworks */,
+				796A9317DA60E2D0775E36E0C4941788 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				2F7CD4FE21F9C29AF2B795254C7FA7C7 /* PBXTargetDependency */,
-				3BC0133370EB96E0E4018BF49D961471 /* PBXTargetDependency */,
-				46B8D097A017031E07E748EDAD6F387D /* PBXTargetDependency */,
-				300CF7308804B8B5575BCF317878F5BA /* PBXTargetDependency */,
+				6D167B4DC736432D5CD05CFDD3E84057 /* PBXTargetDependency */,
+				FA534811B8C85847AF9C63908E01B7C9 /* PBXTargetDependency */,
+				03DD18CFF32E4A3BE641A6054119C570 /* PBXTargetDependency */,
+				32E8D84F50356889913BDC19DF0E1A9A /* PBXTargetDependency */,
 			);
 			name = "Pods-nRF-Wi-Fi-Provisioner (iOS)";
 			productName = Pods_nRF_Wi_Fi_Provisioner__iOS_;
@@ -1152,19 +1150,18 @@
 		};
 		EC73AA0D20AF4E22CB90440C0A56D199 /* NordicWiFiProvisioner-SoftAP */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = C1B730D72B72A883A340D01ED44BCE90 /* Build configuration list for PBXNativeTarget "NordicWiFiProvisioner-SoftAP" */;
+			buildConfigurationList = 304E53569A0EB9CF24B7D172BB0A80D0 /* Build configuration list for PBXNativeTarget "NordicWiFiProvisioner-SoftAP" */;
 			buildPhases = (
-				DC96C464B46B4F75CC3EF925A1A174EB /* Headers */,
-				601BB78DE1B74D785F79C49CBB707360 /* Sources */,
-				E23EED397441410B4278B631E3FFB236 /* Frameworks */,
-				BFF60377D3C1124FEA2399C7DBC5EFAF /* Resources */,
+				B0E806633C8E81A4B68F1B675092F829 /* Headers */,
+				3065E8C6CDD8B68AF4FACC41871AC719 /* Sources */,
+				1CDACE26E4D8011B88E720CEB7FDAB31 /* Frameworks */,
+				BE4CE2E82824319ECD51DF2E813B9D12 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				33E92D89167B8D0EAB1E68A02CAF1058 /* PBXTargetDependency */,
-				4DF9D13F911C516F736B61E495E28AC4 /* PBXTargetDependency */,
-				5F21D984AB6CC7B1390DC41E987F742A /* PBXTargetDependency */,
+				2D9AD6500D7DF0895D8E5B8DA6A210B4 /* PBXTargetDependency */,
+				81B394F34C3C63AB2D9888EDAA1A0C5E /* PBXTargetDependency */,
 			);
 			name = "NordicWiFiProvisioner-SoftAP";
 			productName = NordicWiFiProvisioner_SoftAP;
@@ -1205,14 +1202,21 @@
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		032DE114ADAC8D6E300555C2F2D6BE78 /* Resources */ = {
+		6294F85DE0C237ACA29ECA511A74E072 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		6294F85DE0C237ACA29ECA511A74E072 /* Resources */ = {
+		796A9317DA60E2D0775E36E0C4941788 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9FD7F5B30C862110592476C9CA9222BA /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1233,11 +1237,11 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		BFF60377D3C1124FEA2399C7DBC5EFAF /* Resources */ = {
+		BE4CE2E82824319ECD51DF2E813B9D12 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F57D505982E7B7C70A5FECDEE9DE05D2 /* NordicWiFiProvisioner-SoftAP-Res in Resources */,
+				164F5A240B8C4EB19CA97F1FFD3C2E40 /* NordicWiFiProvisioner-SoftAP-Res in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1248,39 +1252,16 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		E000EF3B2BF00C0668B01D41C9FFF215 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				AA43D0722BB2DFD500AE1728 /* certificate.cer in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		601BB78DE1B74D785F79C49CBB707360 /* Sources */ = {
+		3065E8C6CDD8B68AF4FACC41871AC719 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C4E774D62B65250AA3F5E430B4488A10 /* NordicWiFiProvisioner-SoftAP-dummy.m in Sources */,
-				AAAAE6C82B7F8AFF000BB569 /* NSURLSessionPinningDelegate.swift in Sources */,
-				DA83BE8C1DBC99ADB1E1FC5B3C32E06F /* ProvisionManager.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		620F012BA4BF18CB23A5F38ECD077FB6 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				2B908D8AFACBE85733A9DAF05878E7F6 /* Pods-nRF-Wi-Fi-Provisioner (iOS)-dummy.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		97F97FCFB2532C8CFDFCB59DCBD20CB3 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
+				5A476AD79E071B69BDD61A2368178753 /* NordicWiFiProvisioner-SoftAP-dummy.m in Sources */,
+				8C103AD7681CADD47164B7697A8156C5 /* NSURLSessionPinningDelegate.swift in Sources */,
+				25F4B99910A201D6BE6996BFA88A896B /* ProvisionManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1305,6 +1286,14 @@
 				8CD37884F9F154505E75C1246AB0306C /* CBMPeripheralSpecDelegate.swift in Sources */,
 				0E3A9E9943DDE846140819D3C9F6E1AE /* CoreBluetoothMock-dummy.m in Sources */,
 				31912A4803D961135328E736D9561CF5 /* Documentation.docc in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A15A267C319A461A4B6F7E5929DBF285 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2598FAE4CC5336DE2D53E86CC2DC3F68 /* Pods-nRF-Wi-Fi-Provisioner (iOS)-dummy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1409,6 +1398,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		A809A167A57FCF8E959DD8C2D32E2CBE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B006E76EABF2BEF9D70A883B4010F25E /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1463,65 +1459,59 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		03DD18CFF32E4A3BE641A6054119C570 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "NordicWiFiProvisioner-SoftAP";
+			target = EC73AA0D20AF4E22CB90440C0A56D199 /* NordicWiFiProvisioner-SoftAP */;
+			targetProxy = 805DCBBE09702E1814105F53A3BBF5A3 /* PBXContainerItemProxy */;
+		};
 		1124E8D66C72342FD890F3123A79A43C /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = SwiftProtobuf;
 			target = A5F702E0DA383BC1479572581615A916 /* SwiftProtobuf */;
 			targetProxy = F4FDD76011193EF97864E3DE65E78759 /* PBXContainerItemProxy */;
 		};
-		2F7CD4FE21F9C29AF2B795254C7FA7C7 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = CoreBluetoothMock;
-			target = 5647B3702CC9BCAD6F81C5D3E7417452 /* CoreBluetoothMock */;
-			targetProxy = C40CA34331E48B6BBC800F9C48DE76FC /* PBXContainerItemProxy */;
-		};
-		300CF7308804B8B5575BCF317878F5BA /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = SwiftProtobuf;
-			target = A5F702E0DA383BC1479572581615A916 /* SwiftProtobuf */;
-			targetProxy = 20D916EB2F246F2D8ADC4BC281B244D8 /* PBXContainerItemProxy */;
-		};
-		33E92D89167B8D0EAB1E68A02CAF1058 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = CoreBluetoothMock;
-			target = 5647B3702CC9BCAD6F81C5D3E7417452 /* CoreBluetoothMock */;
-			targetProxy = 4164B69536334785151BD56D8505B45C /* PBXContainerItemProxy */;
-		};
-		3BC0133370EB96E0E4018BF49D961471 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "NordicWiFiProvisioner-BLE";
-			target = 7B6583C9B7B23D9A41EF671E154BEF8C /* NordicWiFiProvisioner-BLE */;
-			targetProxy = ABBE2F1E6ACADD306457D55EE0EFCF2D /* PBXContainerItemProxy */;
-		};
-		46B8D097A017031E07E748EDAD6F387D /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "NordicWiFiProvisioner-SoftAP";
-			target = EC73AA0D20AF4E22CB90440C0A56D199 /* NordicWiFiProvisioner-SoftAP */;
-			targetProxy = 16FD9272E30C6DFEB0B11B6A094598ED /* PBXContainerItemProxy */;
-		};
-		4DF9D13F911C516F736B61E495E28AC4 /* PBXTargetDependency */ = {
+		2D9AD6500D7DF0895D8E5B8DA6A210B4 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "NordicWiFiProvisioner-SoftAP-Res";
 			target = 45C91BEA8F6BAAE68C09619F6D4099E8 /* NordicWiFiProvisioner-SoftAP-Res */;
-			targetProxy = E30C5B9CAD7CA14FAEF05B8E3049A2BB /* PBXContainerItemProxy */;
+			targetProxy = 8CCBAAFC68A194FD7A35FEE192A057C6 /* PBXContainerItemProxy */;
 		};
-		5F21D984AB6CC7B1390DC41E987F742A /* PBXTargetDependency */ = {
+		32E8D84F50356889913BDC19DF0E1A9A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = SwiftProtobuf;
 			target = A5F702E0DA383BC1479572581615A916 /* SwiftProtobuf */;
-			targetProxy = 37B125DEB3ECB5035019F5F650C505BE /* PBXContainerItemProxy */;
+			targetProxy = DEA3D6598E85373FF097496D1A5FA69D /* PBXContainerItemProxy */;
 		};
-		669CD4B838F92F01D36FB4C92461ED7B /* PBXTargetDependency */ = {
+		6D167B4DC736432D5CD05CFDD3E84057 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			name = "Pods-nRF-Wi-Fi-Provisioner (iOS)";
-			target = 6442945899E6FAA34E809DA2F6A1EA55 /* Pods-nRF-Wi-Fi-Provisioner (iOS) */;
-			targetProxy = 8ED6352D2C064E431BB8725165DEB0CD /* PBXContainerItemProxy */;
+			name = CoreBluetoothMock;
+			target = 5647B3702CC9BCAD6F81C5D3E7417452 /* CoreBluetoothMock */;
+			targetProxy = 6A481C52DAA403D81D8AE1095F2904C9 /* PBXContainerItemProxy */;
+		};
+		81B394F34C3C63AB2D9888EDAA1A0C5E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = SwiftProtobuf;
+			target = A5F702E0DA383BC1479572581615A916 /* SwiftProtobuf */;
+			targetProxy = 2B153817C49E70B5B36E04AB9FCF33A7 /* PBXContainerItemProxy */;
 		};
 		CAAA74100E94155D928C023D3060BF9B /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = CoreBluetoothMock;
 			target = 5647B3702CC9BCAD6F81C5D3E7417452 /* CoreBluetoothMock */;
 			targetProxy = D2D6A7E2FB289EA336D1EB9EB6580409 /* PBXContainerItemProxy */;
+		};
+		EFC72AE0F660309C3D4F81371CB291B0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Pods-nRF-Wi-Fi-Provisioner (iOS)";
+			target = 6442945899E6FAA34E809DA2F6A1EA55 /* Pods-nRF-Wi-Fi-Provisioner (iOS) */;
+			targetProxy = 806EF2BA5701A1E397DC586966A62F8F /* PBXContainerItemProxy */;
+		};
+		FA534811B8C85847AF9C63908E01B7C9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "NordicWiFiProvisioner-BLE";
+			target = 7B6583C9B7B23D9A41EF671E154BEF8C /* NordicWiFiProvisioner-BLE */;
+			targetProxy = 005DC1143B2C3BE7AC06FA0AF334F064 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1563,7 +1553,24 @@
 			};
 			name = Debug;
 		};
-		07960AA7D712CCEDA8E5F56B54C1104C /* Release */ = {
+		06999D866570528210E9A4CCFF970EDC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3AF894C38D31C65BBD7CBF3F7F8172A9 /* NordicWiFiProvisioner-SoftAP.debug.xcconfig */;
+			buildSettings = {
+				CODE_SIGNING_ALLOWED = NO;
+				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/NordicWiFiProvisioner-SoftAP";
+				IBSC_MODULE = NordicWiFiProvisioner_SoftAP;
+				INFOPLIST_FILE = "Target Support Files/NordicWiFiProvisioner-SoftAP/ResourceBundle-Res-NordicWiFiProvisioner-SoftAP-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				PRODUCT_NAME = Res;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				WRAPPER_EXTENSION = bundle;
+			};
+			name = Debug;
+		};
+		0F90E7BACD52421EF5641386EBB40D09 /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 668DFCB563766360A2DF9FDE93A5EFFA /* Pods-nRF-Wi-Fi-Provisioner (iOS).release.xcconfig */;
 			buildSettings = {
@@ -1594,42 +1601,6 @@
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Release;
-		};
-		0A572B45D6BF46CAC75A4445360A8002 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0DB932066F5C57F965F4B172B78ED823 /* NordicWiFiProvisioner-SoftAP.release.xcconfig */;
-			buildSettings = {
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				GCC_PREFIX_HEADER = "Target Support Files/NordicWiFiProvisioner-SoftAP/NordicWiFiProvisioner-SoftAP-prefix.pch";
-				INFOPLIST_FILE = "Target Support Files/NordicWiFiProvisioner-SoftAP/NordicWiFiProvisioner-SoftAP-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MODULEMAP_FILE = "Target Support Files/NordicWiFiProvisioner-SoftAP/NordicWiFiProvisioner-SoftAP.modulemap";
-				PRODUCT_MODULE_NAME = NordicWiFiProvisioner_SoftAP;
-				PRODUCT_NAME = NordicWiFiProvisioner_SoftAP;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_VERSION = 5.6;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -1672,6 +1643,43 @@
 			};
 			name = Debug;
 		};
+		1D7906AD68041FAEC293FAC6951B51A8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 17D587D523407072619A9DA51C716FCB /* Pods-nRF-Wi-Fi-Provisioner (iOS).debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "Target Support Files/Pods-nRF-Wi-Fi-Provisioner (iOS)/Pods-nRF-Wi-Fi-Provisioner (iOS)-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-nRF-Wi-Fi-Provisioner (iOS)/Pods-nRF-Wi-Fi-Provisioner (iOS).modulemap";
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
 		47D584238596EE026D708BE789305D54 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 16CD4A39C803A33CCC992CC7C4ED3749 /* CoreBluetoothMock.debug.xcconfig */;
@@ -1697,41 +1705,6 @@
 				MODULEMAP_FILE = "Target Support Files/CoreBluetoothMock/CoreBluetoothMock.modulemap";
 				PRODUCT_MODULE_NAME = CoreBluetoothMock;
 				PRODUCT_NAME = CoreBluetoothMock;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_VERSION = 5.6;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Debug;
-		};
-		57D0735292FD1CCA2A41F66F38690C70 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 157CE94DB6EC86EB381CBF54E5AF1CCA /* NordicWiFiProvisioner-SoftAP.debug.xcconfig */;
-			buildSettings = {
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				GCC_PREFIX_HEADER = "Target Support Files/NordicWiFiProvisioner-SoftAP/NordicWiFiProvisioner-SoftAP-prefix.pch";
-				INFOPLIST_FILE = "Target Support Files/NordicWiFiProvisioner-SoftAP/NordicWiFiProvisioner-SoftAP-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MODULEMAP_FILE = "Target Support Files/NordicWiFiProvisioner-SoftAP/NordicWiFiProvisioner-SoftAP.modulemap";
-				PRODUCT_MODULE_NAME = NordicWiFiProvisioner_SoftAP;
-				PRODUCT_NAME = NordicWiFiProvisioner_SoftAP;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
@@ -1940,20 +1913,39 @@
 			};
 			name = Release;
 		};
-		96ED5D38C415545B6AAD9DBEAFB919B9 /* Release */ = {
+		9D6E5627EA9FBCD84C3E7AC1682DCD55 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0DB932066F5C57F965F4B172B78ED823 /* NordicWiFiProvisioner-SoftAP.release.xcconfig */;
+			baseConfigurationReference = E8831523A4DFFDE15B83CA54E2E8BB30 /* NordicWiFiProvisioner-SoftAP.release.xcconfig */;
 			buildSettings = {
-				CODE_SIGNING_ALLOWED = NO;
-				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/NordicWiFiProvisioner-SoftAP";
-				IBSC_MODULE = NordicWiFiProvisioner_SoftAP;
-				INFOPLIST_FILE = "Target Support Files/NordicWiFiProvisioner-SoftAP/ResourceBundle-Res-NordicWiFiProvisioner-SoftAP-Info.plist";
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = "Target Support Files/NordicWiFiProvisioner-SoftAP/NordicWiFiProvisioner-SoftAP-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/NordicWiFiProvisioner-SoftAP/NordicWiFiProvisioner-SoftAP-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				PRODUCT_NAME = Res;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MODULEMAP_FILE = "Target Support Files/NordicWiFiProvisioner-SoftAP/NordicWiFiProvisioner-SoftAP.modulemap";
+				PRODUCT_MODULE_NAME = NordicWiFiProvisioner_SoftAP;
+				PRODUCT_NAME = NordicWiFiProvisioner_SoftAP;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_VERSION = 5.7;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				WRAPPER_EXTENSION = bundle;
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
 			};
 			name = Release;
 		};
@@ -2028,9 +2020,9 @@
 			};
 			name = Release;
 		};
-		E3F2597E04A94DBE40036C3080420FAC /* Debug */ = {
+		DC939BBE8500709B0B3F563197431583 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 157CE94DB6EC86EB381CBF54E5AF1CCA /* NordicWiFiProvisioner-SoftAP.debug.xcconfig */;
+			baseConfigurationReference = E8831523A4DFFDE15B83CA54E2E8BB30 /* NordicWiFiProvisioner-SoftAP.release.xcconfig */;
 			buildSettings = {
 				CODE_SIGNING_ALLOWED = NO;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/NordicWiFiProvisioner-SoftAP";
@@ -2042,6 +2034,41 @@
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = bundle;
+			};
+			name = Release;
+		};
+		EC5E6AAEC7864CE50145820306A9F6B2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3AF894C38D31C65BBD7CBF3F7F8172A9 /* NordicWiFiProvisioner-SoftAP.debug.xcconfig */;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = "Target Support Files/NordicWiFiProvisioner-SoftAP/NordicWiFiProvisioner-SoftAP-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/NordicWiFiProvisioner-SoftAP/NordicWiFiProvisioner-SoftAP-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MODULEMAP_FILE = "Target Support Files/NordicWiFiProvisioner-SoftAP/NordicWiFiProvisioner-SoftAP.modulemap";
+				PRODUCT_MODULE_NAME = NordicWiFiProvisioner_SoftAP;
+				PRODUCT_NAME = NordicWiFiProvisioner_SoftAP;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_VERSION = 5.7;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
 			};
 			name = Debug;
 		};
@@ -2083,43 +2110,6 @@
 			};
 			name = Release;
 		};
-		FFE03DBCEE8A40C4558E6387531391E8 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 17D587D523407072619A9DA51C716FCB /* Pods-nRF-Wi-Fi-Provisioner (iOS).debug.xcconfig */;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = "Target Support Files/Pods-nRF-Wi-Fi-Provisioner (iOS)/Pods-nRF-Wi-Fi-Provisioner (iOS)-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MACH_O_TYPE = staticlib;
-				MODULEMAP_FILE = "Target Support Files/Pods-nRF-Wi-Fi-Provisioner (iOS)/Pods-nRF-Wi-Fi-Provisioner (iOS).modulemap";
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Debug;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -2132,11 +2122,11 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		37A33F908498331BF12C95F285AE0E23 /* Build configuration list for PBXNativeTarget "Pods-nRF-Wi-Fi-Provisioner (iOS)" */ = {
+		304E53569A0EB9CF24B7D172BB0A80D0 /* Build configuration list for PBXNativeTarget "NordicWiFiProvisioner-SoftAP" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				FFE03DBCEE8A40C4558E6387531391E8 /* Debug */,
-				07960AA7D712CCEDA8E5F56B54C1104C /* Release */,
+				EC5E6AAEC7864CE50145820306A9F6B2 /* Debug */,
+				9D6E5627EA9FBCD84C3E7AC1682DCD55 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -2159,20 +2149,11 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		7631AE165D9936A3485EA82C2A6C32BB /* Build configuration list for PBXNativeTarget "NordicWiFiProvisioner-SoftAP-Res" */ = {
+		CC3DE684847528B510AD7B458E793CEF /* Build configuration list for PBXNativeTarget "Pods-nRF-Wi-Fi-Provisioner (iOS)" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				E3F2597E04A94DBE40036C3080420FAC /* Debug */,
-				96ED5D38C415545B6AAD9DBEAFB919B9 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		C1B730D72B72A883A340D01ED44BCE90 /* Build configuration list for PBXNativeTarget "NordicWiFiProvisioner-SoftAP" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				57D0735292FD1CCA2A41F66F38690C70 /* Debug */,
-				0A572B45D6BF46CAC75A4445360A8002 /* Release */,
+				1D7906AD68041FAEC293FAC6951B51A8 /* Debug */,
+				0F90E7BACD52421EF5641386EBB40D09 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -2182,6 +2163,15 @@
 			buildConfigurations = (
 				47D584238596EE026D708BE789305D54 /* Debug */,
 				BE913373DE8BB0FF7104349909720C3C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F79CFD5DB8E66D1E66AC6D2858BCAD8B /* Build configuration list for PBXNativeTarget "NordicWiFiProvisioner-SoftAP-Res" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				06999D866570528210E9A4CCFF970EDC /* Debug */,
+				DC939BBE8500709B0B3F563197431583 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

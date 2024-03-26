@@ -9,7 +9,8 @@
     "file": "LICENSE"
   },
   "authors": {
-    "Nick Kibish": "nick.kibysh@nordicsemi.no"
+    "Nick Kibish": "nick.kibysh@nordicsemi.no",
+    "Dinesh Harjani": "dinesh.harjani@nordicsemi.no"
   },
   "source": {
     "git": "https://github.com/NordicSemiconductor/IOS-nRF-Wi-Fi-Provisioner.git",
@@ -25,7 +26,8 @@
     "5.3",
     "5.4",
     "5.5",
-    "5.6"
+    "5.6",
+    "5.7"
   ],
   "source_files": "Sources/NordicWiFiProvisioner-SoftAP/**/*.swift",
   "resource_bundles": {
@@ -33,14 +35,10 @@
       "Sources/NordicWiFiProvisioner-SoftAP/cert/*.cer"
     ]
   },
-  "frameworks": "CoreBluetooth",
   "dependencies": {
     "SwiftProtobuf": [
 
-    ],
-    "CoreBluetoothMock": [
-
     ]
   },
-  "swift_version": "5.6"
+  "swift_version": "5.7"
 }
