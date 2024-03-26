@@ -16,15 +16,6 @@ private extension URL {
     
     static let ssid = URL(string: "\(endpointStr)/prov/networks")!
     static let prov = URL(string: "\(endpointStr)/prov/configure")!
-    
-    static func led(_ ledNumber: Int) -> URL {
-        let url = URL(string: "\(endpointStr)/led/")!
-        if #available(iOS 16, *) {
-            return url.appending(component: "\(ledNumber)")
-        } else {
-            return url.appendingPathComponent("\(ledNumber)")
-        }
-    }
 }
 
 open class ProvisionManager {
