@@ -70,42 +70,42 @@ open class ProvisionManager {
         let configuration = NEHotspotConfiguration(ssid: apSSID)
         try await switchWiFiEndpoint(using: manager, with: configuration)
         
-        let parameters = NWParameters()
-        parameters.allowLocalEndpointReuse = true
-        parameters.acceptLocalOnly = true
-        parameters.allowFastOpen = true
-        
-        let browser = NWBrowser(for: .bonjour(type: "_http._tcp.", domain: "local"), using: parameters)
-        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
-            browser.stateUpdateHandler = { newState in
-                switch newState {
-                case .setup:
-                    print("Setting up connection")
-                case .ready:
-                    print("Ready?")
-                case .failed(let error):
-                    print(error.localizedDescription)
-                    continuation.resume(throwing: error)
-                case .cancelled:
-                    print("Stopped / Cancelled")
-                case .waiting(let nwError):
-                    print("Waiting for \(nwError.localizedDescription)?")
-                default:
-                    break
-                }
-            }
-            
-            browser.browseResultsChangedHandler = { results, changes in
-                guard let endpoint = results.first?.endpoint else {
-                    continuation.resume(throwing: ProvisionError.badResponse)
-                    return
-                }
-                print(endpoint)
-                continuation.resume()
-            }
-            browser.start(queue: .main)
-        }
-        browser.cancel()
+//        let parameters = NWParameters()
+//        parameters.allowLocalEndpointReuse = true
+//        parameters.acceptLocalOnly = true
+//        parameters.allowFastOpen = true
+//        
+//        let browser = NWBrowser(for: .bonjour(type: "_http._tcp.", domain: "local"), using: parameters)
+//        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
+//            browser.stateUpdateHandler = { newState in
+//                switch newState {
+//                case .setup:
+//                    print("Setting up connection")
+//                case .ready:
+//                    print("Ready?")
+//                case .failed(let error):
+//                    print(error.localizedDescription)
+//                    continuation.resume(throwing: error)
+//                case .cancelled:
+//                    print("Stopped / Cancelled")
+//                case .waiting(let nwError):
+//                    print("Waiting for \(nwError.localizedDescription)?")
+//                default:
+//                    break
+//                }
+//            }
+//            
+//            browser.browseResultsChangedHandler = { results, changes in
+//                guard let endpoint = results.first?.endpoint else {
+//                    continuation.resume(throwing: ProvisionError.badResponse)
+//                    return
+//                }
+//                print(endpoint)
+//                continuation.resume()
+//            }
+//            browser.start(queue: .main)
+//        }
+//        browser.cancel()
     }
     
     private func switchWiFiEndpoint(using manager: NEHotspotConfigurationManager,
