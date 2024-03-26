@@ -127,62 +127,6 @@ open class ProvisionManager {
         }
     }
     
-    open func ledStatus(ledNumber: Int) async throws -> Bool {
-        let session = URLSession(configuration: .default, delegate: NSURLSessionPinningDelegate.shared, delegateQueue: nil)
-        
-        do {
-            let response = try await session.data(from: .led(ledNumber))
-            guard let httpResponse = response.1 as? HTTPURLResponse else {
-                l.error("\(#line) Bad Response")
-                throw ProvisionError.badResponse
-            }
-            
-            guard httpResponse.statusCode < 400 else {
-                l.error("\(httpResponse.statusCode): \(String(data: response.0, encoding: .utf8) ?? "no data")")
-                throw HTTPError(code: httpResponse.statusCode, responseData: response.0)
-            }
-            
-            guard let responseText = String(data: response.0, encoding: .utf8)?.split(separator: "\r\n").last else {
-                l.error("no response body")
-                throw ProvisionError.badResponse
-            }
-            
-            switch responseText {
-            case "0":
-                return false
-            case "1":
-                return true
-            default:
-                l.error("unexpected response value")
-                throw ProvisionError.badResponse
-            }
-        } catch {
-            l.error("\(#line): \(error.localizedDescription)")
-            throw error
-        }
-    }
-    
-    open func setLED(ledNumber: Int, enabled: Bool) async throws {
-        var request = URLRequest(url: .led(ledNumber))
-        request.httpMethod = "PUT"
-        request.addValue("text/plain; charset=utf-8", forHTTPHeaderField: "Content-Type")
-        request.httpBody = "\(enabled ? 1 : 0)".data(using: .utf8, allowLossyConversion: true)
-        
-        let session = URLSession(configuration: .default, delegate: NSURLSessionPinningDelegate.shared, delegateQueue: nil)
-        do {
-            let response = try await session.data(for: request)
-            guard let urlResponse = (response.1 as? HTTPURLResponse) else {
-                throw ProvisionError.badResponse
-            }
-            
-            guard urlResponse.statusCode < 400 else {
-                throw HTTPError(code: urlResponse.statusCode, responseData: response.0)
-            }
-        } catch {
-            throw error
-        }
-    }
-    
     open func getSSIDs() async throws -> [ReportedSSID] {
         let session = URLSession(configuration: .default, delegate: NSURLSessionPinningDelegate.shared, delegateQueue: nil)
         

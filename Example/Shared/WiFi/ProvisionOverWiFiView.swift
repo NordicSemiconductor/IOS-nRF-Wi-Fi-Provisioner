@@ -42,31 +42,12 @@ struct ProvisionOverWiFiView: View {
                 }
             case .connected:
                 List(selection: $viewModel.selectedSSID) {
-                    Section("LED Testing") {
-                        AsyncButton {
-                            await viewModel.toggleLedStatus(ledNumber: 1)
-                        } label: {
-                            Label("LED 1", systemImage: ledSystemImage(status: viewModel.led1Status))
-                        }
-                        .disabled(viewModel.led1Status.disabled)
-                        
-                        AsyncButton {
-                            await viewModel.toggleLedStatus(ledNumber: 2)
-                        } label: {
-                            Label("LED 2", systemImage: ledSystemImage(status: viewModel.led2Status))
-                        }
-                        .disabled(viewModel.led2Status.disabled)
-                    }
-                    
                     ssidSection()
                     
                     Section("Password") {
                         SecureField("Type Password Here", text: $viewModel.ssidPassword)
                         provisionButton()
                     }
-                }
-                .task {
-                    await viewModel.readLedStatus()
                 }
             case .provisioned:
                 NoContentView(title: "Provisioned", description: "Provisioning Completed", systemImage: "hand.thumbsup.fill") {
@@ -115,17 +96,6 @@ struct ProvisionOverWiFiView: View {
         })
         .disabled(viewModel.selectedSSID == nil)
         .buttonStyle(NordicButtonStyle())
-    }
-    
-    private func ledSystemImage(status: ViewModel.LedStatus) -> String {
-        switch status {
-        case .on:
-            return "lightbulb.fill"
-        case .off:
-            return "lightbulb"
-        default:
-            return "lightbulb.slash"
-        }
     }
 }
 
