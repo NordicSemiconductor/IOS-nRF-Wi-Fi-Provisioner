@@ -15,7 +15,7 @@ struct SelectorView: View {
     
     var body: some View {
         List {
-            Section {
+            Section("Provisioning Modes") {
                 NavigationLink {
                     ScannerView(viewModel: ScannerViewModel())
                 } label: {
@@ -41,10 +41,7 @@ struct SelectorView: View {
                 .font(.caption)
             }
             
-            Section {
-                Text("What is nRF Wi-Fi Provisioner For?")
-                    .font(.title3)
-                
+            Section("About") {
                 Text("""
                 nRF Wi-Fi Provisioner Is Designed To Work With nRF700x DKs, or nRF700x-Powered Devices That Are Running Firmware Capable of Being Provisioned. This App, via a Provisioning Process, Configures nRF700x With the Necessary Credentials To Access the Internet Though the Wireless Network Interface of Your Choice.
                 """)
@@ -52,6 +49,5 @@ struct SelectorView: View {
             }
             .listRowBackground(Color.clear)
         }
-        .padding(.top, 16)
     }
 }
