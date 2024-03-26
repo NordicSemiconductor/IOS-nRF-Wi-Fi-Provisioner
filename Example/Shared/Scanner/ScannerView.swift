@@ -9,66 +9,73 @@ import NordicStyle
 import SwiftUI
 import CoreBluetoothMock
 
+// MARK: - ScannerView
+
 struct ScannerView: View {
+    
+    // MARK: Properties
+    
     @EnvironmentObject var vmFactory: DeviceViewModelFactory
     @StateObject var viewModel: ScannerViewModel
     
+    // MARK: View
+    
     var body: some View {
-            Group {
-                switch viewModel.state {
-                case .noPermission:
-                    Placeholder(
-                        text: "Bluetooth permission denied",
-                        message: "Please, enable Bluetooth in Settings",
-                        image: "bluetooth_disabled",
-                        action: {
-                            Button(action: {
-                                UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
-                            }) {
-                                Text("Open Settings")
-                            }
-                            .buttonStyle(NordicButtonStyle())
+        Group {
+            switch viewModel.state {
+            case .noPermission:
+                Placeholder(
+                    text: "Bluetooth permission denied",
+                    message: "Please, enable Bluetooth in Settings",
+                    image: "bluetooth_disabled",
+                    action: {
+                        Button(action: {
+                            UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
+                        }) {
+                            Text("Open Settings")
                         }
-                    )
-                    .padding()
-                case .scanning:
-                    if viewModel.scanResults.isEmpty {
-                        scanningPlaceholder
-                    } else {
-                        listView()
+                        .buttonStyle(NordicButtonStyle())
                     }
-                case .waiting:
+                )
+                .padding()
+            case .scanning:
+                if viewModel.scanResults.isEmpty {
                     scanningPlaceholder
-                case .turnedOff:
-                    Placeholder(
-                        text: "Bluetooth is turned off",
-                        message: "Please, enable Bluetooth in Settings",
-                        image: "bluetooth_disabled",
-                        action: {
-                            Button(action: {
-                                UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
-                            }) {
-                                Text("Open Settings")
-                            }
-                            .buttonStyle(NordicButtonStyle())
+                } else {
+                    listView()
+                }
+            case .waiting:
+                scanningPlaceholder
+            case .turnedOff:
+                Placeholder(
+                    text: "Bluetooth is turned off",
+                    message: "Please, enable Bluetooth in Settings",
+                    image: "bluetooth_disabled",
+                    action: {
+                        Button(action: {
+                            UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
+                        }) {
+                            Text("Open Settings")
                         }
-                    )
-                }
+                        .buttonStyle(NordicButtonStyle())
+                    }
+                )
             }
-            .navigationTitle("Scanner")
-            .toolbar {
-                // Filter Button
-                Button(action: {
-                    viewModel.onlyUnprovisioned.toggle()
-                }) {
-                    Image(systemName: viewModel.onlyUnprovisioned
-                          ? "line.3.horizontal.decrease.circle.fill"
-                          : "line.3.horizontal.decrease.circle")
-                }
+        }
+        .navigationTitle("Scanner")
+        .toolbar {
+            // Filter Button
+            Button(action: {
+                viewModel.onlyUnprovisioned.toggle()
+            }) {
+                Image(systemName: viewModel.onlyUnprovisioned
+                      ? "line.3.horizontal.decrease.circle.fill"
+                      : "line.3.horizontal.decrease.circle")
             }
-            .onAppear {
-                viewModel.startScan()
-            }
+        }
+        .onAppear {
+            viewModel.startScan()
+        }
     }
     
     @ViewBuilder
@@ -108,6 +115,8 @@ struct ScannerView: View {
         .listStyle(InsetGroupedListStyle())
     }
 }
+
+// MARK: - Preview
 
 #if DEBUG
 import NordicWiFiProvisioner_BLE
