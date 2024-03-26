@@ -9,6 +9,7 @@ import Foundation
 import Network
 import NetworkExtension
 import OSLog
+import SwiftProtobuf
 
 private extension URL {
     static let endpointStr = "https://192.0.2.1"
@@ -186,13 +187,12 @@ open class ProvisionManager {
         let session = URLSession(configuration: .default, delegate: NSURLSessionPinningDelegate.shared, delegateQueue: nil)
         
         let ssidsResponse = try await session.data(from: .ssid)
-        
         if let resp = ssidsResponse.1 as? HTTPURLResponse, resp.statusCode >= 400 {
             throw HTTPError(code: resp.statusCode, responseData: ssidsResponse.0)
         }
         
+        let result = try? ScanResults(serializedData: ssidsResponse.0)
         let strings = String(data: ssidsResponse.0, encoding: .utf8)
-        
         guard let splitContent = strings?.split(separator: "\r\n") else {
             throw ProvisionError.badResponse
         }
@@ -200,7 +200,6 @@ open class ProvisionManager {
         guard let ssid = splitContent.last?.split(separator: "\n") else {
             throw ProvisionError.badResponse
         }
-        
         return ssid.map { ReportedSSID(String($0)) }
     }
     
