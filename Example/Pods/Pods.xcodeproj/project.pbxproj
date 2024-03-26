@@ -81,7 +81,6 @@
 		69A75735ECE76A951D9A8F847B7346E1 /* TextFormatEncodingOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30DAE0394BA961030992989CF7FBD692 /* TextFormatEncodingOptions.swift */; };
 		7020B3BE501B2AF825DF6FB67563B3BF /* BinaryEncodingVisitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 177DCE219D896977D06B42E497D36877 /* BinaryEncodingVisitor.swift */; };
 		70E7E2134CDE576C2133F3794EF037C7 /* field_mask.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = 503844F17F408D818F3B8799975841FA /* field_mask.pb.swift */; };
-		719740107DA8ED6ED4381F6F9E47CD73 /* certificate.cer in Resources */ = {isa = PBXBuildFile; fileRef = 7125CDBA316B7E74319D79A20DD12375 /* certificate.cer */; };
 		71B92A537F554516AF1A965F4EE0571C /* BinaryDecodingError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 596042871A0CB1BA2475B6C4C52944B7 /* BinaryDecodingError.swift */; };
 		7528735A1D145A484A4C9F2C6E40063F /* Scanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2112F975EC4A9BB2D8F4EB81714DF18 /* Scanner.swift */; };
 		78C1D80067699A5555C5665A2887AAC4 /* HashVisitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF046237B0C52E0BE59978EA452CB5F1 /* HashVisitor.swift */; };
@@ -113,6 +112,7 @@
 		A6BAA8EBC821FEFC41AA66783B3F305D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7566FCDAC605EB3D2581B3964A2F6ACB /* Foundation.framework */; };
 		A7B2544F5EE962321E6CA43CBD24DEB9 /* response.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = 958DE470A15C6D9BA093632A6C89588C /* response.pb.swift */; };
 		A94C92A1FECC4AAEC6DB45CC349A9F4F /* TextFormatDecodingError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C72E5E47AFA1020162951E3C42D2D2A /* TextFormatDecodingError.swift */; };
+		AA43D0722BB2DFD500AE1728 /* certificate.cer in Resources */ = {isa = PBXBuildFile; fileRef = AA43D0712BB2DFD500AE1728 /* certificate.cer */; };
 		AAAAE6C82B7F8AFF000BB569 /* NSURLSessionPinningDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAAAE6C72B7F8AFF000BB569 /* NSURLSessionPinningDelegate.swift */; };
 		ADB6F9AAA157D4300FD5E9BF5BB53DD5 /* SelectiveVisitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47660021517A9BA9E9841836368EC3D8 /* SelectiveVisitor.swift */; };
 		ADF218A8E880E18AECE9BF80404FCBE8 /* Internal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02902B93EA4E541397C92FB445D0A7C5 /* Internal.swift */; };
@@ -342,7 +342,6 @@
 		709EEB7C33B2C3584D7CD721B9558109 /* Pods-Tests iOS-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-Tests iOS-acknowledgements.markdown"; sourceTree = "<group>"; };
 		70DB84C44110DEE2807C97C5A12DB646 /* BinaryEncodingSizeVisitor.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BinaryEncodingSizeVisitor.swift; path = Sources/SwiftProtobuf/BinaryEncodingSizeVisitor.swift; sourceTree = "<group>"; };
 		7101D7D5705CBBBC4652D03D01059095 /* NordicWiFiProvisioner-SoftAP-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "NordicWiFiProvisioner-SoftAP-prefix.pch"; sourceTree = "<group>"; };
-		7125CDBA316B7E74319D79A20DD12375 /* certificate.cer */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file; name = certificate.cer; path = "Sources/NordicWiFiProvisioner-SoftAP/cert/certificate.cer"; sourceTree = "<group>"; };
 		71CF74E584B7C941642D4B0ABE1F590F /* TextFormatDecoder.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TextFormatDecoder.swift; path = Sources/SwiftProtobuf/TextFormatDecoder.swift; sourceTree = "<group>"; };
 		723F89A9184E164146EB22306AF4D4AF /* Message+JSONAdditions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "Message+JSONAdditions.swift"; path = "Sources/SwiftProtobuf/Message+JSONAdditions.swift"; sourceTree = "<group>"; };
 		725D464B589B7D37FB80200706349D64 /* AnyMessageStorage.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AnyMessageStorage.swift; path = Sources/SwiftProtobuf/AnyMessageStorage.swift; sourceTree = "<group>"; };
@@ -385,6 +384,7 @@
 		A3CAEFE53713F67CD2164A91B0C1ED1A /* NordicWiFiProvisioner-BLE.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "NordicWiFiProvisioner-BLE.modulemap"; sourceTree = "<group>"; };
 		A3EA1B2E97C6802E2A46F66C31C8D1CA /* CoreBluetoothMock-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "CoreBluetoothMock-dummy.m"; sourceTree = "<group>"; };
 		A63D6E85F7B45824867202807669D512 /* SwiftProtobuf-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "SwiftProtobuf-dummy.m"; sourceTree = "<group>"; };
+		AA43D0712BB2DFD500AE1728 /* certificate.cer */ = {isa = PBXFileReference; lastKnownFileType = file; name = certificate.cer; path = ../../../Desktop/certificate.cer; sourceTree = "<group>"; };
 		AAAAE6C72B7F8AFF000BB569 /* NSURLSessionPinningDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = NSURLSessionPinningDelegate.swift; path = "Sources/NordicWiFiProvisioner-SoftAP/NSURLSessionPinningDelegate.swift"; sourceTree = "<group>"; };
 		AD5AD14792E444A48771F9B127D669E3 /* NordicWiFiProvisioner-BLE-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "NordicWiFiProvisioner-BLE-prefix.pch"; sourceTree = "<group>"; };
 		AD681C7CD7F03D652B36FA08CD8CAB6D /* BluetoothConnectionInfo.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BluetoothConnectionInfo.swift; sourceTree = "<group>"; };
@@ -629,7 +629,7 @@
 			children = (
 				E0AFE30A34A3FBCAC622361E0B2C6487 /* ProvisionManager.swift */,
 				AAAAE6C72B7F8AFF000BB569 /* NSURLSessionPinningDelegate.swift */,
-				7125CDBA316B7E74319D79A20DD12375 /* certificate.cer */,
+				AA43D0712BB2DFD500AE1728 /* certificate.cer */,
 				B5513679055B10EDB0EBA5C8A8C144DE /* Pod */,
 				B3B3E1C760AC0F96F679A5CA0E5CD726 /* Support Files */,
 			);
@@ -1252,7 +1252,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				719740107DA8ED6ED4381F6F9E47CD73 /* certificate.cer in Resources */,
+				AA43D0722BB2DFD500AE1728 /* certificate.cer in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
