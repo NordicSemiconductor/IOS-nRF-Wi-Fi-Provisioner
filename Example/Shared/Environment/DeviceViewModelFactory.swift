@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-class DeviceViewModelFactory: ObservableObject {
+final class DeviceViewModelFactory: ObservableObject {
     private var viewModels: [String:DeviceView.ViewModel] = [:]
     
     func viewModel(for peripheralId: String) -> DeviceView.ViewModel {

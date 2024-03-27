@@ -11,6 +11,10 @@ import SwiftUI
 
 struct SelectorView: View {
     
+    // MARK: Properties
+    
+    @EnvironmentObject var vmFactory: DeviceViewModelFactory
+    
     // MARK: View
     
     var body: some View {
@@ -18,6 +22,7 @@ struct SelectorView: View {
             Section("Provisioning Modes") {
                 NavigationLink {
                     ScannerView(viewModel: ScannerViewModel())
+                        .environmentObject(vmFactory)
                 } label: {
                     Label("Provision Over BLE", image: "bluetooth")
                 }
