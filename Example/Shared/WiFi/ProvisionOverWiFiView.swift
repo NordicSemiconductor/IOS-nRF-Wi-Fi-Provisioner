@@ -41,7 +41,7 @@ struct ProvisionOverWiFiView: View {
                         .progressViewStyle(.circular)
                 }
             case .connected:
-                List(selection: $viewModel.selectedSSID) {
+                List(selection: $viewModel.selectedScan) {
                     ssidSection()
                     
                     Section("Password") {
@@ -67,16 +67,16 @@ struct ProvisionOverWiFiView: View {
     @ViewBuilder
     private func ssidSection() -> some View {
         Section("SSID") {
-            ForEach(viewModel.ssids) { ssid in
+            ForEach(viewModel.scans) { scan in
                 HStack {
-                    Text(ssid.ssid)
+                    Text(scan.ssid)
                     Spacer()
-                    if ssid == viewModel.selectedSSID {
+                    if scan == viewModel.selectedScan {
                         Image(systemName: "checkmark")
                     }
                 }
                 .onTapGesture {
-                    viewModel.selectedSSID = ssid
+                    viewModel.selectedScan = scan
                 }
             }
             
@@ -94,7 +94,7 @@ struct ProvisionOverWiFiView: View {
         }, label: {
             Text("Start Provisioning")
         })
-        .disabled(viewModel.selectedSSID == nil)
+        .disabled(viewModel.selectedScan == nil)
         .buttonStyle(NordicButtonStyle())
     }
 }

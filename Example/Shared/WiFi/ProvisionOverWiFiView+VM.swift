@@ -22,8 +22,8 @@ extension ProvisionOverWiFiView {
         
         @Published private (set) var status = Status.notConnected
         private var manager = ProvisionManager()
-        @Published private (set) var ssids: [ReportedSSID] = []
-        @Published var selectedSSID: ReportedSSID?
+        @Published private (set) var scans: [APWiFiScan] = []
+        @Published var selectedScan: APWiFiScan?
         @Published var ssidPassword: String = ""
         
         @Published private (set) var alertError: TitleMessageError? = nil
@@ -48,7 +48,7 @@ extension ProvisionOverWiFiView.ViewModel {
     
     func getSSIDs() async {
         do {
-            ssids = try await manager.getSSIDs()
+            scans = try await manager.getSSIDs()
         } catch {
             alertError = TitleMessageError(title: "Can't scan for wifi networks", error: error)
             showAlert = true
@@ -59,7 +59,7 @@ extension ProvisionOverWiFiView.ViewModel {
     
     func provision() async {
         do {
-            guard let ssid = selectedSSID?.ssid else {
+            guard let ssid = selectedScan?.ssid else {
                 throw TitleMessageError(message: "SSID is not selected")
             }
             

@@ -118,7 +118,7 @@ open class ProvisionManager {
         }
     }
     
-    open func getSSIDs() async throws -> [ReportedSSID] {
+    open func getSSIDs() async throws -> [APWiFiScan] {
         let session = URLSession(configuration: .default, delegate: NSURLSessionPinningDelegate.shared, delegateQueue: nil)
         
         let ssidsResponse = try await session.data(from: .ssid)
@@ -126,16 +126,10 @@ open class ProvisionManager {
             throw HTTPError(code: resp.statusCode, responseData: ssidsResponse.0)
         }
         
-        let result = try? ScanResults(serializedData: ssidsResponse.0)
-        let strings = String(data: ssidsResponse.0, encoding: .utf8)
-        guard let splitContent = strings?.split(separator: "\r\n") else {
+        guard let result = try? ScanResults(serializedData: ssidsResponse.0) else {
             throw ProvisionError.badResponse
         }
-        
-        guard let ssid = splitContent.last?.split(separator: "\n") else {
-            throw ProvisionError.badResponse
-        }
-        return ssid.map { ReportedSSID(String($0)) }
+        return result.results.map { APWiFiScan(scanResult: $0) }
     }
     
     open func provision(ssid: String, password: String?) async throws {
@@ -166,16 +160,6 @@ open class ProvisionManager {
         } catch {
             throw error
         }
-    }
-}
-
-public struct ReportedSSID: Identifiable, Hashable {
-    public var id: String { ssid }
-    
-    public var ssid: String
-    
-    init(_ ssid: String) {
-        self.ssid = ssid
     }
 }
 
