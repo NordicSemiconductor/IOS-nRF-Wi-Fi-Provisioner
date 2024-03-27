@@ -44,8 +44,6 @@
 		01922CBE28A2713100492E87 /* NavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01922CBC28A2713100492E87 /* NavigationView.swift */; };
 		01922CC028A2A48300492E87 /* Label+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01922CBF28A2A48300492E87 /* Label+Ext.swift */; };
 		01922CC128A2A48300492E87 /* Label+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01922CBF28A2A48300492E87 /* Label+Ext.swift */; };
-		019262E4288039F100A69D04 /* Counter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019262E3288039F100A69D04 /* Counter.swift */; };
-		019262E5288039F100A69D04 /* Counter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019262E3288039F100A69D04 /* Counter.swift */; };
 		01994A6E2B8521A900953465 /* AsyncButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01994A6D2B8521A900953465 /* AsyncButton.swift */; };
 		01994A6F2B8521A900953465 /* AsyncButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01994A6D2B8521A900953465 /* AsyncButton.swift */; };
 		01994A742B852F7800953465 /* ProvisionOverWiFiView+VM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01994A732B852F7800953465 /* ProvisionOverWiFiView+VM.swift */; };
@@ -166,7 +164,6 @@
 		018F20C92B8772CD00D5A351 /* NoContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoContentView.swift; sourceTree = "<group>"; };
 		01922CBC28A2713100492E87 /* NavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationView.swift; sourceTree = "<group>"; };
 		01922CBF28A2A48300492E87 /* Label+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Label+Ext.swift"; sourceTree = "<group>"; };
-		019262E3288039F100A69D04 /* Counter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Counter.swift; sourceTree = "<group>"; };
 		01994A6D2B8521A900953465 /* AsyncButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncButton.swift; sourceTree = "<group>"; };
 		01994A732B852F7800953465 /* ProvisionOverWiFiView+VM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProvisionOverWiFiView+VM.swift"; sourceTree = "<group>"; };
 		019A5D8D286C77CE002D03F0 /* NordicStyle */ = {isa = PBXFileReference; lastKnownFileType = text; path = NordicStyle; sourceTree = SOURCE_ROOT; };
@@ -471,7 +468,6 @@
 				01682618287F16B20040C97E /* Extensions */,
 				011A2611287CAF780004A5C4 /* Bluetooth */,
 				01D26B59286DAE7000FD069D /* Localization */,
-				019262E3288039F100A69D04 /* Counter.swift */,
 				01FA5911288713860008AF88 /* ReadableError.swift */,
 				33976DF4DDFF808ED30D6140 /* CoreBluetoothTypeAliases.swift */,
 				AAAAE6C42B7F813D000BB569 /* AppViewModel.swift */,
@@ -854,7 +850,6 @@
 				019D1D2E29128E96000D8BD4 /* AuthMode+Ext.swift in Sources */,
 				0183EFCD2897C446002E79A5 /* ReversedLabel.swift in Sources */,
 				018F20CA2B8772CD00D5A351 /* NoContentView.swift in Sources */,
-				019262E4288039F100A69D04 /* Counter.swift in Sources */,
 				019D1D3129128F3E000D8BD4 /* ConnectionState+Ext.swift in Sources */,
 				01FCADBD291D482B0044904B /* DeviceStatusSection.swift in Sources */,
 				01A9468E28EAF9D600F40D1D /* Set+Ext.swift in Sources */,
@@ -908,7 +903,6 @@
 				015845CD288FD5A900C7E4B7 /* AccessPointList.swift in Sources */,
 				019D1D2F29128E96000D8BD4 /* AuthMode+Ext.swift in Sources */,
 				0183EFCE2897C446002E79A5 /* ReversedLabel.swift in Sources */,
-				019262E5288039F100A69D04 /* Counter.swift in Sources */,
 				019D1D3229128F3E000D8BD4 /* ConnectionState+Ext.swift in Sources */,
 				01A9468F28EAF9D600F40D1D /* Set+Ext.swift in Sources */,
 				01A0C29628896343000AA135 /* DeviceViewModelFactory.swift in Sources */,
