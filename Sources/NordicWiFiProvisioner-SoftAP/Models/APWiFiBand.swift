@@ -14,13 +14,12 @@ public enum APWiFiBand: Hashable, Equatable, CustomStringConvertible {
     case _5Ghz
     case _6Ghz
     case unknown
-    case unrecognised(value: Int)
     
     // MARK: Init
     
     init(from scanResultBand: Band) {
         switch scanResultBand {
-        case .unspecified:
+        case .unspecified, .UNRECOGNIZED:
             self = .unknown
         case .band24Ghz:
             self = ._2_4Ghz
@@ -28,8 +27,6 @@ public enum APWiFiBand: Hashable, Equatable, CustomStringConvertible {
             self = ._5Ghz
         case .band6Ghz:
             self = ._6Ghz
-        case .UNRECOGNIZED(let value):
-            self = .unrecognised(value: value)
         }
     }
     
@@ -45,8 +42,6 @@ public enum APWiFiBand: Hashable, Equatable, CustomStringConvertible {
             return "6 Ghz"
         case .unknown:
             return "Unknown"
-        case .unrecognised(value: let value):
-            return "Unrecognised (\(value) Ghz?)"
         }
     }
 }
