@@ -75,8 +75,10 @@ struct ProvisionOverWiFiView: View {
         Section("SSID") {
             ForEach(viewModel.scans) { scan in
                 HStack {
-                    Text(scan.ssid)
+                    Text(scan.ssid) + Text(scan.band.description).font(.caption)
+                    
                     Spacer()
+                    
                     if scan == viewModel.selectedScan {
                         Image(systemName: "checkmark")
                     }

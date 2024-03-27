@@ -17,6 +17,7 @@ public struct APWiFiScan: Identifiable, Hashable {
     public let bssid: String
     public let channel: Int
     public let rssi: Int
+    public let band: APWiFiBand
     public var id: String { ssid }
     
     // MARK: Init
@@ -26,5 +27,6 @@ public struct APWiFiScan: Identifiable, Hashable {
         bssid = scanResult.bssid
         channel = Int(scanResult.channel)
         rssi = Int(scanResult.rssi)
+        band = APWiFiBand(from: scanResult.band)
     }
 }
