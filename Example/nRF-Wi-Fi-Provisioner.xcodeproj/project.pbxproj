@@ -70,8 +70,6 @@
 		01A9469328ECD20D00F40D1D /* SnapshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A9469228ECD20D00F40D1D /* SnapshotHelper.swift */; };
 		01C0F0FA287DE864008BBE46 /* ScannerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C0F0F9287DE864008BBE46 /* ScannerViewModel.swift */; };
 		01C0F0FB287DE864008BBE46 /* ScannerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C0F0F9287DE864008BBE46 /* ScannerViewModel.swift */; };
-		01C0F0FD287DE926008BBE46 /* ScanResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C0F0FC287DE926008BBE46 /* ScanResult.swift */; };
-		01C0F0FE287DE926008BBE46 /* ScanResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C0F0FC287DE926008BBE46 /* ScanResult.swift */; };
 		01C1BF6E28E70BB200FDD841 /* nRF_Wi_Fi_ProvisionerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C1BF6D28E70BB200FDD841 /* nRF_Wi_Fi_ProvisionerUITests.swift */; };
 		01D26B56286DA3D400FD069D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 01D26B55286DA3D400FD069D /* Localizable.strings */; };
 		01D26B57286DA3D400FD069D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 01D26B55286DA3D400FD069D /* Localizable.strings */; };
@@ -182,7 +180,6 @@
 		01A9468D28EAF9D600F40D1D /* Set+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Set+Ext.swift"; sourceTree = "<group>"; };
 		01A9469228ECD20D00F40D1D /* SnapshotHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SnapshotHelper.swift; path = fastlane/SnapshotHelper.swift; sourceTree = SOURCE_ROOT; };
 		01C0F0F9287DE864008BBE46 /* ScannerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerViewModel.swift; sourceTree = "<group>"; };
-		01C0F0FC287DE926008BBE46 /* ScanResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanResult.swift; sourceTree = "<group>"; };
 		01C1BF6B28E70BB200FDD841 /* nRF-Wi-Fi-ProvisionerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "nRF-Wi-Fi-ProvisionerUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		01C1BF6D28E70BB200FDD841 /* nRF_Wi_Fi_ProvisionerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = nRF_Wi_Fi_ProvisionerUITests.swift; sourceTree = "<group>"; };
 		01D26B55286DA3D400FD069D /* Localizable.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
@@ -453,7 +450,6 @@
 				019DCE272885A13300E16E9F /* AditionalViews */,
 				015D60A22875A1530048F065 /* ScannerView.swift */,
 				01C0F0F9287DE864008BBE46 /* ScannerViewModel.swift */,
-				01C0F0FC287DE926008BBE46 /* ScanResult.swift */,
 			);
 			path = Scanner;
 			sourceTree = "<group>";
@@ -850,7 +846,6 @@
 				019DCE25288553E700E16E9F /* CGRect+Ext.swift in Sources */,
 				019D1D342912C201000D8BD4 /* MACAddress+Ext.swift in Sources */,
 				01922CC028A2A48300492E87 /* Label+Ext.swift in Sources */,
-				01C0F0FD287DE926008BBE46 /* ScanResult.swift in Sources */,
 				01FCADC1291D4C9F0044904B /* AccessPointSection.swift in Sources */,
 				01FCADBF291D4AA00044904B /* StatusIndicatorView.swift in Sources */,
 				01481ABA2852093000925FAB /* nRF_Wi_Fi_ProvisionerApp.swift in Sources */,
@@ -908,7 +903,6 @@
 				019DCE26288553E700E16E9F /* CGRect+Ext.swift in Sources */,
 				019D1D352912C201000D8BD4 /* MACAddress+Ext.swift in Sources */,
 				01922CC128A2A48300492E87 /* Label+Ext.swift in Sources */,
-				01C0F0FE287DE926008BBE46 /* ScanResult.swift in Sources */,
 				01FCADC7292512EA0044904B /* Int+Ext.swift in Sources */,
 				01481ABB2852093000925FAB /* nRF_Wi_Fi_ProvisionerApp.swift in Sources */,
 				015845CD288FD5A900C7E4B7 /* AccessPointList.swift in Sources */,
