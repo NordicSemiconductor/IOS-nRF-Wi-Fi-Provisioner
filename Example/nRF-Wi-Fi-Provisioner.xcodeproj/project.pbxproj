@@ -32,8 +32,6 @@
 		015845CD288FD5A900C7E4B7 /* AccessPointList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 015845CB288FD5A900C7E4B7 /* AccessPointList.swift */; };
 		015D60A32875A1530048F065 /* ScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 015D60A22875A1530048F065 /* ScannerView.swift */; };
 		015D60A42875A1530048F065 /* ScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 015D60A22875A1530048F065 /* ScannerView.swift */; };
-		0168261A287F16CD0040C97E /* Array+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01682619287F16CD0040C97E /* Array+Ext.swift */; };
-		0168261B287F16CD0040C97E /* Array+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01682619287F16CD0040C97E /* Array+Ext.swift */; };
 		0183EFC92897C196002E79A5 /* Status.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0183EFC82897C196002E79A5 /* Status.swift */; };
 		0183EFCA2897C196002E79A5 /* Status.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0183EFC82897C196002E79A5 /* Status.swift */; };
 		0183EFCD2897C446002E79A5 /* ReversedLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0183EFCC2897C446002E79A5 /* ReversedLabel.swift */; };
@@ -42,8 +40,6 @@
 		018F20CB2B8772CD00D5A351 /* NoContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 018F20C92B8772CD00D5A351 /* NoContentView.swift */; };
 		01922CBD28A2713100492E87 /* NavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01922CBC28A2713100492E87 /* NavigationView.swift */; };
 		01922CBE28A2713100492E87 /* NavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01922CBC28A2713100492E87 /* NavigationView.swift */; };
-		01922CC028A2A48300492E87 /* Label+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01922CBF28A2A48300492E87 /* Label+Ext.swift */; };
-		01922CC128A2A48300492E87 /* Label+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01922CBF28A2A48300492E87 /* Label+Ext.swift */; };
 		01994A6E2B8521A900953465 /* AsyncButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01994A6D2B8521A900953465 /* AsyncButton.swift */; };
 		01994A6F2B8521A900953465 /* AsyncButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01994A6D2B8521A900953465 /* AsyncButton.swift */; };
 		01994A742B852F7800953465 /* ProvisionOverWiFiView+VM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01994A732B852F7800953465 /* ProvisionOverWiFiView+VM.swift */; };
@@ -54,8 +50,6 @@
 		019D1D3229128F3E000D8BD4 /* ConnectionState+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019D1D3029128F3E000D8BD4 /* ConnectionState+Ext.swift */; };
 		019D1D342912C201000D8BD4 /* MACAddress+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019D1D332912C201000D8BD4 /* MACAddress+Ext.swift */; };
 		019D1D352912C201000D8BD4 /* MACAddress+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019D1D332912C201000D8BD4 /* MACAddress+Ext.swift */; };
-		019DCE25288553E700E16E9F /* CGRect+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019DCE24288553E700E16E9F /* CGRect+Ext.swift */; };
-		019DCE26288553E700E16E9F /* CGRect+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019DCE24288553E700E16E9F /* CGRect+Ext.swift */; };
 		01A0C28B288853F2000AA135 /* NordicStyle in Frameworks */ = {isa = PBXBuildFile; productRef = 01A0C28A288853F2000AA135 /* NordicStyle */; };
 		01A0C29528896343000AA135 /* DeviceViewModelFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A0C29428896343000AA135 /* DeviceViewModelFactory.swift */; };
 		01A0C29628896343000AA135 /* DeviceViewModelFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A0C29428896343000AA135 /* DeviceViewModelFactory.swift */; };
@@ -63,8 +57,6 @@
 		01A43DEC2886FECB0025A5C4 /* DeviceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A43DEA2886FECB0025A5C4 /* DeviceView.swift */; };
 		01A43DEE2886FED80025A5C4 /* DeviceView+ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A43DED2886FED80025A5C4 /* DeviceView+ViewModel.swift */; };
 		01A43DEF2886FED80025A5C4 /* DeviceView+ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A43DED2886FED80025A5C4 /* DeviceView+ViewModel.swift */; };
-		01A9468E28EAF9D600F40D1D /* Set+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A9468D28EAF9D600F40D1D /* Set+Ext.swift */; };
-		01A9468F28EAF9D600F40D1D /* Set+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A9468D28EAF9D600F40D1D /* Set+Ext.swift */; };
 		01A9469328ECD20D00F40D1D /* SnapshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A9469228ECD20D00F40D1D /* SnapshotHelper.swift */; };
 		01C0F0FA287DE864008BBE46 /* ScannerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C0F0F9287DE864008BBE46 /* ScannerViewModel.swift */; };
 		01C0F0FB287DE864008BBE46 /* ScannerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C0F0F9287DE864008BBE46 /* ScannerViewModel.swift */; };
@@ -82,8 +74,6 @@
 		01FCADC1291D4C9F0044904B /* AccessPointSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01FCADC0291D4C9F0044904B /* AccessPointSection.swift */; };
 		01FCADC329218BE50044904B /* FirstAppear.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01FCADC229218BE50044904B /* FirstAppear.swift */; };
 		01FCADC429218BE50044904B /* FirstAppear.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01FCADC229218BE50044904B /* FirstAppear.swift */; };
-		01FCADC6292512EA0044904B /* Int+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01FCADC5292512EA0044904B /* Int+Ext.swift */; };
-		01FCADC7292512EA0044904B /* Int+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01FCADC5292512EA0044904B /* Int+Ext.swift */; };
 		01FCADC9292515A80044904B /* OptionalTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01FCADC8292515A80044904B /* OptionalTests.swift */; };
 		01FCADCC292571C30044904B /* Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01FCADCB292571C30044904B /* Mock.swift */; };
 		01FCADCD292571C30044904B /* Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01FCADCB292571C30044904B /* Mock.swift */; };
@@ -158,23 +148,19 @@
 		01481AB82852093000925FAB /* Tests_macOSLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests_macOSLaunchTests.swift; sourceTree = "<group>"; };
 		015845CB288FD5A900C7E4B7 /* AccessPointList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessPointList.swift; sourceTree = "<group>"; };
 		015D60A22875A1530048F065 /* ScannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerView.swift; sourceTree = "<group>"; };
-		01682619287F16CD0040C97E /* Array+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Ext.swift"; sourceTree = "<group>"; };
 		0183EFC82897C196002E79A5 /* Status.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Status.swift; sourceTree = "<group>"; };
 		0183EFCC2897C446002E79A5 /* ReversedLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReversedLabel.swift; sourceTree = "<group>"; };
 		018F20C92B8772CD00D5A351 /* NoContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoContentView.swift; sourceTree = "<group>"; };
 		01922CBC28A2713100492E87 /* NavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationView.swift; sourceTree = "<group>"; };
-		01922CBF28A2A48300492E87 /* Label+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Label+Ext.swift"; sourceTree = "<group>"; };
 		01994A6D2B8521A900953465 /* AsyncButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncButton.swift; sourceTree = "<group>"; };
 		01994A732B852F7800953465 /* ProvisionOverWiFiView+VM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProvisionOverWiFiView+VM.swift"; sourceTree = "<group>"; };
 		019A5D8D286C77CE002D03F0 /* NordicStyle */ = {isa = PBXFileReference; lastKnownFileType = text; path = NordicStyle; sourceTree = SOURCE_ROOT; };
 		019D1D2D29128E96000D8BD4 /* AuthMode+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AuthMode+Ext.swift"; sourceTree = "<group>"; };
 		019D1D3029128F3E000D8BD4 /* ConnectionState+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ConnectionState+Ext.swift"; sourceTree = "<group>"; };
 		019D1D332912C201000D8BD4 /* MACAddress+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MACAddress+Ext.swift"; sourceTree = "<group>"; };
-		019DCE24288553E700E16E9F /* CGRect+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGRect+Ext.swift"; sourceTree = "<group>"; };
 		01A0C29428896343000AA135 /* DeviceViewModelFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceViewModelFactory.swift; sourceTree = "<group>"; };
 		01A43DEA2886FECB0025A5C4 /* DeviceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceView.swift; sourceTree = "<group>"; };
 		01A43DED2886FED80025A5C4 /* DeviceView+ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DeviceView+ViewModel.swift"; sourceTree = "<group>"; };
-		01A9468D28EAF9D600F40D1D /* Set+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Set+Ext.swift"; sourceTree = "<group>"; };
 		01A9469228ECD20D00F40D1D /* SnapshotHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SnapshotHelper.swift; path = fastlane/SnapshotHelper.swift; sourceTree = SOURCE_ROOT; };
 		01C0F0F9287DE864008BBE46 /* ScannerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerViewModel.swift; sourceTree = "<group>"; };
 		01C1BF6B28E70BB200FDD841 /* nRF-Wi-Fi-ProvisionerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "nRF-Wi-Fi-ProvisionerUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -187,7 +173,6 @@
 		01FCADBE291D4AA00044904B /* StatusIndicatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusIndicatorView.swift; sourceTree = "<group>"; };
 		01FCADC0291D4C9F0044904B /* AccessPointSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessPointSection.swift; sourceTree = "<group>"; };
 		01FCADC229218BE50044904B /* FirstAppear.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstAppear.swift; sourceTree = "<group>"; };
-		01FCADC5292512EA0044904B /* Int+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+Ext.swift"; sourceTree = "<group>"; };
 		01FCADC8292515A80044904B /* OptionalTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionalTests.swift; sourceTree = "<group>"; };
 		01FCADCB292571C30044904B /* Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mock.swift; sourceTree = "<group>"; };
 		01FCADCE292577DB0044904B /* WiFiInfo+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WiFiInfo+Ext.swift"; sourceTree = "<group>"; };
@@ -358,12 +343,7 @@
 		01682618287F16B20040C97E /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				01682619287F16CD0040C97E /* Array+Ext.swift */,
-				01FCADC5292512EA0044904B /* Int+Ext.swift */,
-				019DCE24288553E700E16E9F /* CGRect+Ext.swift */,
-				01A9468D28EAF9D600F40D1D /* Set+Ext.swift */,
 				01FCADCE292577DB0044904B /* WiFiInfo+Ext.swift */,
-				01922CBF28A2A48300492E87 /* Label+Ext.swift */,
 				01062AD928B6592700BB41FD /* View+Mod.swift */,
 				012D6E032B8607B600474D6A /* OSLog+Ext.swift */,
 			);
@@ -839,9 +819,7 @@
 				0101F2E628DB212300AE80A9 /* ChannelPicker.swift in Sources */,
 				01A43DEB2886FECB0025A5C4 /* DeviceView.swift in Sources */,
 				015D60A32875A1530048F065 /* ScannerView.swift in Sources */,
-				019DCE25288553E700E16E9F /* CGRect+Ext.swift in Sources */,
 				019D1D342912C201000D8BD4 /* MACAddress+Ext.swift in Sources */,
-				01922CC028A2A48300492E87 /* Label+Ext.swift in Sources */,
 				01FCADC1291D4C9F0044904B /* AccessPointSection.swift in Sources */,
 				01FCADBF291D4AA00044904B /* StatusIndicatorView.swift in Sources */,
 				01481ABA2852093000925FAB /* nRF_Wi_Fi_ProvisionerApp.swift in Sources */,
@@ -852,13 +830,10 @@
 				018F20CA2B8772CD00D5A351 /* NoContentView.swift in Sources */,
 				019D1D3129128F3E000D8BD4 /* ConnectionState+Ext.swift in Sources */,
 				01FCADBD291D482B0044904B /* DeviceStatusSection.swift in Sources */,
-				01A9468E28EAF9D600F40D1D /* Set+Ext.swift in Sources */,
 				01FCADCC292571C30044904B /* Mock.swift in Sources */,
 				012D6E042B8607B600474D6A /* OSLog+Ext.swift in Sources */,
 				AA2C119B2B7A61EF003AF3E0 /* ProvisionOverWiFiView.swift in Sources */,
 				01A0C29528896343000AA135 /* DeviceViewModelFactory.swift in Sources */,
-				01FCADC6292512EA0044904B /* Int+Ext.swift in Sources */,
-				0168261A287F16CD0040C97E /* Array+Ext.swift in Sources */,
 				01FCADCF292577DB0044904B /* WiFiInfo+Ext.swift in Sources */,
 				01D26B5B286DAE9800FD069D /* LocalizationKey.swift in Sources */,
 				01994A6E2B8521A900953465 /* AsyncButton.swift in Sources */,
@@ -895,18 +870,13 @@
 				0101F2E728DB212300AE80A9 /* ChannelPicker.swift in Sources */,
 				01A43DEC2886FECB0025A5C4 /* DeviceView.swift in Sources */,
 				015D60A42875A1530048F065 /* ScannerView.swift in Sources */,
-				019DCE26288553E700E16E9F /* CGRect+Ext.swift in Sources */,
 				019D1D352912C201000D8BD4 /* MACAddress+Ext.swift in Sources */,
-				01922CC128A2A48300492E87 /* Label+Ext.swift in Sources */,
-				01FCADC7292512EA0044904B /* Int+Ext.swift in Sources */,
 				01481ABB2852093000925FAB /* nRF_Wi_Fi_ProvisionerApp.swift in Sources */,
 				015845CD288FD5A900C7E4B7 /* AccessPointList.swift in Sources */,
 				019D1D2F29128E96000D8BD4 /* AuthMode+Ext.swift in Sources */,
 				0183EFCE2897C446002E79A5 /* ReversedLabel.swift in Sources */,
 				019D1D3229128F3E000D8BD4 /* ConnectionState+Ext.swift in Sources */,
-				01A9468F28EAF9D600F40D1D /* Set+Ext.swift in Sources */,
 				01A0C29628896343000AA135 /* DeviceViewModelFactory.swift in Sources */,
-				0168261B287F16CD0040C97E /* Array+Ext.swift in Sources */,
 				01D26B5C286DAE9800FD069D /* LocalizationKey.swift in Sources */,
 				01FA5913288713860008AF88 /* ReadableError.swift in Sources */,
 				0107FEAB28F827A200693317 /* ScanResultRaw.swift in Sources */,
