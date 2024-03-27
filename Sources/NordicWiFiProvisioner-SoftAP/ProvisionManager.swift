@@ -118,7 +118,7 @@ open class ProvisionManager {
         }
     }
     
-    open func getSSIDs() async throws -> [APWiFiScan] {
+    open func getScans() async throws -> [APWiFiScan] {
         let session = URLSession(configuration: .default, delegate: NSURLSessionPinningDelegate.shared, delegateQueue: nil)
         
         let ssidsResponse = try await session.data(from: .ssid)

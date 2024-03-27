@@ -8,9 +8,15 @@
 import SwiftUI
 import NordicStyle
 
+// MARK: - ProvisionOverWiFiView
+
 struct ProvisionOverWiFiView: View {
     
+    // MARK: Properties
+    
     @StateObject var viewModel = ViewModel()
+    
+    // MARK: View
     
     var body: some View {
         VStack {
@@ -21,8 +27,7 @@ struct ProvisionOverWiFiView: View {
                         await viewModel.connect()
                     }
                 }
-                .foregroundStyle(.red
-                )
+                .foregroundStyle(.red)
             case .notConnected:
                 if case let .error(error) = viewModel.status {
                     Label("Error: \(error.localizedDescription)", systemImage: "xmark.octagon")
@@ -59,9 +64,10 @@ struct ProvisionOverWiFiView: View {
         }
         .navigationTitle("Provision over Wi-Fi")
         .alert(isPresented: $viewModel.showAlert, error: viewModel.alertError) {
-            Button("OK", role: .cancel) {  }
+            Button("OK", role: .cancel) { 
+                // No-op.
+            }
         }
-
     }
     
     @ViewBuilder
@@ -81,7 +87,7 @@ struct ProvisionOverWiFiView: View {
             }
             
             AsyncButton("Scan") {
-                await viewModel.getSSIDs()
+                await viewModel.getScans()
             }
             .frame(maxWidth: .infinity)
         }

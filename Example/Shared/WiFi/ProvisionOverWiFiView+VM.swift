@@ -46,9 +46,9 @@ extension ProvisionOverWiFiView.ViewModel {
         }
     }
     
-    func getSSIDs() async {
+    func getScans() async {
         do {
-            scans = try await manager.getSSIDs()
+            scans = try await manager.getScans()
         } catch {
             alertError = TitleMessageError(title: "Can't scan for wifi networks", error: error)
             showAlert = true
