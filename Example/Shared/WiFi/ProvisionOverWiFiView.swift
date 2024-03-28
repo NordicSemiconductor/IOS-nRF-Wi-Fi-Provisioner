@@ -74,18 +74,10 @@ struct ProvisionOverWiFiView: View {
     private func ssidSection() -> some View {
         Section("SSID") {
             ForEach(viewModel.scans) { scan in
-                HStack {
-                    Text(scan.ssid) + Text(scan.band.description).font(.caption)
-                    
-                    Spacer()
-                    
-                    if scan == viewModel.selectedScan {
-                        Image(systemName: "checkmark")
+                APWiFiScanView(scan: scan, selected: scan == viewModel.selectedScan)
+                    .onTapGesture {
+                        viewModel.selectedScan = scan
                     }
-                }
-                .onTapGesture {
-                    viewModel.selectedScan = scan
-                }
             }
             
             AsyncButton("Scan") {
