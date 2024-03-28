@@ -7,6 +7,7 @@
 
 import SwiftUI
 import NordicStyle
+import iOS_Common_Libraries
 
 // MARK: - ProvisionOverWiFiView
 
@@ -31,7 +32,7 @@ struct ProvisionOverWiFiView: View {
             case .notConnected:
                 if case let .error(error) = viewModel.status {
                     Label("Error: \(error.localizedDescription)", systemImage: "xmark.octagon")
-                        .foregroundStyle(.nordicRed)
+                        .foregroundStyle(Color.nordicRed)
                         .padding()
                 }
                 
