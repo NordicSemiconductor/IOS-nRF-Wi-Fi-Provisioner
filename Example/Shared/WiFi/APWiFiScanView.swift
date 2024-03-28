@@ -28,13 +28,18 @@ struct APWiFiScanView: View {
     // MARK: View
     
     var body: some View {
-        HStack {
+        HStack(alignment: .firstTextBaseline) {
             Image(systemName: scan.authentication == .open ? "lock.open" : "lock")
             
-            Text(scan.ssid)
-            
-            Text("(\(scan.band.description))")
-                .font(.caption)
+            VStack(alignment: .leading) {
+                Text(scan.ssid).bold() + Text("  ") + Text("(\(scan.band.description))").font(.caption)
+                
+                Text("Channel: \(scan.channel)")
+                    .font(.callout)
+                
+                Text("Security: \(scan.authentication.description)")
+                    .font(.callout)
+            }
             
             Spacer()
             

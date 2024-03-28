@@ -133,13 +133,7 @@ public class ProvisionManager {
             throw ProvisionError.badResponse
         }
         
-        let scanResults = result.results.map { APWiFiScan(scanResult: $0) }
-        var uniques = Set<String>()
-        return scanResults.filter {
-            guard !uniques.contains($0.id) else { return false }
-            uniques.insert($0.id)
-            return true
-        }
+        return result.results.map { APWiFiScan(scanResult: $0) }
     }
     
     open func provision(ssid: String, password: String?) async throws {
