@@ -1,6 +1,15 @@
 {
   "pins" : [
     {
+      "identity" : "ios-common-libraries",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/NordicPlayground/IOS-Common-Libraries",
+      "state" : {
+        "branch" : "main",
+        "revision" : "d08ff42522763c4726253a335f8cd0328587ef72"
+      }
+    },
+    {
       "identity" : "swift-cmark",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-cmark.git",

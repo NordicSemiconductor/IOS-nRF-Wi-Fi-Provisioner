@@ -99,6 +99,7 @@
 		AA2C11982B7A53F1003AF3E0 /* SelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2C11972B7A53F1003AF3E0 /* SelectorView.swift */; };
 		AA2C119B2B7A61EF003AF3E0 /* ProvisionOverWiFiView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2C119A2B7A61EF003AF3E0 /* ProvisionOverWiFiView.swift */; };
 		AA49E0562BB584B200CDD6FA /* APWiFiScanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA49E0552BB584B200CDD6FA /* APWiFiScanView.swift */; };
+		AA49E0592BB5A34100CDD6FA /* iOSCommonLibraries in Frameworks */ = {isa = PBXBuildFile; productRef = AA49E0582BB5A34100CDD6FA /* iOSCommonLibraries */; };
 		AAAAE6C52B7F813D000BB569 /* AppViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAAAE6C42B7F813D000BB569 /* AppViewModel.swift */; };
 		AAAAE6C62B7F813D000BB569 /* AppViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAAAE6C42B7F813D000BB569 /* AppViewModel.swift */; };
 		F3352A79C570A238BE14A103 /* Pods_Tests_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 812A6D15A792E144AE0603B4 /* Pods_Tests_iOS.framework */; };
@@ -206,6 +207,7 @@
 				01DB109B28CF6404005634CF /* Markdown in Frameworks */,
 				01379A48293F53F700429C4E /* NordicStyle in Frameworks */,
 				6C67FF808DFB822C6DA82348 /* Pods_nRF_Wi_Fi_Provisioner__iOS_.framework in Frameworks */,
+				AA49E0592BB5A34100CDD6FA /* iOSCommonLibraries in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -560,6 +562,7 @@
 			packageProductDependencies = (
 				01DB109A28CF6404005634CF /* Markdown */,
 				01379A47293F53F700429C4E /* NordicStyle */,
+				AA49E0582BB5A34100CDD6FA /* iOSCommonLibraries */,
 			);
 			productName = "nRF-Wi-Fi-Provisioner (iOS)";
 			productReference = 01481A992852093000925FAB /* nRF-Wi-Fi-Provisioner.app */;
@@ -687,6 +690,7 @@
 			mainGroup = 01481A8C2852092F00925FAB;
 			packageReferences = (
 				01DB109928CF6404005634CF /* XCRemoteSwiftPackageReference "swift-markdown" */,
+				AA49E0572BB5A34000CDD6FA /* XCRemoteSwiftPackageReference "IOS-Common-Libraries" */,
 			);
 			productRefGroup = 01481A9A2852093000925FAB /* Products */;
 			projectDirPath = "";
@@ -1408,6 +1412,14 @@
 				kind = branch;
 			};
 		};
+		AA49E0572BB5A34000CDD6FA /* XCRemoteSwiftPackageReference "IOS-Common-Libraries" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/NordicPlayground/IOS-Common-Libraries";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1423,6 +1435,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 01DB109928CF6404005634CF /* XCRemoteSwiftPackageReference "swift-markdown" */;
 			productName = Markdown;
+		};
+		AA49E0582BB5A34100CDD6FA /* iOSCommonLibraries */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AA49E0572BB5A34000CDD6FA /* XCRemoteSwiftPackageReference "IOS-Common-Libraries" */;
+			productName = iOSCommonLibraries;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
