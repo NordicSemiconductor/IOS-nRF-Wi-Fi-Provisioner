@@ -54,6 +54,9 @@ struct ProvisionOverWiFiView: View {
                         provisionButton()
                     }
                 }
+                .task {
+                    await viewModel.getScans()
+                }
             case .provisioned:
                 NoContentView(title: "Provisioned", description: "Provisioning Completed", systemImage: "hand.thumbsup.fill") {
                     AsyncButton("Attempt to Connect") {
