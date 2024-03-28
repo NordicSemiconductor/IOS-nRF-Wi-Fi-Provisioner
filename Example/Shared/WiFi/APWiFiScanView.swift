@@ -47,6 +47,7 @@ struct APWiFiScanView: View {
                 .frame(maxWidth: 30, maxHeight: 20)
             
             Image(systemName: "checkmark")
+                .foregroundColor(.nordicBlue)
                 .isHidden(!selected)
         }
     }

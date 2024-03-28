@@ -75,11 +75,13 @@ struct ProvisionOverWiFiView: View {
     
     @ViewBuilder
     private func ssidSection() -> some View {
-        Section("SSID") {
+        Section("Scanned Networks") {
             ForEach(viewModel.scans) { scan in
                 APWiFiScanView(scan: scan, selected: scan == viewModel.selectedScan)
                     .onTapGesture {
-                        viewModel.selectedScan = scan
+                        withAnimation {
+                            viewModel.selectedScan = scan
+                        }
                     }
             }
             
@@ -95,7 +97,7 @@ struct ProvisionOverWiFiView: View {
         AsyncButton(action: {
             await viewModel.provision()
         }, label: {
-            Text("Start Provisioning")
+            Text("Provision")
         })
         .disabled(viewModel.selectedScan == nil)
         .buttonStyle(NordicButtonStyle())
