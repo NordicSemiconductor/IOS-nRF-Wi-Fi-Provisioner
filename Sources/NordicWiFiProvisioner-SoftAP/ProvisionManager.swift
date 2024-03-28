@@ -11,6 +11,8 @@ import NetworkExtension
 import OSLog
 import SwiftProtobuf
 
+// MARK: URL
+
 private extension URL {
     static let endpointStr = "https://192.0.2.1"
     
@@ -18,10 +20,11 @@ private extension URL {
     static let prov = URL(string: "\(endpointStr)/prov/configure")!
 }
 
-open class ProvisionManager {
+// MARK: ProvisionManager
+
+public class ProvisionManager {
     private let apSSID = "mobileappsrules"
-    public init() {
-    }
+    public init() {}
     
     public enum ProvisionError: Error {
         case badResponse
@@ -129,7 +132,14 @@ open class ProvisionManager {
         guard let result = try? ScanResults(serializedData: ssidsResponse.0) else {
             throw ProvisionError.badResponse
         }
-        return result.results.map { APWiFiScan(scanResult: $0) }
+        
+        let scanResults = result.results.map { APWiFiScan(scanResult: $0) }
+        var uniques = Set<String>()
+        return scanResults.filter {
+            guard !uniques.contains($0.id) else { return false }
+            uniques.insert($0.id)
+            return true
+        }
     }
     
     open func provision(ssid: String, password: String?) async throws {
@@ -162,6 +172,8 @@ open class ProvisionManager {
         }
     }
 }
+
+// MARK: Bundle
 
 extension Bundle {
     func certificateNamed(_ name: String) -> SecCertificate? {

@@ -13,14 +13,14 @@ public struct APWiFiScan: Identifiable, Hashable {
     
     // MARK: Public Properties
     
-    public var id: String { ssid }
+    public var id: String { bssid }
     
     public let ssid: String
     public let bssid: String
     public let channel: Int
     public let rssi: Int
     public let band: APWiFiBand
-    public let authentication :APWiFiAuth
+    public let authentication: APWiFiAuth
     
     // MARK: Init
     
