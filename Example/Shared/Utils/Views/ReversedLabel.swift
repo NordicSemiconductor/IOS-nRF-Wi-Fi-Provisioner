@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import NordicStyle
 
 struct ReversedLabel<T: View, I: View>: View {
     var text: () -> T

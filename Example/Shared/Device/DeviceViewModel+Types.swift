@@ -3,7 +3,6 @@
 //
 
 import Foundation
-import NordicStyle
 
 extension DeviceView.ViewModel {
     struct ProvisionButtonState {

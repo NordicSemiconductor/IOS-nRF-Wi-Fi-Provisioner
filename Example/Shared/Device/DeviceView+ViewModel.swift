@@ -7,7 +7,6 @@
 
 import Foundation
 import Combine
-import NordicStyle
 import os
 import NordicWiFiProvisioner_BLE
 

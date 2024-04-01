@@ -5,7 +5,6 @@
 //  Created by Nick Kibysh on 06/07/2022.
 //
 
-import NordicStyle
 import SwiftUI
 import CoreBluetoothMock
 

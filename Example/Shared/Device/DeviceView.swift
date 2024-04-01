@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import NordicStyle
 import NordicWiFiProvisioner_BLE
 
 struct DeviceView: View {

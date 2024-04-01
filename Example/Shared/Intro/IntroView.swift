@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import NordicStyle
 
 struct IntroView: View {
     @State private var animationAmount = 1.0

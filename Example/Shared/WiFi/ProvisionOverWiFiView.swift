@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import NordicStyle
 import iOS_Common_Libraries
 
 // MARK: - ProvisionOverWiFiView
