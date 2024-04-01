@@ -101,7 +101,6 @@ struct ProvisionOverWiFiView: View {
             Text("Provision")
         })
         .disabled(viewModel.selectedScan == nil)
-        .buttonStyle(NordicButtonStyle())
     }
 }
 

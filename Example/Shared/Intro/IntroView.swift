@@ -63,7 +63,6 @@ struct IntroView: View {
                 Button("START_PROVISIONING_BTN") {
                     show = false
                 }
-                .buttonStyle(NordicButtonStyle())
                 .padding()
                 .accessibilityIdentifier("start_provisioning_btn")
             }

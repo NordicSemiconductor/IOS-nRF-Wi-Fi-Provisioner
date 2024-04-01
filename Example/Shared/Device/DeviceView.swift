@@ -64,7 +64,6 @@ struct DeviceView: View {
                                 self.viewModel.connect()
                             }
                         }
-                        .buttonStyle(NordicButtonStyle())
                     })
                     .padding()
                 }
@@ -137,7 +136,6 @@ struct DeviceView: View {
                     }
                 }
                 .disabled(!viewModel.buttonConfiguration.enabledProvisionButton)
-                .buttonStyle(NordicButtonStyle())
                 .accessibilityIdentifier("prov_button")
             }
             .padding()

@@ -34,7 +34,6 @@ struct ScannerView: View {
                         }) {
                             Text("Open Settings")
                         }
-                        .buttonStyle(NordicButtonStyle())
                     }
                 )
                 .padding()
@@ -57,7 +56,6 @@ struct ScannerView: View {
                         }) {
                             Text("Open Settings")
                         }
-                        .buttonStyle(NordicButtonStyle())
                     }
                 )
             }

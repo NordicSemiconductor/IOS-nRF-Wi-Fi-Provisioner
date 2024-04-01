@@ -9,7 +9,6 @@ extension DeviceView.ViewModel {
     struct ProvisionButtonState {
         var isEnabled: Bool
         var title: String
-        var style: NordicButtonStyle
     }
 }
 
