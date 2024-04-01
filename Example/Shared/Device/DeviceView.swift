@@ -125,7 +125,7 @@ struct DeviceView: View {
                 Button("Forget Configuration") {
                     unprovisionSheet = true
                 }
-                .buttonStyle(HollowDistructiveButtonStyle())
+                .foregroundStyle(Color.nordicRed)
                 .isHidden(!viewModel.buttonConfiguration.showUnsetButton, remove: true)
                 .disabled(!viewModel.buttonConfiguration.enabledUnsetButton)
                 
