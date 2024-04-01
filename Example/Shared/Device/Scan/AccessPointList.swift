@@ -7,6 +7,7 @@
 
 import SwiftUI
 import NordicStyle
+import iOS_Common_Libraries
 import NordicWiFiProvisioner_BLE
 
 struct AccessPointList: View {
@@ -91,7 +92,7 @@ struct AccessPointList: View {
                 }
                 Spacer()
                 accessPoint.rssi.map {
-                    RSSIView<WiFiRSSI>(rssi: WiFiRSSI(level: $0))
+                    RSSIView(rssi: RSSI(wifiLevel: $0))
                         .frame(maxWidth: 30, maxHeight: 20)
                 }
             }
@@ -112,7 +113,7 @@ struct AccessPointList: View {
                         Spacer()
                         VStack(alignment: .trailing) {
                             channel.rssi.map {
-                                RSSIView<WiFiRSSI>(rssi: WiFiRSSI(level: $0))
+                                RSSIView(rssi: RSSI(wifiLevel: $0))
                                     .frame(maxWidth: 30, maxHeight: 20)
                             }
                             Text(channel.wifi.band?.description ?? "- GHz")
@@ -131,7 +132,7 @@ struct AccessPointList: View {
                     .tint(Color.accentColor)
                 Spacer()
                 accessPoint.rssi.map {
-                    RSSIView<WiFiRSSI>(rssi: WiFiRSSI(level: $0))
+                    RSSIView(rssi: RSSI(wifiLevel: $0))
                         .frame(maxWidth: 30, maxHeight: 20)
                 }
             }

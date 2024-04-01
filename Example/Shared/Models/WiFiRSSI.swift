@@ -3,17 +3,12 @@
 //
 
 import Foundation
-import NordicStyle
+import iOS_Common_Libraries
 
-enum WiFiRSSI: RSSI {
-    case good
-    case ok
-    case bad
-    case outOfRange
-    case practicalWorst
+extension RSSI {
 
-    init(level: Int) {
-        switch level {
+    init(wifiLevel: Int) {
+        switch wifiLevel {
         case 5...: self = .outOfRange
         case (-60)...: self = .good
         case (-90)...: self = .ok

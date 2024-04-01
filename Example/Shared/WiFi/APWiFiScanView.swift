@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import NordicStyle
+import iOS_Common_Libraries
 import NordicWiFiProvisioner_SoftAP
 
 // MARK: - APWiFiScanView
@@ -43,7 +43,7 @@ struct APWiFiScanView: View {
             
             Spacer()
             
-            RSSIView<WiFiRSSI>(rssi: WiFiRSSI(level: scan.rssi))
+            RSSIView(rssi: RSSI(wifiLevel: scan.rssi))
                 .frame(maxWidth: 30, maxHeight: 20)
             
             Image(systemName: "checkmark")

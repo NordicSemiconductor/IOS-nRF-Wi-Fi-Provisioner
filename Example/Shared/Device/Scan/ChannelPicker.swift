@@ -5,7 +5,7 @@
 //  Created by Nick Kibysh on 21/09/2022.
 //
 
-import NordicStyle
+import iOS_Common_Libraries
 import NordicWiFiProvisioner_BLE
 import SwiftUI
 
@@ -27,7 +27,7 @@ struct ChannelPicker: View {
                         Spacer()
                         VStack(alignment: .trailing) {
                             channel.rssi.map {
-                                RSSIView<WiFiRSSI>(rssi: WiFiRSSI(level: $0))
+                                RSSIView(rssi: RSSI(wifiLevel: $0))
                                     .frame(maxWidth: 30, maxHeight: 20)
                             }
                             Text(channel.wifi.band?.description ?? "? GHz")

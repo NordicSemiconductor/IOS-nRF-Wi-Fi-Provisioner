@@ -3,17 +3,12 @@
 //
 
 import Foundation
-import NordicStyle
+import iOS_Common_Libraries
 
-enum BluetoothRSSI: RSSI {
-    case good
-    case ok
-    case bad
-    case outOfRange
-    case practicalWorst
+extension RSSI {
 
-    init(level: Int) {
-        switch level {
+    init(bleLevel: Int) {
+        switch bleLevel {
         case 5...: self = .outOfRange
         case (-60)...: self = .good
         case (-90)...: self = .ok

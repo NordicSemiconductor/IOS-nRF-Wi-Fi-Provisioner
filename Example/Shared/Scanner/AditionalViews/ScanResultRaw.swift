@@ -7,7 +7,7 @@
 
 import SwiftUI
 import NordicWiFiProvisioner_BLE
-import NordicStyle
+import iOS_Common_Libraries
 
 struct ScanResultRaw: View {
     let scanResult: ScanResult
@@ -15,7 +15,7 @@ struct ScanResultRaw: View {
     var body: some View {
         VStack {
             HStack {
-                RSSIView(rssi: BluetoothRSSI(level: scanResult.rssi))
+                RSSIView(rssi: RSSI(bleLevel: scanResult.rssi))
                     .frame(maxWidth: 20, maxHeight: 18)
                 Text(scanResult.name)
                 if scanResult.provisioned {
@@ -34,7 +34,7 @@ struct ScanResultRaw: View {
                     .foregroundColor(.secondary)
                     Spacer()
                     if scanResult.wifiRSSI != nil {
-                        RSSIView(rssi: WiFiRSSI(level: scanResult.wifiRSSI!))
+                        RSSIView(rssi: RSSI(wifiLevel: scanResult.wifiRSSI!))
                             .frame(maxWidth: 16, maxHeight: 12)
                         Text("\(scanResult.wifiRSSI!) dBm")
                             .font(.caption2)
