@@ -1,6 +1,6 @@
 //
-//  File.swift
-//  
+//  WiFiScanerDelegate.swift
+//
 //
 //  Created by Nick Kibysh on 14/11/2022.
 //
