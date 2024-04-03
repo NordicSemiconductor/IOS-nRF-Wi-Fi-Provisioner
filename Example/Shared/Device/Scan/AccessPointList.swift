@@ -33,7 +33,7 @@ struct AccessPointList: View {
         }
         .navigationTitle("Wi-Fi")
         .onFirstAppear {
-            viewModel.setupAndScan(provisioner: provisioner, scanDelegate: viewModel, wifiSelection: wifiSelection)
+            viewModel.setupAndScan(provisioner: provisioner, wifiSelection: wifiSelection)
         }
         .toolbar {
             Button("Close", action: close)
@@ -166,7 +166,7 @@ struct AccessPointList_Previews: PreviewProvider {
     }
     
     class DummyAccessPointListViewModel: AccessPointList.ViewModel {
-        override func setupAndScan(provisioner: DeviceManager, scanDelegate: WiFiScanerDelegate, wifiSelection: AccessPointSelection) {
+        override func setupAndScan(provisioner: DeviceManager, wifiSelection: AccessPointSelection) {
             self.provisioner = MockScanProvisioner(deviceId: UUID())
             self.provisioner.wiFiScanerDelegate = self
             try? self.provisioner.startScan(scanParams: ScanParams())
