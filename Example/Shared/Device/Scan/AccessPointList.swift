@@ -9,7 +9,11 @@ import SwiftUI
 import iOS_Common_Libraries
 import NordicWiFiProvisioner_BLE
 
+// MARK: - AccessPointList
+
 struct AccessPointList: View {
+    
+    // MARK: Properties
     
     @Environment(\.presentationMode) var presentationMode
     @StateObject private var viewModel = ViewModel()
@@ -17,18 +21,28 @@ struct AccessPointList: View {
     let provisioner: DeviceManager
     let wifiSelection: AccessPointSelection
     
+    // MARK: Init
+    
     init(provisioner: DeviceManager, wifiSelection: AccessPointSelection) {
         self.provisioner = provisioner
         self.wifiSelection = wifiSelection
     }
+    
+    // MARK: View
     
     var body: some View {
         VStack {
             if viewModel.accessPoints.isEmpty {
                 Placeholder(text: "Scanning", message: "Scanning for Wi-Fi", systemImage: "wifi")
             } else {
-                list()
-                    .accessibilityIdentifier("access_point_list")
+                List {
+                    Section("Access Points") {
+                        ForEach(viewModel.accessPoints) {
+                            channelPicker(accessPoint: $0)
+                        }
+                    }
+                }
+                .accessibilityIdentifier("access_point_list")
             }
         }
         .navigationTitle("Wi-Fi")
@@ -36,37 +50,17 @@ struct AccessPointList: View {
             viewModel.setupAndScan(provisioner: provisioner, wifiSelection: wifiSelection)
         }
         .toolbar {
-            Button("Close", action: close)
+            Button("Close") {
+                presentationMode.wrappedValue.dismiss()
+            }
         }
         .alert(viewModel.error?.title ?? "Error", isPresented: $viewModel.showError) {
-            Button("Cancel", role: .cancel) {}
+            Button("Cancel", role: .cancel) {
+                // No-op.
+            }
         } message: {
             if let message = viewModel.error?.message {
                 Text(message)
-            }
-        }
-    }
-    
-    func close() {
-        presentationMode.wrappedValue.dismiss()
-    }
-    
-    @ViewBuilder
-    private func list() -> some View {
-        List {
-            Section {
-                ForEach(viewModel.accessPoints) {
-                    channelPicker(accessPoint: $0)
-                }
-            } header: {
-                HStack {
-                    Text("Access Points")
-                    
-                    Spacer()
-                    
-                    ProgressView()
-                        .isHidden(viewModel.isScanning, remove: true)
-                }
             }
         }
     }
@@ -113,8 +107,9 @@ struct AccessPointList: View {
     }
 }
 
-#if DEBUG
+// MARK: - Preview
 
+#if DEBUG
 struct AccessPointList_Previews: PreviewProvider {
     struct Selection: AccessPointSelection {
         var selectedWiFi: NordicWiFiProvisioner_BLE.WifiInfo?
@@ -153,7 +148,6 @@ struct AccessPointList_Previews: PreviewProvider {
                 wifiSelection: Selection()
             )
         }
-//        .tint(.orange)
     }
 }
 #endif
