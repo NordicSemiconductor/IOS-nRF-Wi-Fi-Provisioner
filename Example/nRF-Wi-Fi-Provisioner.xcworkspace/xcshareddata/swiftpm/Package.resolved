@@ -1,4 +1,5 @@
 {
+  "originHash" : "8613aa7fbfcd2cbac3792f17bf591698d3419feda089cc20aac29ede964307f6",
   "pins" : [
     {
       "identity" : "ios-common-libraries",
@@ -6,7 +7,7 @@
       "location" : "https://github.com/NordicPlayground/IOS-Common-Libraries",
       "state" : {
         "branch" : "main",
-        "revision" : "9e08e6fbff5fe7f62f3955a6b1c2bfc3b9419e97"
+        "revision" : "10e5b49d91d1f4db896323d7f37abd7ba5485a36"
       }
     },
     {
@@ -28,5 +29,5 @@
       }
     }
   ],
-  "version" : 2
+  "version" : 3
 }

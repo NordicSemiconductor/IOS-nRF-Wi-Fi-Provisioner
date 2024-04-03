@@ -5,9 +5,12 @@
 import Combine
 import Foundation
 import NordicWiFiProvisioner_BLE
-import os
+import iOS_Common_Libraries
+
+// MARK: - AccessPointList.ViewModel
 
 extension AccessPointList {
+    
     @MainActor
     class ViewModel: ObservableObject {
         struct ScanResult: Hashable, Identifiable {
@@ -27,37 +30,41 @@ extension AccessPointList {
             }
         }
         
+        // MARK: Init
+        
+        init() {}
+        
+        init(provisioner: DeviceManager, accessPointSelection: AccessPointSelection) {
+            self.provisioner = provisioner
+            self.accessPointSelection = accessPointSelection
+        }
+        
         deinit {
             try? provisioner.stopScan()
         }
         
-        init() {
-            
-        }
+        // MARK: Properties
         
-        private let logger = Logger(subsystem: String(describing: ViewModel.self), category: "AccessPointListViewModel")
+        private let logger = NordicLog(ViewModel.self, subsystem: Bundle.main.bundleIdentifier!)
         private var cancellables = Set<AnyCancellable>()
-        // MARK: - Constants
+        
         var provisioner: DeviceManager!
         var accessPointSelection: AccessPointSelection!
         
-        // MARK: - Properties
         @Published(initialValue: []) var accessPoints: [ScanResult]
         @Published(initialValue: false) var isScanning: Bool
         
         @Published(initialValue: nil) var selectedAccessPointId: String? {
             didSet {
-                guard let apId = selectedAccessPointId else { return }
-                self.selectedAccessPoint = allAccessPoints.first(where: { $0.id == apId })?.wifi
+                guard let selectedAccessPointId else { return }
+                self.selectedAccessPoint = allAccessPoints.first(where: \.id, isEqualsTo: selectedAccessPointId)?.wifi
             }
         }
         
         @Published(initialValue: nil) var selectedAccessPoint: WifiInfo? {
             didSet {
-                guard let ap = selectedAccessPoint else {
-                    return
-                }
-                accessPointSelection.selectedWiFi = ap
+                guard let selectedAccessPoint else { return }
+                accessPointSelection.selectedWiFi = selectedAccessPoint
                 accessPointSelection.showAccessPointList = false
             }
         }
@@ -71,7 +78,6 @@ extension AccessPointList {
             }
         }
         
-        // MARK: - Private Properties
         private var allAccessPoints: Set<ScanResult> = [] {
             didSet {
                 var aps: [ScanResult] = []
@@ -88,11 +94,6 @@ extension AccessPointList {
                 self.logger.debug("Assigned access points: \(self.allAccessPoints.count)")
                 self.accessPoints = aps.sorted(by: { $0.wifi.ssid < $1.wifi.ssid })
             }
-        }
-        
-        init(provisioner: DeviceManager, accessPointSelection: AccessPointSelection) {
-            self.provisioner = provisioner
-            self.accessPointSelection = accessPointSelection
         }
         
         func setupAndScan(provisioner: DeviceManager, wifiSelection: AccessPointSelection) {
@@ -112,9 +113,10 @@ extension AccessPointList {
         func startScan() {
             try! provisioner.startScan(scanParams: ScanParams())
         }
-        
     }
 }
+
+// MARK: - WiFiScanerDelegate
 
 extension AccessPointList.ViewModel: WiFiScanerDelegate {
     func deviceManager(_ provisioner: NordicWiFiProvisioner_BLE.DeviceManager, discoveredAccessPoint wifi: NordicWiFiProvisioner_BLE.WifiInfo, rssi: Int?) {
