@@ -9,7 +9,10 @@ import SwiftUI
 import NordicWiFiProvisioner_SoftAP
 import OSLog
 
+// MARK: - ProvisionOverWiFiView.ViewModel
+
 extension ProvisionOverWiFiView {
+    
     @MainActor
     class ViewModel: ObservableObject {
         enum Status {
@@ -29,11 +32,15 @@ extension ProvisionOverWiFiView {
         @Published private (set) var alertError: TitleMessageError? = nil
         @Published var showAlert: Bool = false
         
-        private let nl = OSLog.networking
+        private let log = Logger(subsystem: Bundle.main.bundleIdentifier!, 
+                                 category: "ProvisionOverWiFiView+ViewModel")
     }
 }
 
+// MARK: - ViewModel API
+
 extension ProvisionOverWiFiView.ViewModel {
+    
     func connect() async {
         do {
             status = .connecting
@@ -41,8 +48,7 @@ extension ProvisionOverWiFiView.ViewModel {
             status = .connected
         } catch {
             status = .error(error)
-            
-            nl.error("Connection Error: \(error.localizedDescription)")
+            log.error("Connection Error: \(error.localizedDescription)")
         }
     }
     
@@ -52,8 +58,7 @@ extension ProvisionOverWiFiView.ViewModel {
         } catch {
             alertError = TitleMessageError(title: "Can't scan for wifi networks", error: error)
             showAlert = true
-            
-            nl.error("SSID: \(error.localizedDescription)")
+            log.error("SSID: \(error.localizedDescription)")
         }
     }
     
@@ -70,8 +75,7 @@ extension ProvisionOverWiFiView.ViewModel {
         } catch {
             alertError = TitleMessageError(title: "Can't provision AP", error: error)
             showAlert = true
-            
-            nl.error("Provision: \(error.localizedDescription)")
+            log.error("Provision: \(error.localizedDescription)")
         }
     }
 }
