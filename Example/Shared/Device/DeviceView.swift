@@ -37,21 +37,6 @@ struct DeviceView: View {
                             Text(message)
                         }
                     }
-
-                
-
-                /*
-                    .sheet(isPresented: $unprovisionSheet) {
-                        ActionSheet(
-                            title: Text("Unprovision the Device?"),
-                            message: Text("Are you sure that you want to unset the configuration?"),
-                            buttons: [
-                                .destructive(Text("Unprovision")),
-                                .cancel()
-                            ]
-                        )
-                    }
-                 */
             case .disconnected(let reason):
                 switch reason {
                 case .byRequest:
