@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0101F2E628DB212300AE80A9 /* ChannelPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0101F2E528DB212300AE80A9 /* ChannelPicker.swift */; };
-		0101F2E728DB212300AE80A9 /* ChannelPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0101F2E528DB212300AE80A9 /* ChannelPicker.swift */; };
 		01062ADA28B6592700BB41FD /* View+Mod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01062AD928B6592700BB41FD /* View+Mod.swift */; };
 		01062ADB28B6592700BB41FD /* View+Mod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01062AD928B6592700BB41FD /* View+Mod.swift */; };
 		0107FEAA28F827A200693317 /* ScanResultRaw.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0107FEA928F827A200693317 /* ScanResultRaw.swift */; };
@@ -127,7 +125,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		0101F2E528DB212300AE80A9 /* ChannelPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelPicker.swift; sourceTree = "<group>"; };
 		01062AD928B6592700BB41FD /* View+Mod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Mod.swift"; sourceTree = "<group>"; };
 		0107FEA928F827A200693317 /* ScanResultRaw.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanResultRaw.swift; sourceTree = "<group>"; };
 		011A2612287CAF890004A5C4 /* BluetoothManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BluetoothManager.swift; sourceTree = "<group>"; };
@@ -331,7 +328,6 @@
 			children = (
 				015845CB288FD5A900C7E4B7 /* AccessPointList.swift */,
 				33976AAA2657AC333AE0133B /* AccessPointList+ViewModel.swift */,
-				0101F2E528DB212300AE80A9 /* ChannelPicker.swift */,
 			);
 			path = Scan;
 			sourceTree = "<group>";
@@ -807,7 +803,6 @@
 				01922CBD28A2713100492E87 /* NavigationView.swift in Sources */,
 				01C0F0FA287DE864008BBE46 /* ScannerViewModel.swift in Sources */,
 				01062ADA28B6592700BB41FD /* View+Mod.swift in Sources */,
-				0101F2E628DB212300AE80A9 /* ChannelPicker.swift in Sources */,
 				01A43DEB2886FECB0025A5C4 /* DeviceView.swift in Sources */,
 				015D60A32875A1530048F065 /* ScannerView.swift in Sources */,
 				019D1D342912C201000D8BD4 /* MACAddress+Ext.swift in Sources */,
@@ -858,7 +853,6 @@
 				01994A752B852F7800953465 /* ProvisionOverWiFiView+VM.swift in Sources */,
 				01062ADB28B6592700BB41FD /* View+Mod.swift in Sources */,
 				01994A6F2B8521A900953465 /* AsyncButton.swift in Sources */,
-				0101F2E728DB212300AE80A9 /* ChannelPicker.swift in Sources */,
 				01A43DEC2886FECB0025A5C4 /* DeviceView.swift in Sources */,
 				015D60A42875A1530048F065 /* ScannerView.swift in Sources */,
 				019D1D352912C201000D8BD4 /* MACAddress+Ext.swift in Sources */,

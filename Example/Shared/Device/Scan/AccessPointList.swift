@@ -10,9 +10,9 @@ import iOS_Common_Libraries
 import NordicWiFiProvisioner_BLE
 
 struct AccessPointList: View {
+    
     @Environment(\.presentationMode) var presentationMode
     @StateObject private var viewModel = ViewModel()
-    
     
     let provisioner: DeviceManager
     let wifiSelection: AccessPointSelection
@@ -56,43 +56,16 @@ struct AccessPointList: View {
         List {
             Section {
                 ForEach(viewModel.accessPoints) {
-                    if #available(iOS 16, *) {
-                        channelPickerList(accessPoint: $0)
-                    } else {
-                        channelPicker(accessPoint: $0)
-                    }
+                    channelPicker(accessPoint: $0)
                 }
             } header: {
                 HStack {
                     Text("Access Points")
+                    
                     Spacer()
+                    
                     ProgressView()
                         .isHidden(viewModel.isScanning, remove: true)
-                }
-            }
-        }
-    }
-    //*
-    @ViewBuilder
-    private func channelPickerList(accessPoint: ViewModel.ScanResult) -> some View {
-        NavigationLink {
-            ChannelPicker(
-                channels: viewModel.allChannels(for: accessPoint.wifi),
-                selectedChannel: $viewModel.selectedAccessPointId
-            )
-            .navigationTitle(accessPoint.wifi.ssid)
-        } label: {
-            HStack {
-                Label {
-                    Text(accessPoint.wifi.ssid)
-                } icon: {
-                    Image(systemName: accessPoint.wifi.isOpen ? "lock.open" : "lock")
-                        .renderingMode(.template)
-                }
-                Spacer()
-                accessPoint.rssi.map {
-                    RSSIView(rssi: RSSI(wifiLevel: $0))
-                        .frame(maxWidth: 30, maxHeight: 20)
                 }
             }
         }
