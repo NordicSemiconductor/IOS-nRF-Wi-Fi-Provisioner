@@ -1,19 +1,25 @@
 //
-//  File.swift
-//  
+//  WifiInfo.swift
+//
 //
 //  Created by Nick Kibysh on 26/10/2022.
 //
 
 import Foundation
 
-/// Wi-Fi details.
+// MARK: - WifiInfo
+
 public struct WifiInfo {
-    public var ssid: String
-    public var bssid: MACAddress
-    public var band: Band?
-    public var channel: UInt
-    public var auth: AuthMode?
+    
+    // MARK: Public Properties
+    
+    public let ssid: String
+    public let bssid: MACAddress
+    public let band: Band?
+    public let channel: UInt
+    public let auth: AuthMode?
+    
+    // MARK: Init
     
     public init(ssid: String, bssid: MACAddress, band: Band? = nil, channel: UInt, auth: AuthMode? = nil) {
         self.ssid = ssid
@@ -24,7 +30,10 @@ public struct WifiInfo {
     }
 }
 
+// MARK: - ProtoConvertible
+
 extension WifiInfo: ProtoConvertible {
+    
     init(proto: Proto.WifiInfo) {
         self.ssid = String(data: proto.ssid, encoding: .utf8)!
         let data = proto.bssid
