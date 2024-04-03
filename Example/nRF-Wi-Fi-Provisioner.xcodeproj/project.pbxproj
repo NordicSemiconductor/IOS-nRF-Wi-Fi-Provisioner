@@ -86,15 +86,13 @@
 		339764A344D60772B8354BA1 /* CoreBluetoothTypeAliases.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33976DF4DDFF808ED30D6140 /* CoreBluetoothTypeAliases.swift */; };
 		339766E1F365F51C4CD49F6D /* IntroViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33976A539401C3999098986C /* IntroViewModel.swift */; };
 		3397673EF437823851596518 /* AdoptiveDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33976123FD83A0EF2122EE5E /* AdoptiveDetailView.swift */; };
-		3397680D2FE5FBB193E7A5EE /* BluetoothRSSI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 339762F1507DAF6B903DF4D1 /* BluetoothRSSI.swift */; };
-		3397689B2FD60C49322F3E29 /* WiFiRSSI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33976EF9849513130301C930 /* WiFiRSSI.swift */; };
 		339769E1197BCCAF98D480E9 /* NavigationLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 339767EA454996E6D30A9621 /* NavigationLink.swift */; };
 		33976BAEC7C5753351244397 /* IntroViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33976A539401C3999098986C /* IntroViewModel.swift */; };
 		33976D6784AE1F2745318CFA /* NavigationLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 339767EA454996E6D30A9621 /* NavigationLink.swift */; };
-		33976EBA0FF55A009B0C55ED /* WiFiRSSI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33976EF9849513130301C930 /* WiFiRSSI.swift */; };
 		33976EF1DCD95ADC4A0807C9 /* DeviceViewModel+Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = 339761CA515EDED3B38AB2F3 /* DeviceViewModel+Types.swift */; };
-		33976EFC0D92E4D7C58060E1 /* BluetoothRSSI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 339762F1507DAF6B903DF4D1 /* BluetoothRSSI.swift */; };
 		6C67FF808DFB822C6DA82348 /* Pods_nRF_Wi_Fi_Provisioner__iOS_.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDE5F19186647A484BC6DD82 /* Pods_nRF_Wi_Fi_Provisioner__iOS_.framework */; };
+		AA194BDA2BBD68980000BD63 /* RSSI+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA194BD92BBD68980000BD63 /* RSSI+Ext.swift */; };
+		AA194BDB2BBD68980000BD63 /* RSSI+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA194BD92BBD68980000BD63 /* RSSI+Ext.swift */; };
 		AA2C11982B7A53F1003AF3E0 /* SelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2C11972B7A53F1003AF3E0 /* SelectorView.swift */; };
 		AA2C119B2B7A61EF003AF3E0 /* ProvisionOverWiFiView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2C119A2B7A61EF003AF3E0 /* ProvisionOverWiFiView.swift */; };
 		AA3806D22BBACC8D003C8256 /* Placeholder.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA3806D12BBACC8D003C8256 /* Placeholder.swift */; };
@@ -181,15 +179,14 @@
 		2266BBCD2DCFE7EB14F94B3E /* Pods-Tests iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests iOS.release.xcconfig"; path = "Target Support Files/Pods-Tests iOS/Pods-Tests iOS.release.xcconfig"; sourceTree = "<group>"; };
 		33976123FD83A0EF2122EE5E /* AdoptiveDetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdoptiveDetailView.swift; sourceTree = "<group>"; };
 		339761CA515EDED3B38AB2F3 /* DeviceViewModel+Types.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "DeviceViewModel+Types.swift"; sourceTree = "<group>"; };
-		339762F1507DAF6B903DF4D1 /* BluetoothRSSI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BluetoothRSSI.swift; sourceTree = "<group>"; };
 		339767EA454996E6D30A9621 /* NavigationLink.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationLink.swift; sourceTree = "<group>"; };
 		33976A539401C3999098986C /* IntroViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntroViewModel.swift; sourceTree = "<group>"; };
 		33976AAA2657AC333AE0133B /* AccessPointList+ViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AccessPointList+ViewModel.swift"; sourceTree = "<group>"; };
 		33976DF4DDFF808ED30D6140 /* CoreBluetoothTypeAliases.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreBluetoothTypeAliases.swift; sourceTree = "<group>"; };
-		33976EF9849513130301C930 /* WiFiRSSI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WiFiRSSI.swift; sourceTree = "<group>"; };
 		52DA7AFC9F0E3A8631B800CC /* Pods-nRF-Wi-Fi-Provisioner (iOS).release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-nRF-Wi-Fi-Provisioner (iOS).release.xcconfig"; path = "Target Support Files/Pods-nRF-Wi-Fi-Provisioner (iOS)/Pods-nRF-Wi-Fi-Provisioner (iOS).release.xcconfig"; sourceTree = "<group>"; };
 		5B02622BD480F3162A9947BF /* Pods-Tests iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests iOS.debug.xcconfig"; path = "Target Support Files/Pods-Tests iOS/Pods-Tests iOS.debug.xcconfig"; sourceTree = "<group>"; };
 		812A6D15A792E144AE0603B4 /* Pods_Tests_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Tests_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		AA194BD92BBD68980000BD63 /* RSSI+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RSSI+Ext.swift"; sourceTree = "<group>"; };
 		AA2C11972B7A53F1003AF3E0 /* SelectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectorView.swift; sourceTree = "<group>"; };
 		AA2C119A2B7A61EF003AF3E0 /* ProvisionOverWiFiView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProvisionOverWiFiView.swift; sourceTree = "<group>"; };
 		AA2C119C2B7A6414003AF3E0 /* nRF-Wi-Fi-Provisioner (iOS).entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "nRF-Wi-Fi-Provisioner (iOS).entitlements"; sourceTree = "<group>"; };
@@ -280,7 +277,6 @@
 			isa = PBXGroup;
 			children = (
 				01A0C29328896321000AA135 /* Environment */,
-				01FA59102887136F0008AF88 /* Models */,
 				01A43DE92886FEB80025A5C4 /* Device */,
 				AA2C11962B7A53C8003AF3E0 /* Selector */,
 				01C0F0F8287DE856008BBE46 /* Scanner */,
@@ -349,6 +345,7 @@
 				01FCADCE292577DB0044904B /* WiFiInfo+Ext.swift */,
 				01062AD928B6592700BB41FD /* View+Mod.swift */,
 				012D6E032B8607B600474D6A /* OSLog+Ext.swift */,
+				AA194BD92BBD68980000BD63 /* RSSI+Ext.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -474,15 +471,6 @@
 				33976A539401C3999098986C /* IntroViewModel.swift */,
 			);
 			path = Intro;
-			sourceTree = "<group>";
-		};
-		01FA59102887136F0008AF88 /* Models */ = {
-			isa = PBXGroup;
-			children = (
-				339762F1507DAF6B903DF4D1 /* BluetoothRSSI.swift */,
-				33976EF9849513130301C930 /* WiFiRSSI.swift */,
-			);
-			path = Models;
 			sourceTree = "<group>";
 		};
 		01FCADB9291D47460044904B /* Sections */ = {
@@ -819,6 +807,7 @@
 				01A43DEE2886FED80025A5C4 /* DeviceView+ViewModel.swift in Sources */,
 				01FCADC329218BE50044904B /* FirstAppear.swift in Sources */,
 				AAAAE6C52B7F813D000BB569 /* AppViewModel.swift in Sources */,
+				AA194BDA2BBD68980000BD63 /* RSSI+Ext.swift in Sources */,
 				01922CBD28A2713100492E87 /* NavigationView.swift in Sources */,
 				01C0F0FA287DE864008BBE46 /* ScannerViewModel.swift in Sources */,
 				01062ADA28B6592700BB41FD /* View+Mod.swift in Sources */,
@@ -848,10 +837,8 @@
 				01FA5912288713860008AF88 /* ReadableError.swift in Sources */,
 				0107FEAA28F827A200693317 /* ScanResultRaw.swift in Sources */,
 				011A2613287CAF890004A5C4 /* BluetoothManager.swift in Sources */,
-				3397680D2FE5FBB193E7A5EE /* BluetoothRSSI.swift in Sources */,
 				0183EFC92897C196002E79A5 /* Status.swift in Sources */,
 				01994A742B852F7800953465 /* ProvisionOverWiFiView+VM.swift in Sources */,
-				3397689B2FD60C49322F3E29 /* WiFiRSSI.swift in Sources */,
 				339764A344D60772B8354BA1 /* CoreBluetoothTypeAliases.swift in Sources */,
 				33976EF1DCD95ADC4A0807C9 /* DeviceViewModel+Types.swift in Sources */,
 				01FCADBB291D47600044904B /* DeviceSection.swift in Sources */,
@@ -891,10 +878,9 @@
 				0107FEAB28F827A200693317 /* ScanResultRaw.swift in Sources */,
 				011A2614287CAF890004A5C4 /* BluetoothManager.swift in Sources */,
 				01FCADC429218BE50044904B /* FirstAppear.swift in Sources */,
-				33976EFC0D92E4D7C58060E1 /* BluetoothRSSI.swift in Sources */,
+				AA194BDB2BBD68980000BD63 /* RSSI+Ext.swift in Sources */,
 				0183EFCA2897C196002E79A5 /* Status.swift in Sources */,
 				01FCADCD292571C30044904B /* Mock.swift in Sources */,
-				33976EBA0FF55A009B0C55ED /* WiFiRSSI.swift in Sources */,
 				339760CF1C795330A945D8CA /* CoreBluetoothTypeAliases.swift in Sources */,
 				339760D65C7C44D873D948A8 /* DeviceViewModel+Types.swift in Sources */,
 				339760F98E06FFC4EFB82EB1 /* AccessPointList+ViewModel.swift in Sources */,
