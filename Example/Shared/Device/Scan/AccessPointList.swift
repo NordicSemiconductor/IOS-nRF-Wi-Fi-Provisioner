@@ -38,17 +38,7 @@ struct AccessPointList: View {
                 List {
                     Section("Access Points") {
                         ForEach(viewModel.accessPoints) { accessPoint in
-                            HStack {
-                                Label(accessPoint.wifi.ssid, systemImage: accessPoint.wifi.isOpen ? "lock.open" : "lock")
-                                    .tint(Color.accentColor)
-                                
-                                Spacer()
-                                
-                                accessPoint.rssi.map {
-                                    RSSIView(rssi: RSSI(wifiLevel: $0))
-                                        .frame(maxWidth: 30, maxHeight: 20)
-                                }
-                            }
+                            APWiFiScanView(wiFiScan: accessPoint, selected: false)
                         }
                     }
                 }

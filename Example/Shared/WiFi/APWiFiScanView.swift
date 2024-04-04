@@ -15,40 +15,64 @@ struct APWiFiScanView: View {
     
     // MARK: Properties
     
-    private let scan: APWiFiScan
-    private let selected: Bool
+    private let isOpenNetwork: Bool
+    private let ssid: String
+    private let band: String
+    private let channel: String
+    private let security: String
+    private let rssi: RSSI
+    private let isSelected: Bool
     
     // MARK: Init
     
     init(scan: APWiFiScan, selected: Bool) {
-        self.scan = scan
-        self.selected = selected
+        self.isOpenNetwork = scan.authentication == .open
+        self.ssid = scan.ssid
+        self.band = scan.band.description
+        self.channel = "\(scan.channel)"
+        self.security = scan.authentication.description
+        self.rssi = RSSI(wifiLevel: scan.rssi)
+        self.isSelected = selected
+    }
+    
+    init(wiFiScan: AccessPointList.ViewModel.ScanResult, selected: Bool) {
+        self.isOpenNetwork = wiFiScan.wifi.isOpen
+        self.ssid = wiFiScan.wifi.ssid
+        self.band = wiFiScan.wifi.band?.description ?? "Unknown Band"
+        self.channel = "\(wiFiScan.wifi.channel)"
+        self.security = wiFiScan.wifi.auth?.description ?? "Unknown Security"
+        if let rssi = wiFiScan.rssi {
+            self.rssi = RSSI(wifiLevel: rssi)
+        } else {
+            self.rssi = RSSI.outOfRange
+        }
+        self.isSelected = selected
     }
     
     // MARK: View
     
     var body: some View {
         HStack(alignment: .firstTextBaseline) {
-            Image(systemName: scan.authentication == .open ? "lock.open" : "lock")
+            Image(systemName: isOpenNetwork ? "lock.open" : "lock")
             
             VStack(alignment: .leading) {
-                Text(scan.ssid).bold() + Text("  ") + Text("(\(scan.band.description))").font(.caption)
+                Text(ssid).bold() + Text("  ") + Text(band).font(.caption)
                 
-                Text("Channel: \(scan.channel)")
+                Text("Channel: \(channel)")
                     .font(.callout)
                 
-                Text("Security: \(scan.authentication.description)")
+                Text("Security: \(security)")
                     .font(.callout)
             }
             
             Spacer()
             
-            RSSIView(rssi: RSSI(wifiLevel: scan.rssi))
+            RSSIView(rssi: rssi)
                 .frame(maxWidth: 30, maxHeight: 20)
             
             Image(systemName: "checkmark")
                 .foregroundColor(.nordicBlue)
-                .isHidden(!selected)
+                .isHidden(!isSelected)
         }
     }
 }
