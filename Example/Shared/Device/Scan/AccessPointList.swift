@@ -37,8 +37,18 @@ struct AccessPointList: View {
             } else {
                 List {
                     Section("Access Points") {
-                        ForEach(viewModel.accessPoints) {
-                            channelPicker(accessPoint: $0)
+                        ForEach(viewModel.accessPoints) { accessPoint in
+                            HStack {
+                                Label(accessPoint.wifi.ssid, systemImage: accessPoint.wifi.isOpen ? "lock.open" : "lock")
+                                    .tint(Color.accentColor)
+                                
+                                Spacer()
+                                
+                                accessPoint.rssi.map {
+                                    RSSIView(rssi: RSSI(wifiLevel: $0))
+                                        .frame(maxWidth: 30, maxHeight: 20)
+                                }
+                            }
                         }
                     }
                 }
@@ -63,47 +73,6 @@ struct AccessPointList: View {
                 Text(message)
             }
         }
-    }
-    
-    @ViewBuilder
-    private func channelPicker(accessPoint: ViewModel.ScanResult) -> some View {
-        Picker(selection: $viewModel.selectedAccessPoint, content: {
-            Section {
-                ForEach(viewModel.allChannels(for: accessPoint.wifi), id: \.id) { channel in
-                    HStack {
-                        VStack(alignment: .leading) {
-                            Text("Channel \(channel.wifi.channel)")
-                            Text(channel.wifi.bssid.description)
-                                .font(.caption)
-                        }
-                        Spacer()
-                        VStack(alignment: .trailing) {
-                            channel.rssi.map {
-                                RSSIView(rssi: RSSI(wifiLevel: $0))
-                                    .frame(maxWidth: 30, maxHeight: 20)
-                            }
-                            Text(channel.wifi.band?.description ?? "- GHz")
-                                .font(.caption)
-                                .foregroundColor(.secondary)
-                        }
-                    }
-                    .tag(Optional(channel))
-                }
-            } header: {
-                Text("Select Channel")
-            }
-        }, label: {
-            HStack {
-                Label(accessPoint.wifi.ssid, systemImage: accessPoint.wifi.isOpen ? "lock.open" : "lock")
-                    .tint(Color.accentColor)
-                Spacer()
-                accessPoint.rssi.map {
-                    RSSIView(rssi: RSSI(wifiLevel: $0))
-                        .frame(maxWidth: 30, maxHeight: 20)
-                }
-            }
-        })
-        .navigationBarTitle("Select Access Point")
     }
 }
 

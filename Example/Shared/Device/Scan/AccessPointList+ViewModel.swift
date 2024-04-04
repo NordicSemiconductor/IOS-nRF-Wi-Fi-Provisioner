@@ -18,7 +18,7 @@ extension AccessPointList {
             let rssi: Int?
             
             var id: String {
-                wifi.bssid.description + (rssi.map { "\($0)" } ?? "")
+                wifi.bssid.description + "\(wifi.channel)"
             }
             
             static func == (lhs: ScanResult, rhs: ScanResult) -> Bool {
@@ -27,6 +27,7 @@ extension AccessPointList {
             
             func hash(into hasher: inout Hasher) {
                 hasher.combine(wifi.bssid)
+                hasher.combine(wifi.channel)
             }
         }
         
@@ -57,7 +58,7 @@ extension AccessPointList {
         @Published(initialValue: nil) var selectedAccessPointId: String? {
             didSet {
                 guard let selectedAccessPointId else { return }
-                self.selectedAccessPoint = allAccessPoints.first(where: \.id, isEqualsTo: selectedAccessPointId)?.wifi
+                self.selectedAccessPoint = accessPoints.first(where: \.id, isEqualsTo: selectedAccessPointId)?.wifi
             }
         }
         
@@ -78,36 +79,11 @@ extension AccessPointList {
             }
         }
         
-        private var allAccessPoints: Set<ScanResult> = [] {
-            didSet {
-                var aps: [ScanResult] = []
-                for ap in allAccessPoints {
-                    if let existing = aps.firstIndex(where: { $0.wifi.ssid == ap.wifi.ssid }) {
-                        if aps[existing].rssi < ap.rssi {
-                            aps[existing] = ap
-                        }
-                    } else {
-                        aps.append(ap)
-                    }
-                }
-                
-                self.logger.debug("Assigned access points: \(self.allAccessPoints.count)")
-                self.accessPoints = aps.sorted(by: { $0.wifi.ssid < $1.wifi.ssid })
-            }
-        }
-        
         func setupAndScan(provisioner: DeviceManager, wifiSelection: AccessPointSelection) {
             self.provisioner = provisioner
             self.provisioner.wiFiScanerDelegate = self
             self.accessPointSelection = wifiSelection
             self.startScan()
-        }
-        
-        func allChannels(for accessPoint: WifiInfo) -> [ScanResult] {
-            let array = Array(allAccessPoints)
-                .filter { $0.wifi.ssid == accessPoint.ssid }
-                .sorted { $0.rssi > $1.rssi }
-            return array
         }
         
         func startScan() {
@@ -121,7 +97,7 @@ extension AccessPointList {
 extension AccessPointList.ViewModel: WiFiScanerDelegate {
     func deviceManager(_ provisioner: NordicWiFiProvisioner_BLE.DeviceManager, discoveredAccessPoint wifi: NordicWiFiProvisioner_BLE.WifiInfo, rssi: Int?) {
         let scanResult = ScanResult(wifi: wifi, rssi: rssi)
-        allAccessPoints.insert(scanResult)
+        accessPoints.append(scanResult)
     }
     
     func deviceManagerDidStartScan(_ provisioner: NordicWiFiProvisioner_BLE.DeviceManager, error: Error?) {
