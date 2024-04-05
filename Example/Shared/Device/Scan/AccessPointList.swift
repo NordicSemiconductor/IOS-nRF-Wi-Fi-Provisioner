@@ -36,7 +36,12 @@ struct AccessPointList: View {
                 List {
                     Section("Access Points") {
                         ForEach(viewModel.accessPoints) { accessPoint in
-                            APWiFiScanView(wiFiScan: accessPoint, selected: false)
+                            APWiFiScanView(wiFiScan: accessPoint, selected: viewModel.selectedAccessPoint == accessPoint.wifi)
+                                .onTapGesture {
+                                    viewModel.selectedAccessPoint = accessPoint.wifi
+                                    presentationMode.wrappedValue.dismiss()
+                                }
+                                .tag(accessPoint.wifi)
                         }
                     }
                 }
