@@ -10,15 +10,10 @@ import Combine
 import os
 import NordicWiFiProvisioner_BLE
 
-protocol AccessPointSelection {
-    var selectedWiFi: WifiInfo? { get set }
-    var showAccessPointList: Bool { get set }
-}
-
 private let UnknownVersion = "Unknown"
 
 extension DeviceView {
-    class ViewModel: ObservableObject, AccessPointSelection {
+    class ViewModel: ObservableObject {
         @Published var provisioned = false
         @Published var provisionedState = StatusModifier.Status.ready
         @Published var version = UnknownVersion

@@ -58,7 +58,7 @@ struct DeviceView: View {
         }
         .sheet(isPresented: $viewModel.showAccessPointList) {
             NavigationView {
-                AccessPointList(provisioner: viewModel.provisioner, wifiSelection: viewModel)
+                AccessPointList(provisioner: viewModel.provisioner)
             }
             .navigationViewStyle(.stack)
             .onDisappear {

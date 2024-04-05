@@ -19,13 +19,11 @@ struct AccessPointList: View {
     @StateObject private var viewModel = ViewModel()
     
     let provisioner: DeviceManager
-    let wifiSelection: AccessPointSelection
     
     // MARK: Init
     
-    init(provisioner: DeviceManager, wifiSelection: AccessPointSelection) {
+    init(provisioner: DeviceManager) {
         self.provisioner = provisioner
-        self.wifiSelection = wifiSelection
     }
     
     // MARK: View
@@ -47,7 +45,7 @@ struct AccessPointList: View {
         }
         .navigationTitle("Wi-Fi")
         .onFirstAppear {
-            viewModel.setupAndScan(provisioner: provisioner, wifiSelection: wifiSelection)
+            viewModel.setupAndScan(provisioner: provisioner)
         }
         .toolbar {
             Button("Close") {
@@ -70,11 +68,6 @@ struct AccessPointList: View {
 
 #if DEBUG
 struct AccessPointList_Previews: PreviewProvider {
-    struct Selection: AccessPointSelection {
-        var selectedWiFi: NordicWiFiProvisioner_BLE.WifiInfo?
-        
-        var showAccessPointList: Bool = false
-    }
     
     class MockScanProvisioner: DeviceManager {
         typealias SR = AccessPointList.ViewModel.ScanResult
@@ -93,7 +86,7 @@ struct AccessPointList_Previews: PreviewProvider {
     }
     
     class DummyAccessPointListViewModel: AccessPointList.ViewModel {
-        override func setupAndScan(provisioner: DeviceManager, wifiSelection: AccessPointSelection) {
+        override func setupAndScan(provisioner: DeviceManager) {
             self.provisioner = MockScanProvisioner(deviceId: UUID())
             self.provisioner.wiFiScanerDelegate = self
             try? self.provisioner.startScan(scanParams: ScanParams())
@@ -103,8 +96,7 @@ struct AccessPointList_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
             AccessPointList(
-                provisioner: MockScanProvisioner(deviceId: UUID()),
-                wifiSelection: Selection()
+                provisioner: MockScanProvisioner(deviceId: UUID())
             )
         }
     }

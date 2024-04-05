@@ -35,9 +35,8 @@ extension AccessPointList {
         
         init() {}
         
-        init(provisioner: DeviceManager, accessPointSelection: AccessPointSelection) {
+        init(provisioner: DeviceManager) {
             self.provisioner = provisioner
-            self.accessPointSelection = accessPointSelection
         }
         
         deinit {
@@ -50,25 +49,11 @@ extension AccessPointList {
         private var cancellables = Set<AnyCancellable>()
         
         var provisioner: DeviceManager!
-        var accessPointSelection: AccessPointSelection!
         
         @Published(initialValue: []) var accessPoints: [ScanResult]
         @Published(initialValue: false) var isScanning: Bool
         
-        @Published(initialValue: nil) var selectedAccessPointId: String? {
-            didSet {
-                guard let selectedAccessPointId else { return }
-                self.selectedAccessPoint = accessPoints.first(where: \.id, isEqualsTo: selectedAccessPointId)?.wifi
-            }
-        }
-        
-        @Published(initialValue: nil) var selectedAccessPoint: WifiInfo? {
-            didSet {
-                guard let selectedAccessPoint else { return }
-                accessPointSelection.selectedWiFi = selectedAccessPoint
-                accessPointSelection.showAccessPointList = false
-            }
-        }
+        @Published(initialValue: nil) var selectedAccessPoint: WifiInfo?
         
         @Published(initialValue: false) var showError: Bool
         var error: ReadableError? {
@@ -79,10 +64,9 @@ extension AccessPointList {
             }
         }
         
-        func setupAndScan(provisioner: DeviceManager, wifiSelection: AccessPointSelection) {
+        func setupAndScan(provisioner: DeviceManager) {
             self.provisioner = provisioner
             self.provisioner.wiFiScanerDelegate = self
-            self.accessPointSelection = wifiSelection
             self.startScan()
         }
         
