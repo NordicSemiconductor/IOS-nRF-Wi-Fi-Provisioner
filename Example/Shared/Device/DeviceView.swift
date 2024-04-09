@@ -88,16 +88,12 @@ struct DeviceView: View {
                 
                 AccessPointSection(
                     viewModel: viewModel,
-                    ssid: viewModel.wifiNetwork.ssid,
-                    bssid: viewModel.wifiNetwork.bssid,
-                    band: viewModel.wifiNetwork.band,
-                    channel: viewModel.wifiNetwork.channel.map { "\($0)" },
-                    auth: viewModel.wifiNetwork.security?.description,
-                    showPassword: viewModel.wifiNetwork.showPassword,
+                    wifi: viewModel.wifiNetwork,
+                    showPassword: viewModel.showPassword,
                     footer: viewModel.infoFooter,
-                    showVolatileMemory: viewModel.wifiNetwork.showVolatileMemory,
+                    showVolatileMemory: viewModel.showVolatileMemory,
                     password: $viewModel.password,
-                    volatileMemory: $viewModel.wifiNetwork.volatileMemory,
+                    volatileMemory: $viewModel.volatileMemory,
                     showAccessPointList: $viewModel.showAccessPointList
                 )
             }

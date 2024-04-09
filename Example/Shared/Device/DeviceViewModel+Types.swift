@@ -3,6 +3,7 @@
 //
 
 import Foundation
+import NordicWiFiProvisioner_BLE
 
 extension DeviceView.ViewModel {
     struct ProvisionButtonState {
@@ -50,31 +51,6 @@ extension DeviceView.ViewModel {
             self.showStatus = showStatus
             self.ipAddress = ipAddress
             self.showIpAddress = showIpAddress
-        }
-    }
-
-    struct WiFiNetwork {
-        var ssid: String
-        var channel: UInt?
-        var bssid: String?
-        var band: String?
-        var security: String?
-        var enabled: Bool
-
-        var showPassword: Bool
-
-        var volatileMemory: Bool
-        var showVolatileMemory: Bool
-        
-        init(ssid: String = "Not Selected", bssid: String? = nil, channel: UInt? = nil, security: String? = nil, enabled: Bool = true, showPassword: Bool = false, volatileMemory: Bool = true, showVolatileMemory: Bool = false) {
-            self.ssid = ssid
-            self.bssid = bssid
-            self.channel = channel
-            self.security = security
-            self.enabled = enabled
-            self.showPassword = showPassword
-            self.volatileMemory = volatileMemory
-            self.showVolatileMemory = showVolatileMemory
         }
     }
 

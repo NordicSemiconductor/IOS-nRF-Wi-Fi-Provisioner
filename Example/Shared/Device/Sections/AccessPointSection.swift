@@ -10,12 +10,7 @@ import NordicWiFiProvisioner_BLE
 
 struct AccessPointSection: View {
     let viewModel: DeviceView.ViewModel
-    
-    let ssid: String
-    let bssid: String?
-    let band: String?
-    let channel: String?
-    let auth: String?
+    let wifi: WifiInfo?
     
     let showPassword: Bool
     let footer: String?
@@ -29,8 +24,8 @@ struct AccessPointSection: View {
         Section {
             accessPointSelector
             
-            if !([bssid, band, channel, auth].compactMap { $0 }.isEmpty) {
-                additionalInfo()
+            if let wifi {
+                additionalInfo(wifi)
             }
             
             if showPassword {
@@ -60,7 +55,7 @@ struct AccessPointSection: View {
                     NordicLabel("Access Point", systemImage: "wifi.circle")
                     Spacer()
                     ReversedLabel {
-                        Text(ssid)
+                        Text(wifi?.ssid ?? "Not Selected")
                     } image: {
                         Image(systemName: "chevron.forward")
                     }
@@ -74,12 +69,12 @@ struct AccessPointSection: View {
     }
     
     @ViewBuilder
-    func additionalInfo() -> some View {
+    func additionalInfo(_ wifi: WifiInfo) -> some View {
         VStack {
-            channel.map { DetailRow(title: "Channel", details: $0) }
-            bssid.map { DetailRow(title: "BSSID", details: $0) }
-            band.map { DetailRow(title: "Band", details: $0) }
-            auth.map { DetailRow(title: "Security", details: $0) }
+            DetailRow(title: "Channel", details: "\(wifi.channel)")
+            DetailRow(title: "BSSID", details: wifi.bssid.description)
+            DetailRow(title: "Band", details: wifi.band?.description ?? "Unknown Band")
+            DetailRow(title: "Security", details: wifi.auth?.description ?? "Unknown Security")
         }
     }
 }
@@ -127,11 +122,7 @@ struct AccessPointSection_Previews: PreviewProvider {
         Form {
             AccessPointSection(
                 viewModel: MockDeviceViewModel(deviceId: ""),
-                ssid: wf1.ssid,
-                bssid: wf1.bssid.description,
-                band: wf1.band!.description,
-                channel: "\(wf1.channel)",
-                auth: wf1.auth!.description,
+                wifi: wf1,
                 showPassword: true,
                 footer: "WIFI_NOT_PROVISIONED_FOOTER",
                 showVolatileMemory: true,

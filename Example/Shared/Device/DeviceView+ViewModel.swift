@@ -18,7 +18,9 @@ extension DeviceView {
         @Published var provisionedState = StatusModifier.Status.ready
         @Published var version = UnknownVersion
         @Published var connectionStatus = WiFiConnectionStatus()
-        @Published var wifiNetwork = WiFiNetwork()
+        @Published var showPassword = false
+        @Published var showVolatileMemory = false
+        @Published var volatileMemory = false
         @Published var buttonConfiguration = ButtonsConfig()
         
         @Published var showAccessPointList = false
@@ -33,16 +35,10 @@ extension DeviceView {
             }
         }
         
-        var selectedWiFi: WifiInfo? {
-            didSet {
-                wifiNetwork.ssid = selectedWiFi?.ssid ?? "n/a"
-                wifiNetwork.channel = selectedWiFi?.channel
-                wifiNetwork.bssid = selectedWiFi?.bssid.description
-                wifiNetwork.band = selectedWiFi?.band?.description
-                wifiNetwork.security = selectedWiFi?.auth?.description
+        @Published(initialValue: nil) var wifiNetwork: WifiInfo? {
+            didSet(newValue) {
+                wifiNetwork = newValue
                 
-                wifiNetwork.showVolatileMemory = true
-                wifiNetwork.showPassword = passwordRequired
                 password = ""
                 infoFooter = ""
                 
@@ -53,13 +49,13 @@ extension DeviceView {
         }
 
         var passwordRequired: Bool {
-            selectedWiFi?.auth?.isOpen == false
+            wifiNetwork?.auth?.isOpen == false
         }
 
         var error: ReadableError? {
             didSet {
                 if error != nil {
-                    self.showError = true
+                    showError = true
                 }
             }
         }
@@ -108,7 +104,7 @@ extension DeviceView.ViewModel {
     }
     
     func startProvision() throws {
-        guard let selectedWiFi else {
+        guard let wifiNetwork else {
             return
         }
         
@@ -120,7 +116,7 @@ extension DeviceView.ViewModel {
         
         setBothButton(enabled: false)
         
-        try provisioner.setConfig(wifi: selectedWiFi, passphrase: password, volatileMemory: wifiNetwork.volatileMemory)
+        try provisioner.setConfig(wifi: wifiNetwork, passphrase: password, volatileMemory: volatileMemory)
     }
     
     func unprovision() throws {
@@ -173,12 +169,7 @@ extension DeviceView.ViewModel: InfoDelegate {
                 buttonConfiguration.showUnsetButton = true
                 updateProvisionedComponentVisibility(provisioned: true)
                 
-                wifiNetwork.ssid = wifi.ssid
-                wifiNetwork.channel = wifi.channel
-                wifiNetwork.bssid = wifi.bssid.description
-                if let band = wifi.band?.description {
-                    wifiNetwork.band = band
-                }
+                wifiNetwork = wifi
                 
                 if let connectinStatus = success.state {
                     self.connectionStatus.status = connectinStatus.description
@@ -228,15 +219,14 @@ extension DeviceView.ViewModel: ProvisionDelegate {
             buttonConfiguration.enabledProvisionButton = false
             buttonConfiguration.showUnsetButton = true
             
-            wifiNetwork.showPassword = false
-            wifiNetwork.showVolatileMemory = false
-            
             self.provisioned = true
             self.provisionedState = .done
             self.connectionStatus.showIpAddress = false
             self.connectionStatus.showStatus = true
             self.connectionStatus.status = ConnectionState.disconnected.description
             self.connectionStatus.statusProgressState = .inProgress
+            self.showPassword = false
+            self.showVolatileMemory = false
         }
         updateButtonState()
     }
@@ -260,8 +250,7 @@ extension DeviceView.ViewModel: ProvisionDelegate {
             connectionStatus.showIpAddress = false
             connectionStatus.statusProgressState = .ready
             buttonConfiguration.showUnsetButton = false
-            
-            wifiNetwork = WiFiNetwork()
+            wifiNetwork = nil
             
             infoFooter = NSLocalizedString("WIFI_NOT_PROVISIONED_FOOTER", comment: "")
         }
