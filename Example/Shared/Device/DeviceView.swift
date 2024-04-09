@@ -30,13 +30,6 @@ struct DeviceView: View {
                     } message: {
                         Text("Are you sure that you want to unset the configuration?")
                     }
-                    .alert(viewModel.error?.title ?? "Error", isPresented: $viewModel.showError) {
-                        Button("Cancel", role: .cancel) {}
-                    } message: {
-                        if let message = viewModel.error?.message {
-                            Text(message)
-                        }
-                    }
             case .disconnected(let reason):
                 switch reason {
                 case .byRequest:
@@ -64,6 +57,17 @@ struct DeviceView: View {
             .navigationViewStyle(.stack)
             .onDisappear {
                 try? viewModel.provisioner.stopScan()
+            }
+        }
+        .alert(viewModel.error?.title ?? "Error", isPresented: $viewModel.showError) {
+            Button("OK", role: .cancel) {
+                // No-op.
+                viewModel.error = nil
+                viewModel.showError = false
+            }
+        } message: {
+            if let message = viewModel.error?.message {
+                Text(message)
             }
         }
     }
@@ -151,8 +155,6 @@ struct DeviceView_Previews: PreviewProvider {
             )
             .navigationTitle("Device Name")
         }
-//        .setupNavBarBackground()
-//        .tint(.nordicBlue)
         .previewDisplayName("iPhone 14 Pro")
         .previewDevice(PreviewDevice(rawValue: "iPhone 14 Pro"))
     }

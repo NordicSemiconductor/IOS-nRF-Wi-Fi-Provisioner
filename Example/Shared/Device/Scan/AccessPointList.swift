@@ -50,14 +50,5 @@ struct AccessPointList: View {
                 presentationMode.wrappedValue.dismiss()
             }
         }
-        .alert(viewModel.error?.title ?? "Error", isPresented: $viewModel.showError) {
-            Button("Cancel", role: .cancel) {
-                // No-op.
-            }
-        } message: {
-            if let message = viewModel.error?.message {
-                Text(message)
-            }
-        }
     }
 }
