@@ -26,7 +26,9 @@ struct DeviceView: View {
                         Button("Unset", role: .destructive) {
                             try? viewModel.unprovision()
                         }
-                        Button("Cancel", role: .cancel) { }
+                        Button("Cancel", role: .cancel) {
+                            // No-op.
+                        }
                     } message: {
                         Text("Are you sure that you want to unset the configuration?")
                     }
@@ -34,8 +36,8 @@ struct DeviceView: View {
                 switch reason {
                 case .byRequest:
                     Placeholder(text: "Disconnected", image: "bluetooth_disabled")
-                case .error(_):
-                    Placeholder(text: "The device was disconnected unexpectedly.", image: "bluetooth_disabled", action: {
+                case .error(let error):
+                    Placeholder(text: "The device was disconnected unexpectedly: \(error.localizedDescription)", image: "bluetooth_disabled", action: {
                         Button("Reconnect") {
                             Task {
                                 self.viewModel.connect()
@@ -61,7 +63,6 @@ struct DeviceView: View {
         }
         .alert(viewModel.error?.title ?? "Error", isPresented: $viewModel.showError) {
             Button("OK", role: .cancel) {
-                // No-op.
                 viewModel.error = nil
                 viewModel.showError = false
             }
@@ -90,6 +91,9 @@ struct DeviceView: View {
                     ip: viewModel.connectionStatus.ipAddress,
                     showIp: viewModel.connectionStatus.showIpAddress
                 )
+                
+                ScannerSection()
+                    .environmentObject(viewModel)
                 
                 AccessPointSection(
                     viewModel: viewModel,

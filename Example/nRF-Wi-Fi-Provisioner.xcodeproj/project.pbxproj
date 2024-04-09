@@ -95,6 +95,8 @@
 		AA49E0592BB5A34100CDD6FA /* iOSCommonLibraries in Frameworks */ = {isa = PBXBuildFile; productRef = AA49E0582BB5A34100CDD6FA /* iOSCommonLibraries */; };
 		AA9ED5C12BC55D4100FAC49D /* WifiScanResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9ED5C02BC55D4100FAC49D /* WifiScanResult.swift */; };
 		AA9ED5C22BC55D4100FAC49D /* WifiScanResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9ED5C02BC55D4100FAC49D /* WifiScanResult.swift */; };
+		AA9ED5C42BC56D1A00FAC49D /* ScannerSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9ED5C32BC56D1A00FAC49D /* ScannerSection.swift */; };
+		AA9ED5C52BC56D1A00FAC49D /* ScannerSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9ED5C32BC56D1A00FAC49D /* ScannerSection.swift */; };
 		AAAAE6C52B7F813D000BB569 /* AppViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAAAE6C42B7F813D000BB569 /* AppViewModel.swift */; };
 		AAAAE6C62B7F813D000BB569 /* AppViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAAAE6C42B7F813D000BB569 /* AppViewModel.swift */; };
 		F3352A79C570A238BE14A103 /* Pods_Tests_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 812A6D15A792E144AE0603B4 /* Pods_Tests_iOS.framework */; };
@@ -186,6 +188,7 @@
 		AA3806D12BBACC8D003C8256 /* Placeholder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Placeholder.swift; sourceTree = "<group>"; };
 		AA49E0552BB584B200CDD6FA /* APWiFiScanView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APWiFiScanView.swift; sourceTree = "<group>"; };
 		AA9ED5C02BC55D4100FAC49D /* WifiScanResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WifiScanResult.swift; sourceTree = "<group>"; };
+		AA9ED5C32BC56D1A00FAC49D /* ScannerSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerSection.swift; sourceTree = "<group>"; };
 		AAAAE6C42B7F813D000BB569 /* AppViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppViewModel.swift; sourceTree = "<group>"; };
 		B0E3B88F586B3A345D3E1221 /* Pods-nRF-Wi-Fi-Provisioner (iOS).debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-nRF-Wi-Fi-Provisioner (iOS).debug.xcconfig"; path = "Target Support Files/Pods-nRF-Wi-Fi-Provisioner (iOS)/Pods-nRF-Wi-Fi-Provisioner (iOS).debug.xcconfig"; sourceTree = "<group>"; };
 		DDE5F19186647A484BC6DD82 /* Pods_nRF_Wi_Fi_Provisioner__iOS_.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_nRF_Wi_Fi_Provisioner__iOS_.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -471,6 +474,7 @@
 				01FCADBA291D47600044904B /* DeviceSection.swift */,
 				01FCADBE291D4AA00044904B /* StatusIndicatorView.swift */,
 				01FCADBC291D482B0044904B /* DeviceStatusSection.swift */,
+				AA9ED5C32BC56D1A00FAC49D /* ScannerSection.swift */,
 				01FCADC0291D4C9F0044904B /* AccessPointSection.swift */,
 			);
 			path = Sections;
@@ -811,6 +815,7 @@
 				01481ABA2852093000925FAB /* nRF_Wi_Fi_ProvisionerApp.swift in Sources */,
 				015845CC288FD5A900C7E4B7 /* AccessPointList.swift in Sources */,
 				AA2C11982B7A53F1003AF3E0 /* SelectorView.swift in Sources */,
+				AA9ED5C42BC56D1A00FAC49D /* ScannerSection.swift in Sources */,
 				AA49E0562BB584B200CDD6FA /* APWiFiScanView.swift in Sources */,
 				019D1D2E29128E96000D8BD4 /* AuthMode+Ext.swift in Sources */,
 				0183EFCD2897C446002E79A5 /* ReversedLabel.swift in Sources */,
@@ -845,6 +850,7 @@
 			files = (
 				AAAAE6C62B7F813D000BB569 /* AppViewModel.swift in Sources */,
 				018F20CB2B8772CD00D5A351 /* NoContentView.swift in Sources */,
+				AA9ED5C52BC56D1A00FAC49D /* ScannerSection.swift in Sources */,
 				01481ABD2852093000925FAB /* IntroView.swift in Sources */,
 				AA3806D32BBACC8D003C8256 /* Placeholder.swift in Sources */,
 				01A43DEF2886FED80025A5C4 /* DeviceView+ViewModel.swift in Sources */,
