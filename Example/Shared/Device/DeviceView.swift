@@ -73,15 +73,8 @@ struct DeviceView: View {
                 ScannerSection()
                     .environmentObject(viewModel)
                 
-                AccessPointSection(
-                    viewModel: viewModel,
-                    wifi: viewModel.wifiNetwork,
-                    showPassword: viewModel.showPassword,
-                    footer: viewModel.infoFooter,
-                    showVolatileMemory: viewModel.showVolatileMemory,
-                    password: $viewModel.password,
-                    volatileMemory: $viewModel.volatileMemory
-                )
+                AccessPointSection()
+                    .environmentObject(viewModel)
             }
             
             Spacer()

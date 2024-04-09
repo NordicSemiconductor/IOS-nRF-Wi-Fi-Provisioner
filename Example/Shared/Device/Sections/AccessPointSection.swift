@@ -9,33 +9,28 @@ import SwiftUI
 import NordicWiFiProvisioner_BLE
 
 struct AccessPointSection: View {
-    let viewModel: DeviceView.ViewModel
-    let wifi: WifiInfo?
     
-    let showPassword: Bool
-    let footer: String?
-    var showVolatileMemory: Bool
+    // MARK: Properties
     
-    @Binding var password: String
-    @Binding var volatileMemory: Bool
+    @EnvironmentObject private var viewModel: DeviceView.ViewModel
+    
+    // MARK: View
     
     var body: some View {
         Section {
             accessPointSelector
             
-            if let wifi {
+            if let wifi = viewModel.wifiNetwork {
                 additionalInfo(wifi)
+                
+                SecureField("Password", text: $viewModel.password)
             }
             
-            if showPassword {
-                SecureField("Password", text: $password)
-            }
-            
-            if showVolatileMemory {
+            if viewModel.showVolatileMemory {
                 HStack {
                     Text("Volatile Memory")
                     Spacer()
-                    Toggle("", isOn: $volatileMemory)
+                    Toggle("", isOn: $viewModel.volatileMemory)
                         .toggleStyle(SwitchToggleStyle(tint: .nordicBlue))
                         .accessibilityIdentifier("volatile_memory_toggle")
                 }
@@ -43,7 +38,7 @@ struct AccessPointSection: View {
         } header: {
             Text("Access Point")
         } footer: {
-            footer.map { Text($0) }
+            Text(viewModel.infoFooter)
         }
     }
     
@@ -52,9 +47,11 @@ struct AccessPointSection: View {
         VStack {
             HStack {
                 NordicLabel("Access Point", systemImage: "wifi.circle")
+                
                 Spacer()
+                
                 ReversedLabel {
-                    Text(wifi?.ssid ?? "Not Selected")
+                    Text(viewModel.wifiNetwork?.ssid ?? "Not Selected")
                 } image: {
                     Image(systemName: "chevron.forward")
                 }
@@ -96,36 +93,3 @@ private struct DetailRow: View {
         .frame(maxHeight: 12)
     }
 }
-
-#if DEBUG
-private extension MACAddress {
-    static func random() -> MACAddress {
-        var arr: [UInt8] = []
-        for _ in 0..<6 {
-            arr.append(UInt8.random(in: 0...0xFF))
-        }
-        let data = Data(arr)
-        return MACAddress(data: data)!
-    }
-}
-
-struct AccessPointSection_Previews: PreviewProvider {
-    static let wf1 = WifiInfo(ssid: "Open", bssid: MACAddress.random(), band: .band24Gh, channel: 1, auth: .open)
-    static let wf2 = WifiInfo(ssid: "WPA 2", bssid: MACAddress.random(), band: .band5Gh, channel: 2, auth: .wpa2Psk)
-    static let wf3 = WifiInfo(ssid: "wpa3Psk", bssid: MACAddress.random(), band: .band24Gh, channel: 3, auth: .wpa3Psk)
-    
-    static var previews: some View {
-        Form {
-            AccessPointSection(
-                viewModel: MockDeviceViewModel(deviceId: ""),
-                wifi: wf1,
-                showPassword: true,
-                footer: "WIFI_NOT_PROVISIONED_FOOTER",
-                showVolatileMemory: true,
-                password: .constant("qwerty"),
-                volatileMemory: .constant(true)
-            )
-        }
-    }
-}
-#endif
