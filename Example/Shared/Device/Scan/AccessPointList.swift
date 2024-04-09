@@ -16,15 +16,7 @@ struct AccessPointList: View {
     // MARK: Properties
     
     @Environment(\.presentationMode) var presentationMode
-    @StateObject private var viewModel = ViewModel()
-    
-    let provisioner: DeviceManager
-    
-    // MARK: Init
-    
-    init(provisioner: DeviceManager) {
-        self.provisioner = provisioner
-    }
+    @EnvironmentObject private var viewModel: DeviceView.ViewModel
     
     // MARK: View
     
@@ -36,9 +28,9 @@ struct AccessPointList: View {
                 List {
                     Section("Access Points") {
                         ForEach(viewModel.accessPoints) { accessPoint in
-                            APWiFiScanView(wiFiScan: accessPoint, selected: viewModel.selectedAccessPoint == accessPoint.wifi)
+                            APWiFiScanView(wiFiScan: accessPoint, selected: viewModel.wifiNetwork == accessPoint.wifi)
                                 .onTapGesture {
-                                    viewModel.selectedAccessPoint = accessPoint.wifi
+                                    viewModel.wifiNetwork = accessPoint.wifi
                                     presentationMode.wrappedValue.dismiss()
                                 }
                                 .tag(accessPoint.wifi)
@@ -50,10 +42,11 @@ struct AccessPointList: View {
         }
         .navigationTitle("Wi-Fi")
         .onFirstAppear {
-            viewModel.setupAndScan(provisioner: provisioner)
+            viewModel.startScanning()
         }
         .toolbar {
             Button("Close") {
+                viewModel.stopScanning()
                 presentationMode.wrappedValue.dismiss()
             }
         }
@@ -68,41 +61,3 @@ struct AccessPointList: View {
         }
     }
 }
-
-// MARK: - Preview
-
-#if DEBUG
-struct AccessPointList_Previews: PreviewProvider {
-    
-    class MockScanProvisioner: DeviceManager {
-        override func startScan(scanParams: ScanParams) throws {
-            let scanResults = [
-                WifiScanResult(wifi: .wifi1, rssi: -40),
-                WifiScanResult(wifi: .wifi2, rssi: -60),
-                WifiScanResult(wifi: .wifi3, rssi: -80),
-                WifiScanResult(wifi: .wifi4, rssi: -100),
-            ]
-            
-            for sr in scanResults {
-                self.wiFiScanerDelegate?.deviceManager(DeviceManager(deviceId: UUID()), discoveredAccessPoint: sr.wifi, rssi: sr.rssi)
-            }
-        }
-    }
-    
-    class DummyAccessPointListViewModel: AccessPointList.ViewModel {
-        override func setupAndScan(provisioner: DeviceManager) {
-            self.provisioner = MockScanProvisioner(deviceId: UUID())
-            self.provisioner.wiFiScanerDelegate = self
-            try? self.provisioner.startScan(scanParams: ScanParams())
-        }
-    }
-    
-    static var previews: some View {
-        NavigationView {
-            AccessPointList(
-                provisioner: MockScanProvisioner(deviceId: UUID())
-            )
-        }
-    }
-}
-#endif

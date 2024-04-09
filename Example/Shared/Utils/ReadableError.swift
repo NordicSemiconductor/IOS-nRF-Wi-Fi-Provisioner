@@ -34,7 +34,7 @@ extension TitleMessageError {
         self.message = error.localizedDescription
     }
 
-    init(error: Error) {
+    init(_ error: Error) {
         if let e = error as? ProvisionerError {
             self.init(provError: e)
         } else {

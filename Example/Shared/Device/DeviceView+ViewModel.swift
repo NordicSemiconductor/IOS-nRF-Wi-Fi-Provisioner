@@ -38,14 +38,10 @@ extension DeviceView {
         }
         
         @Published(initialValue: nil) var wifiNetwork: WifiInfo? {
-            didSet(newValue) {
-                wifiNetwork = newValue
-                
+            didSet {
                 password = ""
                 infoFooter = ""
-                
                 buttonConfiguration.enabledProvisionButton = !passwordRequired
-                
                 updateButtonState()
             }
         }
@@ -70,7 +66,8 @@ extension DeviceView {
             self.provisioner = DeviceManager(deviceId: UUID(uuidString: deviceId)!)
             self.provisioner.infoDelegate = self
             self.provisioner.connectionDelegate = self
-            self.provisioner.provisionerDelegate = self 
+            self.provisioner.provisionerDelegate = self
+            self.provisioner.wiFiScanerDelegate = self
         }
         
         init(provisioner: DeviceManager) {
@@ -79,6 +76,7 @@ extension DeviceView {
             self.provisioner.infoDelegate = self
             self.provisioner.connectionDelegate = self
             self.provisioner.provisionerDelegate = self
+            self.provisioner.wiFiScanerDelegate = self
         }
 
         let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "nordic", category: "DeviceViewModel")
@@ -98,6 +96,22 @@ extension DeviceView.ViewModel {
             self.peripheralConnectionStatus = .connected
         default:
             break
+        }
+    }
+    
+    func startScanning() {
+        do {
+            try provisioner.startScan(scanParams: ScanParams())
+        } catch {
+            self.error = TitleMessageError(error)
+        }
+    }
+    
+    func stopScanning() {
+        do {
+            try provisioner.stopScan()
+        } catch {
+            self.error = TitleMessageError(error)
         }
     }
     
@@ -131,6 +145,7 @@ extension DeviceView.ViewModel {
 // MARK: - ConnectionDelegate
 
 extension DeviceView.ViewModel: ConnectionDelegate {
+    
     func deviceManagerDidFailToConnect(_ provisioner: NordicWiFiProvisioner_BLE.DeviceManager, error: Error) {
         peripheralConnectionStatus = .disconnected(.error(error))
     }
@@ -162,7 +177,7 @@ extension DeviceView.ViewModel: InfoDelegate {
         case .success(let success):
             self.version = "\(success)"
         case .failure(let error):
-            self.error = TitleMessageError(error: error)
+            self.error = TitleMessageError(error)
             self.version = "Error"
         }
     }
@@ -208,8 +223,8 @@ extension DeviceView.ViewModel: InfoDelegate {
                 
                 infoFooter = NSLocalizedString("WIFI_NOT_PROVISIONED_FOOTER", comment: "")
             }
-        case .failure(let failure):
-            self.error = TitleMessageError(error: failure)
+        case .failure(let cause):
+            self.error = TitleMessageError(cause)
         }
     }
 }
@@ -225,13 +240,13 @@ extension DeviceView.ViewModel: WiFiScanerDelegate {
     
     func deviceManagerDidStartScan(_ provisioner: NordicWiFiProvisioner_BLE.DeviceManager, error: Error?) {
         if let error {
-            self.error = TitleMessageError(error: error)
+            self.error = TitleMessageError(error)
         }
     }
     
     func deviceManagerDidStopScan(_ provisioner: NordicWiFiProvisioner_BLE.DeviceManager, error: Error?) {
         if let error {
-            self.error = TitleMessageError(error: error)
+            self.error = TitleMessageError(error)
         }
     }
 }
@@ -243,7 +258,7 @@ extension DeviceView.ViewModel: ProvisionDelegate {
     func deviceManagerDidSetConfig(_ deviceManager: NordicWiFiProvisioner_BLE.DeviceManager, error: Error?) {
         buttonConfiguration.enabledUnsetButton = true
         if let error {
-            self.error = TitleMessageError(error: error)
+            self.error = TitleMessageError(error)
             buttonConfiguration.enabledProvisionButton = true
         } else {
             password = ""
@@ -274,7 +289,7 @@ extension DeviceView.ViewModel: ProvisionDelegate {
     
     func deviceManagerDidForgetConfig(_ deviceManager: DeviceManager, error: Error?) {
         if let error {
-            self.error = TitleMessageError(error: error)
+            self.error = TitleMessageError(error)
         } else {
             provisioned = false
             provisionedState = .ready

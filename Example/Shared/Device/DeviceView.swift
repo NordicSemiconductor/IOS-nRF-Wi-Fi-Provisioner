@@ -58,7 +58,8 @@ struct DeviceView: View {
         }
         .sheet(isPresented: $viewModel.showAccessPointList) {
             NavigationView {
-                AccessPointList(provisioner: viewModel.provisioner)
+                AccessPointList()
+                    .environmentObject(viewModel)
             }
             .navigationViewStyle(.stack)
             .onDisappear {
