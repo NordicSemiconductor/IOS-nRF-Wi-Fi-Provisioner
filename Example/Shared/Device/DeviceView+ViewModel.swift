@@ -13,6 +13,7 @@ import NordicWiFiProvisioner_BLE
 private let UnknownVersion = "Unknown"
 
 extension DeviceView {
+    
     class ViewModel: ObservableObject {
         @Published var provisioned = false
         @Published var provisionedState = StatusModifier.Status.ready
@@ -25,6 +26,7 @@ extension DeviceView {
         
         @Published var showAccessPointList = false
         @Published var showError = false
+        @Published(initialValue: []) var accessPoints: [WifiScanResult]
         
         @Published var peripheralConnectionStatus = PeripheralConnectionStatus.disconnected(.byRequest)
         @Published var infoFooter = ""
@@ -80,22 +82,25 @@ extension DeviceView {
         }
 
         let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "nordic", category: "DeviceViewModel")
-
-        func connect() {
-            switch provisioner.connectionState {
-            case .disconnected, .disconnecting:
-                provisioner.connect()
-                self.peripheralConnectionStatus = .connecting
-            case .connected:
-                self.peripheralConnectionStatus = .connected
-            default:
-                break
-            }
-        }
     }
 }
 
+// MARK: - API
+
 extension DeviceView.ViewModel {
+    
+    func connect() {
+        switch provisioner.connectionState {
+        case .disconnected, .disconnecting:
+            provisioner.connect()
+            self.peripheralConnectionStatus = .connecting
+        case .connected:
+            self.peripheralConnectionStatus = .connected
+        default:
+            break
+        }
+    }
+    
     func readInformation() throws {
         try provisioner.readVersion()
         try provisioner.readDeviceStatus()
@@ -123,6 +128,8 @@ extension DeviceView.ViewModel {
     }
 }
 
+// MARK: - ConnectionDelegate
+
 extension DeviceView.ViewModel: ConnectionDelegate {
     func deviceManagerDidFailToConnect(_ provisioner: NordicWiFiProvisioner_BLE.DeviceManager, error: Error) {
         peripheralConnectionStatus = .disconnected(.error(error))
@@ -146,6 +153,8 @@ extension DeviceView.ViewModel: ConnectionDelegate {
         }
     }
 }
+
+// MARK: - InfoDelegate
 
 extension DeviceView.ViewModel: InfoDelegate {
     func versionReceived(_ version: Result<Int, ProvisionerInfoError>) {
@@ -205,7 +214,32 @@ extension DeviceView.ViewModel: InfoDelegate {
     }
 }
 
+// MARK: - WiFiScanerDelegate
+
+extension DeviceView.ViewModel: WiFiScanerDelegate {
+    
+    func deviceManager(_ provisioner: NordicWiFiProvisioner_BLE.DeviceManager, discoveredAccessPoint wifi: NordicWiFiProvisioner_BLE.WifiInfo, rssi: Int?) {
+        let scanResult = WifiScanResult(wifi: wifi, rssi: rssi)
+        accessPoints.append(scanResult)
+    }
+    
+    func deviceManagerDidStartScan(_ provisioner: NordicWiFiProvisioner_BLE.DeviceManager, error: Error?) {
+        if let error {
+            self.error = TitleMessageError(error: error)
+        }
+    }
+    
+    func deviceManagerDidStopScan(_ provisioner: NordicWiFiProvisioner_BLE.DeviceManager, error: Error?) {
+        if let error {
+            self.error = TitleMessageError(error: error)
+        }
+    }
+}
+
+// MARK: - ProvisionDelegate
+
 extension DeviceView.ViewModel: ProvisionDelegate {
+    
     func deviceManagerDidSetConfig(_ deviceManager: NordicWiFiProvisioner_BLE.DeviceManager, error: Error?) {
         buttonConfiguration.enabledUnsetButton = true
         if let error {
@@ -255,18 +289,21 @@ extension DeviceView.ViewModel: ProvisionDelegate {
     }
 }
 
-extension DeviceView.ViewModel {
-    private func updateProvisionedComponentVisibility(provisioned: Bool) {
+// MARK: - Private
+
+private extension DeviceView.ViewModel {
+    
+    func updateProvisionedComponentVisibility(provisioned: Bool) {
         connectionStatus.showStatus = provisioned
         connectionStatus.showIpAddress = provisioned
     }
     
-    private func setBothButton(enabled: Bool) {
+    func setBothButton(enabled: Bool) {
         buttonConfiguration.enabledProvisionButton = enabled
         buttonConfiguration.enabledUnsetButton = enabled
     }
     
-    private func updateButtonState() {
+    func updateButtonState() {
         if provisioned {
             buttonConfiguration.provisionButtonTitle = "Update Configuration"
         } else {
