@@ -67,10 +67,8 @@ struct DeviceView: View {
     var deviceInfo: some View {
         VStack {
             Form {
-                DeviceSection(
-                    provisioned: viewModel.provisioned,
-                    provisionState: viewModel.provisionedState
-                )
+                DeviceSection()
+                    .environmentObject(viewModel)
                 
                 DeviceStatusSection(
                     version: viewModel.version,

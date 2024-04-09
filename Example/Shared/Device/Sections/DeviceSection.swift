@@ -7,9 +7,15 @@
 
 import SwiftUI
 
+// MARK: - DeviceSection
+
 struct DeviceSection: View {
-    let provisioned: Bool
-    let provisionState: StatusModifier.Status
+    
+    // MARK: Properties
+    
+    @EnvironmentObject private var viewModel: DeviceView.ViewModel
+    
+    // MARK: View
     
     var body: some View {
         Section("Device") {
@@ -17,18 +23,10 @@ struct DeviceSection: View {
                 NordicLabel("Status", image: "bluetooth")
                 
                 Spacer()
-                Text(provisioned ? "Provisioned" : "Not Provisioned")
-                    .status(provisionState)
+                
+                Text(viewModel.provisioned ? "Provisioned" : "Not Provisioned")
+                    .status(viewModel.provisionedState)
             }
-        }
-    }
-}
-
-struct DeviceSection_Previews: PreviewProvider {
-    static var previews: some View {
-        Form {
-            DeviceSection(provisioned: true, provisionState: .done)
-            DeviceSection(provisioned: false, provisionState: .inProgress)
         }
     }
 }
