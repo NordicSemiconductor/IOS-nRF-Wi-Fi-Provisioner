@@ -51,16 +51,6 @@ struct DeviceView: View {
         .onFirstAppear {
             viewModel.connect()
         }
-        .sheet(isPresented: $viewModel.showAccessPointList) {
-            NavigationView {
-                AccessPointList()
-                    .environmentObject(viewModel)
-            }
-            .navigationViewStyle(.stack)
-            .onDisappear {
-                try? viewModel.provisioner.stopScan()
-            }
-        }
         .alert(viewModel.error?.title ?? "Error", isPresented: $viewModel.showError) {
             Button("OK", role: .cancel) {
                 viewModel.error = nil
@@ -102,8 +92,7 @@ struct DeviceView: View {
                     footer: viewModel.infoFooter,
                     showVolatileMemory: viewModel.showVolatileMemory,
                     password: $viewModel.password,
-                    volatileMemory: $viewModel.volatileMemory,
-                    showAccessPointList: $viewModel.showAccessPointList
+                    volatileMemory: $viewModel.volatileMemory
                 )
             }
             

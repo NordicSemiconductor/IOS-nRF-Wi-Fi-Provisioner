@@ -23,8 +23,6 @@
 		01481ABD2852093000925FAB /* IntroView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01481A932852092F00925FAB /* IntroView.swift */; };
 		01481ABE2852093000925FAB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 01481A942852093000925FAB /* Assets.xcassets */; };
 		01481ABF2852093000925FAB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 01481A942852093000925FAB /* Assets.xcassets */; };
-		015845CC288FD5A900C7E4B7 /* AccessPointList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 015845CB288FD5A900C7E4B7 /* AccessPointList.swift */; };
-		015845CD288FD5A900C7E4B7 /* AccessPointList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 015845CB288FD5A900C7E4B7 /* AccessPointList.swift */; };
 		015D60A32875A1530048F065 /* ScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 015D60A22875A1530048F065 /* ScannerView.swift */; };
 		015D60A42875A1530048F065 /* ScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 015D60A22875A1530048F065 /* ScannerView.swift */; };
 		0183EFC92897C196002E79A5 /* Status.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0183EFC82897C196002E79A5 /* Status.swift */; };
@@ -143,7 +141,6 @@
 		01481AB22852093000925FAB /* Tests macOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Tests macOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		01481AB62852093000925FAB /* Tests_macOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests_macOS.swift; sourceTree = "<group>"; };
 		01481AB82852093000925FAB /* Tests_macOSLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests_macOSLaunchTests.swift; sourceTree = "<group>"; };
-		015845CB288FD5A900C7E4B7 /* AccessPointList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessPointList.swift; sourceTree = "<group>"; };
 		015D60A22875A1530048F065 /* ScannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerView.swift; sourceTree = "<group>"; };
 		0183EFC82897C196002E79A5 /* Status.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Status.swift; sourceTree = "<group>"; };
 		0183EFCC2897C446002E79A5 /* ReversedLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReversedLabel.swift; sourceTree = "<group>"; };
@@ -326,14 +323,6 @@
 			path = "Tests macOS";
 			sourceTree = "<group>";
 		};
-		015845CA288FD54500C7E4B7 /* Scan */ = {
-			isa = PBXGroup;
-			children = (
-				015845CB288FD5A900C7E4B7 /* AccessPointList.swift */,
-			);
-			path = Scan;
-			sourceTree = "<group>";
-		};
 		01682618287F16B20040C97E /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -407,7 +396,6 @@
 			children = (
 				019D1D2C29128E7E000D8BD4 /* ModelExtensions */,
 				0183EFC72897C17E002E79A5 /* Modifiers */,
-				015845CA288FD54500C7E4B7 /* Scan */,
 				01FCADB9291D47460044904B /* Sections */,
 				AA9ED5C02BC55D4100FAC49D /* WifiScanResult.swift */,
 				01A43DEA2886FECB0025A5C4 /* DeviceView.swift */,
@@ -813,7 +801,6 @@
 				01FCADC1291D4C9F0044904B /* AccessPointSection.swift in Sources */,
 				01FCADBF291D4AA00044904B /* StatusIndicatorView.swift in Sources */,
 				01481ABA2852093000925FAB /* nRF_Wi_Fi_ProvisionerApp.swift in Sources */,
-				015845CC288FD5A900C7E4B7 /* AccessPointList.swift in Sources */,
 				AA2C11982B7A53F1003AF3E0 /* SelectorView.swift in Sources */,
 				AA9ED5C42BC56D1A00FAC49D /* ScannerSection.swift in Sources */,
 				AA49E0562BB584B200CDD6FA /* APWiFiScanView.swift in Sources */,
@@ -863,7 +850,6 @@
 				015D60A42875A1530048F065 /* ScannerView.swift in Sources */,
 				019D1D352912C201000D8BD4 /* MACAddress+Ext.swift in Sources */,
 				01481ABB2852093000925FAB /* nRF_Wi_Fi_ProvisionerApp.swift in Sources */,
-				015845CD288FD5A900C7E4B7 /* AccessPointList.swift in Sources */,
 				019D1D2F29128E96000D8BD4 /* AuthMode+Ext.swift in Sources */,
 				0183EFCE2897C446002E79A5 /* ReversedLabel.swift in Sources */,
 				019D1D3229128F3E000D8BD4 /* ConnectionState+Ext.swift in Sources */,

@@ -18,7 +18,6 @@ struct AccessPointSection: View {
     
     @Binding var password: String
     @Binding var volatileMemory: Bool
-    @Binding var showAccessPointList: Bool
     
     var body: some View {
         Section {
@@ -50,22 +49,19 @@ struct AccessPointSection: View {
     
     @ViewBuilder
     var accessPointSelector: some View {
-            VStack {
-                HStack {
-                    NordicLabel("Access Point", systemImage: "wifi.circle")
-                    Spacer()
-                    ReversedLabel {
-                        Text(wifi?.ssid ?? "Not Selected")
-                    } image: {
-                        Image(systemName: "chevron.forward")
-                    }
-                    .foregroundColor(.secondary)
+        VStack {
+            HStack {
+                NordicLabel("Access Point", systemImage: "wifi.circle")
+                Spacer()
+                ReversedLabel {
+                    Text(wifi?.ssid ?? "Not Selected")
+                } image: {
+                    Image(systemName: "chevron.forward")
                 }
+                .foregroundColor(.secondary)
             }
-            .onTapGesture {
-                showAccessPointList = true
-            }
-            .accessibilityIdentifier("access_point_selector")
+        }
+        .accessibilityIdentifier("access_point_selector")
     }
     
     @ViewBuilder
@@ -127,63 +123,8 @@ struct AccessPointSection_Previews: PreviewProvider {
                 footer: "WIFI_NOT_PROVISIONED_FOOTER",
                 showVolatileMemory: true,
                 password: .constant("qwerty"),
-                volatileMemory: .constant(true),
-                showAccessPointList: .constant(false)
+                volatileMemory: .constant(true)
             )
-            
-            /*
-            AccessPointSection(
-                viewModel: MockDeviceViewModel(deviceId: ""),
-                wifiInfo: wf1,
-                showPassword: false,
-                showFooter: true,
-                showVolatileMemory: true,
-                password: .constant(""),
-                volatileMemory: .constant(false),
-                showAccessPointList: .constant(false)
-            )
-            AccessPointSection(
-                viewModel: MockDeviceViewModel(deviceId: ""),
-                wifiInfo: wf2,
-                showPassword: true,
-                showFooter: false,
-                showVolatileMemory: false,
-                password: .constant(""),
-                volatileMemory: .constant(false),
-                showAccessPointList: .constant(false)
-            )
-            AccessPointSection(
-                viewModel: MockDeviceViewModel(deviceId: ""),
-                wifiInfo: wf3,
-                showPassword: false,
-                showFooter: true,
-                showVolatileMemory: false,
-                password: .constant(""),
-                volatileMemory: .constant(false),
-                showAccessPointList: .constant(false)
-            )
-            AccessPointSection(
-                viewModel: MockDeviceViewModel(deviceId: ""),
-                wifiInfo: wf1,
-                showPassword: false,
-                showFooter: true,
-                showVolatileMemory: false,
-                password: .constant(""),
-                volatileMemory: .constant(false),
-                showAccessPointList: .constant(false)
-            )
-            AccessPointSection(
-                viewModel: MockDeviceViewModel(deviceId: ""),
-                wifiInfo: nil,
-                showPassword: false,
-                showFooter: true,
-                showVolatileMemory: false,
-                password: .constant(""),
-                volatileMemory: .constant(false),
-                showAccessPointList: .constant(false)
-            )
-             */
-            
         }
     }
 }
