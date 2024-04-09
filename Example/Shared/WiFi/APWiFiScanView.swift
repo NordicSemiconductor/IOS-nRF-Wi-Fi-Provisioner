@@ -35,7 +35,7 @@ struct APWiFiScanView: View {
         self.isSelected = selected
     }
     
-    init(wiFiScan: AccessPointList.ViewModel.ScanResult, selected: Bool) {
+    init(wiFiScan: WifiScanResult, selected: Bool) {
         self.isOpenNetwork = wiFiScan.wifi.isOpen
         self.ssid = wiFiScan.wifi.ssid
         self.band = wiFiScan.wifi.band?.description ?? "Unknown Band"

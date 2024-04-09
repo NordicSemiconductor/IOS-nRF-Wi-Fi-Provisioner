@@ -75,13 +75,12 @@ struct AccessPointList: View {
 struct AccessPointList_Previews: PreviewProvider {
     
     class MockScanProvisioner: DeviceManager {
-        typealias SR = AccessPointList.ViewModel.ScanResult
         override func startScan(scanParams: ScanParams) throws {
             let scanResults = [
-                SR(wifi: .wifi1, rssi: -40),
-                SR(wifi: .wifi2, rssi: -60),
-                SR(wifi: .wifi3, rssi: -80),
-                SR(wifi: .wifi4, rssi: -100),
+                WifiScanResult(wifi: .wifi1, rssi: -40),
+                WifiScanResult(wifi: .wifi2, rssi: -60),
+                WifiScanResult(wifi: .wifi3, rssi: -80),
+                WifiScanResult(wifi: .wifi4, rssi: -100),
             ]
             
             for sr in scanResults {
