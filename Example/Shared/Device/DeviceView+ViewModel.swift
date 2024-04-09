@@ -59,8 +59,6 @@ extension DeviceView {
                 }
             }
         }
-        
-        private var cancellable: Set<AnyCancellable> = []
 
         let provisioner: DeviceManager
         let deviceId: String

@@ -46,15 +46,11 @@ extension AccessPointList {
         // MARK: Properties
         
         private let logger = NordicLog(ViewModel.self, subsystem: Bundle.main.bundleIdentifier!)
-        private var cancellables = Set<AnyCancellable>()
         
         var provisioner: DeviceManager!
         
         @Published(initialValue: []) var accessPoints: [ScanResult]
-        @Published(initialValue: false) var isScanning: Bool
-        
         @Published(initialValue: nil) var selectedAccessPoint: WifiInfo?
-        
         @Published(initialValue: false) var showError: Bool
         var error: ReadableError? {
             didSet {
