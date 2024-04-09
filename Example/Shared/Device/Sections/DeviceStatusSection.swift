@@ -8,70 +8,56 @@
 import SwiftUI
 import NordicWiFiProvisioner_BLE
 
+// MARK: - DeviceStatusSection
+
 struct DeviceStatusSection: View {
-    let version: String
-    let connectionStatus: String
-    let statusProgress: StatusModifier.Status
-    let showConnectionStatus: Bool
-    let connectionError: ReadableError?
-    let ip: String?
-    let showIp: Bool
+    
+    // MARK: Environment
+    
+    @EnvironmentObject private var viewModel: DeviceView.ViewModel
+    
+    // MARK: View
     
     var body: some View {
         Section("Device Status") {
             HStack {
-                NordicLabel("Version", systemImage: "wrench.and.screwdriver")
+                NordicLabel("Status", image: "bluetooth")
+                
                 Spacer()
-                Text(version).foregroundColor(.secondary)
+                
+                Text(viewModel.provisioned ? "Provisioned" : "Not Provisioned")
+                    .status(viewModel.provisionedState)
             }
             
-            if showConnectionStatus {
-                VStack {
-                    HStack {
-                        NordicLabel("Wi-Fi Status", systemImage: "wifi")
-                        Spacer()
-                        Text(connectionStatus)
-                            .status(statusProgress)
-                    }
-                    if let e = connectionError {
-                        HStack {
-                            Text(e.message)
-                                .foregroundColor(.red)
-                            Spacer()
-                        }
-                    }
+            HStack {
+                NordicLabel("Version", systemImage: "wrench.and.screwdriver")
+                
+                Spacer()
+                
+                Text(viewModel.version)
+                    .foregroundColor(.secondary)
+            }
+            
+            if viewModel.connectionStatus.showStatus {
+                HStack {
+                    NordicLabel("Wi-Fi Status", systemImage: "wifi")
+                    
+                    Spacer()
+                    
+                    Text(viewModel.connectionStatus.status)
+                        .status(viewModel.connectionStatus.statusProgressState)
                 }
             }
             
             HStack {
                 NordicLabel("IP Address", systemImage: "network")
-                Spacer()
-                Text(ip ?? "Unknown").foregroundColor(.secondary)
-            }
-            .isHidden(!showIp, remove: true)
-        }
-    }
-}
-
-struct DeviceStatusSection_Previews: PreviewProvider {
-    static var previews: some View {
-        NavigationView {
-            Form {
                 
-                /*
-                DeviceStatusSection(version: "17", connectionStatus: .disconnected, forceShowProvisionInProgress: false, connectionError: nil,
-                                    ip: nil,
-                                    provisioned: false
-                )
-                DeviceStatusSection(version: "17", connectionStatus: .disconnected, forceShowProvisionInProgress: false, connectionError: TitleMessageError(message: "Connection Error"),
-                                    ip: nil, provisioned: true)
-                DeviceStatusSection(version: "17", connectionStatus: .connected, forceShowProvisionInProgress: false, connectionError: nil, ip: nil, provisioned: true)
-                DeviceStatusSection(version: "17", connectionStatus: .connected, forceShowProvisionInProgress: false, connectionError: nil, ip: "192.168.1.1", provisioned: true)
-                DeviceStatusSection(version: "17", connectionStatus: .obtainingIp, forceShowProvisionInProgress: false, connectionError: nil, ip: nil, provisioned: true)
-                DeviceStatusSection(version: "17", connectionStatus: .disconnected, forceShowProvisionInProgress: true, connectionError: nil, ip: nil, provisioned: true)
-                 */
+                Spacer()
+                
+                Text(viewModel.connectionStatus.ipAddress)
+                    .foregroundColor(.secondary)
             }
+            .isHidden(!viewModel.connectionStatus.showIpAddress, remove: true)
         }
-//        .tint(.nordicBlue)
     }
 }

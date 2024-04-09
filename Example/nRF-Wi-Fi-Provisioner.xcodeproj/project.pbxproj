@@ -61,7 +61,6 @@
 		01DB109B28CF6404005634CF /* Markdown in Frameworks */ = {isa = PBXBuildFile; productRef = 01DB109A28CF6404005634CF /* Markdown */; };
 		01FA5912288713860008AF88 /* ReadableError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01FA5911288713860008AF88 /* ReadableError.swift */; };
 		01FA5913288713860008AF88 /* ReadableError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01FA5911288713860008AF88 /* ReadableError.swift */; };
-		01FCADBB291D47600044904B /* DeviceSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01FCADBA291D47600044904B /* DeviceSection.swift */; };
 		01FCADBD291D482B0044904B /* DeviceStatusSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01FCADBC291D482B0044904B /* DeviceStatusSection.swift */; };
 		01FCADBF291D4AA00044904B /* StatusIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01FCADBE291D4AA00044904B /* StatusIndicatorView.swift */; };
 		01FCADC1291D4C9F0044904B /* AccessPointSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01FCADC0291D4C9F0044904B /* AccessPointSection.swift */; };
@@ -161,7 +160,6 @@
 		01D26B55286DA3D400FD069D /* Localizable.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
 		01D26B5A286DAE9800FD069D /* LocalizationKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizationKey.swift; sourceTree = "<group>"; };
 		01FA5911288713860008AF88 /* ReadableError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadableError.swift; sourceTree = "<group>"; };
-		01FCADBA291D47600044904B /* DeviceSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceSection.swift; sourceTree = "<group>"; };
 		01FCADBC291D482B0044904B /* DeviceStatusSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceStatusSection.swift; sourceTree = "<group>"; };
 		01FCADBE291D4AA00044904B /* StatusIndicatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusIndicatorView.swift; sourceTree = "<group>"; };
 		01FCADC0291D4C9F0044904B /* AccessPointSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessPointSection.swift; sourceTree = "<group>"; };
@@ -459,7 +457,6 @@
 		01FCADB9291D47460044904B /* Sections */ = {
 			isa = PBXGroup;
 			children = (
-				01FCADBA291D47600044904B /* DeviceSection.swift */,
 				01FCADBE291D4AA00044904B /* StatusIndicatorView.swift */,
 				01FCADBC291D482B0044904B /* DeviceStatusSection.swift */,
 				AA9ED5C32BC56D1A00FAC49D /* ScannerSection.swift */,
@@ -824,7 +821,6 @@
 				01994A742B852F7800953465 /* ProvisionOverWiFiView+VM.swift in Sources */,
 				339764A344D60772B8354BA1 /* CoreBluetoothTypeAliases.swift in Sources */,
 				33976EF1DCD95ADC4A0807C9 /* DeviceViewModel+Types.swift in Sources */,
-				01FCADBB291D47600044904B /* DeviceSection.swift in Sources */,
 				33976BAEC7C5753351244397 /* IntroViewModel.swift in Sources */,
 				339761E5D6992A0548A2B051 /* AdoptiveDetailView.swift in Sources */,
 				339769E1197BCCAF98D480E9 /* NavigationLink.swift in Sources */,

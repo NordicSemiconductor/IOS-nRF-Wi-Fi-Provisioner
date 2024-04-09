@@ -67,18 +67,8 @@ struct DeviceView: View {
     var deviceInfo: some View {
         VStack {
             Form {
-                DeviceSection()
+                DeviceStatusSection()
                     .environmentObject(viewModel)
-                
-                DeviceStatusSection(
-                    version: viewModel.version,
-                    connectionStatus: viewModel.connectionStatus.status,
-                    statusProgress: viewModel.connectionStatus.statusProgressState,
-                    showConnectionStatus: viewModel.connectionStatus.showStatus,
-                    connectionError: nil,
-                    ip: viewModel.connectionStatus.ipAddress,
-                    showIp: viewModel.connectionStatus.showIpAddress
-                )
                 
                 ScannerSection()
                     .environmentObject(viewModel)
