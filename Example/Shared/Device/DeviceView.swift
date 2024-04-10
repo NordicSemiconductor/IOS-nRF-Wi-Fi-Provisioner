@@ -7,10 +7,18 @@
 
 import SwiftUI
 import NordicWiFiProvisioner_BLE
+import iOS_Common_Libraries
+
+// MARK: - DeviceView
 
 struct DeviceView: View {
+    
+    // MARK: Properties
+    
     @StateObject var viewModel: ViewModel
     @State var unprovisionSheet: Bool = false
+    
+    // MARK: View
     
     var body: some View {
         VStack {
@@ -66,16 +74,15 @@ struct DeviceView: View {
     @ViewBuilder
     var deviceInfo: some View {
         VStack {
-            Form {
+            List {
                 DeviceStatusSection()
-                    .environmentObject(viewModel)
                 
                 ScannerSection()
-                    .environmentObject(viewModel)
                 
                 AccessPointSection()
-                    .environmentObject(viewModel)
             }
+            .environmentObject(viewModel)
+            .listStyle(.insetGrouped)
             
             Spacer()
             
@@ -99,11 +106,13 @@ struct DeviceView: View {
             }
             .padding()
         }
+        .background(Color.formBackground)
     }
 }
 
-#if DEBUG
+// MARK: - Preview
 
+#if DEBUG
 class MockDeviceViewModel: DeviceView.ViewModel {
     override var version: String {
         get { "14" }
