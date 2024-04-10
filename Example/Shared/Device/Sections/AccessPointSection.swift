@@ -8,6 +8,8 @@
 import SwiftUI
 import NordicWiFiProvisioner_BLE
 
+// MARK: - AccessPointSection
+
 struct AccessPointSection: View {
     
     // MARK: Properties
@@ -18,7 +20,17 @@ struct AccessPointSection: View {
     
     var body: some View {
         Section {
-            accessPointSelector
+            VStack {
+                HStack {
+                    NordicLabel("Access Point", systemImage: "wifi.circle")
+                    
+                    Spacer()
+                    
+                    Text(viewModel.wifiNetwork?.ssid ?? "Not Selected")
+                        .foregroundColor(.secondary)
+                }
+            }
+            .accessibilityIdentifier("access_point_selector")
             
             if let wifi = viewModel.wifiNetwork {
                 additionalInfo(wifi)
@@ -29,7 +41,9 @@ struct AccessPointSection: View {
             if viewModel.showVolatileMemory {
                 HStack {
                     Text("Volatile Memory")
+                    
                     Spacer()
+                    
                     Toggle("", isOn: $viewModel.volatileMemory)
                         .toggleStyle(SwitchToggleStyle(tint: .nordicBlue))
                         .accessibilityIdentifier("volatile_memory_toggle")
@@ -40,25 +54,6 @@ struct AccessPointSection: View {
         } footer: {
             Text(viewModel.infoFooter)
         }
-    }
-    
-    @ViewBuilder
-    var accessPointSelector: some View {
-        VStack {
-            HStack {
-                NordicLabel("Access Point", systemImage: "wifi.circle")
-                
-                Spacer()
-                
-                ReversedLabel {
-                    Text(viewModel.wifiNetwork?.ssid ?? "Not Selected")
-                } image: {
-                    Image(systemName: "chevron.forward")
-                }
-                .foregroundColor(.secondary)
-            }
-        }
-        .accessibilityIdentifier("access_point_selector")
     }
     
     @ViewBuilder
