@@ -12,6 +12,8 @@ import NordicWiFiProvisioner_BLE
 
 private let UnknownVersion = "Unknown"
 
+// MARK: - DeviceView.ViewModel
+
 extension DeviceView {
     
     class ViewModel: ObservableObject {
@@ -91,9 +93,9 @@ extension DeviceView.ViewModel {
         switch provisioner.connectionState {
         case .disconnected, .disconnecting:
             provisioner.connect()
-            self.peripheralConnectionStatus = .connecting
+            peripheralConnectionStatus = .connecting
         case .connected:
-            self.peripheralConnectionStatus = .connected
+            peripheralConnectionStatus = .connected
         default:
             break
         }
@@ -122,17 +124,18 @@ extension DeviceView.ViewModel {
     
     func startProvision() throws {
         guard let wifiNetwork else {
+            error = TitleMessageError(message: "No Access Point / Wi-Fi Network to join set.")
             return
         }
         
         if passwordRequired {
             guard password.count > 6 else {
+                error = TitleMessageError(message: "Required Password not set or not long enough.")
                 return
             }
         }
         
         setBothButton(enabled: false)
-        
         try provisioner.setConfig(wifi: wifiNetwork, passphrase: password, volatileMemory: volatileMemory)
     }
     

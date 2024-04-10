@@ -20,20 +20,23 @@ struct StatusModifier: ViewModifier {
         case .ready:
             content.foregroundColor(.secondary)
         case .inProgress:
-            HStack {
+            HStack(spacing: 8.0) {
                 content
+                
                 ProgressView()
             }
             .foregroundColor(.secondary)
         case .done:
             HStack {
                 content
+                
                 Image(systemName: "checkmark")
             }
             .foregroundColor(.green)
         case .error:
             HStack {
                 content
+                
                 Image(systemName: "")
             }
             .foregroundColor(.red)
