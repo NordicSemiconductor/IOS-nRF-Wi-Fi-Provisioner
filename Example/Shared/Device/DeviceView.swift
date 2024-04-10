@@ -86,11 +86,12 @@ struct DeviceView: View {
             
             Spacer()
             
-            VStack {
+            HStack {
                 Button("Forget Configuration") {
                     unprovisionSheet = true
                 }
-                .foregroundStyle(Color.nordicRed)
+                .tint(.nordicRed)
+                .buttonStyle(.borderedProminent)
                 .isHidden(!viewModel.buttonConfiguration.showUnsetButton, remove: true)
                 .disabled(!viewModel.buttonConfiguration.enabledUnsetButton)
                 
@@ -101,6 +102,7 @@ struct DeviceView: View {
                         }
                     }
                 }
+                .buttonStyle(.borderedProminent)
                 .disabled(!viewModel.buttonConfiguration.enabledProvisionButton)
                 .accessibilityIdentifier("prov_button")
             }
