@@ -60,16 +60,6 @@ struct ScannerView: View {
             }
         }
         .navigationTitle("Scanner")
-        .toolbar {
-            // Filter Button
-            Button(action: {
-                viewModel.onlyUnprovisioned.toggle()
-            }) {
-                Image(systemName: viewModel.onlyUnprovisioned
-                      ? "line.3.horizontal.decrease.circle.fill"
-                      : "line.3.horizontal.decrease.circle")
-            }
-        }
         .onAppear {
             viewModel.startScan()
         }
@@ -98,18 +88,19 @@ struct ScannerView: View {
                         ScanResultRaw(scanResult: scanResult.sr)
                     }
                     .deviceAdoptiveDetail()
-                    .accessibilityIdentifier("scan_result_\(viewModel.scanResults.firstIndex(where: { $0.id == scanResult.id }) ?? -1)")
                 }
             } header: {
                 HStack {
                     Text("Devices")
+                    
                     Spacer()
+                    
                     ProgressView()
                         .isHidden((viewModel.state != .scanning), remove: true)
                 }
             }
         }
-        .listStyle(InsetGroupedListStyle())
+        .listStyle(.insetGrouped)
     }
 }
 
