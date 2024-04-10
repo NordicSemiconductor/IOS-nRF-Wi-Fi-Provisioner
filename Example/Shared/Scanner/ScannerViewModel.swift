@@ -10,7 +10,6 @@ import CoreBluetoothMock
 import Foundation
 import NordicWiFiProvisioner_BLE
 import SwiftUI
-import os
 
 extension ScannerViewModel {
     enum State {
@@ -45,16 +44,6 @@ extension ScannerViewModel {
 }
 
 class ScannerViewModel: ObservableObject {
-    let logger = Logger(
-        subsystem: Bundle(for: ScannerViewModel.self).bundleIdentifier ?? "",
-        category: "scanner.scanner-view-model"
-    )
-    
-    @Published var onlyUnprovisioned: Bool = false {
-        didSet {
-            reset()
-        }
-    }
     
     @Published private(set) var state: State = .waiting
     @Published private(set) var scanResults: [DisplayableScanResult] = []
@@ -65,17 +54,16 @@ class ScannerViewModel: ObservableObject {
     
     init(scanner: NordicWiFiProvisioner_BLE.Scanner = Scanner()) {
         self.scanner = scanner
-        
         self.scanner.delegate = self
-        self.startScan()
+        startScan()
     }
     
     func startScan() {
-        self.scanner.startScan()
+        scanner.startScan()
     }
     
     private func reset() {
-        self.scanResults.removeAll()
+        scanResults.removeAll()
     }
 }
 
