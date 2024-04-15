@@ -15,6 +15,7 @@ import SwiftProtobuf
 
 private extension URL {
     static let endpointStr = "https://192.0.2.1"
+//    static let endpointStr = "https://wifiprov.local"
     
     static let ssid = URL(string: "\(endpointStr)/prov/networks")!
     static let prov = URL(string: "\(endpointStr)/prov/configure")!
@@ -64,7 +65,7 @@ public class ProvisionManager {
         let manager = NEHotspotConfigurationManager.shared
         let configuration = NEHotspotConfiguration(ssid: apSSID)
         try await switchWiFiEndpoint(using: manager, with: configuration)
-        
+//        
 //        let parameters = NWParameters()
 //        parameters.allowLocalEndpointReuse = true
 //        parameters.acceptLocalOnly = true

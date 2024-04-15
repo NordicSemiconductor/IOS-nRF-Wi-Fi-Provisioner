@@ -7,6 +7,7 @@
 
 import SwiftUI
 import iOS_Common_Libraries
+import NordicWiFiProvisioner_SoftAP
 
 // MARK: - ProvisionOverWiFiView
 
@@ -79,6 +80,18 @@ struct ProvisionOverWiFiView: View {
             ForEach(viewModel.scans) { scan in
                 APWiFiScanView(scan: scan, selected: scan == viewModel.selectedScan)
                     .onTapGesture {
+//                        wifiprov._http._tcplocal.
+                        let service = NetService(domain: "local", type: "_http._tcp.", name: "wifiprov")
+                        BonjourResolver.resolve(service: service) { result in
+                            switch result {
+                            case .success(let hostName):
+                                print("did resolve, host: \(hostName)")
+                            case .failure(let error):
+                                print("did not resolve, error: \(error)")
+                            }
+                        }
+                        RunLoop.current.run(until: Date(timeIntervalSinceNow: 15))
+                        
                         withAnimation {
                             viewModel.selectedScan = scan
                         }
