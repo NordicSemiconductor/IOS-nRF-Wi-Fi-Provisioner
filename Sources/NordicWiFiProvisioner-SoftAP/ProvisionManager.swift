@@ -14,7 +14,7 @@ import SwiftProtobuf
 // MARK: URL
 
 private extension URL {
-    static let endpointStr = "https://192.0.2.1"
+    static let endpointStr = "https://192.168.0.1"
 //    static let endpointStr = "https://wifiprov.local"
     
     static let ssid = URL(string: "\(endpointStr)/prov/networks")!
@@ -24,7 +24,9 @@ private extension URL {
 // MARK: ProvisionManager
 
 public class ProvisionManager {
-    private let apSSID = "mobileappsrules"
+//    private let apSSID = "mobileappsrules"
+    private let apSSID = "006825-nrf-wifiprov"
+    
     public init() {}
     
     public enum ProvisionError: Error {
@@ -65,43 +67,71 @@ public class ProvisionManager {
         let manager = NEHotspotConfigurationManager.shared
         let configuration = NEHotspotConfiguration(ssid: apSSID)
         try await switchWiFiEndpoint(using: manager, with: configuration)
-//        
-//        let parameters = NWParameters()
-//        parameters.allowLocalEndpointReuse = true
-//        parameters.acceptLocalOnly = true
-//        parameters.allowFastOpen = true
-//        
-//        let browser = NWBrowser(for: .bonjour(type: "_http._tcp.", domain: "local"), using: parameters)
-//        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
-//            browser.stateUpdateHandler = { newState in
-//                switch newState {
-//                case .setup:
-//                    print("Setting up connection")
-//                case .ready:
-//                    print("Ready?")
-//                case .failed(let error):
-//                    print(error.localizedDescription)
-//                    continuation.resume(throwing: error)
-//                case .cancelled:
-//                    print("Stopped / Cancelled")
-//                case .waiting(let nwError):
-//                    print("Waiting for \(nwError.localizedDescription)?")
-//                default:
-//                    break
-//                }
-//            }
-//            
-//            browser.browseResultsChangedHandler = { results, changes in
-//                guard let endpoint = results.first?.endpoint else {
-//                    continuation.resume(throwing: ProvisionError.badResponse)
-//                    return
-//                }
-//                print(endpoint)
-//                continuation.resume()
-//            }
-//            browser.start(queue: .main)
-//        }
-//        browser.cancel()
+        
+//        let service = try await findBonjourService(type: "_http._tcp.", domain: "local")
+        let service = try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<NetService, Error>) in
+            
+            let parameters = NWParameters()
+            parameters.expiredDNSBehavior = .allow
+            parameters.includePeerToPeer = true
+            if #available(iOS 16.0, *) {
+                parameters.requiresDNSSECValidation = false
+            }
+            parameters.allowLocalEndpointReuse = true
+            parameters.acceptLocalOnly = true
+            parameters.allowFastOpen = true
+            
+            let browser = NWBrowser(for: .bonjour(type: "_http._tcp.", domain: "local"), using: parameters)
+    //        let browser = NWBrowser(for: .bonjour(type: "_http._tcp.", domain: nil), using: parameters)
+            browser.stateUpdateHandler = { newState in
+                switch newState {
+                case .setup:
+                    print("Setting up connection")
+                case .ready:
+                    print("Ready?")
+                case .failed(let error):
+                    print(error.localizedDescription)
+                    continuation.resume(throwing: error)
+                case .cancelled:
+                    print("Stopped / Cancelled")
+                case .waiting(let nwError):
+                    print("Waiting for \(nwError.localizedDescription)?")
+                default:
+                    break
+                }
+            }
+            
+            browser.browseResultsChangedHandler = { results, changes in
+                var netService: NetService?
+                for result in results {
+                    if case .service(let service) = result.endpoint {
+                        netService = NetService(domain: service.domain, type: service.type, name: service.name)
+                        break
+                    }
+                }
+                
+                browser.cancel()
+                guard let netService else {
+                    continuation.resume(throwing: ProvisionError.badResponse)
+                    return
+                }
+                
+                BonjourResolver.resolve(service: netService) { result in
+                    switch result {
+                    case .success(let ipAddress):
+                        print("did resolve, Address: \(ipAddress)")
+                    case .failure(let error):
+                        print("did not resolve, error: \(error)")
+                    }
+                }
+                RunLoop.current.run(until: Date(timeIntervalSinceNow: 15))
+                
+                continuation.resume(returning: netService)
+            }
+            browser.start(queue: .main)
+        }
+        
+        print(service)
     }
     
     private func switchWiFiEndpoint(using manager: NEHotspotConfigurationManager,
@@ -119,6 +149,71 @@ public class ProvisionManager {
                     self.l.info("Connected")
                 }
             }
+        }
+    }
+    
+    private func findBonjourService(type: String, domain: String) async throws -> NetService {
+        return try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<NetService, Error>) in
+            
+            let parameters = NWParameters()
+            parameters.expiredDNSBehavior = .allow
+            parameters.includePeerToPeer = true
+            if #available(iOS 16.0, *) {
+                parameters.requiresDNSSECValidation = false
+            }
+            parameters.allowLocalEndpointReuse = true
+            parameters.acceptLocalOnly = true
+            parameters.allowFastOpen = true
+            
+            let browser = NWBrowser(for: .bonjour(type: type, domain: domain), using: parameters)
+            browser.stateUpdateHandler = { newState in
+                switch newState {
+                case .setup:
+                    print("Setting up connection")
+                case .ready:
+                    print("Ready?")
+                case .failed(let error):
+                    print(error.localizedDescription)
+                    continuation.resume(throwing: error)
+                case .cancelled:
+                    print("Stopped / Cancelled")
+                case .waiting(let nwError):
+                    print("Waiting for \(nwError.localizedDescription)?")
+                default:
+                    break
+                }
+            }
+            
+            browser.browseResultsChangedHandler = { results, changes in
+                var netService: NetService?
+                for result in results {
+                    if case .service(let service) = result.endpoint {
+                        netService = NetService(domain: service.domain, type: service.type, name: service.name)
+                        break
+                    }
+                }
+                
+                browser.cancel()
+                guard let netService else {
+                    continuation.resume(throwing: ProvisionError.badResponse)
+                    return
+                }
+                
+//                let service = NetService(domain: "local", type: "_http._tcp.", name: "wifiprov")
+//                let service = NetService(domain: "local", type: "_http._tcp.", name: result.)
+//                BonjourResolver.resolve(service: service) { result in
+//                    switch result {
+//                    case .success(let hostName):
+//                        print("did resolve, host: \(hostName)")
+//                    case .failure(let error):
+//                        print("did not resolve, error: \(error)")
+//                    }
+//                }
+//                RunLoop.current.run(until: Date(timeIntervalSinceNow: 15))
+                
+                continuation.resume(returning: netService)
+            }
+            browser.start(queue: .main)
         }
     }
     
