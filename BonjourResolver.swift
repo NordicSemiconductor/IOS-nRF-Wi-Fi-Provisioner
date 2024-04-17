@@ -12,9 +12,7 @@ import Foundation
 
 // MARK: - BonjourResolver
 
-public final class BonjourResolver: NSObject, NetServiceDelegate {
-    
-    public typealias CompletionHandler = (Result<String, RError>) -> Void
+public final class BonjourResolver: NSObject {
     
     // MARK: Public API
     
@@ -24,16 +22,17 @@ public final class BonjourResolver: NSObject, NetServiceDelegate {
                 BonjourResolver.resolve(service: service) { result in
                     switch result {
                     case .success(let ipAddress):
-                        print("did resolve, Address: \(ipAddress)")
                         continuation.resume(returning: ipAddress)
                     case .failure(let error):
-                        print("did not resolve, error: \(error)")
                         continuation.resume(throwing: error)
                     }
                 }
             }
+            print("Run Loop performed")
         }
     }
+    
+    public typealias CompletionHandler = (Result<String, ResolutionError>) -> Void
     
     @discardableResult
     public static func resolve(service: NetService, completionHandler: @escaping CompletionHandler) -> BonjourResolver {
@@ -83,7 +82,7 @@ public final class BonjourResolver: NSObject, NetServiceDelegate {
         stop(with: .failure(.stoppedbyUser))
     }
     
-    private func stop(with result: Result<String, RError>) {
+    private func stop(with result: Result<String, ResolutionError>) {
         precondition(Thread.isMainThread)
         self.service?.delegate = nil
         self.service?.stop()
@@ -94,6 +93,11 @@ public final class BonjourResolver: NSObject, NetServiceDelegate {
         
         selfRetain = nil
     }
+}
+
+// MARK: - NetServiceDelegate
+
+extension BonjourResolver: NetServiceDelegate {
     
     public func netServiceDidResolveAddress(_ sender: NetService) {
         var hostname = [CChar](repeating: 0, count: Int(NI_MAXHOST))
@@ -126,11 +130,11 @@ public final class BonjourResolver: NSObject, NetServiceDelegate {
     }
 }
 
-// MARK: - RError
+// MARK: - ResolutionError
 
 public extension BonjourResolver {
     
-    enum RError: Error, LocalizedError {
+    enum ResolutionError: Error, LocalizedError {
         case stoppedbyUser
         case unableToResolve(reason: String)
         case noAddressFound
