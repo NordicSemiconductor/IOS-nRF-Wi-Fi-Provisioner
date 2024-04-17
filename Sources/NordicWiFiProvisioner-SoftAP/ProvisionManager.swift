@@ -81,8 +81,7 @@ public class ProvisionManager {
             parameters.acceptLocalOnly = true
             parameters.allowFastOpen = true
             
-            let browser = NWBrowser(for: .bonjour(type: "_http._tcp.", domain: "local"), using: parameters)
-    //        let browser = NWBrowser(for: .bonjour(type: "_http._tcp.", domain: nil), using: parameters)
+            let browser = NWBrowser(for: .bonjour(type: "_http._tcp.", domain: nil), using: parameters)
             browser.stateUpdateHandler = { newState in
                 switch newState {
                 case .setup:
@@ -103,6 +102,7 @@ public class ProvisionManager {
             
             browser.browseResultsChangedHandler = { results, changes in
                 var netService: NetService?
+                print("Found \(results.count) results.")
                 for result in results {
                     if case .service(let service) = result.endpoint {
                         netService = NetService(domain: service.domain, type: service.type, name: service.name)
@@ -110,28 +110,32 @@ public class ProvisionManager {
                     }
                 }
                 
+                guard let netService else { return }
                 browser.cancel()
-                guard let netService else {
-                    continuation.resume(throwing: ProvisionError.badResponse)
-                    return
-                }
-                
-                BonjourResolver.resolve(service: netService) { result in
-                    switch result {
-                    case .success(let ipAddress):
-                        print("did resolve, Address: \(ipAddress)")
-                    case .failure(let error):
-                        print("did not resolve, error: \(error)")
-                    }
-                }
-                RunLoop.current.run(until: Date(timeIntervalSinceNow: 15))
-                
                 continuation.resume(returning: netService)
             }
             browser.start(queue: .main)
         }
         
         print(service)
+        let resolvedIPAddress = try await resolve(service)
+        print(resolvedIPAddress)
+    }
+    
+    @MainActor
+    private func resolve(_ service: NetService) async throws -> String {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<String, Error>) in
+            BonjourResolver.resolve(service: service) { result in
+                switch result {
+                case .success(let ipAddress):
+                    print("did resolve, Address: \(ipAddress)")
+                    continuation.resume(returning: ipAddress)
+                case .failure(let error):
+                    print("did not resolve, error: \(error)")
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
     }
     
     private func switchWiFiEndpoint(using manager: NEHotspotConfigurationManager,
@@ -198,19 +202,6 @@ public class ProvisionManager {
                     continuation.resume(throwing: ProvisionError.badResponse)
                     return
                 }
-                
-//                let service = NetService(domain: "local", type: "_http._tcp.", name: "wifiprov")
-//                let service = NetService(domain: "local", type: "_http._tcp.", name: result.)
-//                BonjourResolver.resolve(service: service) { result in
-//                    switch result {
-//                    case .success(let hostName):
-//                        print("did resolve, host: \(hostName)")
-//                    case .failure(let error):
-//                        print("did not resolve, error: \(error)")
-//                    }
-//                }
-//                RunLoop.current.run(until: Date(timeIntervalSinceNow: 15))
-                
                 continuation.resume(returning: netService)
             }
             browser.start(queue: .main)

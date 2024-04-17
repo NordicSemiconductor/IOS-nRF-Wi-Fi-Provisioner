@@ -47,7 +47,7 @@ public final class BonjourResolver: NSObject, NetServiceDelegate {
         precondition(Thread.isMainThread)
         guard let service else { fatalError() }
         service.delegate = self
-        service.resolve(withTimeout: 15.0)
+        service.resolve(withTimeout: 5.0)
         // Form a temporary retain loop to prevent us from being deinitialised
         // while the resolve is in flight.  We break this loop in `stop(with:)`.
         selfRetain = self
