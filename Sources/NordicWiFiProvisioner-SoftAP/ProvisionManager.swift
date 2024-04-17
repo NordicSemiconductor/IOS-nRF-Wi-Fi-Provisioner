@@ -70,7 +70,7 @@ public class ProvisionManager {
         let newConnection = try await switchWiFiEndpoint(using: manager, with: configuration)
         if newConnection {
             // Wait a couple of seconds for the connection to settle-in.
-            try? await Task.sleep(nanoseconds: 2 * 1_000_000_000)
+            try? await Task.sleepFor(seconds: 2)
         }
         
         if browser != nil {
@@ -117,17 +117,6 @@ public class ProvisionManager {
         }
         
         print(service)
-//        BonjourResolver.resolve(service: service) { result in
-//            switch result {
-//            case .success(let ipAddress):
-//                print("did resolve, Address: \(ipAddress)")
-//                continuation.resume(returning: ipAddress)
-//            case .failure(let error):
-//                print("did not resolve, error: \(error)")
-//                continuation.resume(throwing: error)
-//            }
-//        }
-//        RunLoop.main.run(until: Date(timeIntervalSinceNow: 5))
         l.debug("Awaiting for Resolve...")
         let resolvedIPAddress = try await BonjourResolver.resolve(service)
         print(resolvedIPAddress)
@@ -250,20 +239,5 @@ public class ProvisionManager {
         } catch {
             throw error
         }
-    }
-}
-
-// MARK: Bundle
-
-extension Bundle {
-    func certificateNamed(_ name: String) -> SecCertificate? {
-        guard
-            let certURL = self.url(forResource: name, withExtension: "cer"),
-            let certData = try? Data(contentsOf: certURL),
-            let cert = SecCertificateCreateWithData(nil, certData as NSData)
-        else {
-            return nil
-        }
-        return cert
     }
 }
