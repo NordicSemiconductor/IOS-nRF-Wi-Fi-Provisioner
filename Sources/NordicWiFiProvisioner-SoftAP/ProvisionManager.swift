@@ -15,7 +15,6 @@ import SwiftProtobuf
 
 private extension URL {
     static let endpointStr = "https://192.168.0.1"
-//    static let endpointStr = "https://wifiprov.local"
     
     static let ssid = URL(string: "\(endpointStr)/prov/networks")!
     static let prov = URL(string: "\(endpointStr)/prov/configure")!
@@ -74,21 +73,12 @@ public class ProvisionManager {
             try? await Task.sleep(nanoseconds: 2 * 1_000_000_000)
         }
         
-//        let service = try await findBonjourService(type: "_http._tcp.", domain: "local")
-        let parameters = NWParameters()
-        parameters.expiredDNSBehavior = .allow
-        if #available(iOS 16.0, *) {
-            parameters.requiresDNSSECValidation = false
-        }
-        parameters.allowLocalEndpointReuse = true
-        parameters.acceptLocalOnly = true
-        parameters.allowFastOpen = true
-        
         if browser != nil {
             browser?.cancel()
             browser = nil
         }
-        browser = NWBrowser(for: .bonjour(type: "_http._tcp.", domain: "local"), using: parameters)
+        browser = NWBrowser(for: .bonjour(type: "_http._tcp.", domain: "local"),
+                            using: .discoveryParameters)
         let service = try await withCheckedThrowingContinuation { [weak browser] (continuation: CheckedContinuation<NetService, Error>) in
             
             browser?.stateUpdateHandler = { newState in

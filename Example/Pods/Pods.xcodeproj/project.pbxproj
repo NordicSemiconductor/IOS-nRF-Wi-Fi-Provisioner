@@ -120,6 +120,7 @@
 		AAA89E3B2BB443720056FA1A /* APWiFiScan.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA89E3A2BB443720056FA1A /* APWiFiScan.swift */; };
 		AAA89E3F2BB44F500056FA1A /* APWiFiBand.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA89E3E2BB44F500056FA1A /* APWiFiBand.swift */; };
 		AAA89E412BB4526A0056FA1A /* APWiFiAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA89E402BB4526A0056FA1A /* APWiFiAuth.swift */; };
+		AAAE24092BCFF0FB005C5F90 /* NWParameters+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAAE24082BCFF0FB005C5F90 /* NWParameters+Extension.swift */; };
 		ADB6F9AAA157D4300FD5E9BF5BB53DD5 /* SelectiveVisitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47660021517A9BA9E9841836368EC3D8 /* SelectiveVisitor.swift */; };
 		ADF218A8E880E18AECE9BF80404FCBE8 /* Internal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02902B93EA4E541397C92FB445D0A7C5 /* Internal.swift */; };
 		AF171D00C9AF5B93E716A32D191DDA48 /* descriptor.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6263F071BA1B3C5336AC7DCE8250D831 /* descriptor.pb.swift */; };
@@ -384,6 +385,7 @@
 		AAA89E3A2BB443720056FA1A /* APWiFiScan.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APWiFiScan.swift; sourceTree = "<group>"; };
 		AAA89E3E2BB44F500056FA1A /* APWiFiBand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APWiFiBand.swift; sourceTree = "<group>"; };
 		AAA89E402BB4526A0056FA1A /* APWiFiAuth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APWiFiAuth.swift; sourceTree = "<group>"; };
+		AAAE24082BCFF0FB005C5F90 /* NWParameters+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NWParameters+Extension.swift"; sourceTree = "<group>"; };
 		AD5AD14792E444A48771F9B127D669E3 /* NordicWiFiProvisioner-BLE-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "NordicWiFiProvisioner-BLE-prefix.pch"; sourceTree = "<group>"; };
 		AD681C7CD7F03D652B36FA08CD8CAB6D /* BluetoothConnectionInfo.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BluetoothConnectionInfo.swift; sourceTree = "<group>"; };
 		AE599FBE258326CCB02223DE6CFBC320 /* UnknownStorage.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = UnknownStorage.swift; path = Sources/SwiftProtobuf/UnknownStorage.swift; sourceTree = "<group>"; };
@@ -526,6 +528,7 @@
 				AAA89E332BB43B330056FA1A /* certificate.cer */,
 				F3FBA178DD366F64FFC41F77BF10AC08 /* NSURLSessionPinningDelegate.swift */,
 				68EB7C538EF49CD75FF2538183AE944F /* ProvisionManager.swift */,
+				AAAE24082BCFF0FB005C5F90 /* NWParameters+Extension.swift */,
 				AA376F302BC8083F00D0DA2E /* BonjourResolver.swift */,
 				AAA89E392BB443370056FA1A /* Models */,
 				3E603C0A67ADF4869899690582B5BCA3 /* Pod */,
@@ -1286,6 +1289,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AAAE24092BCFF0FB005C5F90 /* NWParameters+Extension.swift in Sources */,
 				AAA89E412BB4526A0056FA1A /* APWiFiAuth.swift in Sources */,
 				AA376F312BC8083F00D0DA2E /* BonjourResolver.swift in Sources */,
 				AAA89E3F2BB44F500056FA1A /* APWiFiBand.swift in Sources */,
