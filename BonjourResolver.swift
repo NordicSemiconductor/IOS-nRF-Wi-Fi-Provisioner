@@ -28,6 +28,7 @@ public final class BonjourResolver: NSObject {
                     }
                 }
             }
+            RunLoop.main.run(until: Date(timeIntervalSinceNow: 2.0))
             print("Run Loop performed")
         }
     }

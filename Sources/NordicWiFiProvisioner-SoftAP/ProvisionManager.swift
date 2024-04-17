@@ -26,6 +26,7 @@ private extension URL {
 public class ProvisionManager {
 //    private let apSSID = "mobileappsrules"
     private let apSSID = "006825-nrf-wifiprov"
+    private var browser: NWBrowser?
     
     public init() {}
     
@@ -66,12 +67,16 @@ public class ProvisionManager {
         // Ask the user to switch to the Provisioning Device's Wi-Fi Network.
         let manager = NEHotspotConfigurationManager.shared
         let configuration = NEHotspotConfiguration(ssid: apSSID)
-        try await switchWiFiEndpoint(using: manager, with: configuration)
+        
+        let newConnection = try await switchWiFiEndpoint(using: manager, with: configuration)
+        if newConnection {
+            // Wait a couple of seconds for the connection to settle-in.
+            try? await Task.sleep(nanoseconds: 2 * 1_000_000_000)
+        }
         
 //        let service = try await findBonjourService(type: "_http._tcp.", domain: "local")
         let parameters = NWParameters()
         parameters.expiredDNSBehavior = .allow
-        parameters.includePeerToPeer = true
         if #available(iOS 16.0, *) {
             parameters.requiresDNSSECValidation = false
         }
@@ -79,10 +84,14 @@ public class ProvisionManager {
         parameters.acceptLocalOnly = true
         parameters.allowFastOpen = true
         
-        let browser = NWBrowser(for: .bonjour(type: "_http._tcp.", domain: nil), using: parameters)
-        let service = try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<NetService, Error>) in
+        if browser != nil {
+            browser?.cancel()
+            browser = nil
+        }
+        browser = NWBrowser(for: .bonjour(type: "_http._tcp.", domain: "local"), using: parameters)
+        let service = try await withCheckedThrowingContinuation { [weak browser] (continuation: CheckedContinuation<NetService, Error>) in
             
-            browser.stateUpdateHandler = { newState in
+            browser?.stateUpdateHandler = { newState in
                 switch newState {
                 case .setup:
                     print("Setting up connection")
@@ -90,8 +99,7 @@ public class ProvisionManager {
                     print("Ready?")
                 case .failed(let error):
                     print(error.localizedDescription)
-//                    continuation.resume(throwing: error)
-                    browser.start(queue: .main)
+                    continuation.resume(throwing: error)
                 case .cancelled:
                     print("Stopped / Cancelled")
                 case .waiting(let nwError):
@@ -101,7 +109,7 @@ public class ProvisionManager {
                 }
             }
             
-            browser.browseResultsChangedHandler = { results, changes in
+            browser?.browseResultsChangedHandler = { results, changes in
                 var netService: NetService?
                 print("Found \(results.count) results.")
                 for result in results {
@@ -114,7 +122,8 @@ public class ProvisionManager {
                 guard let netService else { return }
                 continuation.resume(returning: netService)
             }
-            browser.start(queue: .main)
+            l.debug("Starting Browser...")
+            browser?.start(queue: .global())
         }
         
         print(service)
@@ -132,21 +141,24 @@ public class ProvisionManager {
         l.debug("Awaiting for Resolve...")
         let resolvedIPAddress = try await BonjourResolver.resolve(service)
         print(resolvedIPAddress)
-        browser.cancel()
+        browser?.cancel()
     }
     
+    /**
+     Returns `true` if a change in hotspot configuration was made.
+     */
     private func switchWiFiEndpoint(using manager: NEHotspotConfigurationManager,
-                                    with configuration: NEHotspotConfiguration) async throws {
-        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
+                                    with configuration: NEHotspotConfiguration) async throws -> Bool {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Bool, Error>) in
             manager.apply(configuration) { error in
                 if let nsError = error as? NSError, nsError.code == 13 {
-                    continuation.resume()
+                    continuation.resume(returning: false)
                     self.l.info("Already Connected")
                 } else if let error {
                     continuation.resume(throwing: error)
                     self.l.error("\(error.localizedDescription)")
                 } else {
-                    continuation.resume()
+                    continuation.resume(returning: true)
                     self.l.info("Connected")
                 }
             }
