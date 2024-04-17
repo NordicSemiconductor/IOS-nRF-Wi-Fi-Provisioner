@@ -67,11 +67,10 @@ public class ProvisionManager {
         let manager = NEHotspotConfigurationManager.shared
         let configuration = NEHotspotConfiguration(ssid: apSSID)
         
-        let newConnection = try await switchWiFiEndpoint(using: manager, with: configuration)
-        if newConnection {
-            // Wait a couple of seconds for the connection to settle-in.
-            try? await Task.sleepFor(seconds: 2)
-        }
+        try await switchWiFiEndpoint(using: manager, with: configuration)
+        
+        // Wait a couple of seconds for the connection to settle-in.
+        try? await Task.sleepFor(seconds: 2)
         
         if browser != nil {
             browser?.cancel()
@@ -123,21 +122,18 @@ public class ProvisionManager {
         browser?.cancel()
     }
     
-    /**
-     Returns `true` if a change in hotspot configuration was made.
-     */
     private func switchWiFiEndpoint(using manager: NEHotspotConfigurationManager,
-                                    with configuration: NEHotspotConfiguration) async throws -> Bool {
-        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Bool, Error>) in
+                                    with configuration: NEHotspotConfiguration) async throws {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
             manager.apply(configuration) { error in
                 if let nsError = error as? NSError, nsError.code == 13 {
-                    continuation.resume(returning: false)
+                    continuation.resume()
                     self.l.info("Already Connected")
                 } else if let error {
                     continuation.resume(throwing: error)
                     self.l.error("\(error.localizedDescription)")
                 } else {
-                    continuation.resume(returning: true)
+                    continuation.resume()
                     self.l.info("Connected")
                 }
             }
