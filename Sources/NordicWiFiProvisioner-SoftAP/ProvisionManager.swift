@@ -69,19 +69,19 @@ public class ProvisionManager {
         try await switchWiFiEndpoint(using: manager, with: configuration)
         
 //        let service = try await findBonjourService(type: "_http._tcp.", domain: "local")
+        let parameters = NWParameters()
+        parameters.expiredDNSBehavior = .allow
+        parameters.includePeerToPeer = true
+        if #available(iOS 16.0, *) {
+            parameters.requiresDNSSECValidation = false
+        }
+        parameters.allowLocalEndpointReuse = true
+        parameters.acceptLocalOnly = true
+        parameters.allowFastOpen = true
+        
+        let browser = NWBrowser(for: .bonjour(type: "_http._tcp.", domain: nil), using: parameters)
         let service = try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<NetService, Error>) in
             
-            let parameters = NWParameters()
-            parameters.expiredDNSBehavior = .allow
-            parameters.includePeerToPeer = true
-            if #available(iOS 16.0, *) {
-                parameters.requiresDNSSECValidation = false
-            }
-            parameters.allowLocalEndpointReuse = true
-            parameters.acceptLocalOnly = true
-            parameters.allowFastOpen = true
-            
-            let browser = NWBrowser(for: .bonjour(type: "_http._tcp.", domain: nil), using: parameters)
             browser.stateUpdateHandler = { newState in
                 switch newState {
                 case .setup:
@@ -90,7 +90,8 @@ public class ProvisionManager {
                     print("Ready?")
                 case .failed(let error):
                     print(error.localizedDescription)
-                    continuation.resume(throwing: error)
+//                    continuation.resume(throwing: error)
+                    browser.start(queue: .main)
                 case .cancelled:
                     print("Stopped / Cancelled")
                 case .waiting(let nwError):
@@ -111,31 +112,27 @@ public class ProvisionManager {
                 }
                 
                 guard let netService else { return }
-                browser.cancel()
                 continuation.resume(returning: netService)
             }
             browser.start(queue: .main)
         }
         
         print(service)
-        let resolvedIPAddress = try await resolve(service)
+//        BonjourResolver.resolve(service: service) { result in
+//            switch result {
+//            case .success(let ipAddress):
+//                print("did resolve, Address: \(ipAddress)")
+//                continuation.resume(returning: ipAddress)
+//            case .failure(let error):
+//                print("did not resolve, error: \(error)")
+//                continuation.resume(throwing: error)
+//            }
+//        }
+//        RunLoop.main.run(until: Date(timeIntervalSinceNow: 5))
+        l.debug("Awaiting for Resolve...")
+        let resolvedIPAddress = try await BonjourResolver.resolve(service)
         print(resolvedIPAddress)
-    }
-    
-    @MainActor
-    private func resolve(_ service: NetService) async throws -> String {
-        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<String, Error>) in
-            BonjourResolver.resolve(service: service) { result in
-                switch result {
-                case .success(let ipAddress):
-                    print("did resolve, Address: \(ipAddress)")
-                    continuation.resume(returning: ipAddress)
-                case .failure(let error):
-                    print("did not resolve, error: \(error)")
-                    continuation.resume(throwing: error)
-                }
-            }
-        }
+        browser.cancel()
     }
     
     private func switchWiFiEndpoint(using manager: NEHotspotConfigurationManager,

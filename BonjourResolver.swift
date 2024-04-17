@@ -10,9 +10,31 @@
 
 import Foundation
 
+// MARK: - BonjourResolver
+
 public final class BonjourResolver: NSObject, NetServiceDelegate {
     
     public typealias CompletionHandler = (Result<String, RError>) -> Void
+    
+    // MARK: Public API
+    
+    public static func resolve(_ service: NetService) async throws -> String {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<String, Error>) in
+            RunLoop.main.perform {
+                BonjourResolver.resolve(service: service) { result in
+                    switch result {
+                    case .success(let ipAddress):
+                        print("did resolve, Address: \(ipAddress)")
+                        continuation.resume(returning: ipAddress)
+                    case .failure(let error):
+                        print("did not resolve, error: \(error)")
+                        continuation.resume(throwing: error)
+                    }
+                }
+            }
+        }
+    }
+    
     @discardableResult
     public static func resolve(service: NetService, completionHandler: @escaping CompletionHandler) -> BonjourResolver {
         precondition(Thread.isMainThread)
@@ -20,6 +42,8 @@ public final class BonjourResolver: NSObject, NetServiceDelegate {
         resolver.start()
         return resolver
     }
+    
+    // MARK: Init
     
     private init(service: NetService, completionHandler: @escaping CompletionHandler) {
         // We want our own copy of the service because we’re going to set a
@@ -39,6 +63,8 @@ public final class BonjourResolver: NSObject, NetServiceDelegate {
         assert(self.selfRetain == nil)
     }
     
+    // MARK: Private
+    
     private var service: NetService? = nil
     private var completionHandler: (CompletionHandler)? = nil
     private var selfRetain: BonjourResolver? = nil
@@ -53,7 +79,7 @@ public final class BonjourResolver: NSObject, NetServiceDelegate {
         selfRetain = self
     }
     
-    func stop() {
+    private func stop() {
         stop(with: .failure(.stoppedbyUser))
     }
     
@@ -99,6 +125,8 @@ public final class BonjourResolver: NSObject, NetServiceDelegate {
         self.stop(with: .failure(.unableToResolve(reason: error.localizedDescription)))
     }
 }
+
+// MARK: - RError
 
 public extension BonjourResolver {
     
