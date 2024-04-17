@@ -14,16 +14,18 @@ import SwiftProtobuf
 // MARK: URL
 
 private extension URL {
-    static let endpointStr = "https://192.168.0.1"
+    static func ssid(ipAddress: String) -> URL {
+        URL(string: "https://\(ipAddress)/prov/networks")!
+    }
     
-    static let ssid = URL(string: "\(endpointStr)/prov/networks")!
-    static let prov = URL(string: "\(endpointStr)/prov/configure")!
+    static func prov(ipAddress: String) -> URL {
+        URL(string: "https://\(ipAddress)/prov/configure")!
+    }
 }
 
 // MARK: ProvisionManager
 
 public class ProvisionManager {
-//    private let apSSID = "mobileappsrules"
     private let apSSID = "006825-nrf-wifiprov"
     private var browser: NWBrowser?
     
@@ -62,7 +64,7 @@ public class ProvisionManager {
     
     private let l = Logger(subsystem: "com.nordicsemi.NordicWiFiProvisioner-SoftAP", category: "SoftAP-Provisioner")
     
-    open func connect() async throws {
+    open func connect() async throws -> String {
         // Ask the user to switch to the Provisioning Device's Wi-Fi Network.
         let manager = NEHotspotConfigurationManager.shared
         let configuration = NEHotspotConfiguration(ssid: apSSID)
@@ -120,6 +122,7 @@ public class ProvisionManager {
         let resolvedIPAddress = try await BonjourResolver.resolve(service)
         print(resolvedIPAddress)
         browser?.cancel()
+        return resolvedIPAddress
     }
     
     private func switchWiFiEndpoint(using manager: NEHotspotConfigurationManager,
@@ -192,10 +195,10 @@ public class ProvisionManager {
         }
     }
     
-    open func getScans() async throws -> [APWiFiScan] {
+    open func getScans(ipAddress: String) async throws -> [APWiFiScan] {
         let session = URLSession(configuration: .default, delegate: NSURLSessionPinningDelegate.shared, delegateQueue: nil)
         
-        let ssidsResponse = try await session.data(from: .ssid)
+        let ssidsResponse = try await session.data(from: .ssid(ipAddress: ipAddress))
         if let resp = ssidsResponse.1 as? HTTPURLResponse, resp.statusCode >= 400 {
             throw HTTPError(code: resp.statusCode, responseData: ssidsResponse.0)
         }
@@ -207,8 +210,8 @@ public class ProvisionManager {
         return result.results.map { APWiFiScan(scanResult: $0) }
     }
     
-    open func provision(ssid: String, password: String?) async throws {
-        var request = URLRequest(url: .prov)
+    open func provision(ipAddress: String, ssid: String, password: String?) async throws {
+        var request = URLRequest(url: .prov(ipAddress: ipAddress))
         request.httpMethod = "PUT"
         request.addValue("text/plain; charset=utf-8", forHTTPHeaderField: "Content-Type")
         

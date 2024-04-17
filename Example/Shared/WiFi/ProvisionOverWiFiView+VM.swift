@@ -18,7 +18,7 @@ extension ProvisionOverWiFiView {
         enum Status {
             case notConnected
             case connecting
-            case connected
+            case connected(ipAddress: String)
             case provisioned
             case error(_ error: Error)
         }
@@ -44,8 +44,8 @@ extension ProvisionOverWiFiView.ViewModel {
     func connect() async {
         do {
             status = .connecting
-            try await manager.connect()
-            status = .connected
+            let address = try await manager.connect()
+            status = .connected(ipAddress: address)
         } catch {
             status = .error(error)
             log.error("Connection Error: \(error.localizedDescription)")
@@ -54,9 +54,12 @@ extension ProvisionOverWiFiView.ViewModel {
     
     func getScans() async {
         do {
-            scans = try await manager.getScans()
+            guard case .connected(let ipAddress) = status else {
+                throw TitleMessageError(message: "Device Not Connected")
+            }
+            scans = try await manager.getScans(ipAddress: ipAddress)
         } catch {
-            alertError = TitleMessageError(title: "Can't scan for wifi networks", error: error)
+            alertError = TitleMessageError(title: "Scanning Error", error: error)
             showAlert = true
             log.error("SSID: \(error.localizedDescription)")
         }
@@ -64,16 +67,19 @@ extension ProvisionOverWiFiView.ViewModel {
     
     func provision() async {
         do {
+            guard case .connected(let ipAddress) = status else {
+                throw TitleMessageError(message: "Device Not Connected")
+            }
+            
             guard let ssid = selectedScan?.ssid else {
                 throw TitleMessageError(message: "SSID is not selected")
             }
             
             let password = ssidPassword.isEmpty ? nil : ssidPassword
-            try await manager.provision(ssid: ssid, password: password)
-            
+            try await manager.provision(ipAddress: ipAddress, ssid: ssid, password: password)
             status = .provisioned
         } catch {
-            alertError = TitleMessageError(title: "Can't provision AP", error: error)
+            alertError = TitleMessageError(title: "Provisioning Error", error: error)
             showAlert = true
             log.error("Provision: \(error.localizedDescription)")
         }

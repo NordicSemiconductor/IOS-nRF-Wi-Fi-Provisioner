@@ -28,7 +28,6 @@ struct ScannerSection: View {
             }
             
             AsyncButton("Scan") {
-//                await viewModel.getScans()
                 viewModel.startScanning()
             }
             .frame(maxWidth: .infinity)
