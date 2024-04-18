@@ -64,13 +64,15 @@ public class ProvisionManager {
     
     private let l = Logger(subsystem: "com.nordicsemi.NordicWiFiProvisioner-SoftAP", category: "SoftAP-Provisioner")
     
-    open func connect() async throws -> String {
+    public func connect() async throws {
         // Ask the user to switch to the Provisioning Device's Wi-Fi Network.
         let manager = NEHotspotConfigurationManager.shared
         let configuration = NEHotspotConfiguration(ssid: apSSID)
         
         try await switchWiFiEndpoint(using: manager, with: configuration)
-        
+    }
+    
+    public func findBonjourService(type: String, domain: String) async throws -> BonjourService {
         // Wait a couple of seconds for the connection to settle-in.
         try? await Task.sleepFor(seconds: 2)
         
@@ -78,9 +80,13 @@ public class ProvisionManager {
             browser?.cancel()
             browser = nil
         }
-        browser = NWBrowser(for: .bonjour(type: "_http._tcp.", domain: "local"),
+        browser = NWBrowser(for: .bonjour(type: type, domain: domain),
                             using: .discoveryParameters)
-        let service = try await withCheckedThrowingContinuation { [weak browser] (continuation: CheckedContinuation<NetService, Error>) in
+        defer {
+            print("Cancelling Browser...")
+            browser?.cancel()
+        }
+        return try await withCheckedThrowingContinuation { [weak browser] (continuation: CheckedContinuation<BonjourService, Error>) in
             
             browser?.stateUpdateHandler = { newState in
                 switch newState {
@@ -111,18 +117,11 @@ public class ProvisionManager {
                 }
                 
                 guard let netService else { return }
-                continuation.resume(returning: netService)
+                continuation.resume(returning: BonjourService(netService: netService))
             }
             l.debug("Starting Browser...")
             browser?.start(queue: .global())
         }
-        
-        print(service)
-        l.debug("Awaiting for Resolve...")
-        let resolvedIPAddress = try await BonjourResolver.resolve(service)
-        print(resolvedIPAddress)
-        browser?.cancel()
-        return resolvedIPAddress
     }
     
     private func switchWiFiEndpoint(using manager: NEHotspotConfigurationManager,
@@ -140,58 +139,6 @@ public class ProvisionManager {
                     self.l.info("Connected")
                 }
             }
-        }
-    }
-    
-    private func findBonjourService(type: String, domain: String) async throws -> NetService {
-        return try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<NetService, Error>) in
-            
-            let parameters = NWParameters()
-            parameters.expiredDNSBehavior = .allow
-            parameters.includePeerToPeer = true
-            if #available(iOS 16.0, *) {
-                parameters.requiresDNSSECValidation = false
-            }
-            parameters.allowLocalEndpointReuse = true
-            parameters.acceptLocalOnly = true
-            parameters.allowFastOpen = true
-            
-            let browser = NWBrowser(for: .bonjour(type: type, domain: domain), using: parameters)
-            browser.stateUpdateHandler = { newState in
-                switch newState {
-                case .setup:
-                    print("Setting up connection")
-                case .ready:
-                    print("Ready?")
-                case .failed(let error):
-                    print(error.localizedDescription)
-                    continuation.resume(throwing: error)
-                case .cancelled:
-                    print("Stopped / Cancelled")
-                case .waiting(let nwError):
-                    print("Waiting for \(nwError.localizedDescription)?")
-                default:
-                    break
-                }
-            }
-            
-            browser.browseResultsChangedHandler = { results, changes in
-                var netService: NetService?
-                for result in results {
-                    if case .service(let service) = result.endpoint {
-                        netService = NetService(domain: service.domain, type: service.type, name: service.name)
-                        break
-                    }
-                }
-                
-                browser.cancel()
-                guard let netService else {
-                    continuation.resume(throwing: ProvisionError.badResponse)
-                    return
-                }
-                continuation.resume(returning: netService)
-            }
-            browser.start(queue: .main)
         }
     }
     

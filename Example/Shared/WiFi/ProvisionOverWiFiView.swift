@@ -17,51 +17,39 @@ struct ProvisionOverWiFiView: View {
     
     @StateObject var viewModel = ViewModel()
     
+    @State private var viewStatus: ViewStatus = .showingStages
+    enum ViewStatus {
+        case showingStages
+        case awaitingUserInput
+    }
+    
     // MARK: View
     
     var body: some View {
         VStack {
-            switch viewModel.status {
-            case .error(let e):
-                NoContentView(title: "Error: \(e.localizedDescription)", systemImage: "exclamationmark.triangle") {
-                    AsyncButton("Reconnect") {
-                        await viewModel.connect()
+            switch viewStatus {
+            case .showingStages:
+                List {
+                    Section {
+                        ForEach(viewModel.pipelineManager.stages) { stage in
+                            PipelineView(stage: stage, logLine: "")
+                        }
                     }
-                }
-                .foregroundStyle(.red)
-            case .notConnected:
-                if case let .error(error) = viewModel.status {
-                    Label("Error: \(error.localizedDescription)", systemImage: "xmark.octagon")
-                        .foregroundStyle(Color.nordicRed)
-                        .padding()
                 }
                 
-                NoContentView(title: "Not Connected", systemImage: "point.3.connected.trianglepath.dotted") {
-                    AsyncButton("Attempt to Connect") {
-                        await viewModel.connect()
-                    }
+                Spacer()
+                
+                AsyncButton("Start") {
+                    await viewModel.pipelineStart()
+                    viewStatus = .awaitingUserInput
                 }
-            case .connecting:
-                NoContentView(title: "Connecting . . .", systemImage: "point.3.connected.trianglepath.dotted") {
-                    ProgressView()
-                        .progressViewStyle(.circular)
-                }
-            case .connected:
+            case .awaitingUserInput:
                 List(selection: $viewModel.selectedScan) {
                     ssidSection()
                     
                     Section("Password") {
                         SecureField("Type Password Here", text: $viewModel.ssidPassword)
                         provisionButton()
-                    }
-                }
-                .task {
-                    await viewModel.getScans()
-                }
-            case .provisioned:
-                NoContentView(title: "Provisioned", description: "Provisioning Completed", systemImage: "hand.thumbsup.fill") {
-                    AsyncButton("Attempt to Connect") {
-                        await viewModel.connect()
                     }
                 }
             }
@@ -86,10 +74,10 @@ struct ProvisionOverWiFiView: View {
                     }
             }
             
-            AsyncButton("Scan") {
-                await viewModel.getScans()
-            }
-            .frame(maxWidth: .infinity)
+//            AsyncButton("Scan") {
+//                await viewModel.getScans()
+//            }
+//            .frame(maxWidth: .infinity)
         }
     }
     

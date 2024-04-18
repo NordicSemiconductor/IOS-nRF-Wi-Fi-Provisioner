@@ -10,16 +10,35 @@
 
 import Foundation
 
+// MARK: - BonjourService
+
+public struct BonjourService: Sendable {
+    
+    let name: String
+    let domain: String
+    let type: String
+    
+    init(netService: NetService) {
+        self.name = netService.name
+        self.domain = netService.domain
+        self.type = netService.type
+    }
+    
+    func netService() -> NetService {
+        NetService(domain: domain, type: type, name: name)
+    }
+}
+
 // MARK: - BonjourResolver
 
 public final class BonjourResolver: NSObject {
     
     // MARK: Public API
     
-    public static func resolve(_ service: NetService) async throws -> String {
+    public static func resolve(_ bonjourService: BonjourService) async throws -> String {
         try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<String, Error>) in
             RunLoop.main.perform {
-                BonjourResolver.resolve(service: service) { result in
+                BonjourResolver.resolve(service: bonjourService.netService()) { result in
                     switch result {
                     case .success(let ipAddress):
                         continuation.resume(returning: ipAddress)
