@@ -24,7 +24,7 @@ public enum APWiFiAuth: Hashable, Equatable, CustomStringConvertible {
     
     init(from mode: AuthMode) {
         switch mode {
-        case .unspecified, .UNRECOGNIZED:
+        case .UNRECOGNIZED:
             self = .unknown
         case .open:
             self = .open

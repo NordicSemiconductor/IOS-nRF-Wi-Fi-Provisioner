@@ -154,7 +154,7 @@ public class ProvisionManager {
             throw ProvisionError.badResponse
         }
         
-        return result.results.map { APWiFiScan(scanResult: $0) }
+        return result.results.map { APWiFiScan(scanRecord: $0) }
     }
     
     open func provision(ipAddress: String, ssid: String, password: String?) async throws {

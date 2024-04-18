@@ -16,7 +16,6 @@ public struct APWiFiScan: Identifiable, Hashable {
     public let id: String
     
     public let ssid: String
-    public let bssid: String
     public let channel: Int
     public let rssi: Int
     public let band: APWiFiBand
@@ -24,16 +23,15 @@ public struct APWiFiScan: Identifiable, Hashable {
     
     // MARK: Init
     
-    init(scanResult: WifiScanResult) {
-        let band = APWiFiBand(from: scanResult.band)
-        let auth = APWiFiAuth(from: scanResult.authMode)
-        id = scanResult.bssid
+    init(scanRecord: ScanRecord) {
+        let band = APWiFiBand(from: scanRecord.wifi.band)
+        let auth = APWiFiAuth(from: scanRecord.wifi.authMode)
+        id = scanRecord.wifi.ssid
             .appending(band.description)
             .appending(auth.description)
-        ssid = scanResult.ssid
-        bssid = scanResult.bssid
-        channel = Int(scanResult.channel)
-        rssi = Int(scanResult.rssi)
+        ssid = scanRecord.wifi.ssid
+        channel = Int(scanRecord.wifi.channel)
+        rssi = Int(scanRecord.rssi)
         self.band = band
         self.authentication = auth
     }
