@@ -49,7 +49,10 @@ struct ProvisionOverWiFiView: View {
                     
                     Section("Password") {
                         SecureField("Type Password Here", text: $viewModel.ssidPassword)
-                        provisionButton()
+                        
+                        if let ipAddress = viewModel.ipAddress {
+                            provisionButton(ipAddress: ipAddress)
+                        }
                     }
                 }
             }
@@ -82,9 +85,9 @@ struct ProvisionOverWiFiView: View {
     }
     
     @ViewBuilder
-    private func provisionButton() -> some View {
+    private func provisionButton(ipAddress: String) -> some View {
         AsyncButton(action: {
-            await viewModel.provision()
+            await viewModel.provision(ipAddress: ipAddress)
         }, label: {
             Text("Provision")
         })

@@ -19,6 +19,8 @@ extension ProvisionOverWiFiView {
         @Published var pipelineManager = PipelineManager(initialStages: ProvisioningStage.allCases)
         
         private var manager = ProvisionManager()
+        var ipAddress: String?
+        
         @Published private (set) var scans: [APWiFiScan] = []
         @Published var selectedScan: APWiFiScan?
         @Published var ssidPassword: String = ""
@@ -51,6 +53,7 @@ extension ProvisionOverWiFiView.ViewModel {
             objectWillChange.send()
             log.debug("Awaiting for Resolve...")
             let resolvedIPAddress = try await BonjourResolver.resolve(service)
+            self.ipAddress = resolvedIPAddress
             print(resolvedIPAddress)
             log.debug("I've got the address! \(resolvedIPAddress)")
             
@@ -58,7 +61,7 @@ extension ProvisionOverWiFiView.ViewModel {
             objectWillChange.send()
             scans = try await manager.getScans(ipAddress: resolvedIPAddress)
             
-            pipelineManager.completed(.scanned)
+            pipelineManager.inProgress(.provisioningInfo)
             objectWillChange.send()
         } catch {
             pipelineManager.onError(error)
@@ -69,23 +72,24 @@ extension ProvisionOverWiFiView.ViewModel {
         }
     }
     
-    func provision() async {
-//        do {
-//            guard case .connected(let ipAddress) = status else {
-//                throw TitleMessageError(message: "Device Not Connected")
-//            }
-//            
-//            guard let ssid = selectedScan?.ssid else {
-//                throw TitleMessageError(message: "SSID is not selected")
-//            }
-//            
-//            let password = ssidPassword.isEmpty ? nil : ssidPassword
-//            try await manager.provision(ipAddress: ipAddress, ssid: ssid, password: password)
-//            status = .provisioned
-//        } catch {
-//            alertError = TitleMessageError(title: "Provisioning Error", error: error)
-//            showAlert = true
-//            log.error("Provision: \(error.localizedDescription)")
-//        }
+    func provision(ipAddress: String) async {
+        do {
+            pipelineManager.inProgress(.provisioning)
+            objectWillChange.send()
+            
+            guard let ssid = selectedScan?.ssid else {
+                throw TitleMessageError(message: "SSID is not selected")
+            }
+            
+            let password = ssidPassword.isEmpty ? nil : ssidPassword
+            try await manager.provision(ipAddress: ipAddress, ssid: ssid, password: password)
+            
+        } catch {
+            pipelineManager.onError(error)
+            objectWillChange.send()
+            log.error("Pipeline Error: \(error.localizedDescription)")
+            alertError = TitleMessageError(error)
+            showAlert = true
+        }
     }
 }
