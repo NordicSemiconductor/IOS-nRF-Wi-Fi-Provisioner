@@ -72,18 +72,18 @@ extension ProvisionOverWiFiView.ViewModel {
         }
     }
     
-    func provision(ipAddress: String) async {
+    func provision(ipAddress: String) {
+        log.error(#function)
         do {
             pipelineManager.inProgress(.provisioning)
             objectWillChange.send()
             
-            guard let ssid = selectedScan?.ssid else {
+            guard let selectedScan else {
                 throw TitleMessageError(message: "SSID is not selected")
             }
             
             let password = ssidPassword.isEmpty ? nil : ssidPassword
-            try await manager.provision(ipAddress: ipAddress, ssid: ssid, password: password)
-            
+            try manager.provision(ipAddress: ipAddress, to: selectedScan, with: password)
         } catch {
             pipelineManager.onError(error)
             objectWillChange.send()

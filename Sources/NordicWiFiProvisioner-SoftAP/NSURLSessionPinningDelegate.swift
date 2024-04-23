@@ -21,23 +21,22 @@ class NSURLSessionPinningDelegate: NSObject, URLSessionDelegate {
     func urlSession(_ session: URLSession,
                       didReceive challenge: URLAuthenticationChallenge,
                       completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Swift.Void) {
-
-        if (challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust) {
-            if let serverTrust = challenge.protectionSpace.serverTrust {
-                Task {
-                    let result = await shouldAllowHTTPSConnection(trust: serverTrust)
-                    if result == true {
-                        completionHandler(URLSession.AuthChallengeDisposition.useCredential, URLCredential(trust: serverTrust))
-                    } else {
-                        completionHandler(URLSession.AuthChallengeDisposition.cancelAuthenticationChallenge, nil)
-                    }
-                }
-            }
-        }
+        completionHandler(.useCredential, URLCredential(trust: challenge.protectionSpace.serverTrust!))
+//        if (challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust) {
+//            if let serverTrust = challenge.protectionSpace.serverTrust {
+//                Task {
+//                    let result = await shouldAllowHTTPSConnection(trust: serverTrust)
+//                    if result == true {
+//                        completionHandler(URLSession.AuthChallengeDisposition.useCredential, URLCredential(trust: serverTrust))
+//                    } else {
+//                        completionHandler(URLSession.AuthChallengeDisposition.cancelAuthenticationChallenge, nil)
+//                    }
+//                }
+//            }
+//        }
     }
 
     func shouldAllowHTTPSConnection(chain: [SecCertificate]) async throws -> Bool {
-        
         let b = Bundle(for: NSURLSessionPinningDelegate.self)
         guard let res = b.url(forResource: "Res", withExtension: "bundle") else {
             fatalError()
@@ -82,10 +81,13 @@ class NSURLSessionPinningDelegate: NSObject, URLSessionDelegate {
     }
     
     func urlSession(_ session: URLSession, didBecomeInvalidWithError error: Error?) {
+        guard let error else { return }
         print(#function)
+        print("Error: \(error.localizedDescription)")
     }
     
     func urlSessionDidFinishEvents(forBackgroundURLSession session: URLSession) {
         print(#function)
+        print(session)
     }
 }

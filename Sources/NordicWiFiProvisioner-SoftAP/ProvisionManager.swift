@@ -55,14 +55,16 @@ public class ProvisionManager {
         }
     }
     
-    private var sessionConfig: URLSessionConfiguration {
-        let config = URLSessionConfiguration.default
-        config.waitsForConnectivity = false
-        config.requestCachePolicy = .reloadIgnoringLocalCacheData
-        return config
-    }
+//    private var sessionConfig: URLSessionConfiguration {
+//        let config = URLSessionConfiguration.default
+//        config.waitsForConnectivity = false
+//        config.requestCachePolicy = .reloadIgnoringLocalCacheData
+//        return config
+//    }
     
-    private let l = Logger(subsystem: "com.nordicsemi.NordicWiFiProvisioner-SoftAP", category: "SoftAP-Provisioner")
+    private let logger = Logger(subsystem: "com.nordicsemi.NordicWiFiProvisioner-SoftAP", category: "SoftAP-Provisioner")
+    private lazy var urlSession = URLSession(configuration: .default, delegate: NSURLSessionPinningDelegate.shared, delegateQueue: nil)
+//    private lazy var urlSession = URLSession.shared
     
     public func connect() async throws {
         // Ask the user to switch to the Provisioning Device's Wi-Fi Network.
@@ -117,10 +119,26 @@ public class ProvisionManager {
                 }
                 
                 guard let netService else { return }
-                continuation.resume(returning: BonjourService(netService: netService))
+//                do {
+//                    let a = try await BonjourResolver.resolve(BonjourService(netService: netService))
+//                }
+                BonjourResolver.resolve(service: netService) { result in
+                    switch result {
+                    case .success(let ipAddress):
+                        let storedIP = ipAddress
+                        print("STORED IP ADDRESS: \(ipAddress)")
+//                        continuation.resume(returning: ipAddress)
+                        continuation.resume(returning: BonjourService(netService: netService))
+                    case .failure(let error):
+                        continuation.resume(throwing: error)
+                    }
+                }
+                RunLoop.main.run(until: Date(timeIntervalSinceNow: 2.0))
+//                continuation.resume(returning: BonjourService(netService: netService))
             }
-            l.debug("Starting Browser...")
-            browser?.start(queue: .global())
+            logger.debug("Starting Browser...")
+//            browser?.start(queue: .global())
+            browser?.start(queue: .main)
         }
     }
     
@@ -130,22 +148,21 @@ public class ProvisionManager {
             manager.apply(configuration) { error in
                 if let nsError = error as? NSError, nsError.code == 13 {
                     continuation.resume()
-                    self.l.info("Already Connected")
+                    self.logger.info("Already Connected")
                 } else if let error {
                     continuation.resume(throwing: error)
-                    self.l.error("\(error.localizedDescription)")
+                    self.logger.error("\(error.localizedDescription)")
                 } else {
                     continuation.resume()
-                    self.l.info("Connected")
+                    self.logger.info("Connected")
                 }
             }
         }
     }
     
     open func getScans(ipAddress: String) async throws -> [APWiFiScan] {
-        let session = URLSession(configuration: .default, delegate: NSURLSessionPinningDelegate.shared, delegateQueue: nil)
-        
-        let ssidsResponse = try await session.data(from: .ssid(ipAddress: ipAddress))
+        let ssidsResponse = try await urlSession.data(from: .ssid(ipAddress: ipAddress))
+//        session.invalidateAndCancel()
         if let resp = ssidsResponse.1 as? HTTPURLResponse, resp.statusCode >= 400 {
             throw HTTPError(code: resp.statusCode, responseData: ssidsResponse.0)
         }
@@ -154,36 +171,101 @@ public class ProvisionManager {
             throw ProvisionError.badResponse
         }
         
-        return result.results.map { APWiFiScan(scanRecord: $0) }
+        return result.results.compactMap { try? APWiFiScan(scanRecord: $0) }
     }
     
-    open func provision(ipAddress: String, ssid: String, password: String?) async throws {
+    open func provision(ipAddress: String, to accessPoint: APWiFiScan, with password: String?) throws {
+        logger.debug(#function)
+        
         var request = URLRequest(url: .prov(ipAddress: ipAddress))
-        request.httpMethod = "PUT"
-        request.addValue("text/plain; charset=utf-8", forHTTPHeaderField: "Content-Type")
+        request.httpMethod = "POST"
+        request.addValue("text/plain", forHTTPHeaderField: "Content-Type")
+//        request.addValue("application/x-protobuf", forHTTPHeaderField: "Content-Type")
         
-        let bodyString = {
-            if let password {
-                "\(ssid) \(password)"
-            } else {
-                "\(ssid)"
+//        request.httpMethod = "POST"
+//        request.addValue("application/x-protobuf", forHTTPHeaderField: "Content-Type")
+//        request.addValue("text/plain", forHTTPHeaderField: "Content-Type")
+        
+        var provisioningConfiguration = WifiConfig()
+        
+//        var info = WifiInfo()
+////        info.ssid = accessPoint.ssid.data(using: .ascii) ?? Data()
+//        info.ssid = Data(repeating: 0, count: 2)
+//        info.bssid = Data(repeating: 0, count: 2)
+////        info.bssid = Data(accessPoint.bssid) // accessPoint.bssid.data(using: .ascii) ?? Data()
+////        info.bssid = accessPoint.info().bssid
+//        info.channel = UInt32(accessPoint.channel)
+//        info.band = Band.any // try Band(rawValue: accessPoint.band.rawValue)
+//        info.auth = accessPoint.info().auth
+//        provisioningConfiguration.wifi = info
+        
+        provisioningConfiguration.wifi = accessPoint.info()
+        provisioningConfiguration.passphrase = (password ?? "").data(using: .utf8) ?? Data()
+        let serialized = try provisioningConfiguration.serializedData()
+        print(serialized)
+        print(serialized.hexEncodedString())
+        
+        let deserialized = try WifiConfig(serializedData: serialized)
+        print(deserialized)
+        
+        let httpData = Data()
+//        let httpData = try! provisioningConfiguration.serializedData()
+//        request.httpBody = try provisioningConfiguration.serializedData()
+//        request.httpBody = Data()
+        
+        logger.debug("session.data(for: request)")
+//            session.dataTask(with: request)
+//            session.
+//            session.data
+        let task = urlSession.uploadTask(with: request, from: httpData) { data, response, error in
+//        let task = urlSession.dataTask(with: request) { data, response, error in
+            print(error)
+            guard let urlResponse = (response as? HTTPURLResponse) else {
+//                throw ProvisionError.badResponse
+                print(ProvisionError.badResponse.localizedDescription)
+                return
             }
-        }()
-        
-        request.httpBody = bodyString.data(using: .utf8, allowLossyConversion: true)
-        
-        let session = URLSession(configuration: .default, delegate: NSURLSessionPinningDelegate.shared, delegateQueue: nil)
-        do {
-            let response = try await session.data(for: request)
-            guard let urlResponse = (response.1 as? HTTPURLResponse) else {
-                throw ProvisionError.badResponse
-            }
-            
             guard urlResponse.statusCode < 400 else {
-                throw HTTPError(code: urlResponse.statusCode, responseData: response.0)
+                let error = HTTPError(code: urlResponse.statusCode, responseData: data)
+                print(error.localizedDescription)
+                return
             }
-        } catch {
-            throw error
+            print("Success?")
         }
+        task.resume()
+//        urlSession.dataTask(with: request) { data, response, error in
+//            let response = try await urlSession.data(for: request)
+//            guard let urlResponse = (response.1 as? HTTPURLResponse) else {
+//                throw ProvisionError.badResponse
+//            }
+//            
+//            guard urlResponse.statusCode < 400 else {
+//                throw HTTPError(code: urlResponse.statusCode, responseData: response.0)
+//            }
+//        }
+        
+//        do {
+//            
+//            
+//        } catch {
+//            throw error
+//        }
     }
+}
+
+internal extension Data {
+  /// A hexadecimal string representation of the bytes.
+  func hexEncodedString() -> String {
+    let hexDigits = Array("0123456789abcdef".utf16)
+    var hexChars = [UTF16.CodeUnit]()
+    hexChars.reserveCapacity(count * 2)
+
+    for byte in self {
+      let (index1, index2) = Int(byte).quotientAndRemainder(dividingBy: 16)
+      hexChars.append(hexDigits[index1])
+      hexChars.append(hexDigits[index2])
+    }
+
+    return String(utf16CodeUnits: hexChars, count: hexChars.count)
+  }
 }

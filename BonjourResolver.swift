@@ -38,6 +38,9 @@ public final class BonjourResolver: NSObject {
     public static func resolve(_ bonjourService: BonjourService) async throws -> String {
         try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<String, Error>) in
             RunLoop.main.perform {
+                defer {
+                    print("RunLoop.main.perform {} exit")
+                }
                 BonjourResolver.resolve(service: bonjourService.netService()) { result in
                     switch result {
                     case .success(let ipAddress):
@@ -46,6 +49,7 @@ public final class BonjourResolver: NSObject {
                         continuation.resume(throwing: error)
                     }
                 }
+                RunLoop.main.run(until: Date(timeIntervalSinceNow: 1.0))
             }
             RunLoop.main.run(until: Date(timeIntervalSinceNow: 2.0))
             print("Run Loop performed")

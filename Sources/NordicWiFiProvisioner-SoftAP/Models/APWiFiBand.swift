@@ -9,24 +9,21 @@ import Foundation
 
 // MARK: - APWiFiBand
 
-public enum APWiFiBand: Hashable, Equatable, CustomStringConvertible {
-    case _2_4Ghz
-    case _5Ghz
-    case _6Ghz
-    case unknown
+public enum APWiFiBand: Int, RawRepresentable, Hashable, Equatable, CustomStringConvertible {
+    case unknown = 0
+    case _2_4Ghz = 1
+    case _5Ghz = 2
     
     // MARK: Init
     
     init(from scanResultBand: Band) {
         switch scanResultBand {
-        case .unspecified, .UNRECOGNIZED:
+        case .any:
             self = .unknown
         case .band24Ghz:
             self = ._2_4Ghz
         case .band5Ghz:
             self = ._5Ghz
-        case .band6Ghz:
-            self = ._6Ghz
         }
     }
     
@@ -38,8 +35,6 @@ public enum APWiFiBand: Hashable, Equatable, CustomStringConvertible {
             return "2.4 Ghz"
         case ._5Ghz:
             return "5 Ghz"
-        case ._6Ghz:
-            return "6 Ghz"
         case .unknown:
             return "Unknown"
         }

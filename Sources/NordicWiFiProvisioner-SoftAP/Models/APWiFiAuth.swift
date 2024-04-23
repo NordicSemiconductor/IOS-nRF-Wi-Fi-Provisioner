@@ -11,7 +11,6 @@ import Foundation
 
 public enum APWiFiAuth: Hashable, Equatable, CustomStringConvertible {
     
-    case unknown
     case open
     case wep
     case wpaPsk
@@ -24,8 +23,6 @@ public enum APWiFiAuth: Hashable, Equatable, CustomStringConvertible {
     
     init(from mode: AuthMode) {
         switch mode {
-        case .UNRECOGNIZED:
-            self = .unknown
         case .open:
             self = .open
         case .wep:
@@ -47,8 +44,6 @@ public enum APWiFiAuth: Hashable, Equatable, CustomStringConvertible {
     
     public var description: String {
         switch self {
-        case .unknown:
-            return "Unknown"
         case .open:
             return "Open"
         case .wep:

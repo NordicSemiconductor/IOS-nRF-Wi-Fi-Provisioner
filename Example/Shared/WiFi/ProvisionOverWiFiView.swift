@@ -86,12 +86,32 @@ struct ProvisionOverWiFiView: View {
     
     @ViewBuilder
     private func provisionButton(ipAddress: String) -> some View {
-        AsyncButton(action: {
-            await viewModel.provision(ipAddress: ipAddress)
-        }, label: {
-            Text("Provision")
-        })
+        Button("Provision") {
+//            Task {
+//                await
+//            }
+            viewModel.provision(ipAddress: ipAddress)
+        }
         .disabled(viewModel.selectedScan == nil)
+        .accessibilityIdentifier("prov_button")
     }
 }
+
+//        AsyncButton(action: {
+//            await viewModel.provision(ipAddress: ipAddress)
+//        }, label: {
+//            Text("Provision")
+//        })
+//        .disabled(viewModel.selectedScan == nil)
+
+//        Button(viewModel.buttonConfiguration.provisionButtonTitle) {
+//            Task {
+//                do {
+//                    try viewModel.startProvision()
+//                }
+//            }
+//        }
+//        .buttonStyle(.borderedProminent)
+//        .disabled(!viewModel.buttonConfiguration.enabledProvisionButton)
+//        .accessibilityIdentifier("prov_button")
 

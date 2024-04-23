@@ -16,23 +16,47 @@ public struct APWiFiScan: Identifiable, Hashable {
     public let id: String
     
     public let ssid: String
+    public let bssid: [UInt8]
     public let channel: Int
     public let rssi: Int
     public let band: APWiFiBand
     public let authentication: APWiFiAuth
+    private let wifiInfo: WifiInfo
     
     // MARK: Init
     
-    init(scanRecord: ScanRecord) {
+    init(scanRecord: ScanRecord) throws {
         let band = APWiFiBand(from: scanRecord.wifi.band)
-        let auth = APWiFiAuth(from: scanRecord.wifi.authMode)
-        id = scanRecord.wifi.ssid
+        let auth = APWiFiAuth(from: scanRecord.wifi.auth)
+        
+        guard let ssid = String(data: scanRecord.wifi.ssid, encoding: .utf8) else {
+            throw ProvisionManager.ProvisionError.badResponse
+        }
+        id = ssid
+            .appending(scanRecord.wifi.bssid.hexEncodedString())
+            .appending(scanRecord.wifi.channel.description)
             .appending(band.description)
             .appending(auth.description)
-        ssid = scanRecord.wifi.ssid
+        self.ssid = ssid
+        self.bssid = scanRecord.wifi.bssid.map { $0 }
         channel = Int(scanRecord.wifi.channel)
         rssi = Int(scanRecord.rssi)
         self.band = band
         self.authentication = auth
+        self.wifiInfo = scanRecord.wifi
+    }
+    
+    // MARK: API
+    
+    func bssidString() -> String {
+        return bssid
+            .map({ "\(Int($0))" })
+            .joined(separator: ":")
+    }
+    
+    // MARK: Internal API
+    
+    internal func info() -> WifiInfo {
+        return wifiInfo
     }
 }

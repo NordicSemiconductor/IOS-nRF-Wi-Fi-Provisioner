@@ -22,33 +22,28 @@ fileprivate struct _GeneratedWithProtocGenSwiftVersion: SwiftProtobuf.ProtobufAP
 
 enum Band: SwiftProtobuf.Enum {
   typealias RawValue = Int
-  case unspecified // = 0
+  case any // = 0
   case band24Ghz // = 1
   case band5Ghz // = 2
-  case band6Ghz // = 3
-  case UNRECOGNIZED(Int)
 
   init() {
-    self = .unspecified
+    self = .any
   }
 
   init?(rawValue: Int) {
     switch rawValue {
-    case 0: self = .unspecified
+    case 0: self = .any
     case 1: self = .band24Ghz
     case 2: self = .band5Ghz
-    case 3: self = .band6Ghz
-    default: self = .UNRECOGNIZED(rawValue)
+    default: return nil
     }
   }
 
   var rawValue: Int {
     switch self {
-    case .unspecified: return 0
+    case .any: return 0
     case .band24Ghz: return 1
     case .band5Ghz: return 2
-    case .band6Ghz: return 3
-    case .UNRECOGNIZED(let i): return i
     }
   }
 
@@ -57,13 +52,7 @@ enum Band: SwiftProtobuf.Enum {
 #if swift(>=4.2)
 
 extension Band: CaseIterable {
-  // The compiler won't synthesize support with the UNRECOGNIZED case.
-  static let allCases: [Band] = [
-    .unspecified,
-    .band24Ghz,
-    .band5Ghz,
-    .band6Ghz,
-  ]
+  // Support synthesized by the compiler.
 }
 
 #endif  // swift(>=4.2)
@@ -77,7 +66,6 @@ enum AuthMode: SwiftProtobuf.Enum {
   case wpaWpa2Psk // = 4
   case wpa2Enterprise // = 5
   case wpa3Psk // = 6
-  case UNRECOGNIZED(Int)
 
   init() {
     self = .open
@@ -92,7 +80,7 @@ enum AuthMode: SwiftProtobuf.Enum {
     case 4: self = .wpaWpa2Psk
     case 5: self = .wpa2Enterprise
     case 6: self = .wpa3Psk
-    default: self = .UNRECOGNIZED(rawValue)
+    default: return nil
     }
   }
 
@@ -105,7 +93,6 @@ enum AuthMode: SwiftProtobuf.Enum {
     case .wpaWpa2Psk: return 4
     case .wpa2Enterprise: return 5
     case .wpa3Psk: return 6
-    case .UNRECOGNIZED(let i): return i
     }
   }
 
@@ -114,16 +101,7 @@ enum AuthMode: SwiftProtobuf.Enum {
 #if swift(>=4.2)
 
 extension AuthMode: CaseIterable {
-  // The compiler won't synthesize support with the UNRECOGNIZED case.
-  static let allCases: [AuthMode] = [
-    .open,
-    .wep,
-    .wpaPsk,
-    .wpa2Psk,
-    .wpaWpa2Psk,
-    .wpa2Enterprise,
-    .wpa3Psk,
-  ]
+  // Support synthesized by the compiler.
 }
 
 #endif  // swift(>=4.2)
@@ -133,17 +111,60 @@ struct WifiInfo {
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
 
-  var ssid: String = String()
+  var ssid: Data {
+    get {return _ssid ?? Data()}
+    set {_ssid = newValue}
+  }
+  /// Returns true if `ssid` has been explicitly set.
+  var hasSsid: Bool {return self._ssid != nil}
+  /// Clears the value of `ssid`. Subsequent reads from it will return its default value.
+  mutating func clearSsid() {self._ssid = nil}
 
-  var band: Band = .unspecified
+  var bssid: Data {
+    get {return _bssid ?? Data()}
+    set {_bssid = newValue}
+  }
+  /// Returns true if `bssid` has been explicitly set.
+  var hasBssid: Bool {return self._bssid != nil}
+  /// Clears the value of `bssid`. Subsequent reads from it will return its default value.
+  mutating func clearBssid() {self._bssid = nil}
 
-  var channel: UInt32 = 0
+  var band: Band {
+    get {return _band ?? .any}
+    set {_band = newValue}
+  }
+  /// Returns true if `band` has been explicitly set.
+  var hasBand: Bool {return self._band != nil}
+  /// Clears the value of `band`. Subsequent reads from it will return its default value.
+  mutating func clearBand() {self._band = nil}
 
-  var authMode: AuthMode = .open
+  var channel: UInt32 {
+    get {return _channel ?? 0}
+    set {_channel = newValue}
+  }
+  /// Returns true if `channel` has been explicitly set.
+  var hasChannel: Bool {return self._channel != nil}
+  /// Clears the value of `channel`. Subsequent reads from it will return its default value.
+  mutating func clearChannel() {self._channel = nil}
+
+  var auth: AuthMode {
+    get {return _auth ?? .open}
+    set {_auth = newValue}
+  }
+  /// Returns true if `auth` has been explicitly set.
+  var hasAuth: Bool {return self._auth != nil}
+  /// Clears the value of `auth`. Subsequent reads from it will return its default value.
+  mutating func clearAuth() {self._auth = nil}
 
   var unknownFields = SwiftProtobuf.UnknownStorage()
 
   init() {}
+
+  fileprivate var _ssid: Data? = nil
+  fileprivate var _bssid: Data? = nil
+  fileprivate var _band: Band? = nil
+  fileprivate var _channel: UInt32? = nil
+  fileprivate var _auth: AuthMode? = nil
 }
 
 struct WifiConfig {
@@ -151,22 +172,30 @@ struct WifiConfig {
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
 
-  var info: WifiInfo {
-    get {return _info ?? WifiInfo()}
-    set {_info = newValue}
+  var wifi: WifiInfo {
+    get {return _wifi ?? WifiInfo()}
+    set {_wifi = newValue}
   }
-  /// Returns true if `info` has been explicitly set.
-  var hasInfo: Bool {return self._info != nil}
-  /// Clears the value of `info`. Subsequent reads from it will return its default value.
-  mutating func clearInfo() {self._info = nil}
+  /// Returns true if `wifi` has been explicitly set.
+  var hasWifi: Bool {return self._wifi != nil}
+  /// Clears the value of `wifi`. Subsequent reads from it will return its default value.
+  mutating func clearWifi() {self._wifi = nil}
 
-  var passphrase: String = String()
+  var passphrase: Data {
+    get {return _passphrase ?? Data()}
+    set {_passphrase = newValue}
+  }
+  /// Returns true if `passphrase` has been explicitly set.
+  var hasPassphrase: Bool {return self._passphrase != nil}
+  /// Clears the value of `passphrase`. Subsequent reads from it will return its default value.
+  mutating func clearPassphrase() {self._passphrase = nil}
 
   var unknownFields = SwiftProtobuf.UnknownStorage()
 
   init() {}
 
-  fileprivate var _info: WifiInfo? = nil
+  fileprivate var _wifi: WifiInfo? = nil
+  fileprivate var _passphrase: Data? = nil
 }
 
 struct ScanRecord {
@@ -183,13 +212,21 @@ struct ScanRecord {
   /// Clears the value of `wifi`. Subsequent reads from it will return its default value.
   mutating func clearWifi() {self._wifi = nil}
 
-  var rssi: Int32 = 0
+  var rssi: Int32 {
+    get {return _rssi ?? 0}
+    set {_rssi = newValue}
+  }
+  /// Returns true if `rssi` has been explicitly set.
+  var hasRssi: Bool {return self._rssi != nil}
+  /// Clears the value of `rssi`. Subsequent reads from it will return its default value.
+  mutating func clearRssi() {self._rssi = nil}
 
   var unknownFields = SwiftProtobuf.UnknownStorage()
 
   init() {}
 
   fileprivate var _wifi: WifiInfo? = nil
+  fileprivate var _rssi: Int32? = nil
 }
 
 struct ScanResults {
@@ -217,10 +254,9 @@ extension ScanResults: @unchecked Sendable {}
 
 extension Band: SwiftProtobuf._ProtoNameProviding {
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-    0: .same(proto: "BAND_UNSPECIFIED"),
+    0: .same(proto: "BAND_ANY"),
     1: .same(proto: "BAND_2_4_GHZ"),
     2: .same(proto: "BAND_5_GHZ"),
-    3: .same(proto: "BAND_6_GHZ"),
   ]
 }
 
@@ -240,58 +276,18 @@ extension WifiInfo: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationB
   static let protoMessageName: String = "WifiInfo"
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .same(proto: "ssid"),
+    2: .same(proto: "bssid"),
     3: .same(proto: "band"),
     4: .same(proto: "channel"),
-    5: .same(proto: "authMode"),
+    5: .same(proto: "auth"),
   ]
 
-  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
-    while let fieldNumber = try decoder.nextFieldNumber() {
-      // The use of inline closures is to circumvent an issue where the compiler
-      // allocates stack space for every case branch when no optimizations are
-      // enabled. https://github.com/apple/swift-protobuf/issues/1034
-      switch fieldNumber {
-      case 1: try { try decoder.decodeSingularStringField(value: &self.ssid) }()
-      case 3: try { try decoder.decodeSingularEnumField(value: &self.band) }()
-      case 4: try { try decoder.decodeSingularUInt32Field(value: &self.channel) }()
-      case 5: try { try decoder.decodeSingularEnumField(value: &self.authMode) }()
-      default: break
-      }
-    }
-  }
-
-  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
-    if !self.ssid.isEmpty {
-      try visitor.visitSingularStringField(value: self.ssid, fieldNumber: 1)
-    }
-    if self.band != .unspecified {
-      try visitor.visitSingularEnumField(value: self.band, fieldNumber: 3)
-    }
-    if self.channel != 0 {
-      try visitor.visitSingularUInt32Field(value: self.channel, fieldNumber: 4)
-    }
-    if self.authMode != .open {
-      try visitor.visitSingularEnumField(value: self.authMode, fieldNumber: 5)
-    }
-    try unknownFields.traverse(visitor: &visitor)
-  }
-
-  static func ==(lhs: WifiInfo, rhs: WifiInfo) -> Bool {
-    if lhs.ssid != rhs.ssid {return false}
-    if lhs.band != rhs.band {return false}
-    if lhs.channel != rhs.channel {return false}
-    if lhs.authMode != rhs.authMode {return false}
-    if lhs.unknownFields != rhs.unknownFields {return false}
+  public var isInitialized: Bool {
+    if self._ssid == nil {return false}
+    if self._bssid == nil {return false}
+    if self._channel == nil {return false}
     return true
   }
-}
-
-extension WifiConfig: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  static let protoMessageName: String = "WifiConfig"
-  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-    1: .same(proto: "info"),
-    2: .same(proto: "passphrase"),
-  ]
 
   mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
     while let fieldNumber = try decoder.nextFieldNumber() {
@@ -299,8 +295,11 @@ extension WifiConfig: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementatio
       // allocates stack space for every case branch when no optimizations are
       // enabled. https://github.com/apple/swift-protobuf/issues/1034
       switch fieldNumber {
-      case 1: try { try decoder.decodeSingularMessageField(value: &self._info) }()
-      case 2: try { try decoder.decodeSingularStringField(value: &self.passphrase) }()
+      case 1: try { try decoder.decodeSingularBytesField(value: &self._ssid) }()
+      case 2: try { try decoder.decodeSingularBytesField(value: &self._bssid) }()
+      case 3: try { try decoder.decodeSingularEnumField(value: &self._band) }()
+      case 4: try { try decoder.decodeSingularUInt32Field(value: &self._channel) }()
+      case 5: try { try decoder.decodeSingularEnumField(value: &self._auth) }()
       default: break
       }
     }
@@ -311,29 +310,46 @@ extension WifiConfig: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementatio
     // allocates stack space for every if/case branch local when no optimizations
     // are enabled. https://github.com/apple/swift-protobuf/issues/1034 and
     // https://github.com/apple/swift-protobuf/issues/1182
-    try { if let v = self._info {
-      try visitor.visitSingularMessageField(value: v, fieldNumber: 1)
+    try { if let v = self._ssid {
+      try visitor.visitSingularBytesField(value: v, fieldNumber: 1)
     } }()
-    if !self.passphrase.isEmpty {
-      try visitor.visitSingularStringField(value: self.passphrase, fieldNumber: 2)
-    }
+    try { if let v = self._bssid {
+      try visitor.visitSingularBytesField(value: v, fieldNumber: 2)
+    } }()
+    try { if let v = self._band {
+      try visitor.visitSingularEnumField(value: v, fieldNumber: 3)
+    } }()
+    try { if let v = self._channel {
+      try visitor.visitSingularUInt32Field(value: v, fieldNumber: 4)
+    } }()
+    try { if let v = self._auth {
+      try visitor.visitSingularEnumField(value: v, fieldNumber: 5)
+    } }()
     try unknownFields.traverse(visitor: &visitor)
   }
 
-  static func ==(lhs: WifiConfig, rhs: WifiConfig) -> Bool {
-    if lhs._info != rhs._info {return false}
-    if lhs.passphrase != rhs.passphrase {return false}
+  static func ==(lhs: WifiInfo, rhs: WifiInfo) -> Bool {
+    if lhs._ssid != rhs._ssid {return false}
+    if lhs._bssid != rhs._bssid {return false}
+    if lhs._band != rhs._band {return false}
+    if lhs._channel != rhs._channel {return false}
+    if lhs._auth != rhs._auth {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
 }
 
-extension ScanRecord: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  static let protoMessageName: String = "ScanRecord"
+extension WifiConfig: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = "WifiConfig"
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .same(proto: "wifi"),
-    2: .same(proto: "rssi"),
+    2: .same(proto: "passphrase"),
   ]
+
+  public var isInitialized: Bool {
+    if let v = self._wifi, !v.isInitialized {return false}
+    return true
+  }
 
   mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
     while let fieldNumber = try decoder.nextFieldNumber() {
@@ -342,7 +358,7 @@ extension ScanRecord: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementatio
       // enabled. https://github.com/apple/swift-protobuf/issues/1034
       switch fieldNumber {
       case 1: try { try decoder.decodeSingularMessageField(value: &self._wifi) }()
-      case 2: try { try decoder.decodeSingularInt32Field(value: &self.rssi) }()
+      case 2: try { try decoder.decodeSingularBytesField(value: &self._passphrase) }()
       default: break
       }
     }
@@ -356,15 +372,62 @@ extension ScanRecord: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementatio
     try { if let v = self._wifi {
       try visitor.visitSingularMessageField(value: v, fieldNumber: 1)
     } }()
-    if self.rssi != 0 {
-      try visitor.visitSingularInt32Field(value: self.rssi, fieldNumber: 2)
+    try { if let v = self._passphrase {
+      try visitor.visitSingularBytesField(value: v, fieldNumber: 2)
+    } }()
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  static func ==(lhs: WifiConfig, rhs: WifiConfig) -> Bool {
+    if lhs._wifi != rhs._wifi {return false}
+    if lhs._passphrase != rhs._passphrase {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension ScanRecord: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = "ScanRecord"
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .same(proto: "wifi"),
+    2: .same(proto: "rssi"),
+  ]
+
+  public var isInitialized: Bool {
+    if let v = self._wifi, !v.isInitialized {return false}
+    return true
+  }
+
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every case branch when no optimizations are
+      // enabled. https://github.com/apple/swift-protobuf/issues/1034
+      switch fieldNumber {
+      case 1: try { try decoder.decodeSingularMessageField(value: &self._wifi) }()
+      case 2: try { try decoder.decodeSingularInt32Field(value: &self._rssi) }()
+      default: break
+      }
     }
+  }
+
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    // The use of inline closures is to circumvent an issue where the compiler
+    // allocates stack space for every if/case branch local when no optimizations
+    // are enabled. https://github.com/apple/swift-protobuf/issues/1034 and
+    // https://github.com/apple/swift-protobuf/issues/1182
+    try { if let v = self._wifi {
+      try visitor.visitSingularMessageField(value: v, fieldNumber: 1)
+    } }()
+    try { if let v = self._rssi {
+      try visitor.visitSingularInt32Field(value: v, fieldNumber: 2)
+    } }()
     try unknownFields.traverse(visitor: &visitor)
   }
 
   static func ==(lhs: ScanRecord, rhs: ScanRecord) -> Bool {
     if lhs._wifi != rhs._wifi {return false}
-    if lhs.rssi != rhs.rssi {return false}
+    if lhs._rssi != rhs._rssi {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
@@ -375,6 +438,11 @@ extension ScanResults: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementati
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .same(proto: "results"),
   ]
+
+  public var isInitialized: Bool {
+    if !SwiftProtobuf.Internal.areAllInitialized(self.results) {return false}
+    return true
+  }
 
   mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
     while let fieldNumber = try decoder.nextFieldNumber() {
