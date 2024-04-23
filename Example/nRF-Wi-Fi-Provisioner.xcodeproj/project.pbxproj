@@ -528,6 +528,7 @@
 				01481A962852093000925FAB /* Frameworks */,
 				01481A972852093000925FAB /* Resources */,
 				F831AB8F9AD16476436AFEEC /* [CP] Embed Pods Frameworks */,
+				AAB5C0852BD7BB0B0052F1B8 /* Run Build Number Info.plist Script */,
 			);
 			buildRules = (
 			);
@@ -765,6 +766,25 @@
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
+		};
+		AAB5C0852BD7BB0B0052F1B8 /* Run Build Number Info.plist Script */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"$(TARGET_BUILD_DIR)/$(INFOPLIST_PATH)",
+			);
+			name = "Run Build Number Info.plist Script";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "#\n# Set the build number to the current git commit count.\n# If we're using the Dev scheme, then we'll suffix the build\n# number with the current branch name, to make collisions\n# far less likely across feature branches.\n# Based on: http://w3facility.info/question/how-do-i-force-xcode-to-rebuild-the-info-plist-file-in-my-project-every-time-i-build-the-project/\n#\n# Updated with dSYM handling from http://yellowfeather.co.uk/blog/auto-incrementing-build-number-in-xcode-revisited/\n#\n# Seen here: http://blog.jaredsinclair.com/post/97193356620/the-best-of-all-possible-xcode-automated-build\n\ngit=`sh /etc/profile; which git`\nreferenceGitTag=\"2.0.0\"\nappBuild=`\"$git\" rev-list \"$referenceGitTag\"..HEAD --count`\nbranchName=`\"$git\" rev-parse --abbrev-ref HEAD`\necho \"buildNo $appBuild-$branchName\"\n\ndsym_plist=\"$DWARF_DSYM_FOLDER_PATH/$DWARF_DSYM_FILE_NAME/Contents/Info.plist\"\ntarget_plist=\"$TARGET_BUILD_DIR/$INFOPLIST_PATH\"\n\nfor plist in \"$target_plist\" \"$dsym_plist\"; do\n    if [ -f \"$plist\" ]; then\n        /usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $appBuild\" \"$plist\"\n        echo \"Build number set to $appBuild in ${TARGET_BUILD_DIR}/${INFOPLIST_PATH}\"\n    fi\n\ndone\n";
 		};
 		F831AB8F9AD16476436AFEEC /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
