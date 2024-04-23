@@ -16,24 +16,24 @@ class NSURLSessionPinningDelegate: NSObject, URLSessionDelegate {
         super.init()
     }
     
-    private let l = Logger(subsystem: "com.nordicsemi.NordicWiFiProvisioner-SoftAP", category: "NSURLSessionPinningDelegate")
+    private let logger = Logger(subsystem: "com.nordicsemi.NordicWiFiProvisioner-SoftAP",
+                                category: "NSURLSessionPinningDelegate")
     
     func urlSession(_ session: URLSession,
                       didReceive challenge: URLAuthenticationChallenge,
                       completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Swift.Void) {
-        completionHandler(.useCredential, URLCredential(trust: challenge.protectionSpace.serverTrust!))
-//        if (challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust) {
-//            if let serverTrust = challenge.protectionSpace.serverTrust {
-//                Task {
-//                    let result = await shouldAllowHTTPSConnection(trust: serverTrust)
-//                    if result == true {
-//                        completionHandler(URLSession.AuthChallengeDisposition.useCredential, URLCredential(trust: serverTrust))
-//                    } else {
-//                        completionHandler(URLSession.AuthChallengeDisposition.cancelAuthenticationChallenge, nil)
-//                    }
-//                }
-//            }
-//        }
+        if (challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust) {
+            if let serverTrust = challenge.protectionSpace.serverTrust {
+                Task {
+                    let result = await shouldAllowHTTPSConnection(trust: serverTrust)
+                    if result {
+                        completionHandler(URLSession.AuthChallengeDisposition.useCredential, URLCredential(trust: serverTrust))
+                    } else {
+                        completionHandler(URLSession.AuthChallengeDisposition.cancelAuthenticationChallenge, nil)
+                    }
+                }
+            }
+        }
     }
 
     func shouldAllowHTTPSConnection(chain: [SecCertificate]) async throws -> Bool {
@@ -50,7 +50,7 @@ class NSURLSessionPinningDelegate: NSObject, URLSessionDelegate {
         let trust = try secCall { SecTrustCreateWithCertificates(chain as NSArray, policy, $0) }
         let err = SecTrustSetAnchorCertificates(trust, [anchor] as NSArray)
         guard err == errSecSuccess else {
-            l.error("SecTrustSetAnchorCertificates Error: \(err)")
+            logger.error("SecTrustSetAnchorCertificates Error: \(err)")
             throw NSError(domain: NSOSStatusErrorDomain, code: Int(err), userInfo: nil)
         }
 
@@ -64,17 +64,17 @@ class NSURLSessionPinningDelegate: NSObject, URLSessionDelegate {
         do {
             return try await shouldAllowHTTPSConnection(chain: chain)
         } catch {
-            l.error("shouldAllowHTTPSConnection Error: \(error.localizedDescription)")
+            logger.error("shouldAllowHTTPSConnection Error: \(error.localizedDescription)")
             return false
         }
     }
 
-    func secCall<Result>(_ body: (_ resultPtr: UnsafeMutablePointer<Result?>) -> OSStatus  ) throws -> Result {
+    func secCall<Result>(_ body: (_ resultPtr: UnsafeMutablePointer<Result?>) -> OSStatus) throws -> Result {
         var result: Result? = nil
         let err = body(&result)
 
         guard err == errSecSuccess else {
-            l.error("secCall Error: \(err)")
+            logger.error("secCall Error: \(err)")
             throw NSError(domain: NSOSStatusErrorDomain, code: Int(err), userInfo: nil)
         }
         return result!
@@ -82,12 +82,12 @@ class NSURLSessionPinningDelegate: NSObject, URLSessionDelegate {
     
     func urlSession(_ session: URLSession, didBecomeInvalidWithError error: Error?) {
         guard let error else { return }
-        print(#function)
-        print("Error: \(error.localizedDescription)")
+        logger.debug("\(#function)")
+        logger.error("Error: \(error.localizedDescription)")
     }
     
     func urlSessionDidFinishEvents(forBackgroundURLSession session: URLSession) {
-        print(#function)
-        print(session)
+        logger.debug("\(#function)")
+        logger.debug("\(session)")
     }
 }
