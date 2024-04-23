@@ -112,6 +112,8 @@ public class ProvisionManager {
                 var netService: NetService?
                 print("Found \(results.count) results.")
                 for result in results {
+                    let e = result.endpoint
+
                     if case .service(let service) = result.endpoint {
                         netService = NetService(domain: service.domain, type: service.type, name: service.name)
                         break
@@ -140,6 +142,41 @@ public class ProvisionManager {
 //            browser?.start(queue: .global())
             browser?.start(queue: .main)
         }
+    }
+    
+    private func openSocket(endpoint: Network.NWEndpoint) {
+        let connection = NWConnection(to: endpoint, using: NWParameters())
+        connection.stateUpdateHandler = { state in
+            switch state {
+            case .setup:
+                // init state
+                debugPrint("The connection has been initialized but not started.")
+            case .waiting(let error):
+                debugPrint("The connection is waiting for a network path change with: \(error)")
+            case .preparing:
+                debugPrint("The connection in the process of being established.")
+            case .ready:
+                // Handle connection established
+                // this means that the handshake is finished
+                debugPrint("The connection is established, and ready to send and receive data.")
+                let packet = Data()
+                connection.send(content: packet, completion: .contentProcessed({ (error) in
+                    if let err = error {
+                        // Handle error in sending
+                        debugPrint("encounter an error with: \(err) after send Packet")
+                    } else {
+                        // Send has been processed
+                    }
+                }))
+            case .failed(let error):
+                debugPrint("The connection has disconnected or encountered an: \(error)")
+            case .cancelled:
+                debugPrint("The connection has been canceled.")
+            default:
+                break
+            }
+        }
+        connection.start(queue: .main)
     }
     
     private func switchWiFiEndpoint(using manager: NEHotspotConfigurationManager,
@@ -179,8 +216,8 @@ public class ProvisionManager {
         
         var request = URLRequest(url: .prov(ipAddress: ipAddress))
         request.httpMethod = "POST"
-        request.addValue("text/plain", forHTTPHeaderField: "Content-Type")
-//        request.addValue("application/x-protobuf", forHTTPHeaderField: "Content-Type")
+//        request.addValue("text/plain", forHTTPHeaderField: "Content-Type")
+        request.addValue("application/x-protobuf", forHTTPHeaderField: "Content-Type")
         
 //        request.httpMethod = "POST"
 //        request.addValue("application/x-protobuf", forHTTPHeaderField: "Content-Type")
