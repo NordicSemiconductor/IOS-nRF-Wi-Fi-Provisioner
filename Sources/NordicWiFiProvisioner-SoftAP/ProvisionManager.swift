@@ -55,16 +55,8 @@ public class ProvisionManager {
         }
     }
     
-//    private var sessionConfig: URLSessionConfiguration {
-//        let config = URLSessionConfiguration.default
-//        config.waitsForConnectivity = false
-//        config.requestCachePolicy = .reloadIgnoringLocalCacheData
-//        return config
-//    }
-    
     private let logger = Logger(subsystem: "com.nordicsemi.NordicWiFiProvisioner-SoftAP", category: "SoftAP-Provisioner")
     private lazy var urlSession = URLSession(configuration: .default, delegate: NSURLSessionPinningDelegate.shared, delegateQueue: nil)
-//    private lazy var urlSession = URLSession.shared
     
     public func connect() async throws {
         // Ask the user to switch to the Provisioning Device's Wi-Fi Network.
@@ -112,8 +104,6 @@ public class ProvisionManager {
                 var netService: NetService?
                 print("Found \(results.count) results.")
                 for result in results {
-                    let e = result.endpoint
-
                     if case .service(let service) = result.endpoint {
                         netService = NetService(domain: service.domain, type: service.type, name: service.name)
                         break
@@ -144,41 +134,6 @@ public class ProvisionManager {
         }
     }
     
-    private func openSocket(endpoint: Network.NWEndpoint) {
-        let connection = NWConnection(to: endpoint, using: NWParameters())
-        connection.stateUpdateHandler = { state in
-            switch state {
-            case .setup:
-                // init state
-                debugPrint("The connection has been initialized but not started.")
-            case .waiting(let error):
-                debugPrint("The connection is waiting for a network path change with: \(error)")
-            case .preparing:
-                debugPrint("The connection in the process of being established.")
-            case .ready:
-                // Handle connection established
-                // this means that the handshake is finished
-                debugPrint("The connection is established, and ready to send and receive data.")
-                let packet = Data()
-                connection.send(content: packet, completion: .contentProcessed({ (error) in
-                    if let err = error {
-                        // Handle error in sending
-                        debugPrint("encounter an error with: \(err) after send Packet")
-                    } else {
-                        // Send has been processed
-                    }
-                }))
-            case .failed(let error):
-                debugPrint("The connection has disconnected or encountered an: \(error)")
-            case .cancelled:
-                debugPrint("The connection has been canceled.")
-            default:
-                break
-            }
-        }
-        connection.start(queue: .main)
-    }
-    
     private func switchWiFiEndpoint(using manager: NEHotspotConfigurationManager,
                                     with configuration: NEHotspotConfiguration) async throws {
         try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
@@ -199,7 +154,6 @@ public class ProvisionManager {
     
     open func getScans(ipAddress: String) async throws -> [APWiFiScan] {
         let ssidsResponse = try await urlSession.data(from: .ssid(ipAddress: ipAddress))
-//        session.invalidateAndCancel()
         if let resp = ssidsResponse.1 as? HTTPURLResponse, resp.statusCode >= 400 {
             throw HTTPError(code: resp.statusCode, responseData: ssidsResponse.0)
         }
@@ -216,44 +170,13 @@ public class ProvisionManager {
         
         var request = URLRequest(url: .prov(ipAddress: ipAddress))
         request.httpMethod = "POST"
-//        request.addValue("text/plain", forHTTPHeaderField: "Content-Type")
         request.addValue("application/x-protobuf", forHTTPHeaderField: "Content-Type")
         
-//        request.httpMethod = "POST"
-//        request.addValue("application/x-protobuf", forHTTPHeaderField: "Content-Type")
-//        request.addValue("text/plain", forHTTPHeaderField: "Content-Type")
-        
         var provisioningConfiguration = WifiConfig()
-        
-//        var info = WifiInfo()
-////        info.ssid = accessPoint.ssid.data(using: .ascii) ?? Data()
-//        info.ssid = Data(repeating: 0, count: 2)
-//        info.bssid = Data(repeating: 0, count: 2)
-////        info.bssid = Data(accessPoint.bssid) // accessPoint.bssid.data(using: .ascii) ?? Data()
-////        info.bssid = accessPoint.info().bssid
-//        info.channel = UInt32(accessPoint.channel)
-//        info.band = Band.any // try Band(rawValue: accessPoint.band.rawValue)
-//        info.auth = accessPoint.info().auth
-//        provisioningConfiguration.wifi = info
-        
         provisioningConfiguration.wifi = accessPoint.info()
         provisioningConfiguration.passphrase = (password ?? "").data(using: .utf8) ?? Data()
-        let serialized = try provisioningConfiguration.serializedData()
-        print(serialized)
-        print(serialized.hexEncodedString())
-        
-        let deserialized = try WifiConfig(serializedData: serialized)
-        print(deserialized)
-        
-//        let httpData = Data()
         let httpData = try! provisioningConfiguration.serializedData()
-//        request.httpBody = try provisioningConfiguration.serializedData()
-//        request.httpBody = Data()
         
-        logger.debug("session.data(for: request)")
-//            session.dataTask(with: request)
-//            session.
-//            session.data
         let task = urlSession.uploadTask(with: request, from: httpData) { data, response, error in
 //        let task = urlSession.dataTask(with: request) { data, response, error in
             print(error)
