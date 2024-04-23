@@ -208,8 +208,8 @@ public class ProvisionManager {
         let deserialized = try WifiConfig(serializedData: serialized)
         print(deserialized)
         
-        let httpData = Data()
-//        let httpData = try! provisioningConfiguration.serializedData()
+//        let httpData = Data()
+        let httpData = try! provisioningConfiguration.serializedData()
 //        request.httpBody = try provisioningConfiguration.serializedData()
 //        request.httpBody = Data()
         
