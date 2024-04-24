@@ -21,6 +21,7 @@ public class ProvisionManager {
     
     private let logger = Logger(subsystem: "com.nordicsemi.NordicWiFiProvisioner-SoftAP", category: "SoftAP-Provisioner")
     private lazy var urlSession = URLSession(configuration: .default, delegate: NSURLSessionPinningDelegate.shared, delegateQueue: nil)
+    private lazy var cachedIPAddresses = [String: String]()
     
     public func connect() async throws {
         // Ask the user to switch to the Provisioning Device's Wi-Fi Network.
@@ -75,22 +76,18 @@ public class ProvisionManager {
                 }
                 
                 guard let netService else { return }
-//                do {
-//                    let a = try await BonjourResolver.resolve(BonjourService(netService: netService))
-//                }
-                BonjourResolver.resolve(service: netService) { [logger] result in
+                // Resolve IP Address here or else, if we do it later, it'll fail.
+                BonjourResolver.resolve(service: netService) { [weak self] result in
                     switch result {
                     case .success(let ipAddress):
-                        let storedIP = ipAddress
-                        logger.debug("STORED IP ADDRESS: \(ipAddress)")
-//                        continuation.resume(returning: ipAddress)
+                        self?.cachedIPAddresses[netService.name] = ipAddress
+                        logger.debug("Cached IP ADDRESS \(ipAddress) for Service \(netService.name)")
                         continuation.resume(returning: BonjourService(netService: netService))
                     case .failure(let error):
                         continuation.resume(throwing: error)
                     }
                 }
                 RunLoop.main.run(until: Date(timeIntervalSinceNow: 2.0))
-//                continuation.resume(returning: BonjourService(netService: netService))
             }
             logger.debug("Starting Browser...")
             browser?.start(queue: .main)
@@ -100,22 +97,34 @@ public class ProvisionManager {
     private func switchWiFiEndpoint(using manager: NEHotspotConfigurationManager,
                                     with configuration: NEHotspotConfiguration) async throws {
         try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
-            manager.apply(configuration) { error in
+            logger.debug("Clearing Cached Resolved IP Addresses due to Network Configuration Change.")
+            cachedIPAddresses.removeAll()
+            manager.apply(configuration) { [weak self] error in
                 if let nsError = error as? NSError, nsError.code == 13 {
                     continuation.resume()
-                    self.logger.info("Already Connected")
+                    self?.logger.info("Already Connected")
                 } else if let error {
                     continuation.resume(throwing: error)
-                    self.logger.error("\(error.localizedDescription)")
+                    self?.logger.error("\(error.localizedDescription)")
                 } else {
                     continuation.resume()
-                    self.logger.info("Connected")
+                    self?.logger.info("Connected")
                 }
             }
         }
     }
     
-    open func getScans(ipAddress: String) async throws -> [APWiFiScan] {
+    public func resolveIPAddress(for service: BonjourService) async throws -> String {
+        guard let cacheHit = cachedIPAddresses[service.name] else {
+            self.logger.warning("Cache Miss for Resolving \(service.name). Attempting to resolve again...")
+            let resolvedIPAddress = try await BonjourResolver.resolve(service)
+            return resolvedIPAddress
+        }
+        self.logger.info("Cache Hit for Resolving \(service.name)")
+        return cacheHit
+    }
+    
+    public func getScans(ipAddress: String) async throws -> [APWiFiScan] {
         let ssidsResponse = try await urlSession.data(from: .ssid(ipAddress: ipAddress))
         if let response = ssidsResponse.1 as? HTTPURLResponse, response.statusCode >= 400 {
             throw HTTPError(code: response.statusCode, responseData: ssidsResponse.0)

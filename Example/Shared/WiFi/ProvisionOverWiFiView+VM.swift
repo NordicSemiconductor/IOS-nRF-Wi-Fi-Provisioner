@@ -52,9 +52,8 @@ extension ProvisionOverWiFiView.ViewModel {
             pipelineManager.inProgress(.resolved)
             objectWillChange.send()
             log.debug("Awaiting for Resolve...")
-            let resolvedIPAddress = try await BonjourResolver.resolve(service)
+            let resolvedIPAddress = try await manager.resolveIPAddress(for: service)
             self.ipAddress = resolvedIPAddress
-            print(resolvedIPAddress)
             log.debug("I've got the address! \(resolvedIPAddress)")
             
             pipelineManager.inProgress(.scanned)
