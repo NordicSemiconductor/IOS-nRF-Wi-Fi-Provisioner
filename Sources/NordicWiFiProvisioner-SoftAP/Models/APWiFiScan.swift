@@ -33,7 +33,6 @@ public struct APWiFiScan: Identifiable, Hashable {
             throw ProvisionManager.ProvisionError.badResponse
         }
         id = ssid
-            .appending(scanRecord.wifi.bssid.hexEncodedString())
             .appending(scanRecord.wifi.channel.description)
             .appending(band.description)
             .appending(auth.description)

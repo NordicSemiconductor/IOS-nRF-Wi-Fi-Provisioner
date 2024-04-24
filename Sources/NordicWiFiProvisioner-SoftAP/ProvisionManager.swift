@@ -11,18 +11,6 @@ import NetworkExtension
 import OSLog
 import SwiftProtobuf
 
-// MARK: URL
-
-private extension URL {
-    static func ssid(ipAddress: String) -> URL {
-        URL(string: "https://\(ipAddress)/prov/networks")!
-    }
-    
-    static func prov(ipAddress: String) -> URL {
-        URL(string: "https://\(ipAddress)/prov/configure")!
-    }
-}
-
 // MARK: ProvisionManager
 
 public class ProvisionManager {
@@ -30,30 +18,6 @@ public class ProvisionManager {
     private var browser: NWBrowser?
     
     public init() {}
-    
-    public enum ProvisionError: Error {
-        case badResponse
-        case cancelled
-    }
-    
-    public struct HTTPError: Error, LocalizedError {
-        let code: Int
-        let responseData: Data?
-        
-        init(code: Int, responseData: Data?) {
-            assert(code >= 400)
-            self.code = code
-            self.responseData = responseData
-        }
-        
-        public var errorDescription: String? {
-            if let responseData, let message = String(data: responseData, encoding: .utf8), !message.isEmpty {
-                return "\(code): \(message)"
-            } else {
-                return "\(code)"
-            }
-        }
-    }
     
     private let logger = Logger(subsystem: "com.nordicsemi.NordicWiFiProvisioner-SoftAP", category: "SoftAP-Provisioner")
     private lazy var urlSession = URLSession(configuration: .default, delegate: NSURLSessionPinningDelegate.shared, delegateQueue: nil)
@@ -213,19 +177,48 @@ public class ProvisionManager {
     }
 }
 
-internal extension Data {
-  /// A hexadecimal string representation of the bytes.
-  func hexEncodedString() -> String {
-    let hexDigits = Array("0123456789abcdef".utf16)
-    var hexChars = [UTF16.CodeUnit]()
-    hexChars.reserveCapacity(count * 2)
+// MARK: - ProvisionManager.ProvisionError
 
-    for byte in self {
-      let (index1, index2) = Int(byte).quotientAndRemainder(dividingBy: 16)
-      hexChars.append(hexDigits[index1])
-      hexChars.append(hexDigits[index2])
+extension ProvisionManager {
+    
+    public enum ProvisionError: Error {
+        case badResponse
+        case cancelled
     }
+}
+ 
+// MARK: - ProvisionManager.HTTPError
 
-    return String(utf16CodeUnits: hexChars, count: hexChars.count)
-  }
+extension ProvisionManager {
+    
+    public struct HTTPError: Error, LocalizedError {
+        let code: Int
+        let responseData: Data?
+        
+        init(code: Int, responseData: Data?) {
+            assert(code >= 400)
+            self.code = code
+            self.responseData = responseData
+        }
+        
+        public var errorDescription: String? {
+            if let responseData, let message = String(data: responseData, encoding: .utf8), !message.isEmpty {
+                return "\(code): \(message)"
+            } else {
+                return "\(code)"
+            }
+        }
+    }
+}
+
+// MARK: URL
+
+private extension URL {
+    static func ssid(ipAddress: String) -> URL {
+        URL(string: "https://\(ipAddress)/prov/networks")!
+    }
+    
+    static func prov(ipAddress: String) -> URL {
+        URL(string: "https://\(ipAddress)/prov/configure")!
+    }
 }
