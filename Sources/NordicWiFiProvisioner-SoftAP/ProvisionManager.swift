@@ -46,27 +46,27 @@ public class ProvisionManager {
         }
         return try await withCheckedThrowingContinuation { [weak browser] (continuation: CheckedContinuation<BonjourService, Error>) in
             
-            browser?.stateUpdateHandler = { newState in
+            browser?.stateUpdateHandler = { [logger] newState in
                 switch newState {
                 case .setup:
-                    print("Setting up connection")
+                    logger.info("Setting up connection")
                 case .ready:
-                    print("Ready?")
+                    logger.info("Ready?")
                 case .failed(let error):
-                    print(error.localizedDescription)
+                    logger.info("\(error.localizedDescription)")
                     continuation.resume(throwing: error)
                 case .cancelled:
-                    print("Stopped / Cancelled")
+                    logger.info("Stopped / Cancelled")
                 case .waiting(let nwError):
-                    print("Waiting for \(nwError.localizedDescription)?")
+                    logger.info("Waiting for \(nwError.localizedDescription)?")
                 default:
                     break
                 }
             }
             
-            browser?.browseResultsChangedHandler = { results, changes in
+            browser?.browseResultsChangedHandler = { [logger] results, changes in
                 var netService: NetService?
-                print("Found \(results.count) results.")
+                logger.debug("Found \(results.count) results.")
                 for result in results {
                     if case .service(let service) = result.endpoint {
                         netService = NetService(domain: service.domain, type: service.type, name: service.name)
@@ -78,11 +78,11 @@ public class ProvisionManager {
 //                do {
 //                    let a = try await BonjourResolver.resolve(BonjourService(netService: netService))
 //                }
-                BonjourResolver.resolve(service: netService) { result in
+                BonjourResolver.resolve(service: netService) { [logger] result in
                     switch result {
                     case .success(let ipAddress):
                         let storedIP = ipAddress
-                        print("STORED IP ADDRESS: \(ipAddress)")
+                        logger.debug("STORED IP ADDRESS: \(ipAddress)")
 //                        continuation.resume(returning: ipAddress)
                         continuation.resume(returning: BonjourService(netService: netService))
                     case .failure(let error):
@@ -93,7 +93,6 @@ public class ProvisionManager {
 //                continuation.resume(returning: BonjourService(netService: netService))
             }
             logger.debug("Starting Browser...")
-//            browser?.start(queue: .global())
             browser?.start(queue: .main)
         }
     }
@@ -118,8 +117,8 @@ public class ProvisionManager {
     
     open func getScans(ipAddress: String) async throws -> [APWiFiScan] {
         let ssidsResponse = try await urlSession.data(from: .ssid(ipAddress: ipAddress))
-        if let resp = ssidsResponse.1 as? HTTPURLResponse, resp.statusCode >= 400 {
-            throw HTTPError(code: resp.statusCode, responseData: ssidsResponse.0)
+        if let response = ssidsResponse.1 as? HTTPURLResponse, response.statusCode >= 400 {
+            throw HTTPError(code: response.statusCode, responseData: ssidsResponse.0)
         }
         
         guard let result = try? ScanResults(serializedData: ssidsResponse.0) else {
@@ -129,7 +128,7 @@ public class ProvisionManager {
         return result.results.compactMap { try? APWiFiScan(scanRecord: $0) }
     }
     
-    open func provision(ipAddress: String, to accessPoint: APWiFiScan, with password: String?) throws {
+    open func provision(ipAddress: String, to accessPoint: APWiFiScan, with password: String?) async throws {
         logger.debug(#function)
         
         var request = URLRequest(url: .prov(ipAddress: ipAddress))
@@ -139,41 +138,12 @@ public class ProvisionManager {
         var provisioningConfiguration = WifiConfig()
         provisioningConfiguration.wifi = accessPoint.info()
         provisioningConfiguration.passphrase = (password ?? "").data(using: .utf8) ?? Data()
-        let httpData = try! provisioningConfiguration.serializedData()
+        request.httpBody = try! provisioningConfiguration.serializedData()
         
-        let task = urlSession.uploadTask(with: request, from: httpData) { data, response, error in
-//        let task = urlSession.dataTask(with: request) { data, response, error in
-            print(error)
-            guard let urlResponse = (response as? HTTPURLResponse) else {
-//                throw ProvisionError.badResponse
-                print(ProvisionError.badResponse.localizedDescription)
-                return
-            }
-            guard urlResponse.statusCode < 400 else {
-                let error = HTTPError(code: urlResponse.statusCode, responseData: data)
-                print(error.localizedDescription)
-                return
-            }
-            print("Success?")
+        let provisionResponse = try await urlSession.data(for: request)
+        if let response = provisionResponse.1 as? HTTPURLResponse, response.statusCode >= 400 {
+            throw HTTPError(code: response.statusCode, responseData: provisionResponse.0)
         }
-        task.resume()
-//        urlSession.dataTask(with: request) { data, response, error in
-//            let response = try await urlSession.data(for: request)
-//            guard let urlResponse = (response.1 as? HTTPURLResponse) else {
-//                throw ProvisionError.badResponse
-//            }
-//            
-//            guard urlResponse.statusCode < 400 else {
-//                throw HTTPError(code: urlResponse.statusCode, responseData: response.0)
-//            }
-//        }
-        
-//        do {
-//            
-//            
-//        } catch {
-//            throw error
-//        }
     }
 }
 
@@ -196,7 +166,6 @@ extension ProvisionManager {
         let responseData: Data?
         
         init(code: Int, responseData: Data?) {
-            assert(code >= 400)
             self.code = code
             self.responseData = responseData
         }
