@@ -27,11 +27,10 @@ public class ProvisionManager {
         // Ask the user to switch to the Provisioning Device's Wi-Fi Network.
         let manager = NEHotspotConfigurationManager.shared
         let configuration = NEHotspotConfiguration(ssid: apSSID)
-        
         try await switchWiFiEndpoint(using: manager, with: configuration)
     }
     
-    public func findBonjourService(type: String, domain: String) async throws -> BonjourService {
+    public func findBonjourService(type: String, domain: String, name: String) async throws -> BonjourService {
         // Wait a couple of seconds for the connection to settle-in.
         try? await Task.sleepFor(seconds: 2)
         
@@ -69,7 +68,7 @@ public class ProvisionManager {
                 var netService: NetService?
                 logger.debug("Found \(results.count) results.")
                 for result in results {
-                    if case .service(let service) = result.endpoint {
+                    if case .service(let service) = result.endpoint, service.name == name {
                         netService = NetService(domain: service.domain, type: service.type, name: service.name)
                         break
                     }
@@ -137,7 +136,7 @@ public class ProvisionManager {
         return result.results.compactMap { try? APWiFiScan(scanRecord: $0) }
     }
     
-    open func provision(ipAddress: String, to accessPoint: APWiFiScan, with password: String?) async throws {
+    public func provision(ipAddress: String, to accessPoint: APWiFiScan, with password: String?) async throws {
         logger.debug(#function)
         
         var request = URLRequest(url: .prov(ipAddress: ipAddress))
@@ -153,6 +152,18 @@ public class ProvisionManager {
         if let response = provisionResponse.1 as? HTTPURLResponse, response.statusCode >= 400 {
             throw HTTPError(code: response.statusCode, responseData: provisionResponse.0)
         }
+    }
+    
+    public func verifyProvisioning(to accessPoint: APWiFiScan) async throws {
+        // Wait a couple of seconds for the firmware to make the connection switch.
+        try? await Task.sleepFor(seconds: 2)
+        
+        // Ask the user to switch to the Provisioned Network.
+        let manager = NEHotspotConfigurationManager.shared
+        let configuration = NEHotspotConfiguration(ssid: accessPoint.ssid)
+        try await switchWiFiEndpoint(using: manager, with: configuration)
+        
+        _ = try await findBonjourService(type: "_http._tcp.", domain: "local", name: "wifiprov")
     }
 }
 

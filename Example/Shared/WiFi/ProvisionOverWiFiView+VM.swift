@@ -37,7 +37,7 @@ extension ProvisionOverWiFiView {
 
 extension ProvisionOverWiFiView.ViewModel {
     
-    func pipelineStart() async {
+    func pipelineStart() async throws {
         pipelineManager = PipelineManager(initialStages: ProvisioningStage.allCases)
         do {
             pipelineManager.inProgress(.connected)
@@ -46,7 +46,7 @@ extension ProvisionOverWiFiView.ViewModel {
             
             pipelineManager.inProgress(.browsed)
             objectWillChange.send()
-            let service = try await manager.findBonjourService(type: "_http._tcp.", domain: "local")
+            let service = try await manager.findBonjourService(type: "_http._tcp.", domain: "local", name: "wifiprov")
             
             print(service)
             pipelineManager.inProgress(.resolved)
@@ -71,18 +71,24 @@ extension ProvisionOverWiFiView.ViewModel {
         }
     }
     
-    func provision(ipAddress: String) async {
-        log.error(#function)
+    func provision(ipAddress: String) async throws {
         do {
-            pipelineManager.inProgress(.provisioning)
-            objectWillChange.send()
-            
             guard let selectedScan else {
                 throw TitleMessageError(message: "SSID is not selected")
             }
             
+            pipelineManager.inProgress(.provisioning)
+            objectWillChange.send()
+            
             let password = ssidPassword.isEmpty ? nil : ssidPassword
             try await manager.provision(ipAddress: ipAddress, to: selectedScan, with: password)
+            
+            pipelineManager.inProgress(.verification)
+            objectWillChange.send()
+            
+            try await manager.verifyProvisioning(to: selectedScan)
+            pipelineManager.completed(.verification)
+            objectWillChange.send()
         } catch {
             pipelineManager.onError(error)
             objectWillChange.send()

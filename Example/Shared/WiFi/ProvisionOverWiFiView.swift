@@ -40,8 +40,12 @@ struct ProvisionOverWiFiView: View {
                 Spacer()
                 
                 AsyncButton("Start") {
-                    await viewModel.pipelineStart()
-                    viewStatus = .awaitingUserInput
+                    do {
+                        try await viewModel.pipelineStart()
+                        viewStatus = .awaitingUserInput
+                    } catch {
+                        viewStatus = .showingStages
+                    }
                 }
             case .awaitingUserInput:
                 List(selection: $viewModel.selectedScan) {
@@ -87,7 +91,12 @@ struct ProvisionOverWiFiView: View {
     @ViewBuilder
     private func provisionButton(ipAddress: String) -> some View {
         AsyncButton(action: {
-            await viewModel.provision(ipAddress: ipAddress)
+            do {
+                viewStatus = .showingStages
+                try await viewModel.provision(ipAddress: ipAddress)
+            } catch {
+                viewStatus = .awaitingUserInput
+            }
         }, label: {
             Text("Provision")
         })
