@@ -80,13 +80,11 @@ extension ProvisionOverWiFiView.ViewModel {
             pipelineManager.inProgress(.provisioning)
             objectWillChange.send()
             
-            let password = ssidPassword.isEmpty ? nil : ssidPassword
-            try await manager.provision(ipAddress: ipAddress, to: selectedScan, with: password)
-            
+            try await manager.provision(ipAddress: ipAddress, to: selectedScan, with: ssidPassword)
             pipelineManager.inProgress(.verification)
             objectWillChange.send()
             
-            try await manager.verifyProvisioning(to: selectedScan)
+            try await manager.verifyProvisioning(to: selectedScan, with: ssidPassword)
             pipelineManager.completed(.verification)
             objectWillChange.send()
         } catch {

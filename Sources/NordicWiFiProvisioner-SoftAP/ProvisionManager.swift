@@ -95,22 +95,9 @@ public class ProvisionManager {
     
     private func switchWiFiEndpoint(using manager: NEHotspotConfigurationManager,
                                     with configuration: NEHotspotConfiguration) async throws {
-        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
-            logger.debug("Clearing Cached Resolved IP Addresses due to Network Configuration Change.")
-            cachedIPAddresses.removeAll()
-            manager.apply(configuration) { [weak self] error in
-                if let nsError = error as? NSError, nsError.code == 13 {
-                    continuation.resume()
-                    self?.logger.info("Already Connected")
-                } else if let error {
-                    continuation.resume(throwing: error)
-                    self?.logger.error("\(error.localizedDescription)")
-                } else {
-                    continuation.resume()
-                    self?.logger.info("Connected")
-                }
-            }
-        }
+        logger.debug("Clearing Cached Resolved IP Addresses due to Network Configuration Change.")
+        cachedIPAddresses.removeAll()
+        try await manager.apply(configuration)
     }
     
     public func resolveIPAddress(for service: BonjourService) async throws -> String {
@@ -154,14 +141,15 @@ public class ProvisionManager {
         }
     }
     
-    public func verifyProvisioning(to accessPoint: APWiFiScan) async throws {
-        // Wait a couple of seconds for the firmware to make the connection switch.
-        try? await Task.sleepFor(seconds: 2)
-        
+    public func verifyProvisioning(to accessPoint: APWiFiScan, with passphrase: String) async throws {
+        self.logger.info("Switching to \(accessPoint.ssid)...")
         // Ask the user to switch to the Provisioned Network.
         let manager = NEHotspotConfigurationManager.shared
-        let configuration = NEHotspotConfiguration(ssid: accessPoint.ssid)
+        let configuration = NEHotspotConfiguration(ssid: accessPoint.ssid, passphrase: passphrase, isWEP: accessPoint.authentication == .wep)
         try await switchWiFiEndpoint(using: manager, with: configuration)
+        
+        // Wait a couple of seconds for the firmware to make the connection switch.
+        try? await Task.sleepFor(seconds: 2)
         
         _ = try await findBonjourService(type: "_http._tcp.", domain: "local", name: "wifiprov")
     }
