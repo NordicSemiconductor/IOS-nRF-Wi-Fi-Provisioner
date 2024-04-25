@@ -8,6 +8,7 @@
 import SwiftUI
 import NordicWiFiProvisioner_SoftAP
 import OSLog
+import Combine
 
 // MARK: - ProvisionOverWiFiView.ViewModel
 
@@ -30,6 +31,7 @@ extension ProvisionOverWiFiView {
         
         private let log = Logger(subsystem: Bundle.main.bundleIdentifier!, 
                                  category: "ProvisionOverWiFiView+ViewModel")
+        private lazy var cancellables = Set<AnyCancellable>()
     }
 }
 
@@ -38,33 +40,27 @@ extension ProvisionOverWiFiView {
 extension ProvisionOverWiFiView.ViewModel {
     
     func pipelineStart() async throws {
-        pipelineManager = PipelineManager(initialStages: ProvisioningStage.allCases)
+        resetPipeline()
+        
         do {
             pipelineManager.inProgress(.connected)
-            objectWillChange.send()
             try await manager.connect()
             
             pipelineManager.inProgress(.browsed)
-            objectWillChange.send()
             let service = try await manager.findBonjourService(type: "_http._tcp.", domain: "local", name: "wifiprov")
             
-            print(service)
             pipelineManager.inProgress(.resolved)
-            objectWillChange.send()
             log.debug("Awaiting for Resolve...")
             let resolvedIPAddress = try await manager.resolveIPAddress(for: service)
             self.ipAddress = resolvedIPAddress
             log.debug("I've got the address! \(resolvedIPAddress)")
             
             pipelineManager.inProgress(.scanned)
-            objectWillChange.send()
             scans = try await manager.getScans(ipAddress: resolvedIPAddress)
             
             pipelineManager.inProgress(.provisioningInfo)
-            objectWillChange.send()
         } catch {
             pipelineManager.onError(error)
-            objectWillChange.send()
             log.error("Pipeline Error: \(error.localizedDescription)")
             alertError = TitleMessageError(error)
             showAlert = true
@@ -76,23 +72,31 @@ extension ProvisionOverWiFiView.ViewModel {
             guard let selectedScan else {
                 throw TitleMessageError(message: "SSID is not selected")
             }
-            
             pipelineManager.inProgress(.provisioning)
-            objectWillChange.send()
             
             try await manager.provision(ipAddress: ipAddress, to: selectedScan, with: ssidPassword)
             pipelineManager.inProgress(.verification)
-            objectWillChange.send()
             
             try await manager.verifyProvisioning(to: selectedScan, with: ssidPassword)
             pipelineManager.completed(.verification)
-            objectWillChange.send()
         } catch {
             pipelineManager.onError(error)
-            objectWillChange.send()
             log.error("Pipeline Error: \(error.localizedDescription)")
             alertError = TitleMessageError(error)
             showAlert = true
         }
+    }
+    
+    // MARK: Private
+    
+    private func resetPipeline() {
+        cancellables.removeAll()
+        
+        pipelineManager = PipelineManager(initialStages: ProvisioningStage.allCases)
+        
+        // Setup pass-through of objectWillChange for pipeline changes
+        pipelineManager.$stages.sink { [weak self] _ in
+            self?.objectWillChange.send()
+        }.store(in: &cancellables)
     }
 }
