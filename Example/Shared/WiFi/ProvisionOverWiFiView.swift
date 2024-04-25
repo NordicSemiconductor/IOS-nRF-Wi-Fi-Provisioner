@@ -17,8 +17,11 @@ struct ProvisionOverWiFiView: View {
     
     @StateObject var viewModel = ViewModel()
     
+    @State private var alertError: TitleMessageError? = nil
+    @State private var showAlert: Bool = false
     @State private var viewStatus: ViewStatus = .showingStages
-    enum ViewStatus {
+    
+    private enum ViewStatus {
         case showingStages
         case awaitingUserInput
     }
@@ -45,6 +48,8 @@ struct ProvisionOverWiFiView: View {
                         viewStatus = .awaitingUserInput
                     } catch {
                         viewStatus = .showingStages
+                        alertError = TitleMessageError(error)
+                        showAlert = true
                     }
                 }
             case .awaitingUserInput:
@@ -62,9 +67,9 @@ struct ProvisionOverWiFiView: View {
             }
         }
         .navigationTitle("Provision over Wi-Fi")
-        .alert(isPresented: $viewModel.showAlert, error: viewModel.alertError) {
+        .alert(isPresented: $showAlert, error: alertError) {
             Button("OK", role: .cancel) { 
-                // No-op.
+                alertError = nil
             }
         }
     }
@@ -96,6 +101,8 @@ struct ProvisionOverWiFiView: View {
                 try await viewModel.provision(ipAddress: ipAddress)
             } catch {
                 viewStatus = .awaitingUserInput
+                alertError = TitleMessageError(error)
+                showAlert = true
             }
         }, label: {
             Text("Provision")
@@ -104,4 +111,3 @@ struct ProvisionOverWiFiView: View {
         .accessibilityIdentifier("prov_button")
     }
 }
-

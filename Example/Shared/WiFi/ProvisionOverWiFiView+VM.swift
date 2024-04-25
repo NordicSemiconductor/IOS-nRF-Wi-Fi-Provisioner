@@ -26,9 +26,6 @@ extension ProvisionOverWiFiView {
         @Published var selectedScan: APWiFiScan?
         @Published var ssidPassword: String = ""
         
-        @Published private (set) var alertError: TitleMessageError? = nil
-        @Published var showAlert: Bool = false
-        
         private let log = Logger(subsystem: Bundle.main.bundleIdentifier!, 
                                  category: "ProvisionOverWiFiView+ViewModel")
         private lazy var cancellables = Set<AnyCancellable>()
@@ -62,8 +59,7 @@ extension ProvisionOverWiFiView.ViewModel {
         } catch {
             pipelineManager.onError(error)
             log.error("Pipeline Error: \(error.localizedDescription)")
-            alertError = TitleMessageError(error)
-            showAlert = true
+            throw error
         }
     }
     
@@ -82,8 +78,7 @@ extension ProvisionOverWiFiView.ViewModel {
         } catch {
             pipelineManager.onError(error)
             log.error("Pipeline Error: \(error.localizedDescription)")
-            alertError = TitleMessageError(error)
-            showAlert = true
+            throw error
         }
     }
     
