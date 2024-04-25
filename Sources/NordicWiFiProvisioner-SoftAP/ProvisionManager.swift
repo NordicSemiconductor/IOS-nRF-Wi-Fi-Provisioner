@@ -97,7 +97,24 @@ public class ProvisionManager {
                                     with configuration: NEHotspotConfiguration) async throws {
         logger.debug("Clearing Cached Resolved IP Addresses due to Network Configuration Change.")
         cachedIPAddresses.removeAll()
-        try await manager.apply(configuration)
+        
+        do {
+            try await manager.apply(configuration)
+        } catch {
+            let nsError = error as NSError
+            guard nsError.domain == NEHotspotConfigurationErrorDomain,
+                  let configurationError = NEHotspotConfigurationError(rawValue: nsError.code) else {
+                throw error
+            }
+            
+            switch configurationError {
+            case .alreadyAssociated, .pending:
+                // swallow Error.
+                break
+            default:
+                throw error
+            }
+        }
     }
     
     public func resolveIPAddress(for service: BonjourService) async throws -> String {
