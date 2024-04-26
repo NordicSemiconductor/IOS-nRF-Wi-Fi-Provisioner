@@ -99,6 +99,7 @@ struct PipelineView<Stage: PipelineStage>: View {
                     #endif
 
                     ProgressView(value: stage.progress, total: 1.0)
+                        .progressViewStyle(.linear)
                         .padding(.top, 2)
                         .padding(.trailing)
                 }
