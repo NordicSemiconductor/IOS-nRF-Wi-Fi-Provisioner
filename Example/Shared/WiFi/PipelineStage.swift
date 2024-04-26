@@ -21,7 +21,7 @@ public protocol PipelineStage: Identifiable, Hashable, CaseIterable {
     var isIndeterminate: Bool { get }
     var completed: Bool { get set }
     var inProgress: Bool { get set  }
-    var encounteredAnError: Bool { get set  }
+    var encounteredAnError: Bool { get set }
 }
 
 extension PipelineStage {
@@ -99,10 +99,14 @@ struct PipelineView<Stage: PipelineStage>: View {
                         .padding(.top, 1)
                     #endif
 
-                    ProgressView(value: stage.progress, total: 1.0)
-                        .progressViewStyle(.linear)
-                        .padding(.top, 2)
-                        .padding(.trailing)
+                    if stage.isIndeterminate {
+                        IndeterminateProgressView()
+                    } else {
+                        ProgressView(value: stage.progress, total: stage.totalProgress)
+                            .progressViewStyle(.linear)
+                            .padding(.top, 2)
+                            .padding(.trailing)
+                    }
                 }
             }
         }
