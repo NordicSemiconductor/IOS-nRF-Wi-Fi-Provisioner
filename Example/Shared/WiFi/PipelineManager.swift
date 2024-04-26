@@ -30,7 +30,6 @@ public class PipelineManager<Stage: PipelineStage>: ObservableObject {
         }
     }
     
-    private(set) var error: Error?
     weak var delegate: PipelineManagerDelegate?
     
     var currentStage: Stage! {
@@ -84,7 +83,6 @@ internal extension PipelineManager {
     
     func onError(_ error: Error) {
         guard let currentStage = stages.firstIndex(where: { $0.inProgress }) else { return }
-        self.error = error
         stages[currentStage].declareError()
         delegate?.onProgressUpdate()
     }

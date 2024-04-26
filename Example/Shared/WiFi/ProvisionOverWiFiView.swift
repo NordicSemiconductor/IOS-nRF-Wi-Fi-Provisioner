@@ -35,7 +35,7 @@ struct ProvisionOverWiFiView: View {
                 List {
                     Section {
                         ForEach(viewModel.pipelineManager.stages) { stage in
-                            PipelineView(stage: stage, logLine: "")
+                            PipelineView(stage: stage, logLine: viewModel.logLine)
                         }
                     }
                 }

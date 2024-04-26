@@ -17,7 +17,8 @@ extension ProvisionOverWiFiView {
     @MainActor
     class ViewModel: ObservableObject {
         
-        @Published var pipelineManager = PipelineManager(initialStages: ProvisioningStage.allCases)
+        @Published private(set) var pipelineManager = PipelineManager(initialStages: ProvisioningStage.allCases)
+        @Published private(set) var logLine = ""
         
         private var manager = ProvisionManager()
         var ipAddress: String?
@@ -47,10 +48,10 @@ extension ProvisionOverWiFiView.ViewModel {
             let service = try await manager.findBonjourService(type: "_http._tcp.", domain: "local", name: "wifiprov")
             
             pipelineManager.inProgress(.resolved)
-            log.debug("Awaiting for Resolve...")
+            log("Awaiting for Resolve...", level: .debug)
             let resolvedIPAddress = try await manager.resolveIPAddress(for: service)
             self.ipAddress = resolvedIPAddress
-            log.debug("I've got the address! \(resolvedIPAddress)")
+            log("I've got the address! \(resolvedIPAddress)", level: .debug)
             
             pipelineManager.inProgress(.scanned)
             scans = try await manager.getScans(ipAddress: resolvedIPAddress)
@@ -58,7 +59,7 @@ extension ProvisionOverWiFiView.ViewModel {
             pipelineManager.inProgress(.provisioningInfo)
         } catch {
             pipelineManager.onError(error)
-            log.error("Pipeline Error: \(error.localizedDescription)")
+            log("Pipeline Error: \(error.localizedDescription)", level: .error)
             throw error
         }
     }
@@ -77,7 +78,7 @@ extension ProvisionOverWiFiView.ViewModel {
             pipelineManager.completed(.verification)
         } catch {
             pipelineManager.onError(error)
-            log.error("Pipeline Error: \(error.localizedDescription)")
+            log("Pipeline Error: \(error.localizedDescription)", level: .error)
             throw error
         }
     }
@@ -88,10 +89,34 @@ extension ProvisionOverWiFiView.ViewModel {
         cancellables.removeAll()
         
         pipelineManager = PipelineManager(initialStages: ProvisioningStage.allCases)
+        manager.delegate = self
         
         // Setup pass-through of objectWillChange for pipeline changes
         pipelineManager.$stages.sink { [weak self] _ in
             self?.objectWillChange.send()
         }.store(in: &cancellables)
+    }
+}
+
+// MARK: ProvisionManager.Delegate
+
+extension ProvisionOverWiFiView.ViewModel: ProvisionManager.Delegate {
+    
+    func log(_ line: String, level: OSLogType) {
+        switch level {
+        case .debug:
+            log.debug("\(line)")
+        case .info:
+            log.info("\(line)")
+        case .error:
+            log.error("\(line)")
+        case .fault:
+            log.fault("\(line)")
+        default:
+            log.log("\(line)")
+        }
+        Task { @MainActor in
+            logLine = line
+        }
     }
 }

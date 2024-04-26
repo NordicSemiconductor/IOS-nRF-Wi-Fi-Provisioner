@@ -19,9 +19,10 @@ public class ProvisionManager {
     
     public init() {}
     
-    private let logger = Logger(subsystem: "com.nordicsemi.NordicWiFiProvisioner-SoftAP", category: "SoftAP-Provisioner")
     private lazy var urlSession = URLSession(configuration: .default, delegate: NSURLSessionPinningDelegate.shared, delegateQueue: nil)
     private lazy var cachedIPAddresses = [String: String]()
+    
+    public var delegate: Delegate?
     
     public func connect() async throws {
         // Ask the user to switch to the Provisioning Device's Wi-Fi Network.
@@ -41,32 +42,32 @@ public class ProvisionManager {
         browser = NWBrowser(for: .bonjour(type: type, domain: domain),
                             using: .discoveryParameters)
         defer {
-            print("Cancelling Browser...")
+            log("Cancelling Browser...", level: .debug)
             browser?.cancel()
         }
         return try await withCheckedThrowingContinuation { [weak browser] (continuation: CheckedContinuation<BonjourService, Error>) in
             
-            browser?.stateUpdateHandler = { [logger] newState in
+            browser?.stateUpdateHandler = { [weak self] newState in
                 switch newState {
                 case .setup:
-                    logger.info("Setting up connection")
+                    self?.log("Setting up connection", level: .info)
                 case .ready:
-                    logger.info("Ready?")
+                    self?.log("Ready?", level: .info)
                 case .failed(let error):
-                    logger.info("\(error.localizedDescription)")
+                    self?.log("\(error.localizedDescription)", level: .error)
                     continuation.resume(throwing: error)
                 case .cancelled:
-                    logger.info("Stopped / Cancelled")
+                    self?.log("Stopped / Cancelled", level: .info)
                 case .waiting(let nwError):
-                    logger.info("Waiting for \(nwError.localizedDescription)?")
+                    self?.log("Waiting for \(nwError.localizedDescription)?", level: .info)
                 default:
                     break
                 }
             }
             
-            browser?.browseResultsChangedHandler = { [logger] results, changes in
+            browser?.browseResultsChangedHandler = { [weak self] results, changes in
                 var netService: NetService?
-                logger.debug("Found \(results.count) results.")
+                self?.log("Found \(results.count) results.", level: .debug)
                 for result in results {
                     if case .service(let service) = result.endpoint, service.name == name {
                         netService = NetService(domain: service.domain, type: service.type, name: service.name)
@@ -80,7 +81,7 @@ public class ProvisionManager {
                     switch result {
                     case .success(let ipAddress):
                         self?.cachedIPAddresses[netService.name] = ipAddress
-                        logger.debug("Cached IP ADDRESS \(ipAddress) for Service \(netService.name)")
+                        self?.log("Cached IP ADDRESS \(ipAddress) for Service \(netService.name)", level: .debug)
                         continuation.resume(returning: BonjourService(netService: netService))
                     case .failure(let error):
                         continuation.resume(throwing: error)
@@ -88,14 +89,15 @@ public class ProvisionManager {
                 }
                 RunLoop.main.run(until: Date(timeIntervalSinceNow: 2.0))
             }
-            logger.debug("Starting Browser...")
+            log("Starting Browser...", level: .debug)
             browser?.start(queue: .main)
         }
     }
     
     private func switchWiFiEndpoint(using manager: NEHotspotConfigurationManager,
                                     with configuration: NEHotspotConfiguration) async throws {
-        logger.debug("Clearing Cached Resolved IP Addresses due to Network Configuration Change.")
+        log("Clearing Cached Resolved IP Addresses due to Network Configuration Change.",
+            level: .debug)
         cachedIPAddresses.removeAll()
         
         do {
@@ -119,11 +121,12 @@ public class ProvisionManager {
     
     public func resolveIPAddress(for service: BonjourService) async throws -> String {
         guard let cacheHit = cachedIPAddresses[service.name] else {
-            self.logger.warning("Cache Miss for Resolving \(service.name). Attempting to resolve again...")
+            log("Cache Miss for Resolving \(service.name). Attempting to resolve again...",
+                level: .fault)
             let resolvedIPAddress = try await BonjourResolver.resolve(service)
             return resolvedIPAddress
         }
-        self.logger.info("Cache Hit for Resolving \(service.name)")
+        log("Cache Hit for Resolving \(service.name)", level: .info)
         return cacheHit
     }
     
@@ -141,7 +144,7 @@ public class ProvisionManager {
     }
     
     public func provision(ipAddress: String, to accessPoint: APWiFiScan, with password: String?) async throws {
-        logger.debug(#function)
+        log(#function, level: .debug)
         
         var request = URLRequest(url: .prov(ipAddress: ipAddress))
         request.httpMethod = "POST"
@@ -159,7 +162,7 @@ public class ProvisionManager {
     }
     
     public func verifyProvisioning(to accessPoint: APWiFiScan, with passphrase: String) async throws {
-        self.logger.info("Switching to \(accessPoint.ssid)...")
+        log("Switching to \(accessPoint.ssid)...", level: .info)
         // Ask the user to switch to the Provisioned Network.
         let manager = NEHotspotConfigurationManager.shared
         let configuration = NEHotspotConfiguration(ssid: accessPoint.ssid, passphrase: passphrase, isWEP: accessPoint.authentication == .wep)
@@ -169,6 +172,21 @@ public class ProvisionManager {
         try? await Task.sleepFor(seconds: 2)
         
         _ = try await findBonjourService(type: "_http._tcp.", domain: "local", name: "wifiprov")
+    }
+    
+    // MARK: Private
+    
+    private func log(_ line: String, level: OSLogType) {
+        delegate?.log(line, level: level)
+    }
+}
+
+// MARK: - ProvisionManager.Delegate
+
+public extension ProvisionManager {
+    
+    protocol Delegate {
+        func log(_ line: String, level: OSLogType)
     }
 }
 
