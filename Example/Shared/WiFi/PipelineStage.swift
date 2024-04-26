@@ -101,6 +101,8 @@ struct PipelineView<Stage: PipelineStage>: View {
 
                     if stage.isIndeterminate {
                         IndeterminateProgressView()
+                            .padding(.top, 2)
+                            .padding(.trailing)
                     } else {
                         ProgressView(value: stage.progress, total: stage.totalProgress)
                             .progressViewStyle(.linear)
