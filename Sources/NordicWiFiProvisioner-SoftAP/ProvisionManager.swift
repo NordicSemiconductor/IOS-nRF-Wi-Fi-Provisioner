@@ -19,7 +19,8 @@ public class ProvisionManager {
     
     public init() {}
     
-    private lazy var urlSession = URLSession(configuration: .default, delegate: NSURLSessionPinningDelegate.shared, delegateQueue: nil)
+    private lazy var sessionDelegate = NSURLSessionPinningDelegate(certificateName: "certificate")
+    private lazy var urlSession = URLSession(configuration: .default, delegate: sessionDelegate, delegateQueue: nil)
     private lazy var cachedIPAddresses = [String: String]()
     
     public var delegate: Delegate?

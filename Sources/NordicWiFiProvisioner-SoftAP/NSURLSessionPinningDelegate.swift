@@ -9,15 +9,25 @@ import Foundation
 import NetworkExtension
 import OSLog
 
-class NSURLSessionPinningDelegate: NSObject, URLSessionDelegate {
-    static let shared = NSURLSessionPinningDelegate()
+// MARK: - NSURLSessionPinningDelegate
+
+final class NSURLSessionPinningDelegate: NSObject, URLSessionDelegate {
     
-    override init() {
+    // MARK: Private Properties
+    
+    private let certificateName: String
+    
+    private lazy var logger = Logger(subsystem: "com.nordicsemi.NordicWiFiProvisioner-SoftAP",
+                                     category: "NSURLSessionPinningDelegate")
+    
+    // MARK: Init
+    
+    init(certificateName: String) {
+        self.certificateName = certificateName
         super.init()
     }
     
-    private let logger = Logger(subsystem: "com.nordicsemi.NordicWiFiProvisioner-SoftAP",
-                                category: "NSURLSessionPinningDelegate")
+    // MARK: URLSessionDelegate
     
     func urlSession(_ session: URLSession,
                       didReceive challenge: URLAuthenticationChallenge,
@@ -44,7 +54,7 @@ class NSURLSessionPinningDelegate: NSObject, URLSessionDelegate {
         guard let resBundle = Bundle(url: res) else {
             fatalError()
         }
-        let anchor = resBundle.certificateNamed("certificate")!
+        let anchor = resBundle.certificateNamed(certificateName)!
         
         let policy = SecPolicyCreateBasicX509()
         let trust = try secCall { SecTrustCreateWithCertificates(chain as NSArray, policy, $0) }
