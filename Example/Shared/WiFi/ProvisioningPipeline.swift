@@ -12,6 +12,7 @@ import Foundation
 struct ProvisioningStage: PipelineStage {
     
     var id: String { symbolName }
+    var totalProgress: Float { .zero }
     
     var symbolName: String
     var todoStatus: String
@@ -27,7 +28,7 @@ struct ProvisioningStage: PipelineStage {
         self.todoStatus = todoStatus
         self.inProgressStatus = inProgressStatus
         self.completedStatus = completedStatus
-        self.progress = -1.0
+        self.progress = .zero
         self.completed = false
         self.inProgress = false
         self.encounteredAnError = false

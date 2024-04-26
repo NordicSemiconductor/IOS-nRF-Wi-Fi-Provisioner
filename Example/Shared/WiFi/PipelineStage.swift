@@ -17,6 +17,7 @@ public protocol PipelineStage: Identifiable, Hashable, CaseIterable {
     var inProgressStatus: String { get }
     var completedStatus: String { get }
     var progress: Float { get }
+    var totalProgress: Float { get }
     var isIndeterminate: Bool { get }
     var completed: Bool { get set }
     var inProgress: Bool { get set  }
@@ -44,7 +45,7 @@ extension PipelineStage {
     }
     
     var isIndeterminate: Bool {
-        progress < .leastNormalMagnitude
+        totalProgress <= .leastNonzeroMagnitude
     }
     
     mutating func update(inProgress: Bool = false, isCompleted: Bool = false) {
