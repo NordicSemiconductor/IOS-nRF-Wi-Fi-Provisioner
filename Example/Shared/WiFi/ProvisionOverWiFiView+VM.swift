@@ -7,6 +7,7 @@
 
 import SwiftUI
 import NordicWiFiProvisioner_SoftAP
+import NetworkExtension
 import OSLog
 import Combine
 
@@ -46,7 +47,10 @@ extension ProvisionOverWiFiView.ViewModel {
         
         do {
             pipelineManager.inProgress(.connected)
-            try await manager.connect()
+            let apSSID = "006825-nrf-wifiprov"
+            let configuration = NEHotspotConfiguration(ssid: apSSID)
+            let networkManager = NEManager()
+            try await networkManager.apply(configuration)
             
             pipelineManager.inProgress(.browsed)
             let browser = BonjourBrowser()

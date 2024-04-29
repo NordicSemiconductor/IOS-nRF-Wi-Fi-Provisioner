@@ -17,9 +17,6 @@ public class ProvisionManager {
     
     // MARK: Properties
     
-    private let apSSID = "006825-nrf-wifiprov"
-    
-    
     private let sessionDelegate: NSURLSessionPinningDelegate
     private lazy var urlSession = URLSession(configuration: .default, delegate: sessionDelegate, delegateQueue: nil)
     
@@ -29,34 +26,6 @@ public class ProvisionManager {
     
     public init(certificateURL: URL) {
         self.sessionDelegate = NSURLSessionPinningDelegate(certificateURL: certificateURL)
-    }
-    
-    public func connect() async throws {
-        // Ask the user to switch to the Provisioning Device's Wi-Fi Network.
-        let manager = NEHotspotConfigurationManager.shared
-        let configuration = NEHotspotConfiguration(ssid: apSSID)
-        try await switchWiFiEndpoint(using: manager, with: configuration)
-    }
-    
-    private func switchWiFiEndpoint(using manager: NEHotspotConfigurationManager,
-                                    with configuration: NEHotspotConfiguration) async throws {
-        do {
-            try await manager.apply(configuration)
-        } catch {
-            let nsError = error as NSError
-            guard nsError.domain == NEHotspotConfigurationErrorDomain,
-                  let configurationError = NEHotspotConfigurationError(rawValue: nsError.code) else {
-                throw error
-            }
-            
-            switch configurationError {
-            case .alreadyAssociated, .pending:
-                // swallow Error.
-                break
-            default:
-                throw error
-            }
-        }
     }
     
     public func getScans(ipAddress: String) async throws -> [APWiFiScan] {
@@ -93,12 +62,16 @@ public class ProvisionManager {
     public func verifyProvisioning(to accessPoint: APWiFiScan, with passphrase: String) async throws {
         log("Switching to \(accessPoint.ssid)...", level: .info)
         // Ask the user to switch to the Provisioned Network.
-        let manager = NEHotspotConfigurationManager.shared
+        let manager = NEManager()
         let configuration = NEHotspotConfiguration(ssid: accessPoint.ssid, passphrase: passphrase, isWEP: accessPoint.authentication == .wep)
-        try await switchWiFiEndpoint(using: manager, with: configuration)
+        try await manager.apply(configuration)
         
         // Wait a couple of seconds for the firmware to make the connection switch.
         try? await Task.sleepFor(seconds: 2)
+        
+        let browser = BonjourBrowser()
+        browser.delegate = delegate
+        _ = try await browser.findBonjourService(type: "_http._tcp.", domain: "local", name: "wifiprov")
     }
     
     // MARK: Private

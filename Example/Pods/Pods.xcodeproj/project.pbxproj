@@ -119,6 +119,7 @@
 		A6BAA8EBC821FEFC41AA66783B3F305D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7566FCDAC605EB3D2581B3964A2F6ACB /* Foundation.framework */; };
 		A7B2544F5EE962321E6CA43CBD24DEB9 /* response.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79946365FC4EDF1EBB7E626D686DD7AF /* response.pb.swift */; };
 		AAA2604C2BDFB4FA00BFF2A2 /* BonjourBrowser.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA2604B2BDFB4FA00BFF2A2 /* BonjourBrowser.swift */; };
+		AAA2604E2BDFBD7800BFF2A2 /* NEManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA2604D2BDFBD7800BFF2A2 /* NEManager.swift */; };
 		AAC19524A05B3BC5BCBD8F6E9B8D96FA /* NSURLSessionPinningDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14D2ECD536F3A0FB42F642877A4B7568 /* NSURLSessionPinningDelegate.swift */; };
 		AAE867E0D4256B7856AD7DD9E5BB7787 /* JSONEncodingVisitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5B043DD61A1832FD03F7A2B277DA5F /* JSONEncodingVisitor.swift */; };
 		AFE720522CBC830B78427581C3C022D8 /* Version.swift in Sources */ = {isa = PBXBuildFile; fileRef = 860C5191DFB7CC64F63BC9C44E613871 /* Version.swift */; };
@@ -378,6 +379,7 @@
 		A63D6E85F7B45824867202807669D512 /* SwiftProtobuf-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "SwiftProtobuf-dummy.m"; sourceTree = "<group>"; };
 		A9CCDA0C69A011EDB5D1611167DB8F5F /* Provisioner+ConnectionState.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "Provisioner+ConnectionState.swift"; sourceTree = "<group>"; };
 		AAA2604B2BDFB4FA00BFF2A2 /* BonjourBrowser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BonjourBrowser.swift; sourceTree = "<group>"; };
+		AAA2604D2BDFBD7800BFF2A2 /* NEManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NEManager.swift; sourceTree = "<group>"; };
 		AAEECA955B5F95C4B1913DD93DA3C18D /* ScanResult.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ScanResult.swift; sourceTree = "<group>"; };
 		AE599FBE258326CCB02223DE6CFBC320 /* UnknownStorage.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = UnknownStorage.swift; path = Sources/SwiftProtobuf/UnknownStorage.swift; sourceTree = "<group>"; };
 		AEC6BE3B1664B25DB14FF50AA6390189 /* Proto.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Proto.swift; sourceTree = "<group>"; };
@@ -822,6 +824,7 @@
 			children = (
 				835B767F56521D364CFFE88604D81868 /* BonjourResolver.swift */,
 				AAA2604B2BDFB4FA00BFF2A2 /* BonjourBrowser.swift */,
+				AAA2604D2BDFBD7800BFF2A2 /* NEManager.swift */,
 				14D2ECD536F3A0FB42F642877A4B7568 /* NSURLSessionPinningDelegate.swift */,
 				56B0B372B191DACAEB9019598C5ACF20 /* ProvisionManager.swift */,
 				6072B6F785356DE81482EDC9CC020593 /* Extensions */,
@@ -1262,6 +1265,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AAA2604E2BDFBD7800BFF2A2 /* NEManager.swift in Sources */,
 				B12F14027108AED65E473C46E3F18240 /* APWiFiAuth.swift in Sources */,
 				026B2EE66AA1BF759CB302790A8137D4 /* APWiFiBand.swift in Sources */,
 				BA85C88EA3505BEF0193E3AD11B513F4 /* APWiFiScan.swift in Sources */,
