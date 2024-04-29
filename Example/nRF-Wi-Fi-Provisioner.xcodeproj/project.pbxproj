@@ -13,10 +13,6 @@
 		0107FEAB28F827A200693317 /* ScanResultRaw.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0107FEA928F827A200693317 /* ScanResultRaw.swift */; };
 		011A2613287CAF890004A5C4 /* BluetoothManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011A2612287CAF890004A5C4 /* BluetoothManager.swift */; };
 		011A2614287CAF890004A5C4 /* BluetoothManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011A2612287CAF890004A5C4 /* BluetoothManager.swift */; };
-		01481AAB2852093000925FAB /* Tests_iOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01481AAA2852093000925FAB /* Tests_iOS.swift */; };
-		01481AAD2852093000925FAB /* Tests_iOSLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01481AAC2852093000925FAB /* Tests_iOSLaunchTests.swift */; };
-		01481AB72852093000925FAB /* Tests_macOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01481AB62852093000925FAB /* Tests_macOS.swift */; };
-		01481AB92852093000925FAB /* Tests_macOSLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01481AB82852093000925FAB /* Tests_macOSLaunchTests.swift */; };
 		01481ABA2852093000925FAB /* nRF_Wi_Fi_ProvisionerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01481A922852092F00925FAB /* nRF_Wi_Fi_ProvisionerApp.swift */; };
 		01481ABB2852093000925FAB /* nRF_Wi_Fi_ProvisionerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01481A922852092F00925FAB /* nRF_Wi_Fi_ProvisionerApp.swift */; };
 		01481ABC2852093000925FAB /* IntroView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01481A932852092F00925FAB /* IntroView.swift */; };
@@ -65,7 +61,6 @@
 		01FCADC1291D4C9F0044904B /* AccessPointSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01FCADC0291D4C9F0044904B /* AccessPointSection.swift */; };
 		01FCADC329218BE50044904B /* FirstAppear.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01FCADC229218BE50044904B /* FirstAppear.swift */; };
 		01FCADC429218BE50044904B /* FirstAppear.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01FCADC229218BE50044904B /* FirstAppear.swift */; };
-		01FCADC9292515A80044904B /* OptionalTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01FCADC8292515A80044904B /* OptionalTests.swift */; };
 		01FCADCC292571C30044904B /* Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01FCADCB292571C30044904B /* Mock.swift */; };
 		01FCADCD292571C30044904B /* Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01FCADCB292571C30044904B /* Mock.swift */; };
 		01FCADCF292577DB0044904B /* WiFiInfo+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01FCADCE292577DB0044904B /* WiFiInfo+Ext.swift */; };
@@ -100,24 +95,9 @@
 		AAAAE6C62B7F813D000BB569 /* AppViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAAAE6C42B7F813D000BB569 /* AppViewModel.swift */; };
 		AAAE24102BD01336005C5F90 /* PipelineStage.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAAE240F2BD01336005C5F90 /* PipelineStage.swift */; };
 		AAAE24122BD01596005C5F90 /* ProvisioningPipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAAE24112BD01596005C5F90 /* ProvisioningPipeline.swift */; };
-		F3352A79C570A238BE14A103 /* Pods_Tests_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 812A6D15A792E144AE0603B4 /* Pods_Tests_iOS.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		01481AA72852093000925FAB /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 01481A8D2852092F00925FAB /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 01481A982852093000925FAB;
-			remoteInfo = "nRF-Wi-Fi-Provisioner (iOS)";
-		};
-		01481AB32852093000925FAB /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 01481A8D2852092F00925FAB /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 01481A9E2852093000925FAB;
-			remoteInfo = "nRF-Wi-Fi-Provisioner (macOS)";
-		};
 		01C1BF7128E70BB200FDD841 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 01481A8D2852092F00925FAB /* Project object */;
@@ -138,12 +118,6 @@
 		01481A992852093000925FAB /* nRF-Wi-Fi-Provisioner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "nRF-Wi-Fi-Provisioner.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		01481A9F2852093000925FAB /* nRF-Wi-Fi-Provisioner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "nRF-Wi-Fi-Provisioner.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		01481AA12852093000925FAB /* macOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = macOS.entitlements; sourceTree = "<group>"; };
-		01481AA62852093000925FAB /* Tests iOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Tests iOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		01481AAA2852093000925FAB /* Tests_iOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests_iOS.swift; sourceTree = "<group>"; };
-		01481AAC2852093000925FAB /* Tests_iOSLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests_iOSLaunchTests.swift; sourceTree = "<group>"; };
-		01481AB22852093000925FAB /* Tests macOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Tests macOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		01481AB62852093000925FAB /* Tests_macOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests_macOS.swift; sourceTree = "<group>"; };
-		01481AB82852093000925FAB /* Tests_macOSLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests_macOSLaunchTests.swift; sourceTree = "<group>"; };
 		015D60A22875A1530048F065 /* ScannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerView.swift; sourceTree = "<group>"; };
 		0183EFC82897C196002E79A5 /* Status.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Status.swift; sourceTree = "<group>"; };
 		0183EFCC2897C446002E79A5 /* ReversedLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReversedLabel.swift; sourceTree = "<group>"; };
@@ -167,7 +141,6 @@
 		01FCADBC291D482B0044904B /* DeviceStatusSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceStatusSection.swift; sourceTree = "<group>"; };
 		01FCADC0291D4C9F0044904B /* AccessPointSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessPointSection.swift; sourceTree = "<group>"; };
 		01FCADC229218BE50044904B /* FirstAppear.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstAppear.swift; sourceTree = "<group>"; };
-		01FCADC8292515A80044904B /* OptionalTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionalTests.swift; sourceTree = "<group>"; };
 		01FCADCB292571C30044904B /* Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mock.swift; sourceTree = "<group>"; };
 		01FCADCE292577DB0044904B /* WiFiInfo+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WiFiInfo+Ext.swift"; sourceTree = "<group>"; };
 		2266BBCD2DCFE7EB14F94B3E /* Pods-Tests iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests iOS.release.xcconfig"; path = "Target Support Files/Pods-Tests iOS/Pods-Tests iOS.release.xcconfig"; sourceTree = "<group>"; };
@@ -216,21 +189,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		01481AA32852093000925FAB /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				F3352A79C570A238BE14A103 /* Pods_Tests_iOS.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		01481AAF2852093000925FAB /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		01C1BF6828E70BB200FDD841 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -263,8 +221,6 @@
 				AA2C119C2B7A6414003AF3E0 /* nRF-Wi-Fi-Provisioner (iOS).entitlements */,
 				01481A912852092F00925FAB /* Shared */,
 				01481AA02852093000925FAB /* macOS */,
-				01481AA92852093000925FAB /* Tests iOS */,
-				01481AB52852093000925FAB /* Tests macOS */,
 				01C1BF6C28E70BB200FDD841 /* nRF-Wi-Fi-ProvisionerUITests */,
 				01481A9A2852093000925FAB /* Products */,
 				019A5D91286C8F30002D03F0 /* Frameworks */,
@@ -296,8 +252,6 @@
 			children = (
 				01481A992852093000925FAB /* nRF-Wi-Fi-Provisioner.app */,
 				01481A9F2852093000925FAB /* nRF-Wi-Fi-Provisioner.app */,
-				01481AA62852093000925FAB /* Tests iOS.xctest */,
-				01481AB22852093000925FAB /* Tests macOS.xctest */,
 				01C1BF6B28E70BB200FDD841 /* nRF-Wi-Fi-ProvisionerUITests.xctest */,
 			);
 			name = Products;
@@ -309,25 +263,6 @@
 				01481AA12852093000925FAB /* macOS.entitlements */,
 			);
 			path = macOS;
-			sourceTree = "<group>";
-		};
-		01481AA92852093000925FAB /* Tests iOS */ = {
-			isa = PBXGroup;
-			children = (
-				01481AAA2852093000925FAB /* Tests_iOS.swift */,
-				01FCADC8292515A80044904B /* OptionalTests.swift */,
-				01481AAC2852093000925FAB /* Tests_iOSLaunchTests.swift */,
-			);
-			path = "Tests iOS";
-			sourceTree = "<group>";
-		};
-		01481AB52852093000925FAB /* Tests macOS */ = {
-			isa = PBXGroup;
-			children = (
-				01481AB62852093000925FAB /* Tests_macOS.swift */,
-				01481AB82852093000925FAB /* Tests_macOSLaunchTests.swift */,
-			);
-			path = "Tests macOS";
 			sourceTree = "<group>";
 		};
 		01682618287F16B20040C97E /* Extensions */ = {
@@ -569,43 +504,6 @@
 			productReference = 01481A9F2852093000925FAB /* nRF-Wi-Fi-Provisioner.app */;
 			productType = "com.apple.product-type.application";
 		};
-		01481AA52852093000925FAB /* Tests iOS */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 01481AC82852093000925FAB /* Build configuration list for PBXNativeTarget "Tests iOS" */;
-			buildPhases = (
-				02F15166FA399B616B8DC0F4 /* [CP] Check Pods Manifest.lock */,
-				01481AA22852093000925FAB /* Sources */,
-				01481AA32852093000925FAB /* Frameworks */,
-				01481AA42852093000925FAB /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				01481AA82852093000925FAB /* PBXTargetDependency */,
-			);
-			name = "Tests iOS";
-			productName = "Tests iOS";
-			productReference = 01481AA62852093000925FAB /* Tests iOS.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
-		};
-		01481AB12852093000925FAB /* Tests macOS */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 01481ACB2852093000925FAB /* Build configuration list for PBXNativeTarget "Tests macOS" */;
-			buildPhases = (
-				01481AAE2852093000925FAB /* Sources */,
-				01481AAF2852093000925FAB /* Frameworks */,
-				01481AB02852093000925FAB /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				01481AB42852093000925FAB /* PBXTargetDependency */,
-			);
-			name = "Tests macOS";
-			productName = "Tests macOS";
-			productReference = 01481AB22852093000925FAB /* Tests macOS.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
-		};
 		01C1BF6A28E70BB200FDD841 /* nRF-Wi-Fi-ProvisionerUITests */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 01C1BF7328E70BB200FDD841 /* Build configuration list for PBXNativeTarget "nRF-Wi-Fi-ProvisionerUITests" */;
@@ -642,18 +540,6 @@
 						DevelopmentTeam = APP_STORE_CONNECT_TEAM_ID;
 						ProvisioningStyle = Automatic;
 					};
-					01481AA52852093000925FAB = {
-						CreatedOnToolsVersion = 13.2.1;
-						DevelopmentTeam = APP_STORE_CONNECT_TEAM_ID;
-						ProvisioningStyle = Automatic;
-						TestTargetID = 01481A982852093000925FAB;
-					};
-					01481AB12852093000925FAB = {
-						CreatedOnToolsVersion = 13.2.1;
-						DevelopmentTeam = APP_STORE_CONNECT_TEAM_ID;
-						ProvisioningStyle = Automatic;
-						TestTargetID = 01481A9E2852093000925FAB;
-					};
 					01C1BF6A28E70BB200FDD841 = {
 						CreatedOnToolsVersion = 14.0;
 						TestTargetID = 01481A982852093000925FAB;
@@ -679,8 +565,6 @@
 			targets = (
 				01481A982852093000925FAB /* nRF-Wi-Fi-Provisioner (iOS) */,
 				01481A9E2852093000925FAB /* nRF-Wi-Fi-Provisioner (macOS) */,
-				01481AA52852093000925FAB /* Tests iOS */,
-				01481AB12852093000925FAB /* Tests macOS */,
 				01C1BF6A28E70BB200FDD841 /* nRF-Wi-Fi-ProvisionerUITests */,
 			);
 		};
@@ -706,20 +590,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		01481AA42852093000925FAB /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		01481AB02852093000925FAB /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		01C1BF6928E70BB200FDD841 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -730,28 +600,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		02F15166FA399B616B8DC0F4 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Tests iOS-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
 		20DBB19A23ACE238472D44A6 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -904,25 +752,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		01481AA22852093000925FAB /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				01481AAD2852093000925FAB /* Tests_iOSLaunchTests.swift in Sources */,
-				01481AAB2852093000925FAB /* Tests_iOS.swift in Sources */,
-				01FCADC9292515A80044904B /* OptionalTests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		01481AAE2852093000925FAB /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				01481AB92852093000925FAB /* Tests_macOSLaunchTests.swift in Sources */,
-				01481AB72852093000925FAB /* Tests_macOS.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		01C1BF6728E70BB200FDD841 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -935,16 +764,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		01481AA82852093000925FAB /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 01481A982852093000925FAB /* nRF-Wi-Fi-Provisioner (iOS) */;
-			targetProxy = 01481AA72852093000925FAB /* PBXContainerItemProxy */;
-		};
-		01481AB42852093000925FAB /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 01481A9E2852093000925FAB /* nRF-Wi-Fi-Provisioner (macOS) */;
-			targetProxy = 01481AB32852093000925FAB /* PBXContainerItemProxy */;
-		};
 		01C1BF7228E70BB200FDD841 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 01481A982852093000925FAB /* nRF-Wi-Fi-Provisioner (iOS) */;
@@ -1213,95 +1032,6 @@
 			};
 			name = Release;
 		};
-		01481AC92852093000925FAB /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5B02622BD480F3162A9947BF /* Pods-Tests iOS.debug.xcconfig */;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 22;
-				DEVELOPMENT_TEAM = APP_STORE_CONNECT_TEAM_ID;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.nordicsemi.nRF-Wi-Fi-Provisioner";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "454d81e9-20b9-42c8-9cc9-d6d3f45cc0f7";
-				SDKROOT = iphoneos;
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = "nRF-Wi-Fi-Provisioner (iOS)";
-			};
-			name = Debug;
-		};
-		01481ACA2852093000925FAB /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2266BBCD2DCFE7EB14F94B3E /* Pods-Tests iOS.release.xcconfig */;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 22;
-				DEVELOPMENT_TEAM = APP_STORE_CONNECT_TEAM_ID;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.nordicsemi.nRF-Wi-Fi-Provisioner";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "454d81e9-20b9-42c8-9cc9-d6d3f45cc0f7";
-				SDKROOT = iphoneos;
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = "nRF-Wi-Fi-Provisioner (iOS)";
-				VALIDATE_PRODUCT = YES;
-			};
-			name = Release;
-		};
-		01481ACC2852093000925FAB /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 22;
-				DEVELOPMENT_TEAM = APP_STORE_CONNECT_TEAM_ID;
-				GENERATE_INFOPLIST_FILE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 12.1;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.nordicsemi.nRF-Wi-Fi-Provisioner";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "454d81e9-20b9-42c8-9cc9-d6d3f45cc0f7";
-				SDKROOT = macosx;
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TEST_TARGET_NAME = "nRF-Wi-Fi-Provisioner (macOS)";
-			};
-			name = Debug;
-		};
-		01481ACD2852093000925FAB /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 22;
-				DEVELOPMENT_TEAM = APP_STORE_CONNECT_TEAM_ID;
-				GENERATE_INFOPLIST_FILE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 12.1;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.nordicsemi.nRF-Wi-Fi-Provisioner";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "454d81e9-20b9-42c8-9cc9-d6d3f45cc0f7";
-				SDKROOT = macosx;
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TEST_TARGET_NAME = "nRF-Wi-Fi-Provisioner (macOS)";
-			};
-			name = Release;
-		};
 		01C1BF7428E70BB200FDD841 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1369,24 +1099,6 @@
 			buildConfigurations = (
 				01481AC62852093000925FAB /* Debug */,
 				01481AC72852093000925FAB /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		01481AC82852093000925FAB /* Build configuration list for PBXNativeTarget "Tests iOS" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				01481AC92852093000925FAB /* Debug */,
-				01481ACA2852093000925FAB /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		01481ACB2852093000925FAB /* Build configuration list for PBXNativeTarget "Tests macOS" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				01481ACC2852093000925FAB /* Debug */,
-				01481ACD2852093000925FAB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
