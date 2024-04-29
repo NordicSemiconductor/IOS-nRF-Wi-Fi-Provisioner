@@ -30,7 +30,7 @@ final public class BonjourBrowser {
     
     // MARK: API
     
-    public func findBonjourService(type: String, domain: String, name: String) async throws -> BonjourService {
+    public func findBonjourService(_ service: BonjourService) async throws {
         // Wait a couple of seconds for the connection to settle-in.
         try? await Task.sleepFor(seconds: 2)
         
@@ -38,13 +38,12 @@ final public class BonjourBrowser {
             browser?.cancel()
             browser = nil
         }
-        browser = NWBrowser(for: .bonjour(type: type, domain: domain),
-                            using: .discoveryParameters)
+        browser = NWBrowser(for: service.descriptor(), using: .discoveryParameters)
         defer {
             delegate?.log("Cancelling Browser...", level: .debug)
             browser?.cancel()
         }
-        return try await withCheckedThrowingContinuation { [weak browser] (continuation: CheckedContinuation<BonjourService, Error>) in
+        try await withCheckedThrowingContinuation { [weak browser] (continuation: CheckedContinuation<Void, Error>) in
             browser?.stateUpdateHandler = { [delegate] newState in
                 switch newState {
                 case .setup:
@@ -67,8 +66,8 @@ final public class BonjourBrowser {
                 var netService: NetService?
                 delegate?.log("Found \(results.count) results.", level: .debug)
                 for result in results {
-                    if case .service(let service) = result.endpoint, service.name == name {
-                        netService = NetService(domain: service.domain, type: service.type, name: service.name)
+                    if case .service(let browserService) = result.endpoint, browserService.name == service.name {
+                        netService = NetService(domain: browserService.domain, type: browserService.type, name: browserService.name)
                         break
                     }
                 }
@@ -80,7 +79,7 @@ final public class BonjourBrowser {
                     case .success(let ipAddress):
                         self?.cachedIPAddresses[netService.name] = ipAddress
                         self?.delegate?.log("Cached IP ADDRESS \(ipAddress) for Service \(netService.name)", level: .debug)
-                        continuation.resume(returning: BonjourService(netService: netService))
+                        continuation.resume()
                     case .failure(let error):
                         continuation.resume(throwing: error)
                     }

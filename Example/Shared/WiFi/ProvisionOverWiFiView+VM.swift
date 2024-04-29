@@ -55,11 +55,11 @@ extension ProvisionOverWiFiView.ViewModel {
             pipelineManager.inProgress(.browsed)
             let browser = BonjourBrowser()
             browser.delegate = self
-            let service = try await browser.findBonjourService(type: "_http._tcp.", domain: "local", name: "wifiprov")
+            try await browser.findBonjourService(.wifiProv)
             
             pipelineManager.inProgress(.resolved)
             log("Awaiting for Resolve...", level: .debug)
-            let resolvedIPAddress = try await browser.resolveIPAddress(for: service)
+            let resolvedIPAddress = try await browser.resolveIPAddress(for: .wifiProv)
             self.ipAddress = resolvedIPAddress
             log("I've got the address! \(resolvedIPAddress)", level: .debug)
             
@@ -91,13 +91,14 @@ extension ProvisionOverWiFiView.ViewModel {
             
             pipelineManager.inProgress(.verification)
             log("Awaiting Network Change...", level: .info)
+            
             // Wait a couple of seconds for the firmware to make the connection switch.
             try? await Task.sleepFor(seconds: 2)
             
             log("Searching for Provisioned Device in Network...", level: .info)
             let browser = BonjourBrowser()
             browser.delegate = self
-            _ = try await browser.findBonjourService(type: "_http._tcp.", domain: "local", name: "wifiprov")
+            try await browser.findBonjourService(.wifiProv)
             pipelineManager.completed(.verification)
         } catch {
             pipelineManager.onError(error)
@@ -142,4 +143,12 @@ extension ProvisionOverWiFiView.ViewModel: ProvisionManager.Delegate {
             logLine = line
         }
     }
+}
+
+// MARK: BonjourService
+
+extension BonjourService {
+    
+    static let wifiProv = BonjourService(name: "wifiprov", domain: "local",
+                                         type: "_http._tcp.")
 }

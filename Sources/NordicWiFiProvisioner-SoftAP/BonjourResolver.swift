@@ -8,37 +8,6 @@
 //  Created by Dinesh Harjani on 11/4/24.
 //
 
-import Foundation
-
-// MARK: - BonjourService
-
-public struct BonjourService: Sendable {
-    
-    let name: String
-    let domain: String
-    let type: String
-    
-    init(netService: NetService) {
-        self.name = netService.name
-        self.domain = netService.domain
-        self.type = netService.type
-    }
-    
-    func netService() -> NetService {
-        NetService(domain: domain, type: type, name: name)
-    }
-}
-
-// MARK: - BonjourError
-
-public enum BonjourError: Error, LocalizedError {
-    
-    case stoppedByUser
-    case unableToResolve(reason: String)
-    case noAddressFound
-    case unableToParseSocketAddress
-}
-
 // MARK: - BonjourResolver
 
 final class BonjourResolver: NSObject {
