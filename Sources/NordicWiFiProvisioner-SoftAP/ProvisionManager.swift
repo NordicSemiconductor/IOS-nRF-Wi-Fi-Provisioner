@@ -14,6 +14,9 @@ import SwiftProtobuf
 // MARK: ProvisionManager
 
 public class ProvisionManager {
+    
+    // MARK: Properties
+    
     private let apSSID = "006825-nrf-wifiprov"
     private var browser: NWBrowser?
     
@@ -22,6 +25,8 @@ public class ProvisionManager {
     private lazy var cachedIPAddresses = [String: String]()
     
     public var delegate: Delegate?
+    
+    // MARK: Init
     
     public init(certificateURL: URL) {
         self.sessionDelegate = NSURLSessionPinningDelegate(certificateURL: certificateURL)
