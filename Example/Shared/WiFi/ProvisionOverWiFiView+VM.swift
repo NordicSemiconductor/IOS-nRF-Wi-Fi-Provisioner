@@ -20,7 +20,11 @@ extension ProvisionOverWiFiView {
         @Published private(set) var pipelineManager = PipelineManager(initialStages: ProvisioningStage.allCases)
         @Published private(set) var logLine = ""
         
-        private var manager = ProvisionManager()
+        private let manager = {
+            let res: URL! = Bundle.main.url(forResource: "certificate", withExtension: "cer")!
+            let manager = ProvisionManager(certificateURL: res)
+            return manager
+        }()
         var ipAddress: String?
         
         @Published private (set) var scans: [APWiFiScan] = []

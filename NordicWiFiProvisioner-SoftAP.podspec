@@ -32,8 +32,5 @@ It cantains all the necessary components to scan for nRF-7 devices, connect to t
   s.swift_versions = ['5.0', '5.1', '5.2', '5.3', '5.4', '5.5', '5.6', '5.7']
 
   s.source_files = 'Sources/NordicWiFiProvisioner-SoftAP/**/*.swift'
-  s.resource_bundles = {
-    'Res' => ['Sources/NordicWiFiProvisioner-SoftAP/cert/*.cer']
-  }
   s.dependency 'SwiftProtobuf'
 end

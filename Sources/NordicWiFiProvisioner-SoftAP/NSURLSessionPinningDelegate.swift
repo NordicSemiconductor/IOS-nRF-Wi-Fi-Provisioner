@@ -15,15 +15,15 @@ final class NSURLSessionPinningDelegate: NSObject, URLSessionDelegate {
     
     // MARK: Private Properties
     
-    private let certificateName: String
+    private let certificateURL: URL
     
     private lazy var logger = Logger(subsystem: "com.nordicsemi.NordicWiFiProvisioner-SoftAP",
                                      category: "NSURLSessionPinningDelegate")
     
     // MARK: Init
     
-    init(certificateName: String) {
-        self.certificateName = certificateName
+    init(certificateURL: URL) {
+        self.certificateURL = certificateURL
         super.init()
     }
     
@@ -47,14 +47,10 @@ final class NSURLSessionPinningDelegate: NSObject, URLSessionDelegate {
     }
 
     func shouldAllowHTTPSConnection(chain: [SecCertificate]) async throws -> Bool {
-        let b = Bundle(for: NSURLSessionPinningDelegate.self)
-        guard let res = b.url(forResource: "Res", withExtension: "bundle") else {
+        guard let certData = try? Data(contentsOf: certificateURL),
+              let anchor = SecCertificateCreateWithData(nil, certData as NSData) else {
             fatalError()
         }
-        guard let resBundle = Bundle(url: res) else {
-            fatalError()
-        }
-        let anchor = resBundle.certificateNamed(certificateName)!
         
         let policy = SecPolicyCreateBasicX509()
         let trust = try secCall { SecTrustCreateWithCertificates(chain as NSArray, policy, $0) }

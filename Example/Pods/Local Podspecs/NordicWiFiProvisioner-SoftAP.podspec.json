@@ -30,11 +30,6 @@
     "5.7"
   ],
   "source_files": "Sources/NordicWiFiProvisioner-SoftAP/**/*.swift",
-  "resource_bundles": {
-    "Res": [
-      "Sources/NordicWiFiProvisioner-SoftAP/cert/*.cer"
-    ]
-  },
   "dependencies": {
     "SwiftProtobuf": [
 

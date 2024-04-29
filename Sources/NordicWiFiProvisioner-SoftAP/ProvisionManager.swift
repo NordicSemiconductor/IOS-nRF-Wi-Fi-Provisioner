@@ -17,13 +17,15 @@ public class ProvisionManager {
     private let apSSID = "006825-nrf-wifiprov"
     private var browser: NWBrowser?
     
-    public init() {}
-    
-    private lazy var sessionDelegate = NSURLSessionPinningDelegate(certificateName: "certificate")
+    private let sessionDelegate: NSURLSessionPinningDelegate
     private lazy var urlSession = URLSession(configuration: .default, delegate: sessionDelegate, delegateQueue: nil)
     private lazy var cachedIPAddresses = [String: String]()
     
     public var delegate: Delegate?
+    
+    public init(certificateURL: URL) {
+        self.sessionDelegate = NSURLSessionPinningDelegate(certificateURL: certificateURL)
+    }
     
     public func connect() async throws {
         // Ask the user to switch to the Provisioning Device's Wi-Fi Network.

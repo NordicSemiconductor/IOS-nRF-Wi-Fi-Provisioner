@@ -95,6 +95,7 @@
 		AA9ED5C22BC55D4100FAC49D /* WifiScanResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9ED5C02BC55D4100FAC49D /* WifiScanResult.swift */; };
 		AA9ED5C42BC56D1A00FAC49D /* ScannerSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9ED5C32BC56D1A00FAC49D /* ScannerSection.swift */; };
 		AA9ED5C52BC56D1A00FAC49D /* ScannerSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9ED5C32BC56D1A00FAC49D /* ScannerSection.swift */; };
+		AAA2604A2BDFA78600BFF2A2 /* certificate.cer in Resources */ = {isa = PBXBuildFile; fileRef = AAA260492BDFA78600BFF2A2 /* certificate.cer */; };
 		AAAAE6C52B7F813D000BB569 /* AppViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAAAE6C42B7F813D000BB569 /* AppViewModel.swift */; };
 		AAAAE6C62B7F813D000BB569 /* AppViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAAAE6C42B7F813D000BB569 /* AppViewModel.swift */; };
 		AAAE24102BD01336005C5F90 /* PipelineStage.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAAE240F2BD01336005C5F90 /* PipelineStage.swift */; };
@@ -188,6 +189,7 @@
 		AA49E0552BB584B200CDD6FA /* APWiFiScanView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APWiFiScanView.swift; sourceTree = "<group>"; };
 		AA9ED5C02BC55D4100FAC49D /* WifiScanResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WifiScanResult.swift; sourceTree = "<group>"; };
 		AA9ED5C32BC56D1A00FAC49D /* ScannerSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerSection.swift; sourceTree = "<group>"; };
+		AAA260492BDFA78600BFF2A2 /* certificate.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = certificate.cer; sourceTree = SOURCE_ROOT; };
 		AAAAE6C42B7F813D000BB569 /* AppViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppViewModel.swift; sourceTree = "<group>"; };
 		AAAE240F2BD01336005C5F90 /* PipelineStage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PipelineStage.swift; sourceTree = "<group>"; };
 		AAAE24112BD01596005C5F90 /* ProvisioningPipeline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProvisioningPipeline.swift; sourceTree = "<group>"; };
@@ -284,6 +286,7 @@
 				01DB109828CF2C92005634CF /* Intro */,
 				01481A942852093000925FAB /* Assets.xcassets */,
 				01D26B55286DA3D400FD069D /* Localizable.strings */,
+				AAA260492BDFA78600BFF2A2 /* certificate.cer */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -689,6 +692,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				01481ABE2852093000925FAB /* Assets.xcassets in Resources */,
+				AAA2604A2BDFA78600BFF2A2 /* certificate.cer in Resources */,
 				01D26B56286DA3D400FD069D /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
