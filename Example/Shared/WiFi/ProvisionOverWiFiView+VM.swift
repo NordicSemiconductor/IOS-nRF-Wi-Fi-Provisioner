@@ -49,11 +49,13 @@ extension ProvisionOverWiFiView.ViewModel {
             try await manager.connect()
             
             pipelineManager.inProgress(.browsed)
-            let service = try await manager.findBonjourService(type: "_http._tcp.", domain: "local", name: "wifiprov")
+            let browser = BonjourBrowser()
+            browser.delegate = self
+            let service = try await browser.findBonjourService(type: "_http._tcp.", domain: "local", name: "wifiprov")
             
             pipelineManager.inProgress(.resolved)
             log("Awaiting for Resolve...", level: .debug)
-            let resolvedIPAddress = try await manager.resolveIPAddress(for: service)
+            let resolvedIPAddress = try await browser.resolveIPAddress(for: service)
             self.ipAddress = resolvedIPAddress
             log("I've got the address! \(resolvedIPAddress)", level: .debug)
             

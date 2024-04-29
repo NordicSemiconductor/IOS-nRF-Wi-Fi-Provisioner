@@ -18,11 +18,10 @@ public class ProvisionManager {
     // MARK: Properties
     
     private let apSSID = "006825-nrf-wifiprov"
-    private var browser: NWBrowser?
+    
     
     private let sessionDelegate: NSURLSessionPinningDelegate
     private lazy var urlSession = URLSession(configuration: .default, delegate: sessionDelegate, delegateQueue: nil)
-    private lazy var cachedIPAddresses = [String: String]()
     
     public var delegate: Delegate?
     
@@ -39,75 +38,8 @@ public class ProvisionManager {
         try await switchWiFiEndpoint(using: manager, with: configuration)
     }
     
-    public func findBonjourService(type: String, domain: String, name: String) async throws -> BonjourService {
-        // Wait a couple of seconds for the connection to settle-in.
-        try? await Task.sleepFor(seconds: 2)
-        
-        if browser != nil {
-            browser?.cancel()
-            browser = nil
-        }
-        browser = NWBrowser(for: .bonjour(type: type, domain: domain),
-                            using: .discoveryParameters)
-        defer {
-            log("Cancelling Browser...", level: .debug)
-            browser?.cancel()
-        }
-        return try await withCheckedThrowingContinuation { [weak browser] (continuation: CheckedContinuation<BonjourService, Error>) in
-            
-            browser?.stateUpdateHandler = { [weak self] newState in
-                switch newState {
-                case .setup:
-                    self?.log("Setting up connection", level: .info)
-                case .ready:
-                    self?.log("Ready?", level: .info)
-                case .failed(let error):
-                    self?.log("\(error.localizedDescription)", level: .error)
-                    continuation.resume(throwing: error)
-                case .cancelled:
-                    self?.log("Stopped / Cancelled", level: .info)
-                case .waiting(let nwError):
-                    self?.log("Waiting for \(nwError.localizedDescription)?", level: .info)
-                default:
-                    break
-                }
-            }
-            
-            browser?.browseResultsChangedHandler = { [weak self] results, changes in
-                var netService: NetService?
-                self?.log("Found \(results.count) results.", level: .debug)
-                for result in results {
-                    if case .service(let service) = result.endpoint, service.name == name {
-                        netService = NetService(domain: service.domain, type: service.type, name: service.name)
-                        break
-                    }
-                }
-                
-                guard let netService else { return }
-                // Resolve IP Address here or else, if we do it later, it'll fail.
-                BonjourResolver.resolve(service: netService) { [weak self] result in
-                    switch result {
-                    case .success(let ipAddress):
-                        self?.cachedIPAddresses[netService.name] = ipAddress
-                        self?.log("Cached IP ADDRESS \(ipAddress) for Service \(netService.name)", level: .debug)
-                        continuation.resume(returning: BonjourService(netService: netService))
-                    case .failure(let error):
-                        continuation.resume(throwing: error)
-                    }
-                }
-                RunLoop.main.run(until: Date(timeIntervalSinceNow: 2.0))
-            }
-            log("Starting Browser...", level: .debug)
-            browser?.start(queue: .main)
-        }
-    }
-    
     private func switchWiFiEndpoint(using manager: NEHotspotConfigurationManager,
                                     with configuration: NEHotspotConfiguration) async throws {
-        log("Clearing Cached Resolved IP Addresses due to Network Configuration Change.",
-            level: .debug)
-        cachedIPAddresses.removeAll()
-        
         do {
             try await manager.apply(configuration)
         } catch {
@@ -125,17 +57,6 @@ public class ProvisionManager {
                 throw error
             }
         }
-    }
-    
-    public func resolveIPAddress(for service: BonjourService) async throws -> String {
-        guard let cacheHit = cachedIPAddresses[service.name] else {
-            log("Cache Miss for Resolving \(service.name). Attempting to resolve again...",
-                level: .fault)
-            let resolvedIPAddress = try await BonjourResolver.resolve(service)
-            return resolvedIPAddress
-        }
-        log("Cache Hit for Resolving \(service.name)", level: .info)
-        return cacheHit
     }
     
     public func getScans(ipAddress: String) async throws -> [APWiFiScan] {
@@ -178,8 +99,6 @@ public class ProvisionManager {
         
         // Wait a couple of seconds for the firmware to make the connection switch.
         try? await Task.sleepFor(seconds: 2)
-        
-        _ = try await findBonjourService(type: "_http._tcp.", domain: "local", name: "wifiprov")
     }
     
     // MARK: Private

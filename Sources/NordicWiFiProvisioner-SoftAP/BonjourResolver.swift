@@ -29,9 +29,19 @@ public struct BonjourService: Sendable {
     }
 }
 
+// MARK: - BonjourError
+
+public enum BonjourError: Error, LocalizedError {
+    
+    case stoppedByUser
+    case unableToResolve(reason: String)
+    case noAddressFound
+    case unableToParseSocketAddress
+}
+
 // MARK: - BonjourResolver
 
-public final class BonjourResolver: NSObject {
+final class BonjourResolver: NSObject {
     
     // MARK: Public API
     
@@ -56,7 +66,7 @@ public final class BonjourResolver: NSObject {
         }
     }
     
-    public typealias CompletionHandler = (Result<String, ResolutionError>) -> Void
+    public typealias CompletionHandler = (Result<String, BonjourError>) -> Void
     
     @discardableResult
     public static func resolve(service: NetService, completionHandler: @escaping CompletionHandler) -> BonjourResolver {
@@ -103,10 +113,10 @@ public final class BonjourResolver: NSObject {
     }
     
     private func stop() {
-        stop(with: .failure(.stoppedbyUser))
+        stop(with: .failure(.stoppedByUser))
     }
     
-    private func stop(with result: Result<String, ResolutionError>) {
+    private func stop(with result: Result<String, BonjourError>) {
         precondition(Thread.isMainThread)
         self.service?.delegate = nil
         self.service?.stop()
@@ -151,17 +161,5 @@ extension BonjourResolver: NetServiceDelegate {
             ?? .unknownError
         let error = NSError(domain: NetService.errorDomain, code: code.rawValue, userInfo: nil)
         self.stop(with: .failure(.unableToResolve(reason: error.localizedDescription)))
-    }
-}
-
-// MARK: - ResolutionError
-
-public extension BonjourResolver {
-    
-    enum ResolutionError: Error, LocalizedError {
-        case stoppedbyUser
-        case unableToResolve(reason: String)
-        case noAddressFound
-        case unableToParseSocketAddress
     }
 }
