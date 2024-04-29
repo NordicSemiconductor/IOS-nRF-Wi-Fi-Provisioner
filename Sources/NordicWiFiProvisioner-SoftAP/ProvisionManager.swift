@@ -59,21 +59,6 @@ public class ProvisionManager {
         }
     }
     
-    public func verifyProvisioning(to accessPoint: APWiFiScan, with passphrase: String) async throws {
-        log("Switching to \(accessPoint.ssid)...", level: .info)
-        // Ask the user to switch to the Provisioned Network.
-        let manager = NEManager()
-        let configuration = NEHotspotConfiguration(ssid: accessPoint.ssid, passphrase: passphrase, isWEP: accessPoint.authentication == .wep)
-        try await manager.apply(configuration)
-        
-        // Wait a couple of seconds for the firmware to make the connection switch.
-        try? await Task.sleepFor(seconds: 2)
-        
-        let browser = BonjourBrowser()
-        browser.delegate = delegate
-        _ = try await browser.findBonjourService(type: "_http._tcp.", domain: "local", name: "wifiprov")
-    }
-    
     // MARK: Private
     
     private func log(_ line: String, level: OSLogType) {

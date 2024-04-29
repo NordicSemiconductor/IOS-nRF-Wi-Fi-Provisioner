@@ -80,11 +80,24 @@ extension ProvisionOverWiFiView.ViewModel {
                 throw TitleMessageError(message: "SSID is not selected")
             }
             pipelineManager.inProgress(.provisioning)
-            
             try await manager.provision(ipAddress: ipAddress, to: selectedScan, with: ssidPassword)
-            pipelineManager.inProgress(.verification)
             
-            try await manager.verifyProvisioning(to: selectedScan, with: ssidPassword)
+            pipelineManager.inProgress(.switchBack)
+            log("Switching to \(selectedScan.ssid)...", level: .info)
+            // Ask the user to switch to the Provisioned Network.
+            let manager = NEManager()
+            let configuration = NEHotspotConfiguration(ssid: selectedScan.ssid, passphrase: ssidPassword, isWEP: selectedScan.authentication == .wep)
+            try await manager.apply(configuration)
+            
+            pipelineManager.inProgress(.verification)
+            log("Awaiting Network Change...", level: .info)
+            // Wait a couple of seconds for the firmware to make the connection switch.
+            try? await Task.sleepFor(seconds: 2)
+            
+            log("Searching for Provisioned Device in Network...", level: .info)
+            let browser = BonjourBrowser()
+            browser.delegate = self
+            _ = try await browser.findBonjourService(type: "_http._tcp.", domain: "local", name: "wifiprov")
             pipelineManager.completed(.verification)
         } catch {
             pipelineManager.onError(error)
