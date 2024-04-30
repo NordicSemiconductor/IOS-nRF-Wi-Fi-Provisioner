@@ -63,6 +63,10 @@ extension DeviceView {
         let provisioner: DeviceManager
         let deviceId: String
         
+        private let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "nordic", category: "DeviceViewModel")
+        
+        // MARK: Init
+        
         init(deviceId: String) {
             self.deviceId = deviceId
             self.provisioner = DeviceManager(deviceId: UUID(uuidString: deviceId)!)
@@ -80,8 +84,6 @@ extension DeviceView {
             self.provisioner.provisionerDelegate = self
             self.provisioner.wiFiScanerDelegate = self
         }
-
-        let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "nordic", category: "DeviceViewModel")
     }
 }
 
@@ -175,10 +177,13 @@ extension DeviceView.ViewModel: ConnectionDelegate {
 // MARK: - InfoDelegate
 
 extension DeviceView.ViewModel: InfoDelegate {
+    
     func versionReceived(_ version: Result<Int, ProvisionerInfoError>) {
         switch version {
         case .success(let success):
             self.version = "\(success)"
+            // If readDeviceStatus() was successful, we're paired.
+            self.peripheralConnectionStatus = .paired
         case .failure(let error):
             self.error = TitleMessageError(error)
             self.version = "Error"

@@ -19,7 +19,7 @@ extension DeviceView.ViewModel {
 
 enum PeripheralConnectionStatus: CustomStringConvertible {
     
-    case disconnected(Reason), connected, connecting
+    case disconnected(Reason), connecting, connected, paired
     
     enum Reason {
         case byRequest, error(Error)
@@ -29,9 +29,9 @@ enum PeripheralConnectionStatus: CustomStringConvertible {
         switch self {
         case .disconnected:
             return .error
-        case .connected:
+        case .paired:
             return .done
-        case .connecting:
+        case .connecting, .connected:
             return .inProgress
         }
     }
@@ -58,6 +58,8 @@ enum PeripheralConnectionStatus: CustomStringConvertible {
             return "Connected"
         case .connecting:
             return "Connecting ..."
+        case .paired:
+            return "Paired"
         }
     }
 }

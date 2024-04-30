@@ -23,7 +23,7 @@ struct DeviceView: View {
     var body: some View {
         VStack {
             switch viewModel.peripheralConnectionStatus {
-            case .connecting, .connected:
+            case .connecting, .connected, .paired:
                 deviceInfo
                     .confirmationDialog("Unprovision", isPresented: $unprovisionSheet) {
                         Button("Unset", role: .destructive) {

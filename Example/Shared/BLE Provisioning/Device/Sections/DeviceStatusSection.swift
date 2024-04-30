@@ -25,7 +25,7 @@ struct DeviceStatusSection: View {
                 
                 Spacer()
                 
-                Text(viewModel.peripheralConnectionStatus.isConnected ? "Connected" : "Not Connected")
+                Text(viewModel.peripheralConnectionStatus.description)
                     .status(viewModel.peripheralConnectionStatus.status)
             }
             
