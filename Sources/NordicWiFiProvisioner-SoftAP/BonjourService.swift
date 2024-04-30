@@ -47,6 +47,7 @@ public enum BonjourError: Error, LocalizedError {
     
     case stoppedByUser
     case unableToResolve(reason: String)
+    case serviceNotFound
     case noAddressFound
     case unableToParseSocketAddress
 }

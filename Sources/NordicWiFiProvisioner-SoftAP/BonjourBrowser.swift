@@ -14,6 +14,8 @@ final public class BonjourBrowser {
     
     // MARK: Properties
     
+    private static let TIMEOUT_SECONDS = 5
+    
     private var browser: NWBrowser?
     private lazy var cachedIPAddresses = [String: String]()
     
@@ -44,6 +46,13 @@ final public class BonjourBrowser {
             browser?.cancel()
         }
         try await withCheckedThrowingContinuation { [weak browser] (continuation: CheckedContinuation<Void, Error>) in
+            let timeoutTask = Task { [delegate] in
+                try await Task.sleepFor(seconds: Self.TIMEOUT_SECONDS)
+                guard !Task.isCancelled else { return }
+                delegate?.log("\(Self.TIMEOUT_SECONDS) second Timeout", level: .info)
+                continuation.resume(throwing: BonjourError.serviceNotFound)
+            }
+            
             browser?.stateUpdateHandler = { [delegate] newState in
                 switch newState {
                 case .setup:
@@ -52,6 +61,7 @@ final public class BonjourBrowser {
                     delegate?.log("Ready?", level: .info)
                 case .failed(let error):
                     delegate?.log("\(error.localizedDescription)", level: .error)
+                    timeoutTask.cancel()
                     continuation.resume(throwing: error)
                 case .cancelled:
                     delegate?.log("Stopped / Cancelled", level: .info)
@@ -79,13 +89,16 @@ final public class BonjourBrowser {
                     case .success(let ipAddress):
                         self?.cachedIPAddresses[netService.name] = ipAddress
                         self?.delegate?.log("Cached IP ADDRESS \(ipAddress) for Service \(netService.name)", level: .debug)
+                        timeoutTask.cancel()
                         continuation.resume()
                     case .failure(let error):
+                        timeoutTask.cancel()
                         continuation.resume(throwing: error)
                     }
                 }
                 RunLoop.main.run(until: Date(timeIntervalSinceNow: 2.0))
             }
+            
             delegate?.log("Starting Browser...", level: .debug)
             browser?.start(queue: .main)
         }
