@@ -25,8 +25,8 @@ struct DeviceStatusSection: View {
                 
                 Spacer()
                 
-                Text(viewModel.provisioned ? "Connected" : "Not Connected")
-                    .status(viewModel.provisionedState)
+                Text(viewModel.peripheralConnectionStatus.isConnected ? "Connected" : "Not Connected")
+                    .status(viewModel.peripheralConnectionStatus.status)
             }
             
             HStack {

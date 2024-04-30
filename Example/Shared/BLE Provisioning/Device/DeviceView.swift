@@ -23,12 +23,7 @@ struct DeviceView: View {
     var body: some View {
         VStack {
             switch viewModel.peripheralConnectionStatus {
-            case .connecting:
-                Placeholder(
-                    text: "Connecting",
-                    image: "bluetooth"
-                )
-            case .connected:
+            case .connecting, .connected:
                 deviceInfo
                     .confirmationDialog("Unprovision", isPresented: $unprovisionSheet) {
                         Button("Unset", role: .destructive) {

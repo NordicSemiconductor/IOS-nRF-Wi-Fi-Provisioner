@@ -6,14 +6,33 @@
 //
 
 import SwiftUI
-import NordicWiFiProvisioner_BLE
+
+// MARK: - StatusModifier
 
 struct StatusModifier: ViewModifier {
+    
+    // MARK: Status
+    
     enum Status {
         case ready, inProgress, done, error
+        
+        var isDone: Bool {
+            switch self {
+            case .done:
+                return true
+            default:
+                return false
+            }
+        }
     }
     
-    let status: Status
+    private let status: Status
+    
+    init(_ status: Status) {
+        self.status = status
+    }
+    
+    // MARK: ViewModifier
     
     func body(content: Content) -> some View {
         switch status {
@@ -44,8 +63,11 @@ struct StatusModifier: ViewModifier {
     }
 }
 
+// MARK: - View
+
 extension View {
+    
     func status(_ status: StatusModifier.Status) -> some View {
-        modifier(StatusModifier(status: status))
+        modifier(StatusModifier(status))
     }
 }

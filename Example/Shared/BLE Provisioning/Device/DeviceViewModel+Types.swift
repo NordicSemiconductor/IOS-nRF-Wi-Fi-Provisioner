@@ -5,21 +5,46 @@
 import Foundation
 import NordicWiFiProvisioner_BLE
 
+// MARK: - ProvisionButtonState
+
 extension DeviceView.ViewModel {
+    
     struct ProvisionButtonState {
         var isEnabled: Bool
         var title: String
     }
 }
 
-enum PeripheralConnectionStatus {
+// MARK: - PeripheralConnectionStatus
+
+enum PeripheralConnectionStatus: CustomStringConvertible {
+    
+    case disconnected(Reason), connected, connecting
+    
     enum Reason {
         case byRequest, error(Error)
     }
-    case disconnected(Reason), connected, connecting
-}
-
-extension PeripheralConnectionStatus: CustomStringConvertible {
+    
+    var status: StatusModifier.Status {
+        switch self {
+        case .disconnected:
+            return .error
+        case .connected:
+            return .done
+        case .connecting:
+            return .inProgress
+        }
+    }
+    
+    public var isConnected: Bool {
+        switch self {
+        case .connected:
+            return true
+        default:
+            return false
+        }
+    }
+    
     public var description: String {
         switch self {
         case .disconnected(let reason):
@@ -37,7 +62,10 @@ extension PeripheralConnectionStatus: CustomStringConvertible {
     }
 }
 
+// MARK: - WiFiConnectionStatus
+
 extension DeviceView.ViewModel {
+    
     struct WiFiConnectionStatus {
         var status: String
         var statusProgressState: StatusModifier.Status
@@ -53,7 +81,12 @@ extension DeviceView.ViewModel {
             self.showIpAddress = showIpAddress
         }
     }
+}
 
+// MARK: - ButtonsConfig
+
+extension DeviceView.ViewModel {
+    
     struct ButtonsConfig {
         var showUnsetButton: Bool
         var enabledUnsetButton: Bool
