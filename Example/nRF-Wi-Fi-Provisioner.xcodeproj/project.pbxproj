@@ -311,14 +311,6 @@
 			path = ModelExtensions;
 			sourceTree = "<group>";
 		};
-		019DCE272885A13300E16E9F /* AditionalViews */ = {
-			isa = PBXGroup;
-			children = (
-				0107FEA928F827A200693317 /* ScanResultRaw.swift */,
-			);
-			path = AditionalViews;
-			sourceTree = "<group>";
-		};
 		01A43DE92886FEB80025A5C4 /* Device */ = {
 			isa = PBXGroup;
 			children = (
@@ -326,6 +318,7 @@
 				0183EFC72897C17E002E79A5 /* Modifiers */,
 				01FCADB9291D47460044904B /* Sections */,
 				AA9ED5C02BC55D4100FAC49D /* WifiScanResult.swift */,
+				0107FEA928F827A200693317 /* ScanResultRaw.swift */,
 				01A43DEA2886FECB0025A5C4 /* DeviceView.swift */,
 				01A43DED2886FED80025A5C4 /* DeviceView+ViewModel.swift */,
 				339761CA515EDED3B38AB2F3 /* DeviceViewModel+Types.swift */,
@@ -337,7 +330,6 @@
 			isa = PBXGroup;
 			children = (
 				01A43DE92886FEB80025A5C4 /* Device */,
-				019DCE272885A13300E16E9F /* AditionalViews */,
 				01A0C29428896343000AA135 /* DeviceViewModelFactory.swift */,
 				015D60A22875A1530048F065 /* ScannerView.swift */,
 				01C0F0F9287DE864008BBE46 /* ScannerViewModel.swift */,

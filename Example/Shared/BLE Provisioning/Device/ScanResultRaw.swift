@@ -9,24 +9,42 @@ import SwiftUI
 import NordicWiFiProvisioner_BLE
 import iOS_Common_Libraries
 
+// MARK: - ScanResultRaw
+
 struct ScanResultRaw: View {
-    let scanResult: ScanResult
+    
+    // MARK: Private Properties
+    
+    private let scanResult: ScanResult
+    
+    // MARK: Init
+    
+    init(scanResult: ScanResult) {
+        self.scanResult = scanResult
+    }
+    
+    // MARK: View
     
     var body: some View {
         VStack {
             HStack {
                 RSSIView(rssi: RSSI(bleLevel: scanResult.rssi))
                     .frame(maxWidth: 20, maxHeight: 18)
+                
                 Text(scanResult.name)
+                
                 if scanResult.provisioned {
                     Image(systemName: "checkmark")
                 }
+                
                 Spacer()
+                
                 if scanResult.version != nil {
                     Text("v\(scanResult.version!)")
                         .foregroundColor(.secondary)
                 }
             }
+            
             if scanResult.connected {
                 HStack {
                     Text("Connected")
@@ -46,6 +64,8 @@ struct ScanResultRaw: View {
         }
     }
 }
+
+// MARK: - Preview
 
 #if DEBUG
 struct ScanResultRaw_Previews: PreviewProvider {
