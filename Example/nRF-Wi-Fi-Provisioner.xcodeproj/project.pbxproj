@@ -229,14 +229,12 @@
 		01481A912852092F00925FAB /* Shared */ = {
 			isa = PBXGroup;
 			children = (
-				01A0C29328896321000AA135 /* Environment */,
-				01A43DE92886FEB80025A5C4 /* Device */,
-				AA2C11962B7A53C8003AF3E0 /* Selector */,
-				01C0F0F8287DE856008BBE46 /* Scanner */,
-				AA2C11992B7A61D8003AF3E0 /* WiFi */,
-				01D26B58286DAE6A00FD069D /* Utils */,
-				01481A922852092F00925FAB /* nRF_Wi_Fi_ProvisionerApp.swift */,
 				01DB109828CF2C92005634CF /* Intro */,
+				01C0F0F8287DE856008BBE46 /* BLE Provisioning */,
+				AA2C11992B7A61D8003AF3E0 /* WiFi Provisioning */,
+				01D26B58286DAE6A00FD069D /* Utils */,
+				AA2C11972B7A53F1003AF3E0 /* SelectorView.swift */,
+				01481A922852092F00925FAB /* nRF_Wi_Fi_ProvisionerApp.swift */,
 				01481A942852093000925FAB /* Assets.xcassets */,
 				01D26B55286DA3D400FD069D /* Localizable.strings */,
 				AAA260492BDFA78600BFF2A2 /* certificate.cer */,
@@ -321,14 +319,6 @@
 			path = AditionalViews;
 			sourceTree = "<group>";
 		};
-		01A0C29328896321000AA135 /* Environment */ = {
-			isa = PBXGroup;
-			children = (
-				01A0C29428896343000AA135 /* DeviceViewModelFactory.swift */,
-			);
-			path = Environment;
-			sourceTree = "<group>";
-		};
 		01A43DE92886FEB80025A5C4 /* Device */ = {
 			isa = PBXGroup;
 			children = (
@@ -343,14 +333,16 @@
 			path = Device;
 			sourceTree = "<group>";
 		};
-		01C0F0F8287DE856008BBE46 /* Scanner */ = {
+		01C0F0F8287DE856008BBE46 /* BLE Provisioning */ = {
 			isa = PBXGroup;
 			children = (
+				01A43DE92886FEB80025A5C4 /* Device */,
 				019DCE272885A13300E16E9F /* AditionalViews */,
+				01A0C29428896343000AA135 /* DeviceViewModelFactory.swift */,
 				015D60A22875A1530048F065 /* ScannerView.swift */,
 				01C0F0F9287DE864008BBE46 /* ScannerViewModel.swift */,
 			);
-			path = Scanner;
+			path = "BLE Provisioning";
 			sourceTree = "<group>";
 		};
 		01C1BF6C28E70BB200FDD841 /* nRF-Wi-Fi-ProvisionerUITests */ = {
@@ -431,15 +423,7 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
-		AA2C11962B7A53C8003AF3E0 /* Selector */ = {
-			isa = PBXGroup;
-			children = (
-				AA2C11972B7A53F1003AF3E0 /* SelectorView.swift */,
-			);
-			path = Selector;
-			sourceTree = "<group>";
-		};
-		AA2C11992B7A61D8003AF3E0 /* WiFi */ = {
+		AA2C11992B7A61D8003AF3E0 /* WiFi Provisioning */ = {
 			isa = PBXGroup;
 			children = (
 				AA26D20B2BDBAFE200258E56 /* IndeterminateProgressView.swift */,
@@ -450,7 +434,7 @@
 				AA2C119A2B7A61EF003AF3E0 /* ProvisionOverWiFiView.swift */,
 				01994A732B852F7800953465 /* ProvisionOverWiFiView+VM.swift */,
 			);
-			path = WiFi;
+			path = "WiFi Provisioning";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
