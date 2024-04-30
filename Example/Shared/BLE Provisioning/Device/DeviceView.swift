@@ -26,7 +26,7 @@ struct DeviceView: View {
             case .connecting, .connected, .paired:
                 deviceInfo
                     .confirmationDialog("Unprovision", isPresented: $unprovisionSheet) {
-                        Button("Unset", role: .destructive) {
+                        Button("Unprovision", role: .destructive) {
                             try? viewModel.unprovision()
                         }
                         Button("Cancel", role: .cancel) {
@@ -74,7 +74,7 @@ struct DeviceView: View {
                 
                 ScannerSection()
                 
-                AccessPointSection()
+                AccessPointSection(wifi: viewModel.wifiNetwork, password: $viewModel.password, showVolatileMemory: viewModel.showVolatileMemory, volatileMemory: $viewModel.volatileMemory, footer: viewModel.infoFooter)
             }
             .environmentObject(viewModel)
             .listStyle(.insetGrouped)

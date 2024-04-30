@@ -14,7 +14,11 @@ struct AccessPointSection: View {
     
     // MARK: Properties
     
-    @EnvironmentObject private var viewModel: DeviceView.ViewModel
+    let wifi: WifiInfo?
+    @Binding var password: String
+    let showVolatileMemory: Bool
+    @Binding var volatileMemory: Bool
+    let footer: String
     
     // MARK: View
     
@@ -26,25 +30,25 @@ struct AccessPointSection: View {
                     
                     Spacer()
                     
-                    Text(viewModel.wifiNetwork?.ssid ?? "Not Selected")
+                    Text(wifi?.ssid ?? "Not Selected")
                         .foregroundColor(.secondary)
                 }
             }
             .accessibilityIdentifier("access_point_selector")
             
-            if let wifi = viewModel.wifiNetwork {
+            if let wifi {
                 additionalInfo(wifi)
                 
-                SecureField("Password", text: $viewModel.password)
+                SecureField("Password", text: $password)
             }
             
-            if viewModel.showVolatileMemory {
+            if showVolatileMemory {
                 HStack {
                     Text("Volatile Memory")
                     
                     Spacer()
                     
-                    Toggle("", isOn: $viewModel.volatileMemory)
+                    Toggle("", isOn: $volatileMemory)
                         .toggleStyle(SwitchToggleStyle(tint: .nordicBlue))
                         .accessibilityIdentifier("volatile_memory_toggle")
                 }
@@ -52,22 +56,25 @@ struct AccessPointSection: View {
         } header: {
             Text("Access Point")
         } footer: {
-            Text(viewModel.infoFooter)
+            Text(footer)
         }
     }
     
     @ViewBuilder
     func additionalInfo(_ wifi: WifiInfo) -> some View {
         VStack {
-            DetailRow(title: "Channel", details: "\(wifi.channel)")
-            DetailRow(title: "BSSID", details: wifi.bssid.description)
-            DetailRow(title: "Band", details: wifi.band?.description ?? "Unknown Band")
-            DetailRow(title: "Security", details: wifi.auth?.description ?? "Unknown Security")
+            DetailView(title: "Channel", details: "\(wifi.channel)")
+            DetailView(title: "BSSID", details: wifi.bssid.description)
+            DetailView(title: "Band", details: wifi.band?.description ?? "Unknown Band")
+            DetailView(title: "Security", details: wifi.auth?.description ?? "Unknown Security")
         }
     }
 }
 
-private struct DetailRow: View {
+// MARK: - DetailView
+
+private struct DetailView: View {
+    
     let title: String
     let details: String
     
