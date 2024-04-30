@@ -56,7 +56,7 @@ struct DeviceView: View {
                 }
             }
         }
-        .onFirstAppear {
+        .doOnce {
             viewModel.connect()
         }
         .alert(viewModel.error?.title ?? "Error", isPresented: $viewModel.showError) {
