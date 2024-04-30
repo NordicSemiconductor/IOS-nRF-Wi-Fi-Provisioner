@@ -21,7 +21,16 @@ struct DeviceStatusSection: View {
     var body: some View {
         Section("Device Status") {
             HStack {
-                NordicLabel("Status", image: "bluetooth")
+                NordicLabel("BLE", image: "bluetooth")
+                
+                Spacer()
+                
+                Text(viewModel.provisioned ? "Connected" : "Not Connected")
+                    .status(viewModel.provisionedState)
+            }
+            
+            HStack {
+                NordicLabel("Network", systemImage: "network")
                 
                 Spacer()
                 
