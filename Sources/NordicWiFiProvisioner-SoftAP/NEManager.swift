@@ -23,7 +23,7 @@ public struct NEManager {
     
     public func apply(_ configuration: NEHotspotConfiguration) async throws {
         let manager = NEHotspotConfigurationManager.shared
-        delegate?.log("Applying Network Configuration...", level: .info)
+        delegate?.log("Applying Network Configuration change to \(configuration.ssid)...", level: .info)
         try await switchWiFiEndpoint(using: manager, with: configuration)
     }
     
