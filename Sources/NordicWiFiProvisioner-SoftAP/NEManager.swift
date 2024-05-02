@@ -13,6 +13,8 @@ import NetworkExtension
 
 public struct NEManager {
 
+    public var delegate: ProvisionManager.Delegate?
+    
     // MARK: Init
     
     public init() {}
@@ -21,6 +23,7 @@ public struct NEManager {
     
     public func apply(_ configuration: NEHotspotConfiguration) async throws {
         let manager = NEHotspotConfigurationManager.shared
+        delegate?.log("Applying Network Configuration...", level: .info)
         try await switchWiFiEndpoint(using: manager, with: configuration)
     }
     
@@ -34,11 +37,17 @@ public struct NEManager {
             let nsError = error as NSError
             guard nsError.domain == NEHotspotConfigurationErrorDomain,
                   let configurationError = NEHotspotConfigurationError(rawValue: nsError.code) else {
+                delegate?.log(error.localizedDescription, level: .error)
                 throw error
             }
             
             switch configurationError {
-            case .alreadyAssociated, .pending:
+            case .alreadyAssociated:
+                delegate?.log("Network Configuration change is not necessary. Configuration is alredy associated.", level: .info)
+                // swallow Error.
+                break
+            case .pending:
+                delegate?.log("Waiting for Configuration change to take place...", level: .debug)
                 // swallow Error.
                 break
             default:

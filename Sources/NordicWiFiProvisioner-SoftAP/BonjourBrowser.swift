@@ -58,7 +58,8 @@ final public class BonjourBrowser {
                 case .setup:
                     delegate?.log("Setting up connection", level: .info)
                 case .ready:
-                    delegate?.log("Ready?", level: .info)
+                    delegate?.log("Network Browser ready", level: .debug)
+                    delegate?.log("Waiting for search results..", level: .info)
                 case .failed(let error):
                     delegate?.log("\(error.localizedDescription)", level: .error)
                     timeoutTask.cancel()

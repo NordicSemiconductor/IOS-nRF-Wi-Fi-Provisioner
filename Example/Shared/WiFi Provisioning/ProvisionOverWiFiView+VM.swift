@@ -50,8 +50,10 @@ extension ProvisionOverWiFiView.ViewModel {
             pipelineManager.inProgress(.connected)
 //            let apSSID = "006825-nrf-wifiprov"
             let apSSID = "nrf-wifiprov"
+            log("Preparing Network Configuration for \(apSSID)...", level: .info)
             let configuration = NEHotspotConfiguration(ssid: apSSID)
-            let networkManager = NEManager()
+            var networkManager = NEManager()
+            networkManager.delegate = self
             try await networkManager.apply(configuration)
             
             pipelineManager.inProgress(.browsed)
@@ -66,6 +68,7 @@ extension ProvisionOverWiFiView.ViewModel {
             log("I've got the address! \(resolvedIPAddress)", level: .debug)
             
             pipelineManager.inProgress(.scanned)
+            log("Requesting Wi-Fi Scans list...", level: .info)
             scans = try await manager.getScans(ipAddress: resolvedIPAddress)
             
             pipelineManager.inProgress(.provisioningInfo)
@@ -87,7 +90,8 @@ extension ProvisionOverWiFiView.ViewModel {
             pipelineManager.inProgress(.switchBack)
             log("Switching to \(selectedScan.ssid)...", level: .info)
             // Ask the user to switch to the Provisioned Network.
-            let manager = NEManager()
+            var manager = NEManager()
+            manager.delegate = self
             let configuration = NEHotspotConfiguration(ssid: selectedScan.ssid, passphrase: ssidPassword, isWEP: selectedScan.authentication == .wep)
             try await manager.apply(configuration)
             
