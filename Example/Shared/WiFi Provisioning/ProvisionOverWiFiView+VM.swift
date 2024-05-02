@@ -43,18 +43,20 @@ extension ProvisionOverWiFiView {
 
 extension ProvisionOverWiFiView.ViewModel {
     
-    func pipelineStart() async throws {
+    func pipelineStart(applying configuration: NEHotspotConfiguration?) async throws {
         resetPipeline()
         
         do {
             pipelineManager.inProgress(.connected)
-//            let apSSID = "006825-nrf-wifiprov"
-            let apSSID = "nrf-wifiprov"
-            log("Preparing Network Configuration for \(apSSID)...", level: .info)
-            let configuration = NEHotspotConfiguration(ssid: apSSID)
-            var networkManager = NEManager()
-            networkManager.delegate = self
-            try await networkManager.apply(configuration)
+            if let configuration {
+                var networkManager = NEManager()
+                networkManager.delegate = self
+                try await networkManager.apply(configuration)
+            } else {
+                log("No Configuration to apply.", level: .debug)
+                log("Assumption: we're already connected to Device.", level: .info)
+                pipelineManager.completed(.connected)
+            }
             
             pipelineManager.inProgress(.browsed)
             let browser = BonjourBrowser()

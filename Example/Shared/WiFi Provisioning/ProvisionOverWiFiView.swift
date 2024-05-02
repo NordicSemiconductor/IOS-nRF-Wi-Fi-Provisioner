@@ -8,6 +8,7 @@
 import SwiftUI
 import iOS_Common_Libraries
 import NordicWiFiProvisioner_SoftAP
+import NetworkExtension
 
 // MARK: - ProvisionOverWiFiView
 
@@ -44,7 +45,9 @@ struct ProvisionOverWiFiView: View {
                 
                 AsyncButton("Start") {
                     do {
-                        try await viewModel.pipelineStart()
+                        let apSSID = "nrf-wifiprov"
+                        let configuration = NEHotspotConfiguration(ssid: apSSID)
+                        try await viewModel.pipelineStart(applying: configuration)
                         viewStatus = .awaitingUserInput
                     } catch {
                         viewStatus = .showingStages
