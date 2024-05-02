@@ -61,7 +61,7 @@ extension ProvisionOverWiFiView.ViewModel {
             pipelineManager.inProgress(.browsed)
             let browser = BonjourBrowser()
             browser.delegate = self
-            try await browser.findBonjourService(.wifiProv)
+            _ = try await browser.findBonjourService(.wifiProv)
             
             pipelineManager.inProgress(.resolved)
             log("Awaiting for Resolve...", level: .debug)
@@ -106,7 +106,7 @@ extension ProvisionOverWiFiView.ViewModel {
             log("Searching for Provisioned Device in Network...", level: .info)
             let browser = BonjourBrowser()
             browser.delegate = self
-            try await browser.findBonjourService(.wifiProv)
+            let txtRecord = try await browser.findBonjourService(.wifiProv)
             pipelineManager.completed(.verification)
         } catch {
             pipelineManager.onError(error)

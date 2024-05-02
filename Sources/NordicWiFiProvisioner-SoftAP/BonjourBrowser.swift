@@ -32,7 +32,7 @@ final public class BonjourBrowser {
     
     // MARK: API
     
-    public func findBonjourService(_ service: BonjourService) async throws {
+    public func findBonjourService(_ service: BonjourService) async throws -> NWTXTRecord? {
         // Wait a couple of seconds for the connection to settle-in.
         try? await Task.sleepFor(seconds: 2)
         
@@ -45,7 +45,7 @@ final public class BonjourBrowser {
             delegate?.log("Cancelling Browser...", level: .debug)
             browser?.cancel()
         }
-        try await withCheckedThrowingContinuation { [weak browser] (continuation: CheckedContinuation<Void, Error>) in
+        return try await withCheckedThrowingContinuation { [weak browser] (continuation: CheckedContinuation<NWTXTRecord?, Error>) in
             let timeoutTask = Task { [delegate] in
                 try await Task.sleepFor(seconds: Self.TIMEOUT_SECONDS)
                 guard !Task.isCancelled else { return }
@@ -75,10 +75,17 @@ final public class BonjourBrowser {
             
             browser?.browseResultsChangedHandler = { [delegate] results, changes in
                 var netService: NetService?
+                var txtRecord: NWTXTRecord?
                 delegate?.log("Found \(results.count) results.", level: .debug)
                 for result in results {
                     if case .service(let browserService) = result.endpoint, browserService.name == service.name {
                         netService = NetService(domain: browserService.domain, type: browserService.type, name: browserService.name)
+                        if case .bonjour(let record) = result.metadata {
+                            txtRecord = record
+                            delegate?.log("Found TXT Record", level: .debug)
+                        } else {
+                            delegate?.log("No TXT Record found", level: .info)
+                        }
                         break
                     }
                 }
@@ -91,7 +98,7 @@ final public class BonjourBrowser {
                         self?.cachedIPAddresses[netService.name] = ipAddress
                         self?.delegate?.log("Cached IP ADDRESS \(ipAddress) for Service \(netService.name)", level: .debug)
                         timeoutTask.cancel()
-                        continuation.resume()
+                        continuation.resume(returning: txtRecord)
                     case .failure(let error):
                         timeoutTask.cancel()
                         continuation.resume(throwing: error)

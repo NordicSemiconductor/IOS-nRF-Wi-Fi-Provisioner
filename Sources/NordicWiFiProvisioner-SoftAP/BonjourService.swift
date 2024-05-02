@@ -33,7 +33,7 @@ public struct BonjourService: Sendable {
     // MARK: Internal API
     
     func descriptor() -> NWBrowser.Descriptor {
-        return .bonjour(type: type, domain: domain)
+        return .bonjourWithTXTRecord(type: type, domain: domain)
     }
     
     func netService() -> NetService {
