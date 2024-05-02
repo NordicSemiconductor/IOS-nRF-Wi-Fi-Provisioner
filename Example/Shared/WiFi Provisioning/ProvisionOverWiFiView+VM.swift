@@ -31,6 +31,7 @@ extension ProvisionOverWiFiView {
         @Published private (set) var scans: [APWiFiScan] = []
         @Published var selectedScan: APWiFiScan?
         @Published var ssidPassword: String = ""
+        @Published var volatileMemory = false
         
         private let log = Logger(subsystem: Bundle.main.bundleIdentifier!, 
                                  category: "ProvisionOverWiFiView+ViewModel")
@@ -47,7 +48,8 @@ extension ProvisionOverWiFiView.ViewModel {
         
         do {
             pipelineManager.inProgress(.connected)
-            let apSSID = "006825-nrf-wifiprov"
+//            let apSSID = "006825-nrf-wifiprov"
+            let apSSID = "nrf-wifiprov"
             let configuration = NEHotspotConfiguration(ssid: apSSID)
             let networkManager = NEManager()
             try await networkManager.apply(configuration)

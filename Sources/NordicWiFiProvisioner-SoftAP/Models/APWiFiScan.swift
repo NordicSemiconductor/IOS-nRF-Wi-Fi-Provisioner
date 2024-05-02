@@ -47,7 +47,7 @@ public struct APWiFiScan: Identifiable, Hashable {
     
     // MARK: API
     
-    func bssidString() -> String {
+    public func bssidString() -> String {
         return bssid
             .map({ "\(Int($0))" })
             .joined(separator: ":")

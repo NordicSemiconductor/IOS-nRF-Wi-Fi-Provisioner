@@ -74,7 +74,7 @@ struct DeviceView: View {
                 
                 ScannerSection()
                 
-                AccessPointSection(wifi: viewModel.wifiNetwork, password: $viewModel.password, showVolatileMemory: viewModel.showVolatileMemory, volatileMemory: $viewModel.volatileMemory, footer: viewModel.infoFooter)
+                AccessPointSection(accessPoint: viewModel.wifiNetwork?.accessPoint(), password: $viewModel.password, showVolatileMemory: viewModel.showVolatileMemory, volatileMemory: $viewModel.volatileMemory, footer: viewModel.infoFooter)
             }
             .environmentObject(viewModel)
             .listStyle(.insetGrouped)

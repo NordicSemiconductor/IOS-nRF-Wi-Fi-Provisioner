@@ -7,14 +7,15 @@
 
 import SwiftUI
 import NordicWiFiProvisioner_BLE
+import NordicWiFiProvisioner_SoftAP
 
-// MARK: - AccessPointSection
+// MARK: AccessPointSection
 
 struct AccessPointSection: View {
     
     // MARK: Properties
     
-    let wifi: WifiInfo?
+    let accessPoint: AccessPointInfo?
     @Binding var password: String
     let showVolatileMemory: Bool
     @Binding var volatileMemory: Bool
@@ -30,14 +31,14 @@ struct AccessPointSection: View {
                     
                     Spacer()
                     
-                    Text(wifi?.ssid ?? "Not Selected")
+                    Text(accessPoint?.ssid ?? "Not Selected")
                         .foregroundColor(.secondary)
                 }
             }
             .accessibilityIdentifier("access_point_selector")
             
-            if let wifi {
-                additionalInfo(wifi)
+            if let accessPoint {
+                additionalInfo(accessPoint)
                 
                 SecureField("Password", text: $password)
             }
@@ -61,13 +62,38 @@ struct AccessPointSection: View {
     }
     
     @ViewBuilder
-    func additionalInfo(_ wifi: WifiInfo) -> some View {
+    func additionalInfo(_ accessPoint: AccessPointInfo) -> some View {
         VStack {
-            DetailView(title: "Channel", details: "\(wifi.channel)")
-            DetailView(title: "BSSID", details: wifi.bssid.description)
-            DetailView(title: "Band", details: wifi.band?.description ?? "Unknown Band")
-            DetailView(title: "Security", details: wifi.auth?.description ?? "Unknown Security")
+            DetailView(title: "Channel", details: accessPoint.channel)
+            DetailView(title: "BSSID", details: accessPoint.bssid)
+            DetailView(title: "Band", details: accessPoint.band)
+            DetailView(title: "Security", details: accessPoint.security)
         }
+    }
+}
+
+// MARK: - AccessPointInfo
+
+struct AccessPointInfo {
+    
+    let ssid: String
+    let bssid: String
+    let channel: String
+    let band: String
+    let security: String
+}
+
+extension WifiInfo {
+    
+    func accessPoint() -> AccessPointInfo {
+        AccessPointInfo(ssid: self.ssid, bssid: self.bssid.description, channel: "\(self.channel)", band: self.band?.description ?? "Unknown Band", security: self.auth?.description ?? "Unknown Security")
+    }
+}
+
+extension APWiFiScan {
+    
+    func accessPoint() -> AccessPointInfo {
+        AccessPointInfo(ssid: ssid, bssid: bssidString(), channel: "\(channel)", band: band.description, security: authentication.description)
     }
 }
 

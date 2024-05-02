@@ -56,12 +56,10 @@ struct ProvisionOverWiFiView: View {
                 List(selection: $viewModel.selectedScan) {
                     ssidSection()
                     
-                    Section("Password") {
-                        SecureField("Type Password Here", text: $viewModel.ssidPassword)
-                        
-                        if let ipAddress = viewModel.ipAddress {
-                            provisionButton(ipAddress: ipAddress)
-                        }
+                    AccessPointSection(accessPoint: viewModel.selectedScan?.accessPoint(), password: $viewModel.ssidPassword, showVolatileMemory: false, volatileMemory: $viewModel.volatileMemory, footer: "")
+                    
+                    if let ipAddress = viewModel.ipAddress {
+                        provisionButton(ipAddress: ipAddress)
                     }
                 }
             }
