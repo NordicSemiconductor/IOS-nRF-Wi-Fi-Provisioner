@@ -79,10 +79,6 @@ struct PipelineView<Stage: PipelineStage>: View {
     
     var body: some View {
         HStack {
-            if stage.inProgress {
-                ProgressView()
-            }
-            
             Image(systemName: stage.symbolName)
                 .foregroundColor(stage.color)
                 .frame(width: 20, height: 20)
@@ -91,14 +87,15 @@ struct PipelineView<Stage: PipelineStage>: View {
                 Text(stage.status)
                     .foregroundColor(stage.color)
 
-                if stage.inProgress {
+                if stage.inProgress || stage.encounteredAnError {
                     Text(logLine)
                         .font(.caption)
-                        .lineLimit(1)
-                    #if os(macOS)
+#if os(macOS)
                         .padding(.top, 1)
-                    #endif
-
+#endif
+                }
+                
+                if stage.inProgress {
                     if stage.isIndeterminate {
                         IndeterminateProgressView()
                             .padding(.top, 2)
@@ -111,6 +108,7 @@ struct PipelineView<Stage: PipelineStage>: View {
                     }
                 }
             }
+            .padding(.leading, 6)
         }
     }
 }
