@@ -50,6 +50,9 @@ public struct NEManager {
                 delegate?.log("Waiting for Configuration change to take place...", level: .debug)
                 // swallow Error.
                 break
+            case .userDenied:
+                delegate?.log("User Denied Network change request", level: .fault)
+                fallthrough
             default:
                 throw error
             }
