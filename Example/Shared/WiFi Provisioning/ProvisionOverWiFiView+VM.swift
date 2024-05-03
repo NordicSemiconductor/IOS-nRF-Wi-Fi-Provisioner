@@ -61,7 +61,7 @@ extension ProvisionOverWiFiView.ViewModel {
             pipelineManager.inProgress(.browsed)
             let browser = BonjourBrowser()
             browser.delegate = self
-            _ = try await browser.findBonjourService(.wifiProv)
+            let txtRecord = try await browser.findBonjourService(.wifiProv)
             
             pipelineManager.inProgress(.resolved)
             log("Awaiting for Resolve...", level: .debug)
@@ -76,7 +76,7 @@ extension ProvisionOverWiFiView.ViewModel {
             pipelineManager.inProgress(.provisioningInfo)
         } catch {
             pipelineManager.onError(error)
-            log("Pipeline Error: \(error.localizedDescription)", level: .error)
+            log(error.localizedDescription, level: .error)
             throw error
         }
     }
@@ -110,7 +110,7 @@ extension ProvisionOverWiFiView.ViewModel {
             pipelineManager.completed(.verification)
         } catch {
             pipelineManager.onError(error)
-            log("Pipeline Error: \(error.localizedDescription)", level: .error)
+            log(error.localizedDescription, level: .error)
             throw error
         }
     }

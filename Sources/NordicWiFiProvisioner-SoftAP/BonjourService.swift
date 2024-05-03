@@ -50,4 +50,27 @@ public enum BonjourError: Error, LocalizedError {
     case serviceNotFound
     case noAddressFound
     case unableToParseSocketAddress
+    
+    public var errorDescription: String? {
+        localizedDescription
+    }
+    
+    public var failureReason: String? {
+        localizedDescription
+    }
+    
+    public var localizedDescription: String {
+        switch self {
+        case .stoppedByUser:
+            "Bonjour Browser stopped by user"
+        case .unableToResolve(reason: let reason):
+            "Unable to resolve IP Address: \(reason)"
+        case .serviceNotFound:
+            "Bonjour Service not found"
+        case .noAddressFound:
+            "IP Address not found in Bonjour Service result"
+        case .unableToParseSocketAddress:
+            "IP data found for Bonjour Service, but failed to parse it into a proper address."
+        }
+    }
 }

@@ -82,7 +82,7 @@ final public class BonjourBrowser {
                         netService = NetService(domain: browserService.domain, type: browserService.type, name: browserService.name)
                         if case .bonjour(let record) = result.metadata {
                             txtRecord = record
-                            delegate?.log("Found TXT Record", level: .debug)
+                            delegate?.log("Found TXT Record for \(service.name)", level: .debug)
                         } else {
                             delegate?.log("No TXT Record found", level: .info)
                         }

@@ -129,6 +129,6 @@ extension BonjourResolver: NetServiceDelegate {
             .flatMap { NetService.ErrorCode.init(rawValue: $0) }
             ?? .unknownError
         let error = NSError(domain: NetService.errorDomain, code: code.rawValue, userInfo: nil)
-        self.stop(with: .failure(.unableToResolve(reason: error.localizedDescription)))
+        stop(with: .failure(.unableToResolve(reason: error.localizedDescription)))
     }
 }
