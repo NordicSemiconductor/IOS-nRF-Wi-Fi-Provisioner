@@ -91,7 +91,7 @@ final public class BonjourBrowser {
                 }
                 
                 guard let netService else { return }
-                // Resolve IP Address here or else, if we do it later, it'll fail.
+                // Resolve IP Address here or else, if we do it later, it'll likely fail.
                 BonjourResolver.resolve(service: netService) { [weak self] result in
                     switch result {
                     case .success(let ipAddress):
@@ -101,7 +101,8 @@ final public class BonjourBrowser {
                         continuation.resume(returning: txtRecord)
                     case .failure(let error):
                         timeoutTask.cancel()
-                        continuation.resume(throwing: error)
+                        self?.delegate?.log("IP Address Resolution Failed - Unable to cache IP address for Service \(netService.name).", level: .fault)
+                        continuation.resume(returning: txtRecord)
                     }
                 }
                 RunLoop.main.run(until: Date(timeIntervalSinceNow: 2.0))

@@ -21,6 +21,9 @@ public struct NEManager {
     
     // MARK: API
     
+    /**
+     Warning: This function might return without throwing any Error if the Network Change fails. This is because iOS will inform the user via Dialog, but we will never get said Error in the callback. Nothing we can do about it.
+     */
     public func apply(_ configuration: NEHotspotConfiguration) async throws {
         let manager = NEHotspotConfigurationManager.shared
         delegate?.log("Applying Network Configuration change to \(configuration.ssid)...", level: .info)
