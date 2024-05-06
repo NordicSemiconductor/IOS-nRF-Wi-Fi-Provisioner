@@ -55,8 +55,27 @@ public struct NEManager {
                 break
             case .userDenied:
                 delegate?.log("User Denied Network change request", level: .fault)
-                fallthrough
+                throw error
+            case .internal:
+                delegate?.log("Internal Error \(error.localizedDescription)", level: .fault)
+                throw error
+            case .invalid:
+                delegate?.log("Invalid Configuration is being applied", level: .fault)
+                throw error
+            case .invalidEAPSettings:
+                delegate?.log("Invalid EAP Settings", level: .fault)
+                throw error
+            case .invalidSSID:
+                delegate?.log("Invalid SSID", level: .fault)
+                throw error
+            case .invalidWEPPassphrase:
+                delegate?.log("Invalid WEP Passphrase / Password", level: .fault)
+                throw error
+            case .invalidWPAPassphrase:
+                delegate?.log("Invalid WPA Passphrase / Password", level: .fault)
+                throw error
             default:
+                delegate?.log("Undefined Error: \(error.localizedDescription)", level: .fault)
                 throw error
             }
         }
