@@ -58,9 +58,16 @@ public class ProvisionManager {
         provisioningConfiguration.passphrase = (password ?? "").data(using: .utf8) ?? Data()
         request.httpBody = try! provisioningConfiguration.serializedData()
         
-        let provisionResponse = try await urlSession.data(for: request)
-        if let response = provisionResponse.1 as? HTTPURLResponse, response.statusCode >= 400 {
-            throw HTTPError(code: response.statusCode, responseData: provisionResponse.0)
+        do {
+            let provisionResponse = try await urlSession.data(for: request)
+            if let response = provisionResponse.1 as? HTTPURLResponse, response.statusCode >= 400 {
+                print("Provisioning Response")
+                print(provisionResponse)
+                throw HTTPError(code: response.statusCode, responseData: provisionResponse.0)
+            }
+        } catch {
+            print("Caught Error")
+            print(error)
         }
     }
     
