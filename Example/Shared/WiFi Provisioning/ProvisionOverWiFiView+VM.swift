@@ -62,6 +62,7 @@ extension ProvisionOverWiFiView.ViewModel {
             let browser = BonjourBrowser()
             browser.delegate = self
             let txtRecord = try await browser.findBonjourService(.wifiProv)
+            try verifyTXTRecord(txtRecord)
             
             pipelineManager.inProgress(.resolved)
             log("Awaiting for Resolve...", level: .debug)
@@ -107,6 +108,7 @@ extension ProvisionOverWiFiView.ViewModel {
             let browser = BonjourBrowser()
             browser.delegate = self
             let txtRecord = try await browser.findBonjourService(.wifiProv)
+            try verifyTXTRecord(txtRecord)
             pipelineManager.completed(.verification)
         } catch {
             pipelineManager.onError(error)
@@ -116,6 +118,25 @@ extension ProvisionOverWiFiView.ViewModel {
     }
     
     // MARK: Private
+    
+    private func verifyTXTRecord(_ record: NWTXTRecord?) throws {
+        guard let record else {
+            throw TXTError.txtRecordNotFound
+        }
+        log("TXT Record Found", level: .info)
+        guard let apiVersion = record.getEntry(for: "protovers") else {
+            throw TXTError.apiVersionNotFound
+        }
+        log("SoftAP API Version is \(apiVersion)", level: .debug)
+        guard let txtRecordVersion = record.getEntry(for: "txtvers") else {
+            throw TXTError.txtVersionNotFound
+        }
+        log("SoftAP TXT Record Version is \(txtRecordVersion)", level: .debug)
+        guard let macAddress = record.getEntry(for: "linkaddr") else {
+            throw TXTError.macAddressNotFound
+        }
+        log("SoftAP MAC Address is \(macAddress)", level: .debug)
+    }
     
     private func resetPipeline() {
         cancellables.removeAll()
@@ -127,6 +148,36 @@ extension ProvisionOverWiFiView.ViewModel {
         pipelineManager.$stages.sink { [weak self] _ in
             self?.objectWillChange.send()
         }.store(in: &cancellables)
+    }
+}
+
+// MARK: - TXTError
+
+enum TXTError: Error, LocalizedError {
+    case txtRecordNotFound
+    case apiVersionNotFound
+    case txtVersionNotFound
+    case macAddressNotFound
+    
+    public var errorDescription: String? {
+        localizedDescription
+    }
+    
+    public var failureReason: String? {
+        localizedDescription
+    }
+    
+    public var localizedDescription: String {
+        switch self {
+        case .txtRecordNotFound:
+            "No TXT Record Found."
+        case .apiVersionNotFound:
+            "SoftAP API Version Not Found in TXT Record."
+        case .txtVersionNotFound:
+            "TXT Record Version Not Found in TXT Record."
+        case .macAddressNotFound:
+            "MAC (Link) Address Not Found in TXT Record."
+        }
     }
 }
 
