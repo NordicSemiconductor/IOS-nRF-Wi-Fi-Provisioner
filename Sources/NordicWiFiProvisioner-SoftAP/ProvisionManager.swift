@@ -18,7 +18,12 @@ public class ProvisionManager {
     // MARK: Properties
     
     private let sessionDelegate: NSURLSessionPinningDelegate
-    private lazy var urlSession = URLSession(configuration: .default, delegate: sessionDelegate, delegateQueue: nil)
+    private lazy var configuration: URLSessionConfiguration = {
+        let configuration = URLSessionConfiguration.default
+        configuration.timeoutIntervalForRequest = 15 // seconds
+        return configuration
+    }()
+    private lazy var urlSession = URLSession(configuration: configuration, delegate: sessionDelegate, delegateQueue: nil)
     
     public var delegate: Delegate?
     
