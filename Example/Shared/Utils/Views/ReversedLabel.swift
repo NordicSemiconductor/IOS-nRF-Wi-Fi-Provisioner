@@ -54,6 +54,7 @@ struct NordicLabel: View {
     var body: some View {
         Label {
             Text(title)
+                .frame(maxWidth: .infinity)
         } icon: {
             image.map {
                 Image($0)

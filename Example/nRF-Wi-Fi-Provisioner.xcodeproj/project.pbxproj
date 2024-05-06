@@ -84,6 +84,7 @@
 		AA3DE8F52BD127E400CA4B70 /* PipelineManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA3DE8F42BD127E400CA4B70 /* PipelineManager.swift */; };
 		AA49E0562BB584B200CDD6FA /* APWiFiScanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA49E0552BB584B200CDD6FA /* APWiFiScanView.swift */; };
 		AA49E0592BB5A34100CDD6FA /* iOSCommonLibraries in Frameworks */ = {isa = PBXBuildFile; productRef = AA49E0582BB5A34100CDD6FA /* iOSCommonLibraries */; };
+		AA4D8F8F2BE91F3000A4EC93 /* ProvisioningConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA4D8F8E2BE91F3000A4EC93 /* ProvisioningConfiguration.swift */; };
 		AA9ED5C12BC55D4100FAC49D /* WifiScanResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9ED5C02BC55D4100FAC49D /* WifiScanResult.swift */; };
 		AA9ED5C22BC55D4100FAC49D /* WifiScanResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9ED5C02BC55D4100FAC49D /* WifiScanResult.swift */; };
 		AA9ED5C42BC56D1A00FAC49D /* ScannerSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9ED5C32BC56D1A00FAC49D /* ScannerSection.swift */; };
@@ -157,6 +158,7 @@
 		AA3806D12BBACC8D003C8256 /* Placeholder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Placeholder.swift; sourceTree = "<group>"; };
 		AA3DE8F42BD127E400CA4B70 /* PipelineManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PipelineManager.swift; sourceTree = "<group>"; };
 		AA49E0552BB584B200CDD6FA /* APWiFiScanView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APWiFiScanView.swift; sourceTree = "<group>"; };
+		AA4D8F8E2BE91F3000A4EC93 /* ProvisioningConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProvisioningConfiguration.swift; sourceTree = "<group>"; };
 		AA9ED5C02BC55D4100FAC49D /* WifiScanResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WifiScanResult.swift; sourceTree = "<group>"; };
 		AA9ED5C32BC56D1A00FAC49D /* ScannerSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerSection.swift; sourceTree = "<group>"; };
 		AAA260492BDFA78600BFF2A2 /* certificate.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = certificate.cer; sourceTree = SOURCE_ROOT; };
@@ -423,6 +425,7 @@
 				AA3DE8F42BD127E400CA4B70 /* PipelineManager.swift */,
 				AAAE24112BD01596005C5F90 /* ProvisioningPipeline.swift */,
 				AA49E0552BB584B200CDD6FA /* APWiFiScanView.swift */,
+				AA4D8F8E2BE91F3000A4EC93 /* ProvisioningConfiguration.swift */,
 				AA2C119A2B7A61EF003AF3E0 /* ProvisionOverWiFiView.swift */,
 				01994A732B852F7800953465 /* ProvisionOverWiFiView+VM.swift */,
 			);
@@ -642,6 +645,7 @@
 				01A43DEE2886FED80025A5C4 /* DeviceView+ViewModel.swift in Sources */,
 				AAAAE6C52B7F813D000BB569 /* AppViewModel.swift in Sources */,
 				AA194BDA2BBD68980000BD63 /* RSSI+Ext.swift in Sources */,
+				AA4D8F8F2BE91F3000A4EC93 /* ProvisioningConfiguration.swift in Sources */,
 				01922CBD28A2713100492E87 /* NavigationView.swift in Sources */,
 				01C0F0FA287DE864008BBE46 /* ScannerViewModel.swift in Sources */,
 				01062ADA28B6592700BB41FD /* View+Mod.swift in Sources */,

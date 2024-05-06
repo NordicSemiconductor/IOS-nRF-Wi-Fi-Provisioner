@@ -14,15 +14,20 @@ import NetworkExtension
 
 struct ProvisionOverWiFiView: View {
     
+    private static let DEFAULT_SSID = "nrf-wifiprov"
+    
     // MARK: Properties
     
     @StateObject var viewModel = ViewModel()
     
     @State private var alertError: TitleMessageError? = nil
-    @State private var showAlert: Bool = false
-    @State private var viewStatus: ViewStatus = .showingStages
+    @State private var showAlert = false
+    @State private var viewStatus: ViewStatus = .setup
+    @State private var switchToAccessPoint = true
+    @State private var name = Self.DEFAULT_SSID
     
-    private enum ViewStatus {
+    enum ViewStatus {
+        case setup
         case showingStages
         case awaitingUserInput
     }
@@ -32,9 +37,11 @@ struct ProvisionOverWiFiView: View {
     var body: some View {
         VStack {
             switch viewStatus {
+            case .setup:
+                ProvisioningConfiguration(switchToAccessPoint: $switchToAccessPoint, ssid: $name)
             case .showingStages:
                 List {
-                    Section {
+                    Section("Stages") {
                         ForEach(viewModel.pipelineManager.stages) { stage in
                             PipelineView(stage: stage, logLine: viewModel.logLine)
                         }
@@ -45,8 +52,7 @@ struct ProvisionOverWiFiView: View {
                 
                 AsyncButton("Start") {
                     do {
-                        let apSSID = "nrf-wifiprov"
-                        let configuration = NEHotspotConfiguration(ssid: apSSID)
+                        let configuration = NEHotspotConfiguration(ssid: name)
                         try await viewModel.pipelineStart(applying: configuration)
                         viewStatus = .awaitingUserInput
                     } catch {
