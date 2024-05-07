@@ -33,17 +33,17 @@ final public class BonjourBrowser {
     // MARK: API
     
     public func findBonjourService(_ service: BonjourService, preResolvingIPAddress resolveIPAddress: Bool = false) async throws -> NWTXTRecord? {
+        
+        delegate?.log("Warming Up Network Browser...", level: .debug)
+        // Wait a couple of seconds for the connection to settle-in.
+        try? await Task.sleepFor(seconds: 3)
+        
         if browser != nil {
             browser?.cancel()
             browser = nil
         }
         
         browser = NWBrowser(for: service.descriptor(), using: .discoveryParameters)
-        delegate?.log("Warming Up Network Browser...", level: .debug)
-        
-        // Wait a couple of seconds for the connection to settle-in.
-        try? await Task.sleepFor(seconds: 3)
-        
         defer {
             delegate?.log("Cancelling Browser...", level: .debug)
             browser?.cancel()
@@ -77,42 +77,32 @@ final public class BonjourBrowser {
             }
             
             browser?.browseResultsChangedHandler = { [delegate] results, changes in
-                var netService: NetService?
-                var txtRecord: NWTXTRecord?
                 delegate?.log("Found \(results.count) results.", level: .debug)
                 for result in results {
                     if case .service(let browserService) = result.endpoint, browserService.name == service.name {
-                        netService = NetService(domain: browserService.domain, type: browserService.type, name: browserService.name)
+                        let netService = NetService(domain: browserService.domain, type: browserService.type, name: browserService.name)
+                        if resolveIPAddress {
+                            BonjourResolver.resolve(service: netService) { [weak self] result in
+                                switch result {
+                                case .success(let ipAddress):
+                                    self?.cachedIPAddresses[netService.name] = ipAddress
+                                    self?.delegate?.log("Cached IP ADDRESS \(ipAddress) for Service \(netService.name)", level: .debug)
+                                case .failure(let error):
+                                    self?.delegate?.log("IP Address Resolution Failed - Unable to cache IP address for Service \(netService.name) due to \(error.localizedDescription).", level: .fault)
+                                }
+                            }
+                            RunLoop.main.run(until: Date(timeIntervalSinceNow: 2.0))
+                        }
+                        
+                        timeoutTask.cancel()
                         if case .bonjour(let record) = result.metadata {
-                            txtRecord = record
                             delegate?.log("Found TXT Record for \(service.name)", level: .debug)
+                            continuation.resume(returning: record)
                         } else {
                             delegate?.log("No TXT Record found", level: .info)
-                        }
-                        break
-                    }
-                }
-                
-                guard let netService else { return }
-                
-                if resolveIPAddress {
-                    BonjourResolver.resolve(service: netService) { [weak self] result in
-                        switch result {
-                        case .success(let ipAddress):
-                            self?.cachedIPAddresses[netService.name] = ipAddress
-                            self?.delegate?.log("Cached IP ADDRESS \(ipAddress) for Service \(netService.name)", level: .debug)
-                            timeoutTask.cancel()
-                            continuation.resume(returning: txtRecord)
-                        case .failure(let error):
-                            timeoutTask.cancel()
-                            self?.delegate?.log("IP Address Resolution Failed - Unable to cache IP address for Service \(netService.name) due to \(error.localizedDescription).", level: .fault)
-                            continuation.resume(returning: txtRecord)
+                            continuation.resume(returning: nil)
                         }
                     }
-                    RunLoop.main.run(until: Date(timeIntervalSinceNow: 2.0))
-                } else {
-                    timeoutTask.cancel()
-                    continuation.resume(returning: txtRecord)
                 }
             }
             
