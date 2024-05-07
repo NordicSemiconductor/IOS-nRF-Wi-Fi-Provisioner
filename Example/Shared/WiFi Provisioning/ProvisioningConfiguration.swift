@@ -20,7 +20,7 @@ struct ProvisioningConfiguration: View {
         List {
             Section("Provisioning Configuration") {
                 Toggle(isOn: $switchToAccessPoint) {
-                    Label("Switch to Access Point", systemImage: "wifi.circle")
+                    Label("Switch to Access Point", systemImage: "cpu")
                 }
                 .tint(.accentColor)
                 
@@ -33,6 +33,7 @@ struct ProvisioningConfiguration: View {
                     guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
                     UIApplication.shared.open(url)
                 }
+                .frame(maxWidth: .infinity)
             }
             
             if switchToAccessPoint {
@@ -51,7 +52,7 @@ struct ProvisioningConfiguration: View {
             
             Section("Verification") {
                 Toggle(isOn: $verifyProvisioning) {
-                    Label("Enable Post-Provisioning Verification", systemImage: "wifi.circle")
+                    Label("Enable Post-Provisioning Verification", systemImage: "flag.checkered")
                 }
                 .tint(.accentColor)
                 
