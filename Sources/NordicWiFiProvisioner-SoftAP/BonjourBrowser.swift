@@ -14,7 +14,7 @@ final public class BonjourBrowser {
     
     // MARK: Properties
     
-    private static let TIMEOUT_SECONDS = 5
+    private static let TIMEOUT_SECONDS = 10
     
     private var browser: NWBrowser?
     private lazy var cachedIPAddresses = [String: String]()
