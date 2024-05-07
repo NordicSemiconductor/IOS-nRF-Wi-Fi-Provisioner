@@ -36,7 +36,7 @@ final public class BonjourBrowser {
         
         delegate?.log("Warming Up Network Browser...", level: .debug)
         // Wait a couple of seconds for the connection to settle-in.
-        try? await Task.sleepFor(seconds: 3)
+        try? await Task.sleepFor(seconds: 5)
         
         if browser != nil {
             browser?.cancel()
