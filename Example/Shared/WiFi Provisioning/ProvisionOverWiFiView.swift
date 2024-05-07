@@ -40,18 +40,7 @@ struct ProvisionOverWiFiView: View {
             switch viewStatus {
             case .setup:
                 ProvisioningConfiguration(switchToAccessPoint: $switchToAccessPoint, ssid: $name, verifyProvisioning: $verify) {
-                    Task { @MainActor in
-                        viewStatus = .showingStages
-                        do {
-                            let configuration = NEHotspotConfiguration(ssid: name)
-                            try await viewModel.pipelineStart(applying: configuration)
-                            viewStatus = .awaitingUserInput
-                        } catch {
-                            viewStatus = .showingStages
-                            alertError = TitleMessageError(error)
-                            showAlert = true
-                        }
-                    }
+                    startProvisioning()
                 }
             case .showingStages:
                 List {
@@ -59,6 +48,27 @@ struct ProvisionOverWiFiView: View {
                         ForEach(viewModel.pipelineManager.stages) { stage in
                             PipelineView(stage: stage, logLine: viewModel.logLine)
                         }
+                    }
+                }
+                
+                Spacer()
+                
+                HStack {
+                    if viewModel.pipelineManager.inProgress {
+                        ProgressView()
+                    } else if viewModel.pipelineManager.error != nil {
+                        Button("Retry") {
+                            startProvisioning()
+                        }
+                        .tint(.nordicRed)
+                        .buttonStyle(.borderedProminent)
+                    }
+                    
+                    if viewModel.pipelineManager.success {
+                        Button("Clear") {
+                            viewStatus = .setup
+                        }
+                        .buttonStyle(.borderedProminent)
                     }
                 }
             case .awaitingUserInput:
@@ -81,6 +91,27 @@ struct ProvisionOverWiFiView: View {
         }
     }
     
+    // MARK: startProvisioning
+    
+    private func startProvisioning() {
+        Task { @MainActor in
+            alertError = nil
+            showAlert = false
+            viewStatus = .showingStages
+            do {
+                let configuration = NEHotspotConfiguration(ssid: name)
+                try await viewModel.pipelineStart(applying: configuration)
+                viewStatus = .awaitingUserInput
+            } catch {
+                viewStatus = .showingStages
+                alertError = TitleMessageError(error)
+                showAlert = true
+            }
+        }
+    }
+    
+    // MARK: ssidSection
+    
     @ViewBuilder
     private func ssidSection() -> some View {
         Section("Scanned Networks") {
@@ -94,6 +125,8 @@ struct ProvisionOverWiFiView: View {
             }
         }
     }
+    
+    // MARK: provisionButton
     
     @ViewBuilder
     private func provisionButton(ipAddress: String) -> some View {

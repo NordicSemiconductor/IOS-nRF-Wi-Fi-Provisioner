@@ -29,11 +29,16 @@ public class PipelineManager<Stage: PipelineStage>: ObservableObject {
             progress = 100.0
         }
     }
+    @Published var error: Error?
     
     weak var delegate: PipelineManagerDelegate?
     
     var currentStage: Stage! {
         stages.first { $0.inProgress }
+    }
+    
+    var inProgress: Bool {
+        currentStage != nil
     }
     
     var isIndeterminate: Bool {
@@ -84,6 +89,7 @@ internal extension PipelineManager {
     func onError(_ error: Error) {
         guard let currentStage = stages.firstIndex(where: { $0.inProgress }) else { return }
         stages[currentStage].declareError()
+        self.error = error
         delegate?.onProgressUpdate()
     }
 }
