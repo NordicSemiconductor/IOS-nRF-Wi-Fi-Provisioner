@@ -19,14 +19,10 @@ struct ProvisioningConfiguration: View {
     var body: some View {
         List {
             Section("Provisioning Configuration") {
-                HStack {
-                    NordicLabel("Switch to Access Point", systemImage: "wifi.circle")
-                    
-                    Spacer()
-                    
-                    Toggle("", isOn: $switchToAccessPoint)
-                        .tint(.accentColor)
+                Toggle(isOn: $switchToAccessPoint) {
+                    Label("Switch to Access Point", systemImage: "wifi.circle")
                 }
+                .tint(.accentColor)
                 
                 Text("""
                 If you're already connected to the Device you'd like to provision, or would rather do it manually, you may disable this.
@@ -42,7 +38,7 @@ struct ProvisioningConfiguration: View {
             if switchToAccessPoint {
                 Section {
                     HStack {
-                        NordicLabel("SSID", systemImage: "wifi.circle")
+                        Label("SSID", systemImage: "wifi.circle")
                         
                         Spacer()
                             .frame(maxWidth: .infinity)
@@ -54,14 +50,10 @@ struct ProvisioningConfiguration: View {
             }
             
             Section("Verification") {
-                HStack {
-                    NordicLabel("Enable Post-Provisioning Verification", systemImage: "wifi.circle")
-                    
-                    Spacer()
-                    
-                    Toggle("", isOn: $verifyProvisioning)
-                        .tint(.accentColor)
+                Toggle(isOn: $verifyProvisioning) {
+                    Label("Enable Post-Provisioning Verification", systemImage: "wifi.circle")
                 }
+                .tint(.accentColor)
                 
                 Text("""
                 If Enabled, after successful provisioning we will switch to the network you've provisioned your Device to, and try to find it in that network.
