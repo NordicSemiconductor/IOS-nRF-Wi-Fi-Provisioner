@@ -32,16 +32,18 @@ final public class BonjourBrowser {
     
     // MARK: API
     
-    public func findBonjourService(_ service: BonjourService) async throws -> NWTXTRecord? {
+    public func findBonjourService(_ service: BonjourService, preResolvingIPAddress resolveIPAddress: Bool = false) async throws -> NWTXTRecord? {
         if browser != nil {
             browser?.cancel()
             browser = nil
         }
         
+        browser = NWBrowser(for: service.descriptor(), using: .discoveryParameters)
+        delegate?.log("Warming Up Network Browser...", level: .debug)
+        
         // Wait a couple of seconds for the connection to settle-in.
         try? await Task.sleepFor(seconds: 3)
         
-        browser = NWBrowser(for: service.descriptor(), using: .discoveryParameters)
         defer {
             delegate?.log("Cancelling Browser...", level: .debug)
             browser?.cancel()
@@ -92,21 +94,26 @@ final public class BonjourBrowser {
                 }
                 
                 guard let netService else { return }
-                // Resolve IP Address here or else, if we do it later, it'll likely fail.
-                BonjourResolver.resolve(service: netService) { [weak self] result in
-                    switch result {
-                    case .success(let ipAddress):
-                        self?.cachedIPAddresses[netService.name] = ipAddress
-                        self?.delegate?.log("Cached IP ADDRESS \(ipAddress) for Service \(netService.name)", level: .debug)
-                        timeoutTask.cancel()
-                        continuation.resume(returning: txtRecord)
-                    case .failure(let error):
-                        timeoutTask.cancel()
-                        self?.delegate?.log("IP Address Resolution Failed - Unable to cache IP address for Service \(netService.name).", level: .fault)
-                        continuation.resume(returning: txtRecord)
+                
+                if resolveIPAddress {
+                    BonjourResolver.resolve(service: netService) { [weak self] result in
+                        switch result {
+                        case .success(let ipAddress):
+                            self?.cachedIPAddresses[netService.name] = ipAddress
+                            self?.delegate?.log("Cached IP ADDRESS \(ipAddress) for Service \(netService.name)", level: .debug)
+                            timeoutTask.cancel()
+                            continuation.resume(returning: txtRecord)
+                        case .failure(let error):
+                            timeoutTask.cancel()
+                            self?.delegate?.log("IP Address Resolution Failed - Unable to cache IP address for Service \(netService.name) due to \(error.localizedDescription).", level: .fault)
+                            continuation.resume(returning: txtRecord)
+                        }
                     }
+                    RunLoop.main.run(until: Date(timeIntervalSinceNow: 2.0))
+                } else {
+                    timeoutTask.cancel()
+                    continuation.resume(returning: txtRecord)
                 }
-                RunLoop.main.run(until: Date(timeIntervalSinceNow: 2.0))
             }
             
             delegate?.log("Starting Browser...", level: .debug)

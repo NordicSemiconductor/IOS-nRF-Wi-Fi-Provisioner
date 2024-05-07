@@ -61,11 +61,14 @@ extension ProvisionOverWiFiView.ViewModel {
             pipelineManager.inProgress(.browsed)
             let browser = BonjourBrowser()
             browser.delegate = self
-            let txtRecord = try await browser.findBonjourService(.wifiProv)
+            // Attempt to resolve IP Address here.
+            // If we do it later, it's more likely to fail.
+            let txtRecord = try await browser.findBonjourService(.wifiProv, preResolvingIPAddress: true)
             try verifyTXTRecord(txtRecord)
             
             pipelineManager.inProgress(.resolved)
             log("Awaiting for Resolve...", level: .debug)
+            // Get cached IP Resolution. If not cached, attempt to resolve again.
             let resolvedIPAddress = try await browser.resolveIPAddress(for: .wifiProv)
             self.ipAddress = resolvedIPAddress
             log("I've got the address! \(resolvedIPAddress)", level: .debug)
