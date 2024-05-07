@@ -25,6 +25,7 @@ struct ProvisionOverWiFiView: View {
     @State private var viewStatus: ViewStatus = .setup
     @State private var switchToAccessPoint = true
     @State private var name = Self.DEFAULT_SSID
+    @State private var verify = true
     
     enum ViewStatus {
         case setup
@@ -38,27 +39,26 @@ struct ProvisionOverWiFiView: View {
         VStack {
             switch viewStatus {
             case .setup:
-                ProvisioningConfiguration(switchToAccessPoint: $switchToAccessPoint, ssid: $name)
-            case .showingStages:
-                List {
-                    Section("Stages") {
-                        ForEach(viewModel.pipelineManager.stages) { stage in
-                            PipelineView(stage: stage, logLine: viewModel.logLine)
+                ProvisioningConfiguration(switchToAccessPoint: $switchToAccessPoint, ssid: $name, verifyProvisioning: $verify) {
+                    Task { @MainActor in
+                        viewStatus = .showingStages
+                        do {
+                            let configuration = NEHotspotConfiguration(ssid: name)
+                            try await viewModel.pipelineStart(applying: configuration)
+                            viewStatus = .awaitingUserInput
+                        } catch {
+                            viewStatus = .showingStages
+                            alertError = TitleMessageError(error)
+                            showAlert = true
                         }
                     }
                 }
-                
-                Spacer()
-                
-                AsyncButton("Start") {
-                    do {
-                        let configuration = NEHotspotConfiguration(ssid: name)
-                        try await viewModel.pipelineStart(applying: configuration)
-                        viewStatus = .awaitingUserInput
-                    } catch {
-                        viewStatus = .showingStages
-                        alertError = TitleMessageError(error)
-                        showAlert = true
+            case .showingStages:
+                List {
+                    Section("Steps") {
+                        ForEach(viewModel.pipelineManager.stages) { stage in
+                            PipelineView(stage: stage, logLine: viewModel.logLine)
+                        }
                     }
                 }
             case .awaitingUserInput:
@@ -100,7 +100,7 @@ struct ProvisionOverWiFiView: View {
         AsyncButton("Provision") {
             do {
                 viewStatus = .showingStages
-                try await viewModel.provision(ipAddress: ipAddress)
+                try await viewModel.provision(ipAddress: ipAddress, withVerification: verify)
             } catch {
                 alertError = TitleMessageError(error)
                 showAlert = true

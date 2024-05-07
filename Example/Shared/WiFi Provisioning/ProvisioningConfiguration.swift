@@ -13,6 +13,8 @@ struct ProvisioningConfiguration: View {
     
     @Binding var switchToAccessPoint: Bool
     @Binding var ssid: String
+    @Binding var verifyProvisioning: Bool
+    let onStart: () -> Void
     
     var body: some View {
         List {
@@ -57,7 +59,7 @@ struct ProvisioningConfiguration: View {
                     
                     Spacer()
                     
-                    Toggle("", isOn: $switchToAccessPoint)
+                    Toggle("", isOn: $verifyProvisioning)
                         .tint(.accentColor)
                 }
                 
@@ -72,8 +74,6 @@ struct ProvisioningConfiguration: View {
         
         Spacer()
         
-        Button("Start") {
-            
-        }
+        Button("Start", action: onStart)
     }
 }

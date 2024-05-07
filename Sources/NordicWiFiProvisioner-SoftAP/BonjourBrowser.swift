@@ -33,13 +33,14 @@ final public class BonjourBrowser {
     // MARK: API
     
     public func findBonjourService(_ service: BonjourService) async throws -> NWTXTRecord? {
-        // Wait a couple of seconds for the connection to settle-in.
-        try? await Task.sleepFor(seconds: 2)
-        
         if browser != nil {
             browser?.cancel()
             browser = nil
         }
+        
+        // Wait a couple of seconds for the connection to settle-in.
+        try? await Task.sleepFor(seconds: 3)
+        
         browser = NWBrowser(for: service.descriptor(), using: .discoveryParameters)
         defer {
             delegate?.log("Cancelling Browser...", level: .debug)
