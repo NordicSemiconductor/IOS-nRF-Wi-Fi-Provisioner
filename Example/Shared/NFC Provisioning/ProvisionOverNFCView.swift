@@ -69,27 +69,6 @@ struct ProvisionOverNFCView: View {
     }
 }
 
-enum NFCAuthenticationType: UInt8, RawRepresentable {
-    case open = 0x01
-    case wpaPersonal = 0x02
-    case shared = 0x04
-    case wpaEnterprise = 0x08
-    case wpa2Enterprise = 0x10
-    case wpa2Personal = 0x20
-    
-    var bytes: [UInt8] { [0x00, rawValue] }
-}
-
-enum NFCEncryptionType: UInt8, RawRepresentable {
-    case none = 0x01
-    case wep = 0x02
-    case tkip = 0x04
-    case aes = 0x08
-    case aesTkipMixed = 0x0c
-    
-    var bytes: [UInt8] { [0x00, rawValue] }
-}
-
 // MARK: - NFCSessionDelegate
 
 final class NFCSessionDelegate: NSObject, NFCNDEFReaderSessionDelegate {
