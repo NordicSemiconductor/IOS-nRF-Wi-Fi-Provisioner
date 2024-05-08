@@ -62,12 +62,40 @@ struct ProvisionOverNFCView: View {
     // MARK: Private
     
     private func writeTag() {
+        delegate.ssid = ssid
+        delegate.passphrase = password
         session.alertMessage = "Hold your iPhone near an NDEF tag to write the message."
         session.begin()
     }
 }
 
+enum NFCAuthenticationType: UInt8, RawRepresentable {
+    case open = 0x01
+    case wpaPersonal = 0x02
+    case shared = 0x04
+    case wpaEnterprise = 0x08
+    case wpa2Enterprise = 0x10
+    case wpa2Personal = 0x20
+    
+    var bytes: [UInt8] { [0x00, rawValue] }
+}
+
+enum NFCEncryptionType: UInt8, RawRepresentable {
+    case none = 0x01
+    case wep = 0x02
+    case tkip = 0x04
+    case aes = 0x08
+    case aesTkipMixed = 0x0c
+    
+    var bytes: [UInt8] { [0x00, rawValue] }
+}
+
+// MARK: - NFCSessionDelegate
+
 final class NFCSessionDelegate: NSObject, NFCNDEFReaderSessionDelegate {
+    
+    var ssid: String = ""
+    var passphrase: String = ""
     
     func readerSessionDidBecomeActive(_ session: NFCNDEFReaderSession) {
         print(#function)
@@ -75,6 +103,7 @@ final class NFCSessionDelegate: NSObject, NFCNDEFReaderSessionDelegate {
     
     func readerSession(_ session: NFCNDEFReaderSession, didInvalidateWithError error: any Error) {
         print(#function)
+        print(error)
     }
     
     func readerSession(_ session: NFCNDEFReaderSession, didDetectNDEFs messages: [NFCNDEFMessage]) {
@@ -92,6 +121,33 @@ final class NFCSessionDelegate: NSObject, NFCNDEFReaderSessionDelegate {
             })
             return
         }
+        
+        let type = "application/vnd.wfa.wsc".data(using: .utf8)!
+
+        let authentication = NFCAuthenticationType.wpa2Personal
+        let encryption = NFCEncryptionType.aes
+
+        let ssidBytes: [UInt8] = Array(ssid.utf8)
+        let passphraseBytes: [UInt8] = Array(passphrase.utf8)
+
+        let ssidLength = UInt8(ssidBytes.count)
+        let passphraseLength = UInt8(passphraseBytes.count)
+
+        let networkIndex: [UInt8] = [0x10, 0x26, 0x00, 0x01, 0x01]
+        let ssid: [UInt8] = [0x10, 0x45, 0x00, ssidLength] + ssidBytes
+        let authenticationType: [UInt8] = [0x10, 0x03, 0x00, 0x02] + authentication.bytes
+        let encryptionType: [UInt8] = [0x10, 0x0F, 0x00, 0x02] + encryption.bytes
+        let passphraseKey: [UInt8] = [0x10, 0x27, 0x00, passphraseLength] + passphraseBytes
+        let macAddress: [UInt8] = [0x10, 0x20, 0x00, 0x06, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF]
+
+        let credential = networkIndex + ssid + authenticationType + encryptionType + passphraseKey + macAddress
+        let credentialLength = UInt8(credential.count)
+
+        let bytes = [0x10, 0x0E, 0x00, credentialLength] + credential
+        let payload = Data(bytes: bytes, count: bytes.count)
+
+        let ndefPayload = NFCNDEFPayload(format: .media, type: type, identifier: Data(), payload: payload)
+        let message = NFCNDEFMessage(records: [ndefPayload])
         
         // Connect to the found tag and write an NDEF message to it.
         let tag = tags.first!
@@ -117,42 +173,6 @@ final class NFCSessionDelegate: NSObject, NFCNDEFReaderSessionDelegate {
                     session.alertMessage = "Tag is read only."
                     session.invalidate()
                 case .readWrite:
-                    let type = "application/vnd.wfa.wsc".data(using: .utf8)!
-
-                    let authenticationTypesString = ["Open", "WPA-Personal", "Shared", "WPA-Enterprise", "WPA2-Enterprise", "WPA2-Personal"]
-                    let encryptionTypesString = ["None", "WEP", "TKIP", "AES", "AES/TKIP (mixed)"]
-
-                    let authenticationTypes: [[UInt8]] = [[0x00, 0x01], [0x00, 0x02], [0x00, 0x04], [0x00, 0x08], [0x00, 0x10], [0x00, 0x20]]
-                    let encryptionTypes: [[UInt8]] = [[0x00, 0x01], [0x00, 0x02], [0x00, 0x04], [0x00, 0x08], [0x00, 0x0c]]
-
-                    let ssidString = ""
-                    let networkKeyString = ""
-
-                    let ssidBytes: [UInt8] = Array(ssidString.utf8)
-                    let networkKeyBytes: [UInt8] = Array(networkKeyString.utf8)
-
-                    let ssidLength = UInt8(ssidBytes.count)
-                    let networkKeyLength = UInt8(networkKeyBytes.count)
-
-                    let authenticationTypeBytes = authenticationTypes[5]
-                    let encryptionTypeBytes = encryptionTypes[3]
-
-                    let networkIndex: [UInt8] = [0x10, 0x26, 0x00, 0x01, 0x01]
-                    let ssid: [UInt8] = [0x10, 0x45, 0x00, ssidLength] + ssidBytes
-                    let authenticationType: [UInt8] = [0x10, 0x03, 0x00, 0x02] + authenticationTypeBytes
-                    let encryptionType: [UInt8] = [0x10, 0x0F, 0x00, 0x02] + encryptionTypeBytes
-                    let networkKey: [UInt8] = [0x10, 0x27, 0x00, networkKeyLength] + networkKeyBytes
-                    let macAddress: [UInt8] = [0x10, 0x20, 0x00, 0x06, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF]
-
-                    let credential = networkIndex + ssid + authenticationType + encryptionType + networkKey + macAddress
-                    let credentialLength = UInt8(credential.count)
-
-                    let bytes = [0x10, 0x0E, 0x00, credentialLength] + credential
-                    let payload = Data(bytes: bytes, count: bytes.count)
-
-                    let ndefPayload = NFCNDEFPayload(format: .media, type: type, identifier: Data(), payload: payload)
-
-                    let message = NFCNDEFMessage(records: [ndefPayload])
                     tag.writeNDEF(message, completionHandler: { (error: Error?) in
                         if nil != error {
                             session.alertMessage = "Write NDEF message fail: \(error!)"
