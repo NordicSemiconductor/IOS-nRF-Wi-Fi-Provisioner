@@ -27,7 +27,7 @@ struct AccessPointSection: View {
         Section {
             VStack {
                 HStack {
-                    NordicLabel("Access Point", systemImage: "wifi.circle")
+                    Label("Access Point", systemImage: "wifi.circle")
                     
                     Spacer()
                     
@@ -40,7 +40,14 @@ struct AccessPointSection: View {
             if let accessPoint {
                 additionalInfo(accessPoint)
                 
-                SecureField("Password", text: $password)
+                HStack {
+                    Label("Password", systemImage: "key.horizontal")
+                    
+                    Spacer()
+                    
+                    SecureField("Type Here", text: $password)
+                        .multilineTextAlignment(.trailing)
+                }
             }
             
             if showVolatileMemory {
