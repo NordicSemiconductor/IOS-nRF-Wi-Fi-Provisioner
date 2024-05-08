@@ -12,9 +12,21 @@ import CoreNFC
 
 struct ProvisionOverNFCView: View {
     
+    // MARK: Properties
+    
     @State private var ssid: String = ""
     @State private var password: String = ""
-    private var session: NFCNDEFReaderSession?
+    private var session: NFCNDEFReaderSession
+    private let delegate: NFCSessionDelegate
+    
+    // MARK: init
+    
+    init() {
+        self.delegate = NFCSessionDelegate()
+        self.session = NFCNDEFReaderSession(delegate: delegate, queue: nil, invalidateAfterFirstRead: false)
+    }
+    
+    // MARK: View
     
     var body: some View {
         List {
@@ -60,14 +72,15 @@ struct ProvisionOverNFCView: View {
 final class NFCSessionDelegate: NSObject, NFCNDEFReaderSessionDelegate {
     
     func readerSession(_ session: NFCNDEFReaderSession, didInvalidateWithError error: any Error) {
-        
+        print(#function)
     }
     
     func readerSession(_ session: NFCNDEFReaderSession, didDetectNDEFs messages: [NFCNDEFMessage]) {
-        
+        print(#function)
     }
     
     func readerSession(_ session: NFCNDEFReaderSession, didDetect tags: [any NFCNDEFTag]) {
+        print(#function)
         if tags.count > 1 {
             // Restart polling in 500 milliseconds.
             let retryInterval = DispatchTimeInterval.milliseconds(500)
