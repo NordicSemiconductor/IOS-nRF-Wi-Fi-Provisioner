@@ -62,8 +62,7 @@ struct ProvisionOverNFCView: View {
     // MARK: Private
     
     private func writeTag() {
-        delegate.ssid = ssid
-        delegate.passphrase = password
+        delegate.message = NFCProvisioningMessage(ssid: ssid, passphrase: password, authentication: .wpa2Personal, encryption: .aes)
         session.alertMessage = "Hold your iPhone near an NDEF tag to write the message."
         session.begin()
     }
@@ -73,8 +72,7 @@ struct ProvisionOverNFCView: View {
 
 final class NFCSessionDelegate: NSObject, NFCNDEFReaderSessionDelegate {
     
-    var ssid: String = ""
-    var passphrase: String = ""
+    var message: NFCProvisioningMessage?
     
     func readerSessionDidBecomeActive(_ session: NFCNDEFReaderSession) {
         print(#function)
@@ -101,32 +99,9 @@ final class NFCSessionDelegate: NSObject, NFCNDEFReaderSessionDelegate {
             return
         }
         
-        let type = "application/vnd.wfa.wsc".data(using: .utf8)!
-
-        let authentication = NFCAuthenticationType.wpa2Personal
-        let encryption = NFCEncryptionType.aes
-
-        let ssidBytes: [UInt8] = Array(ssid.utf8)
-        let passphraseBytes: [UInt8] = Array(passphrase.utf8)
-
-        let ssidLength = UInt8(ssidBytes.count)
-        let passphraseLength = UInt8(passphraseBytes.count)
-
-        let networkIndex: [UInt8] = [0x10, 0x26, 0x00, 0x01, 0x01]
-        let ssid: [UInt8] = [0x10, 0x45, 0x00, ssidLength] + ssidBytes
-        let authenticationType: [UInt8] = [0x10, 0x03, 0x00, 0x02] + authentication.bytes
-        let encryptionType: [UInt8] = [0x10, 0x0F, 0x00, 0x02] + encryption.bytes
-        let passphraseKey: [UInt8] = [0x10, 0x27, 0x00, passphraseLength] + passphraseBytes
-        let macAddress: [UInt8] = [0x10, 0x20, 0x00, 0x06, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF]
-
-        let credential = networkIndex + ssid + authenticationType + encryptionType + passphraseKey + macAddress
-        let credentialLength = UInt8(credential.count)
-
-        let bytes = [0x10, 0x0E, 0x00, credentialLength] + credential
-        let payload = Data(bytes: bytes, count: bytes.count)
-
-        let ndefPayload = NFCNDEFPayload(format: .media, type: type, identifier: Data(), payload: payload)
-        let message = NFCNDEFMessage(records: [ndefPayload])
+        guard let ndefMessage = message?.nfcndefMessage() else {
+            return
+        }
         
         // Connect to the found tag and write an NDEF message to it.
         let tag = tags.first!
@@ -152,7 +127,7 @@ final class NFCSessionDelegate: NSObject, NFCNDEFReaderSessionDelegate {
                     session.alertMessage = "Tag is read only."
                     session.invalidate()
                 case .readWrite:
-                    tag.writeNDEF(message, completionHandler: { (error: Error?) in
+                    tag.writeNDEF(ndefMessage, completionHandler: { (error: Error?) in
                         if nil != error {
                             session.alertMessage = "Write NDEF message fail: \(error!)"
                         } else {

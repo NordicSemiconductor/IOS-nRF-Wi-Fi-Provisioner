@@ -87,6 +87,7 @@
 		AA4C20F92BEB834400B67741 /* ProvisionOverNFCView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA4C20F82BEB834400B67741 /* ProvisionOverNFCView.swift */; };
 		AA4C20FB2BEBA93B00B67741 /* NFCAuthenticationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA4C20FA2BEBA93B00B67741 /* NFCAuthenticationType.swift */; };
 		AA4C20FD2BEBA95700B67741 /* NFCEncryptionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA4C20FC2BEBA95700B67741 /* NFCEncryptionType.swift */; };
+		AA4C20FF2BEBA9B000B67741 /* NFCProvisioningMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA4C20FE2BEBA9B000B67741 /* NFCProvisioningMessage.swift */; };
 		AA4D8F8F2BE91F3000A4EC93 /* ProvisioningConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA4D8F8E2BE91F3000A4EC93 /* ProvisioningConfiguration.swift */; };
 		AA9ED5C12BC55D4100FAC49D /* WifiScanResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9ED5C02BC55D4100FAC49D /* WifiScanResult.swift */; };
 		AA9ED5C22BC55D4100FAC49D /* WifiScanResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9ED5C02BC55D4100FAC49D /* WifiScanResult.swift */; };
@@ -164,6 +165,7 @@
 		AA4C20F82BEB834400B67741 /* ProvisionOverNFCView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProvisionOverNFCView.swift; sourceTree = "<group>"; };
 		AA4C20FA2BEBA93B00B67741 /* NFCAuthenticationType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFCAuthenticationType.swift; sourceTree = "<group>"; };
 		AA4C20FC2BEBA95700B67741 /* NFCEncryptionType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFCEncryptionType.swift; sourceTree = "<group>"; };
+		AA4C20FE2BEBA9B000B67741 /* NFCProvisioningMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFCProvisioningMessage.swift; sourceTree = "<group>"; };
 		AA4D8F8E2BE91F3000A4EC93 /* ProvisioningConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProvisioningConfiguration.swift; sourceTree = "<group>"; };
 		AA9ED5C02BC55D4100FAC49D /* WifiScanResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WifiScanResult.swift; sourceTree = "<group>"; };
 		AA9ED5C32BC56D1A00FAC49D /* ScannerSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerSection.swift; sourceTree = "<group>"; };
@@ -444,6 +446,7 @@
 			children = (
 				AA4C20FA2BEBA93B00B67741 /* NFCAuthenticationType.swift */,
 				AA4C20FC2BEBA95700B67741 /* NFCEncryptionType.swift */,
+				AA4C20FE2BEBA9B000B67741 /* NFCProvisioningMessage.swift */,
 				AA4C20F82BEB834400B67741 /* ProvisionOverNFCView.swift */,
 			);
 			path = "NFC Provisioning";
@@ -673,6 +676,7 @@
 				01481ABA2852093000925FAB /* nRF_Wi_Fi_ProvisionerApp.swift in Sources */,
 				AA2C11982B7A53F1003AF3E0 /* SelectorView.swift in Sources */,
 				AA9ED5C42BC56D1A00FAC49D /* ScannerSection.swift in Sources */,
+				AA4C20FF2BEBA9B000B67741 /* NFCProvisioningMessage.swift in Sources */,
 				AA4C20FD2BEBA95700B67741 /* NFCEncryptionType.swift in Sources */,
 				AA4C20F92BEB834400B67741 /* ProvisionOverNFCView.swift in Sources */,
 				AA49E0562BB584B200CDD6FA /* APWiFiScanView.swift in Sources */,
