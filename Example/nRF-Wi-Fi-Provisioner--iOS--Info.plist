@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NFCReaderUsageDescription</key>
+	<string>nRF Wi-Fi Provisioner needs access to NFC in order to provision a device via NFC.</string>
 	<key>NSLocalNetworkUsageDescription</key>
 	<string>nRF Wi-Fi Provisioner needs access to your local network in order to find the device you&apos;d like to provision.</string>
 	<key>NSBonjourServices</key>

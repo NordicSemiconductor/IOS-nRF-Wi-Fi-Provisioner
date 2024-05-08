@@ -84,6 +84,7 @@
 		AA3DE8F52BD127E400CA4B70 /* PipelineManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA3DE8F42BD127E400CA4B70 /* PipelineManager.swift */; };
 		AA49E0562BB584B200CDD6FA /* APWiFiScanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA49E0552BB584B200CDD6FA /* APWiFiScanView.swift */; };
 		AA49E0592BB5A34100CDD6FA /* iOSCommonLibraries in Frameworks */ = {isa = PBXBuildFile; productRef = AA49E0582BB5A34100CDD6FA /* iOSCommonLibraries */; };
+		AA4C20F92BEB834400B67741 /* ProvisionOverNFCView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA4C20F82BEB834400B67741 /* ProvisionOverNFCView.swift */; };
 		AA4D8F8F2BE91F3000A4EC93 /* ProvisioningConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA4D8F8E2BE91F3000A4EC93 /* ProvisioningConfiguration.swift */; };
 		AA9ED5C12BC55D4100FAC49D /* WifiScanResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9ED5C02BC55D4100FAC49D /* WifiScanResult.swift */; };
 		AA9ED5C22BC55D4100FAC49D /* WifiScanResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9ED5C02BC55D4100FAC49D /* WifiScanResult.swift */; };
@@ -158,6 +159,7 @@
 		AA3806D12BBACC8D003C8256 /* Placeholder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Placeholder.swift; sourceTree = "<group>"; };
 		AA3DE8F42BD127E400CA4B70 /* PipelineManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PipelineManager.swift; sourceTree = "<group>"; };
 		AA49E0552BB584B200CDD6FA /* APWiFiScanView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APWiFiScanView.swift; sourceTree = "<group>"; };
+		AA4C20F82BEB834400B67741 /* ProvisionOverNFCView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProvisionOverNFCView.swift; sourceTree = "<group>"; };
 		AA4D8F8E2BE91F3000A4EC93 /* ProvisioningConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProvisioningConfiguration.swift; sourceTree = "<group>"; };
 		AA9ED5C02BC55D4100FAC49D /* WifiScanResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WifiScanResult.swift; sourceTree = "<group>"; };
 		AA9ED5C32BC56D1A00FAC49D /* ScannerSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerSection.swift; sourceTree = "<group>"; };
@@ -234,6 +236,7 @@
 				01DB109828CF2C92005634CF /* Intro */,
 				01C0F0F8287DE856008BBE46 /* BLE Provisioning */,
 				AA2C11992B7A61D8003AF3E0 /* WiFi Provisioning */,
+				AA4C20F72BEB832B00B67741 /* NFC Provisioning */,
 				01D26B58286DAE6A00FD069D /* Utils */,
 				AA2C11972B7A53F1003AF3E0 /* SelectorView.swift */,
 				01481A922852092F00925FAB /* nRF_Wi_Fi_ProvisionerApp.swift */,
@@ -430,6 +433,14 @@
 				01994A732B852F7800953465 /* ProvisionOverWiFiView+VM.swift */,
 			);
 			path = "WiFi Provisioning";
+			sourceTree = "<group>";
+		};
+		AA4C20F72BEB832B00B67741 /* NFC Provisioning */ = {
+			isa = PBXGroup;
+			children = (
+				AA4C20F82BEB834400B67741 /* ProvisionOverNFCView.swift */,
+			);
+			path = "NFC Provisioning";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -656,6 +667,7 @@
 				01481ABA2852093000925FAB /* nRF_Wi_Fi_ProvisionerApp.swift in Sources */,
 				AA2C11982B7A53F1003AF3E0 /* SelectorView.swift in Sources */,
 				AA9ED5C42BC56D1A00FAC49D /* ScannerSection.swift in Sources */,
+				AA4C20F92BEB834400B67741 /* ProvisionOverNFCView.swift in Sources */,
 				AA49E0562BB584B200CDD6FA /* APWiFiScanView.swift in Sources */,
 				019D1D2E29128E96000D8BD4 /* AuthMode+Ext.swift in Sources */,
 				0183EFCD2897C446002E79A5 /* ReversedLabel.swift in Sources */,
