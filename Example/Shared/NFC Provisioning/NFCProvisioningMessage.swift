@@ -46,9 +46,8 @@ struct NFCProvisioningMessage {
         let authenticationType: [UInt8] = [0x10, 0x03, 0x00, 0x02] + authentication.bytes
         let encryptionType: [UInt8] = [0x10, 0x0F, 0x00, 0x02] + encryption.bytes
         let passphraseKey: [UInt8] = [0x10, 0x27, 0x00, passphraseLength] + passphraseBytes
-        let macAddress: [UInt8] = [0x10, 0x20, 0x00, 0x06, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF]
 
-        let credential = networkIndex + ssid + authenticationType + encryptionType + passphraseKey + macAddress
+        let credential = networkIndex + ssid + authenticationType + encryptionType + passphraseKey
         let credentialLength = UInt8(credential.count)
 
         let bytes = [0x10, 0x0E, 0x00, credentialLength] + credential
