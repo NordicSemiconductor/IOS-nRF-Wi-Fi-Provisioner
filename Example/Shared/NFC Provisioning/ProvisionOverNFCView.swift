@@ -19,10 +19,18 @@ struct ProvisionOverNFCView: View {
     @State private var password: String = ""
     @State private var authentication: NFCAuthenticationType = .wpa2Personal
     @State private var encryption: NFCEncryptionType = .aes
+    @FocusState private var focusedField: Field?
     private var session: NFCNDEFReaderSession
     private let delegate: NFCProvisioningSessionDelegate
     
-    // MARK: init
+    // MARK: Field
+    
+    private enum Field: Int, Hashable {
+       case ssid
+       case password
+    }
+    
+    // MARK: Init
     
     init() {
         self.delegate = NFCProvisioningSessionDelegate()
@@ -39,9 +47,14 @@ struct ProvisionOverNFCView: View {
                         .foregroundStyle(Color.textFieldColor)
                     
                     TextField("Access Point Name", text: $ssid)
+                        .focused($focusedField, equals: .ssid)
                         .multilineTextAlignment(.trailing)
                         .frame(maxWidth: .infinity)
                         .foregroundColor(.secondary)
+                        .submitLabel(.next)
+                        .onSubmit {
+                            focusedField = .password
+                        }
                 }
                 
                 HStack {
@@ -51,7 +64,12 @@ struct ProvisionOverNFCView: View {
                     Spacer()
                     
                     SecureField("Type Here", text: $password)
+                        .focused($focusedField, equals: .password)
                         .multilineTextAlignment(.trailing)
+                        .submitLabel(.done)
+                        .onSubmit {
+                            focusedField = nil
+                        }
                 }
                 
                 InlinePicker(title: "Authentication", systemImage: "shield.checkered",
