@@ -36,6 +36,7 @@ struct ProvisionOverNFCView: View {
             Section("Provisioning Configuration") {
                 HStack {
                     Label("SSID", systemImage: "wifi.circle")
+                        .foregroundStyle(Color.textFieldColor)
                     
                     TextField("Access Point Name", text: $ssid)
                         .multilineTextAlignment(.trailing)
@@ -45,6 +46,7 @@ struct ProvisionOverNFCView: View {
                 
                 HStack {
                     Label("Password", systemImage: "key.horizontal")
+                        .foregroundStyle(Color.textFieldColor)
                     
                     Spacer()
                     
@@ -52,9 +54,11 @@ struct ProvisionOverNFCView: View {
                         .multilineTextAlignment(.trailing)
                 }
                 
-                InlinePicker(title: "Authentication", selectedValue: $authentication, possibleValues: NFCAuthenticationType.allCases)
+                InlinePicker(title: "Authentication", systemImage: "shield.checkered",
+                             selectedValue: $authentication)
                 
-                InlinePicker(title: "Encryption", selectedValue: $encryption, possibleValues: NFCEncryptionType.allCases)
+                InlinePicker(title: "Encryption", systemImage: "lock",
+                             selectedValue: $encryption)
             }
             
             Button("Provision NFC Tag") {
