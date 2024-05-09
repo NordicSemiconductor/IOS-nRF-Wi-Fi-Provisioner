@@ -7,6 +7,7 @@
 
 import SwiftUI
 import CoreNFC
+import iOS_Common_Libraries
 
 // MARK: - ProvisionOverNFCView
 
@@ -16,6 +17,8 @@ struct ProvisionOverNFCView: View {
     
     @State private var ssid: String = ""
     @State private var password: String = ""
+    @State private var authentication: NFCAuthenticationType = .wpa2Personal
+    @State private var encryption: NFCEncryptionType = .aes
     private var session: NFCNDEFReaderSession
     private let delegate: NFCSessionDelegate
     
@@ -48,6 +51,10 @@ struct ProvisionOverNFCView: View {
                     SecureField("Type Here", text: $password)
                         .multilineTextAlignment(.trailing)
                 }
+                
+                InlinePicker(title: "Authentication", selectedValue: $authentication, possibleValues: NFCAuthenticationType.allCases)
+                
+                InlinePicker(title: "Encryption", selectedValue: $encryption, possibleValues: NFCEncryptionType.allCases)
             }
             
             Button("Provision NFC Tag") {
@@ -99,12 +106,11 @@ final class NFCSessionDelegate: NSObject, NFCNDEFReaderSessionDelegate {
             return
         }
         
-        guard let ndefMessage = message?.nfcndefMessage() else {
+        guard let tag = tags.first,
+              let ndefMessage = message?.nfcndefMessage() else {
             return
         }
         
-        // Connect to the found tag and write an NDEF message to it.
-        let tag = tags.first!
         session.connect(to: tag, completionHandler: { (error: Error?) in
             if nil != error {
                 session.alertMessage = "Unable to connect to tag."
