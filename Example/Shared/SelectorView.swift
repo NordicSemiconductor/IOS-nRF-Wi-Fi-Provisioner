@@ -55,6 +55,7 @@ struct SelectorView: View {
                 }
                 
                 Text("""
+                This Mode Has the Least Amount of Requirements. It Asks the User To Provide All of the Provisioning Information, Followed by Writing the Data to an nRF700x’s NFC Tag.
                 """)
                 .font(.caption)
             }

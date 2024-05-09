@@ -61,11 +61,16 @@ struct ProvisionOverNFCView: View {
                              selectedValue: $encryption)
             }
             
+            Label("""
+            Successful provisioning via the NFC Tag, does not guarantee correct provisioning, since there is no means to verify the device has connected and joined the provisioned network.
+            """, systemImage: "exclamationmark.triangle")
+                .foregroundStyle(Color.nordicFall)
+            
             Button("Provision NFC Tag") {
                 writeTag()
             }
             .frame(maxWidth: .infinity)
-//            .disabled(ssid.isEmpty)
+            .disabled(ssid.isEmpty)
         }
         .navigationTitle("Provision Over NFC")
     }
@@ -74,7 +79,7 @@ struct ProvisionOverNFCView: View {
     
     private func writeTag() {
         delegate.message = NFCProvisioningMessage(ssid: ssid, passphrase: password, authentication: .wpa2Personal, encryption: .aes)
-        session.alertMessage = "Hold your iPhone near an NDEF tag to write the message."
+        session.alertMessage = "Hold your iPhone near the device's NFC Tag."
         session.begin()
     }
 }
@@ -103,7 +108,7 @@ final class NFCSessionDelegate: NSObject, NFCNDEFReaderSessionDelegate {
         if tags.count > 1 {
             // Restart polling in 500 milliseconds.
             let retryInterval = DispatchTimeInterval.milliseconds(500)
-            session.alertMessage = "More than 1 tag is detected. Please remove all tags and try again."
+            session.alertMessage = "More than 1 NFC Tag is detected. Please remove all tags and try again."
             DispatchQueue.global().asyncAfter(deadline: .now() + retryInterval, execute: {
                 session.restartPolling()
             })
@@ -117,14 +122,14 @@ final class NFCSessionDelegate: NSObject, NFCNDEFReaderSessionDelegate {
         
         session.connect(to: tag, completionHandler: { (error: Error?) in
             if nil != error {
-                session.alertMessage = "Unable to connect to tag."
+                session.alertMessage = "Unable to connect."
                 session.invalidate()
                 return
             }
             
             tag.queryNDEFStatus(completionHandler: { (ndefStatus: NFCNDEFStatus, capacity: Int, error: Error?) in
                 guard error == nil else {
-                    session.alertMessage = "Unable to query the NDEF status of tag."
+                    session.alertMessage = "Unable to query the NFC Tag's status."
                     session.invalidate()
                     return
                 }
@@ -134,19 +139,19 @@ final class NFCSessionDelegate: NSObject, NFCNDEFReaderSessionDelegate {
                     session.alertMessage = "Tag is not NDEF compliant."
                     session.invalidate()
                 case .readOnly:
-                    session.alertMessage = "Tag is read only."
+                    session.alertMessage = "NFC Tag is Read-Only."
                     session.invalidate()
                 case .readWrite:
                     tag.writeNDEF(ndefMessage, completionHandler: { (error: Error?) in
-                        if nil != error {
-                            session.alertMessage = "Write NDEF message fail: \(error!)"
+                        if let error {
+                            session.alertMessage = "Error writing to NFC Tag: \(error)"
                         } else {
-                            session.alertMessage = "Write NDEF message successful."
+                            session.alertMessage = "Successfully Provisioned NFC Tag!"
                         }
                         session.invalidate()
                     })
                 @unknown default:
-                    session.alertMessage = "Unknown NDEF tag status."
+                    session.alertMessage = "Unknown NFC Tag Error."
                     session.invalidate()
                 }
             })
