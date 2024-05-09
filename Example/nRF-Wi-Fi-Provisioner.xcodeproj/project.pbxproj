@@ -98,6 +98,7 @@
 		AAAAE6C62B7F813D000BB569 /* AppViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAAAE6C42B7F813D000BB569 /* AppViewModel.swift */; };
 		AAAE24102BD01336005C5F90 /* PipelineStage.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAAE240F2BD01336005C5F90 /* PipelineStage.swift */; };
 		AAAE24122BD01596005C5F90 /* ProvisioningPipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAAE24112BD01596005C5F90 /* ProvisioningPipeline.swift */; };
+		AAB9CD2C2BECEF4D005C303A /* NFCProvisioningSessionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB9CD2B2BECEF4D005C303A /* NFCProvisioningSessionDelegate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -173,6 +174,7 @@
 		AAAAE6C42B7F813D000BB569 /* AppViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppViewModel.swift; sourceTree = "<group>"; };
 		AAAE240F2BD01336005C5F90 /* PipelineStage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PipelineStage.swift; sourceTree = "<group>"; };
 		AAAE24112BD01596005C5F90 /* ProvisioningPipeline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProvisioningPipeline.swift; sourceTree = "<group>"; };
+		AAB9CD2B2BECEF4D005C303A /* NFCProvisioningSessionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFCProvisioningSessionDelegate.swift; sourceTree = "<group>"; };
 		B0E3B88F586B3A345D3E1221 /* Pods-nRF-Wi-Fi-Provisioner (iOS).debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-nRF-Wi-Fi-Provisioner (iOS).debug.xcconfig"; path = "Target Support Files/Pods-nRF-Wi-Fi-Provisioner (iOS)/Pods-nRF-Wi-Fi-Provisioner (iOS).debug.xcconfig"; sourceTree = "<group>"; };
 		DDE5F19186647A484BC6DD82 /* Pods_nRF_Wi_Fi_Provisioner__iOS_.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_nRF_Wi_Fi_Provisioner__iOS_.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -447,6 +449,7 @@
 				AA4C20FA2BEBA93B00B67741 /* NFCAuthenticationType.swift */,
 				AA4C20FC2BEBA95700B67741 /* NFCEncryptionType.swift */,
 				AA4C20FE2BEBA9B000B67741 /* NFCProvisioningMessage.swift */,
+				AAB9CD2B2BECEF4D005C303A /* NFCProvisioningSessionDelegate.swift */,
 				AA4C20F82BEB834400B67741 /* ProvisionOverNFCView.swift */,
 			);
 			path = "NFC Provisioning";
@@ -669,6 +672,7 @@
 				01922CBD28A2713100492E87 /* NavigationView.swift in Sources */,
 				01C0F0FA287DE864008BBE46 /* ScannerViewModel.swift in Sources */,
 				01062ADA28B6592700BB41FD /* View+Mod.swift in Sources */,
+				AAB9CD2C2BECEF4D005C303A /* NFCProvisioningSessionDelegate.swift in Sources */,
 				01A43DEB2886FECB0025A5C4 /* DeviceView.swift in Sources */,
 				015D60A32875A1530048F065 /* ScannerView.swift in Sources */,
 				019D1D342912C201000D8BD4 /* MACAddress+Ext.swift in Sources */,

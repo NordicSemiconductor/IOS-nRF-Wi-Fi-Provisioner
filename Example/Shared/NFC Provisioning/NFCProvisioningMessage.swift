@@ -30,6 +30,9 @@ struct NFCProvisioningMessage {
     
     // MARK: API
     
+    /**
+     Attribution: https://stackoverflow.com/a/57975489
+     */
     func nfcndefMessage() -> NFCNDEFMessage {
         let type = "application/vnd.wfa.wsc".data(using: .utf8)!
         let ssidBytes: [UInt8] = Array(ssid.utf8)
