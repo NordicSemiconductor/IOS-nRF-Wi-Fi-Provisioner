@@ -82,7 +82,7 @@ struct ProvisionOverNFCView: View {
             Label("""
             Successful provisioning via the NFC Tag, does not guarantee correct provisioning, since there is no means to verify the device has connected and joined the provisioned network.
             """, systemImage: "exclamationmark.triangle")
-                .foregroundStyle(Color.nordicFall)
+            .labeledContentStyle(.accented)
             
             Button("Provision NFC Tag") {
                 writeTag()
