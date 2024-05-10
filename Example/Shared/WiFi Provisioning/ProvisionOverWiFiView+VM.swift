@@ -67,7 +67,7 @@ extension ProvisionOverWiFiView.ViewModel {
     // MARK: pipelineStart
     
     func pipelineStart(applying configuration: NEHotspotConfiguration?) async throws {
-        let startStages = pipelineManager.stagesBefore(.provision)
+        let startStages = pipelineManager.stagesBefore(.provision) .provision })
         let browser = BonjourBrowser()
         do {
             for stage in startStages {

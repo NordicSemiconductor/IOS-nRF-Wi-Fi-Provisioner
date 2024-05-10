@@ -73,8 +73,10 @@ public extension PipelineManager {
         return stages.prefix(while: { $0 != stage })
     }
     
-    func stagesAfter(_ stage: Stage) -> Array<Stage>.SubSequence {
-        let limitIndex: Int! = stages.firstIndex(of: stage)
+    func stagesFrom(_ stage: Stage) -> Array<Stage>.SubSequence {
+        guard let limitIndex = stages.firstIndex(of: stage) else {
+            return []
+        }
         return stages.suffix(from: limitIndex)
     }
     
