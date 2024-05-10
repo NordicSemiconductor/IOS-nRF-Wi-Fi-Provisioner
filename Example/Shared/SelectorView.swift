@@ -46,7 +46,6 @@ struct SelectorView: View {
                 .font(.caption)
             }
             
-            #if DEBUG
             Section {
                 NavigationLink {
                     ProvisionOverNFCView()
@@ -59,7 +58,6 @@ struct SelectorView: View {
                 """)
                 .font(.caption)
             }
-            #endif
             
             Section("About") {
                 Text("""
