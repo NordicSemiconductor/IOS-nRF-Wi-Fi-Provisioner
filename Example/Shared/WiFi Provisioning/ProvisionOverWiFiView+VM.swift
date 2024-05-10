@@ -26,7 +26,7 @@ extension ProvisionOverWiFiView {
             let manager = ProvisionManager(certificateURL: res)
             return manager
         }()
-        var ipAddress: String?
+        var ipAddress: String!
         
         @Published private (set) var scans: [APWiFiScan] = []
         @Published var selectedScan: APWiFiScan?
@@ -43,41 +43,56 @@ extension ProvisionOverWiFiView {
 
 extension ProvisionOverWiFiView.ViewModel {
     
-    func pipelineStart(applying configuration: NEHotspotConfiguration?) async throws {
-        resetPipeline()
+    func setupPipeline(switchingToDevice switchToDevice: Bool, andVerification verify: Bool) {
+        cancellables.removeAll()
         
+        var stages = ProvisioningStage.allCases
+        if !switchToDevice {
+            stages.removeAll(where: { $0 == .connected })
+        }
+        if !verify {
+            stages.removeAll(where: { $0 == .switchBack || $0 == .verification })
+        }
+        pipelineManager = PipelineManager(initialStages: stages)
+        manager.delegate = self
+        
+        // Setup pass-through of objectWillChange for pipeline changes
+        pipelineManager.$stages.sink { [weak self] _ in
+            self?.objectWillChange.send()
+        }.store(in: &cancellables)
+    }
+    
+    func pipelineStart(applying configuration: NEHotspotConfiguration?) async throws {
+        let startStages = pipelineManager.stages.prefix(while: { $0 != .provisioning })
+        let browser = BonjourBrowser()
         do {
-            pipelineManager.inProgress(.connected)
-            if let configuration {
-                var networkManager = NEManager()
-                networkManager.delegate = self
-                try await networkManager.apply(configuration)
-            } else {
-                log("No Configuration to apply.", level: .debug)
-                log("Assumption: we're already connected to Device.", level: .info)
-                pipelineManager.completed(.connected)
+            for stage in startStages {
+                pipelineManager.inProgress(stage)
+                switch stage {
+                case .connected:
+                    guard let configuration else { continue }
+                    var networkManager = NEManager()
+                    networkManager.delegate = self
+                    try await networkManager.apply(configuration)
+                case .browsed:
+                    browser.delegate = self
+                    // Attempt to resolve IP Address here.
+                    // If we do it later, it's more likely to fail.
+                    let txtRecord = try await browser.findBonjourService(.wifiProv, preResolvingIPAddress: true)
+                    try verifyTXTRecord(txtRecord)
+                case .resolved:
+                    log("Awaiting for Resolve...", level: .debug)
+                    // Get cached IP Resolution. If not cached, attempt to resolve again.
+                    let resolvedIPAddress = try await browser.resolveIPAddress(for: .wifiProv)
+                    self.ipAddress = resolvedIPAddress
+                    log("I've got the address! \(resolvedIPAddress)", level: .debug)
+                case .scanned:
+                    log("Requesting Wi-Fi Scans list...", level: .info)
+                    scans = try await manager.getScans(ipAddress: ipAddress)
+                default:
+                    break
+                }
             }
-            
-            pipelineManager.inProgress(.browsed)
-            let browser = BonjourBrowser()
-            browser.delegate = self
-            // Attempt to resolve IP Address here.
-            // If we do it later, it's more likely to fail.
-            let txtRecord = try await browser.findBonjourService(.wifiProv, preResolvingIPAddress: true)
-            try verifyTXTRecord(txtRecord)
-            
-            pipelineManager.inProgress(.resolved)
-            log("Awaiting for Resolve...", level: .debug)
-            // Get cached IP Resolution. If not cached, attempt to resolve again.
-            let resolvedIPAddress = try await browser.resolveIPAddress(for: .wifiProv)
-            self.ipAddress = resolvedIPAddress
-            log("I've got the address! \(resolvedIPAddress)", level: .debug)
-            
-            pipelineManager.inProgress(.scanned)
-            log("Requesting Wi-Fi Scans list...", level: .info)
-            scans = try await manager.getScans(ipAddress: resolvedIPAddress)
-            
-            pipelineManager.inProgress(.provisioningInfo)
         } catch {
             pipelineManager.onError(error)
             log(error.localizedDescription, level: .error)
@@ -146,18 +161,6 @@ extension ProvisionOverWiFiView.ViewModel {
             throw TXTError.macAddressNotFound
         }
         log("SoftAP MAC Address is \(macAddress)", level: .debug)
-    }
-    
-    private func resetPipeline() {
-        cancellables.removeAll()
-        
-        pipelineManager = PipelineManager(initialStages: ProvisioningStage.allCases)
-        manager.delegate = self
-        
-        // Setup pass-through of objectWillChange for pipeline changes
-        pipelineManager.$stages.sink { [weak self] _ in
-            self?.objectWillChange.send()
-        }.store(in: &cancellables)
     }
 }
 

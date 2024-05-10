@@ -100,6 +100,8 @@ struct ProvisionOverWiFiView: View {
             showAlert = false
             viewStatus = .showingStages
             do {
+                viewModel.setupPipeline(switchingToDevice: switchToAccessPoint,
+                                        andVerification: verify)
                 let configuration = NEHotspotConfiguration(ssid: name)
                 try await viewModel.pipelineStart(applying: configuration)
                 viewStatus = .awaitingUserInput
