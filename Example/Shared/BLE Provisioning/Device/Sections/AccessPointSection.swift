@@ -47,6 +47,7 @@ struct AccessPointSection: View {
                     
                     SecureField("Type Here", text: $password)
                         .multilineTextAlignment(.trailing)
+                        .submitLabel(.done)
                 }
             }
             

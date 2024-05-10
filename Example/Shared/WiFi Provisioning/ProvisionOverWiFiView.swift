@@ -83,6 +83,7 @@ struct ProvisionOverWiFiView: View {
                 }
             }
         }
+        .background(Color.formBackground)
         .navigationTitle("Provision over Wi-Fi")
         .alert(isPresented: $showAlert, error: alertError) {
             Button("OK", role: .cancel) { 
@@ -139,6 +140,7 @@ struct ProvisionOverWiFiView: View {
                 showAlert = true
             }
         }
+        .frame(maxWidth: .infinity)
         .disabled(viewModel.selectedScan == nil)
         .accessibilityIdentifier("prov_button")
     }

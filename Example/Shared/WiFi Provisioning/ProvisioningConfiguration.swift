@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import iOS_Common_Libraries
 
 // MARK: - ProvisioningConfiguration
 
@@ -68,5 +69,6 @@ struct ProvisioningConfiguration: View {
         Spacer()
         
         Button("Start", action: onStart)
+            .buttonStyle(.borderedProminent)
     }
 }
