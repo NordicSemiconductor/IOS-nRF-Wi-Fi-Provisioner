@@ -24,11 +24,11 @@ struct SelectorView: View {
                     ScannerView(viewModel: ScannerViewModel())
                         .environmentObject(vmFactory)
                 } label: {
-                    Label("Provision Over BLE", image: "bluetooth")
+                    Label("Provision over BLE", image: "bluetooth")
                 }
                 
                 Text("""
-                This Mode Allows for Constant Communication With the Provisioning Device Since It Keeps Our Wi-Fi Usage Exclusive to the Provisioning Process.
+                This mode uses secure Bluetooth LE link to transfer Wi-Fi credentials to the provisionee and verify provisioning status.
                 """)
                 .font(.caption)
             }
@@ -37,11 +37,11 @@ struct SelectorView: View {
                 NavigationLink {
                     ProvisionOverWiFiView()
                 } label: {
-                    Label("Provision Over Wi-Fi", systemImage: "wifi")
+                    Label("Provision over Wi-Fi", systemImage: "wifi")
                 }
                 
                 Text("""
-                This Mode Requires Your iPhone To Switch to the Same Wi-Fi Network As the Device We Want to Provision, Communicate With It, and Then Wait for It To Connect to the Network We’d Like to Provision It To.
+                This mode uses a temporary Wi-Fi network (Soft AP) created by the provisionee to send Wi-Fi credentials. Communication is encrypted using TLS.
                 """)
                 .font(.caption)
             }
@@ -50,18 +50,18 @@ struct SelectorView: View {
                 NavigationLink {
                     ProvisionOverNFCView()
                 } label: {
-                    Label("Provision Over NFC", systemImage: "tag.fill")
+                    Label("Provision over NFC", systemImage: "tag.fill")
                 }
                 
                 Text("""
-                This Mode Has the Least Amount of Requirements. It Asks the User To Provide All of the Provisioning Information, Followed by Writing the Data to an nRF700x’s NFC Tag.
+                This mode sends SSID and network credentials over NFC (Near Field Communication). It does not give any feedback on whether the device successfully connected to the desired network.
                 """)
                 .font(.caption)
             }
             
             Section("About") {
                 Text("""
-                nRF Wi-Fi Provisioner Is Designed To Work With nRF700x DKs, or nRF700x-Powered Devices That Are Running Firmware Capable of Being Provisioned. This App, via a Provisioning Process, Configures nRF700x With the Necessary Credentials To Access the Internet Though the Wireless Network Interface of Your Choice.
+                nRF Wi-Fi Provisioner is designed to work with nRF700x DKs, or nRF700x-powered devices that are running firmware capable of being provisioned. This app, via provisioning process, configures nRF700x with the necessary credentials to access the internet though the wireless network interface of your choice.
                 """)
                 .font(.footnote)
             }
