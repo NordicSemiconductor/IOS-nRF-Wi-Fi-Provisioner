@@ -43,6 +43,8 @@ extension ProvisionOverWiFiView {
 
 extension ProvisionOverWiFiView.ViewModel {
     
+    // MARK: setup
+    
     func setupPipeline(switchingToDevice switchToDevice: Bool, andVerification verify: Bool) {
         cancellables.removeAll()
         
@@ -61,6 +63,8 @@ extension ProvisionOverWiFiView.ViewModel {
             self?.objectWillChange.send()
         }.store(in: &cancellables)
     }
+    
+    // MARK: pipelineStart
     
     func pipelineStart(applying configuration: NEHotspotConfiguration?) async throws {
         let startStages = pipelineManager.stages.prefix(while: { $0 != .provisioning })
@@ -100,41 +104,46 @@ extension ProvisionOverWiFiView.ViewModel {
         }
     }
     
+    // MARK: provision
+    
     func provision(ipAddress: String, withVerification verify: Bool) async throws {
+        guard let selectedScan else {
+            throw TitleMessageError(message: "SSID is not selected")
+        }
+        let provisioningIndex: Int! = pipelineManager.stages.firstIndex(of: .provisioning)
+        let provisioningStages = pipelineManager.stages.suffix(from: provisioningIndex)
         do {
-            guard let selectedScan else {
-                throw TitleMessageError(message: "SSID is not selected")
+            for stage in provisioningStages {
+                pipelineManager.inProgress(stage)
+                switch stage {
+                case .provisioning:
+                    try await manager.provision(ipAddress: ipAddress, to: selectedScan, with: ssidPassword)
+                case .switchBack:
+                    log("Verification Enabled", level: .debug)
+                    pipelineManager.inProgress(.switchBack)
+                    log("Switching to \(selectedScan.ssid)...", level: .info)
+                    // Ask the user to switch to the Provisioned Network.
+                    var manager = NEManager()
+                    manager.delegate = self
+                    let configuration = NEHotspotConfiguration(ssid: selectedScan.ssid, passphrase: ssidPassword, isWEP: selectedScan.authentication == .wep)
+                    try await manager.apply(configuration)
+                case .verification:
+                    pipelineManager.inProgress(.verification)
+                    log("Awaiting Network Change...", level: .info)
+                    
+                    // Wait a couple of seconds for the firmware to make the connection switch.
+                    try? await Task.sleepFor(seconds: 2)
+                    
+                    log("Searching for Provisioned Device in Network...", level: .info)
+                    let browser = BonjourBrowser()
+                    browser.delegate = self
+                    let txtRecord = try await browser.findBonjourService(.wifiProv)
+                    try verifyTXTRecord(txtRecord)
+                default:
+                    break
+                }
+                pipelineManager.completed(stage)
             }
-            pipelineManager.inProgress(.provisioning)
-            try await manager.provision(ipAddress: ipAddress, to: selectedScan, with: ssidPassword)
-            pipelineManager.completed(.provisioning)
-            
-            if verify {
-                log("Verification Enabled", level: .debug)
-                pipelineManager.inProgress(.switchBack)
-                log("Switching to \(selectedScan.ssid)...", level: .info)
-                // Ask the user to switch to the Provisioned Network.
-                var manager = NEManager()
-                manager.delegate = self
-                let configuration = NEHotspotConfiguration(ssid: selectedScan.ssid, passphrase: ssidPassword, isWEP: selectedScan.authentication == .wep)
-                try await manager.apply(configuration)
-                
-                pipelineManager.inProgress(.verification)
-                log("Awaiting Network Change...", level: .info)
-                
-                // Wait a couple of seconds for the firmware to make the connection switch.
-                try? await Task.sleepFor(seconds: 2)
-                
-                log("Searching for Provisioned Device in Network...", level: .info)
-                let browser = BonjourBrowser()
-                browser.delegate = self
-                let txtRecord = try await browser.findBonjourService(.wifiProv)
-                try verifyTXTRecord(txtRecord)
-            } else {
-                log("No Verification Necessary as deemed by user", level: .info)
-                pipelineManager.completed(.switchBack)
-            }
-            pipelineManager.completed(.verification)
         } catch {
             pipelineManager.onError(error)
             log(error.localizedDescription, level: .error)
