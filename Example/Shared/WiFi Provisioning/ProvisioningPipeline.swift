@@ -41,19 +41,19 @@ extension ProvisioningStage: CaseIterable {
     
     // MARK: Cases
     
-    static let connected = ProvisioningStage(symbolName: "cpu", todoStatus: "Connect to Device", inProgressStatus: "Switching to Device...", completedStatus: "Connected to DK")
-    static let browsed = ProvisioningStage(symbolName: "phone.arrow.up.right.fill", todoStatus: "Find Provisioning Service", inProgressStatus: "Browsing mDNS Services...", completedStatus: "Find Provisioning Service")
-    static let resolved = ProvisioningStage(symbolName: "phone.arrow.down.left.fill", todoStatus: "Resolve IP Address", inProgressStatus: "Attempting To Resolve IP Address...", completedStatus: "Resolved IP Address")
-    static let scanned = ProvisioningStage(symbolName: "waveform.badge.magnifyingglass", todoStatus: "Scan For Available Networks", inProgressStatus: "Scanning For Networks...", completedStatus: "Scanned Available Networks")
+    static let connect = ProvisioningStage(symbolName: "cpu", todoStatus: "Connect to Device", inProgressStatus: "Switching to Device...", completedStatus: "Connected to DK")
+    static let browse = ProvisioningStage(symbolName: "phone.arrow.up.right.fill", todoStatus: "Find Provisioning Service", inProgressStatus: "Browsing mDNS Services...", completedStatus: "Find Provisioning Service")
+    static let resolve = ProvisioningStage(symbolName: "phone.arrow.down.left.fill", todoStatus: "Resolve IP Address", inProgressStatus: "Attempting To Resolve IP Address...", completedStatus: "Resolved IP Address")
+    static let scan = ProvisioningStage(symbolName: "waveform.badge.magnifyingglass", todoStatus: "Scan For Available Networks", inProgressStatus: "Scanning For Networks...", completedStatus: "Scanned Available Networks")
     static let provisioningInfo = ProvisioningStage(symbolName: "hand.point.up.left.and.text.fill", todoStatus: "Await For Provisioning Information", inProgressStatus: "Waiting For Provisioning Information...", completedStatus: "User Has Provided Provisioning Information")
-    static let provisioning = ProvisioningStage(symbolName: "keyboard.badge.ellipsis", todoStatus: "Provision Device", inProgressStatus: "Provisioning Device...", completedStatus: "Device Provisioned")
+    static let provision = ProvisioningStage(symbolName: "keyboard.badge.ellipsis", todoStatus: "Provision Device", inProgressStatus: "Provisioning Device...", completedStatus: "Device Provisioned")
     static let switchBack = ProvisioningStage(symbolName: "network", todoStatus: "Connect to Access Point", inProgressStatus: "Switching to AP...", completedStatus: "Connected to AP")
-    static let verification = ProvisioningStage(symbolName: "flag.checkered", todoStatus: "Verify", inProgressStatus: "Verifying...", completedStatus: "Successfully Provisioned")
+    static let verify = ProvisioningStage(symbolName: "flag.checkered", todoStatus: "Verify", inProgressStatus: "Verifying...", completedStatus: "Successfully Provisioned")
     
     // MARK: allCases
     
     static var allCases: [ProvisioningStage] = [
-        .connected, .browsed, .resolved, .scanned, .provisioningInfo, .provisioning,
-        .switchBack, .verification
+        .connect, .browse, .resolve, .scan, .provisioningInfo, .provision,
+        .switchBack, .verify
     ]
 }

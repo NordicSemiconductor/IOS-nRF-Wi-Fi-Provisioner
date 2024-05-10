@@ -50,10 +50,10 @@ extension ProvisionOverWiFiView.ViewModel {
         
         var stages = ProvisioningStage.allCases
         if !switchToDevice {
-            stages.removeAll(where: { $0 == .connected })
+            stages.removeAll(where: { $0 == .connect })
         }
         if !verify {
-            stages.removeAll(where: { $0 == .switchBack || $0 == .verification })
+            stages.removeAll(where: { $0 == .switchBack || $0 == .verify })
         }
         pipelineManager = PipelineManager(initialStages: stages)
         manager.delegate = self
@@ -67,30 +67,30 @@ extension ProvisionOverWiFiView.ViewModel {
     // MARK: pipelineStart
     
     func pipelineStart(applying configuration: NEHotspotConfiguration?) async throws {
-        let startStages = pipelineManager.stages.prefix(while: { $0 != .provisioning })
+        let startStages = pipelineManager.stagesBefore(.provision)
         let browser = BonjourBrowser()
         do {
             for stage in startStages {
                 pipelineManager.inProgress(stage)
                 switch stage {
-                case .connected:
+                case .connect:
                     guard let configuration else { continue }
                     var networkManager = NEManager()
                     networkManager.delegate = self
                     try await networkManager.apply(configuration)
-                case .browsed:
+                case .browse:
                     browser.delegate = self
                     // Attempt to resolve IP Address here.
                     // If we do it later, it's more likely to fail.
                     let txtRecord = try await browser.findBonjourService(.wifiProv, preResolvingIPAddress: true)
                     try verifyTXTRecord(txtRecord)
-                case .resolved:
+                case .resolve:
                     log("Awaiting for Resolve...", level: .debug)
                     // Get cached IP Resolution. If not cached, attempt to resolve again.
                     let resolvedIPAddress = try await browser.resolveIPAddress(for: .wifiProv)
                     self.ipAddress = resolvedIPAddress
                     log("I've got the address! \(resolvedIPAddress)", level: .debug)
-                case .scanned:
+                case .scan:
                     log("Requesting Wi-Fi Scans list...", level: .info)
                     scans = try await manager.getScans(ipAddress: ipAddress)
                 default:
@@ -110,25 +110,22 @@ extension ProvisionOverWiFiView.ViewModel {
         guard let selectedScan else {
             throw TitleMessageError(message: "SSID is not selected")
         }
-        let provisioningIndex: Int! = pipelineManager.stages.firstIndex(of: .provisioning)
-        let provisioningStages = pipelineManager.stages.suffix(from: provisioningIndex)
+        let provisioningStages = pipelineManager.stagesAfter(.provisioningInfo)
         do {
             for stage in provisioningStages {
                 pipelineManager.inProgress(stage)
                 switch stage {
-                case .provisioning:
+                case .provision:
                     try await manager.provision(ipAddress: ipAddress, to: selectedScan, with: ssidPassword)
                 case .switchBack:
                     log("Verification Enabled", level: .debug)
-                    pipelineManager.inProgress(.switchBack)
                     log("Switching to \(selectedScan.ssid)...", level: .info)
                     // Ask the user to switch to the Provisioned Network.
                     var manager = NEManager()
                     manager.delegate = self
                     let configuration = NEHotspotConfiguration(ssid: selectedScan.ssid, passphrase: ssidPassword, isWEP: selectedScan.authentication == .wep)
                     try await manager.apply(configuration)
-                case .verification:
-                    pipelineManager.inProgress(.verification)
+                case .verify:
                     log("Awaiting Network Change...", level: .info)
                     
                     // Wait a couple of seconds for the firmware to make the connection switch.

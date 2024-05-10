@@ -67,7 +67,16 @@ protocol PipelineManagerDelegate: AnyObject {
 
 // MARK: - Public API
 
-internal extension PipelineManager {
+public extension PipelineManager {
+    
+    func stagesBefore(_ stage: Stage) -> Array<Stage>.SubSequence {
+        return stages.prefix(while: { $0 != stage })
+    }
+    
+    func stagesAfter(_ stage: Stage) -> Array<Stage>.SubSequence {
+        let limitIndex: Int! = stages.firstIndex(of: stage)
+        return stages.suffix(from: limitIndex)
+    }
     
     func inProgress(_ stage: Stage, speed: Double? = nil) {
         guard let index = stages.firstIndex(where: { $0.id == stage.id }) else { return }
