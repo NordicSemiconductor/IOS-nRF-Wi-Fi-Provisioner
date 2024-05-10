@@ -67,7 +67,7 @@ extension ProvisionOverWiFiView.ViewModel {
     // MARK: pipelineStart
     
     func pipelineStart(applying configuration: NEHotspotConfiguration?) async throws {
-        let startStages = pipelineManager.stagesBefore(.provision) .provision })
+        let startStages = pipelineManager.stagesBefore(.provision)
         let browser = BonjourBrowser()
         do {
             for stage in startStages {
@@ -110,7 +110,7 @@ extension ProvisionOverWiFiView.ViewModel {
         guard let selectedScan else {
             throw TitleMessageError(message: "SSID is not selected")
         }
-        let provisioningStages = pipelineManager.stagesAfter(.provisioningInfo)
+        let provisioningStages = pipelineManager.stagesFrom(.provision)
         do {
             for stage in provisioningStages {
                 pipelineManager.inProgress(stage)
