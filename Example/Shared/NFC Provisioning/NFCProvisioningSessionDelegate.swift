@@ -48,13 +48,13 @@ final class NFCProvisioningSessionDelegate: NSObject, NFCNDEFReaderSessionDelega
         
         session.connect(to: tag, completionHandler: { [weak self] (error: Error?) in
             if let error {
-                self?.onError(session, errorDescription: "Unable to Connect: \(error.localizedDescription)")
+                self?.onError(session, errorDescription: "Unable to connect: \(error.localizedDescription)")
                 return
             }
             
             tag.queryNDEFStatus(completionHandler: { (ndefStatus: NFCNDEFStatus, capacity: Int, error: Error?) in
                 guard error == nil else {
-                    self?.onError(session, errorDescription: "Unable to query the NFC Tag's status.")
+                    self?.onError(session, errorDescription: "Unable to query the NFC tag's status.")
                     return
                 }
 
@@ -62,17 +62,17 @@ final class NFCProvisioningSessionDelegate: NSObject, NFCNDEFReaderSessionDelega
                 case .notSupported:
                     self?.onError(session, errorDescription: "Tag is not NDEF compliant.")
                 case .readOnly:
-                    self?.onError(session, errorDescription: "NFC Tag is Read-Only.")
+                    self?.onError(session, errorDescription: "NFC tag is read-only.")
                 case .readWrite:
                     tag.writeNDEF(ndefMessage, completionHandler: { (error: Error?) in
                         if let error {
                             self?.onError(session, errorDescription: "Error writing to NFC Tag: \(error)")
                         } else {
-                            self?.onError(session, errorDescription: "Successfully Provisioned NFC Tag!")
+                            self?.onError(session, errorDescription: "Successfully provisioned NFC tag!")
                         }
                     })
                 @unknown default:
-                    self?.onError(session, errorDescription: "Unknown NFC Tag Error.")
+                    self?.onError(session, errorDescription: "Unknown NFC tag error.")
                 }
             })
         })

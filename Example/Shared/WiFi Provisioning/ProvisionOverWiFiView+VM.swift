@@ -85,13 +85,13 @@ extension ProvisionOverWiFiView.ViewModel {
                     let txtRecord = try await browser.findBonjourService(.wifiProv, preResolvingIPAddress: true)
                     try verifyTXTRecord(txtRecord)
                 case .resolve:
-                    log("Awaiting for Resolve...", level: .debug)
+                    log("Awaiting for resolve...", level: .debug)
                     // Get cached IP Resolution. If not cached, attempt to resolve again.
                     let resolvedIPAddress = try await browser.resolveIPAddress(for: .wifiProv)
                     self.ipAddress = resolvedIPAddress
                     log("I've got the address! \(resolvedIPAddress)", level: .debug)
                 case .scan:
-                    log("Requesting Wi-Fi Scans list...", level: .info)
+                    log("Requesting Wi-Fi scans list...", level: .info)
                     scans = try await manager.getScans(ipAddress: ipAddress)
                 default:
                     break
@@ -118,7 +118,7 @@ extension ProvisionOverWiFiView.ViewModel {
                 case .provision:
                     try await manager.provision(ipAddress: ipAddress, to: selectedScan, with: ssidPassword)
                 case .switchBack:
-                    log("Verification Enabled", level: .debug)
+                    log("Verification enabled", level: .debug)
                     log("Switching to \(selectedScan.ssid)...", level: .info)
                     // Ask the user to switch to the Provisioned Network.
                     var manager = NEManager()
@@ -126,12 +126,12 @@ extension ProvisionOverWiFiView.ViewModel {
                     let configuration = NEHotspotConfiguration(ssid: selectedScan.ssid, passphrase: ssidPassword, isWEP: selectedScan.authentication == .wep)
                     try await manager.apply(configuration)
                 case .verify:
-                    log("Awaiting Network Change...", level: .info)
+                    log("Awaiting network change...", level: .info)
                     
                     // Wait a couple of seconds for the firmware to make the connection switch.
                     try? await Task.sleepFor(seconds: 2)
                     
-                    log("Searching for Provisioned Device in Network...", level: .info)
+                    log("Searching for provisioned device in network...", level: .info)
                     let browser = BonjourBrowser()
                     browser.delegate = self
                     let txtRecord = try await browser.findBonjourService(.wifiProv)
@@ -154,15 +154,15 @@ extension ProvisionOverWiFiView.ViewModel {
         guard let record else {
             throw TXTError.txtRecordNotFound
         }
-        log("TXT Record Found", level: .info)
+        log("TXT record found", level: .info)
         guard let apiVersion = record.getEntry(for: "protovers") else {
             throw TXTError.apiVersionNotFound
         }
-        log("SoftAP API Version is \(apiVersion)", level: .debug)
+        log("SoftAP API version is \(apiVersion)", level: .debug)
         guard let txtRecordVersion = record.getEntry(for: "txtvers") else {
             throw TXTError.txtVersionNotFound
         }
-        log("SoftAP TXT Record Version is \(txtRecordVersion)", level: .debug)
+        log("SoftAP TXT record version is \(txtRecordVersion)", level: .debug)
         guard let macAddress = record.getEntry(for: "linkaddr") else {
             throw TXTError.macAddressNotFound
         }
@@ -189,13 +189,13 @@ enum TXTError: Error, LocalizedError {
     public var localizedDescription: String {
         switch self {
         case .txtRecordNotFound:
-            "No TXT Record Found."
+            "No TXT record found."
         case .apiVersionNotFound:
-            "SoftAP API Version Not Found in TXT Record."
+            "SoftAP API Version not found in TXT Record."
         case .txtVersionNotFound:
-            "TXT Record Version Not Found in TXT Record."
+            "TXT Record Version not found in TXT Record."
         case .macAddressNotFound:
-            "MAC (Link) Address Not Found in TXT Record."
+            "MAC (Link) Address not found in TXT Record."
         }
     }
 }
