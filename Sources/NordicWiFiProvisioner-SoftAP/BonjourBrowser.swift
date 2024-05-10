@@ -79,8 +79,13 @@ final public class BonjourBrowser {
             browser?.browseResultsChangedHandler = { [delegate] results, changes in
                 delegate?.log("Found \(results.count) results.", level: .debug)
                 for result in results {
-                    if case .service(let browserService) = result.endpoint, browserService.name == service.name {
-                        let netService = NetService(domain: browserService.domain, type: browserService.type, name: browserService.name)
+                    switch result.endpoint {
+                    case .service(let name, let type, let domain, _):
+                        guard name == service.name else {
+                            delegate?.log("Found \(name) Service. Skipping.", level: .debug)
+                            continue
+                        }
+                        let netService = NetService(domain: domain, type: type, name: name)
                         if resolveIPAddress {
                             BonjourResolver.resolve(service: netService) { [weak self] result in
                                 switch result {
@@ -102,6 +107,8 @@ final public class BonjourBrowser {
                             delegate?.log("No TXT Record found", level: .info)
                             continuation.resume(returning: nil)
                         }
+                    default:
+                        continue
                     }
                 }
             }
