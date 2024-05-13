@@ -20,7 +20,6 @@ struct IntroView: View {
     @StateObject var viewModel = IntroViewModel()
     
     @Binding var show: Bool
-    @Binding var dontShowAgain: Bool
     
     // MARK: View
     
@@ -57,16 +56,12 @@ struct IntroView: View {
                     Label("[nRF700x-powered device](https://nordicsemi.no)", systemImage: "target")
                     
                     Label("Corresponding provisioning application running on device (each provisioning method requires a specific firmware)", systemImage: "target")
+                    
+                    Label("Make sure the device is powered ON, in range and correct firmware is flashed.", systemImage: "exclamationmark.triangle")
+                    .labeledContentStyle(.accented)
                 }
                 .bold()
                 .listRowSeparator(.hidden)
-                
-                
-//            Text("Make sure the device is powered ON, in range and correct firmware is flashed.")
-                
-                HStack {
-                    Toggle("Don't show again", isOn: $dontShowAgain)
-                }
                 
                 Button("START_PROVISIONING_BTN") {
                     show = false
@@ -74,6 +69,7 @@ struct IntroView: View {
                 .buttonStyle(.borderedProminent)
                 .frame(maxWidth: .infinity)
                 .padding(.bottom)
+                .listRowBackground(Color.clear)
                 .listRowSeparator(.hidden)
                 .accessibilityIdentifier("start_provisioning_btn")
             }

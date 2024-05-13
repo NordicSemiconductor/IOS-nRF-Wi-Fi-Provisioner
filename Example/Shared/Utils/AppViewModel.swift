@@ -10,7 +10,7 @@ import SwiftUI
 
 final class AppViewModel: ObservableObject {
     
-    @AppStorage("dontShowAgain") var dontShowAgain: Bool = false
+    @AppStorage("dontShowAgain") var dontShowAgain: Bool = true
     /**
      Show start info on first launch
      */

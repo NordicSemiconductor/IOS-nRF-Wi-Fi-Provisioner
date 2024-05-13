@@ -7,18 +7,22 @@
 
 import SwiftUI
 import NordicWiFiProvisioner_BLE
-import NordicWiFiProvisioner_SoftAP
-import Network
 
 @main
 struct nRF_Wi_Fi_ProvisionerApp: App {
     
+    // MARK: Private Properties
+    
     @StateObject private var viewModel = AppViewModel()
     @StateObject private var vmFactory = DeviceViewModelFactory()
+    
+    // MARK: Init
     
     init() {
         MockManager.emulateDevices()
     }
+    
+    // MARK: View
     
     var body: some Scene {
         WindowGroup {
@@ -33,8 +37,7 @@ struct nRF_Wi_Fi_ProvisionerApp: App {
                     }
             }
             .sheet(isPresented: $viewModel.showStartInfo) {
-                IntroView(show: $viewModel.showStartInfo,
-                          dontShowAgain: $viewModel.dontShowAgain)
+                IntroView(show: $viewModel.showStartInfo)
             }
         }
     }
