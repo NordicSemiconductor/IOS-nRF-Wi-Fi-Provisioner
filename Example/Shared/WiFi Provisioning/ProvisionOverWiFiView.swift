@@ -67,19 +67,24 @@ struct ProvisionOverWiFiView: View {
                     }
                     
                     if viewModel.pipelineManager.success {
-                        Button("Success!") {
+                        Button {
                             presentationMode.wrappedValue.dismiss()
+                        } label: {
+                            Text("Success!")
+                                .frame(maxWidth: .infinity)
                         }
-                        .frame(maxWidth: .infinity)
                         .buttonStyle(.borderedProminent)
                         
-                        Button("Clear") {
+                        Button {
                             viewStatus = .setup
+                        } label: {
+                            Text("Clear")
+                                .frame(maxWidth: .infinity)
                         }
-                        .frame(maxWidth: .infinity)
                         .buttonStyle(.bordered)
                     }
                 }
+                .padding()
             case .awaitingUserInput:
                 List(selection: $viewModel.selectedScan) {
                     ssidSection()
