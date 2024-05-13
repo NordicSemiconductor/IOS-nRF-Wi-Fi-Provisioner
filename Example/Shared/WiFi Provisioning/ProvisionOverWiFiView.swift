@@ -18,6 +18,8 @@ struct ProvisionOverWiFiView: View {
     
     // MARK: Properties
     
+    @Environment(\.presentationMode) var presentationMode
+    
     @StateObject var viewModel = ViewModel()
     
     @State private var alertError: TitleMessageError? = nil
@@ -65,10 +67,17 @@ struct ProvisionOverWiFiView: View {
                     }
                     
                     if viewModel.pipelineManager.success {
+                        Button("Success!") {
+                            presentationMode.wrappedValue.dismiss()
+                        }
+                        .frame(maxWidth: .infinity)
+                        .buttonStyle(.borderedProminent)
+                        
                         Button("Clear") {
                             viewStatus = .setup
                         }
-                        .buttonStyle(.borderedProminent)
+                        .frame(maxWidth: .infinity)
+                        .buttonStyle(.bordered)
                     }
                 }
             case .awaitingUserInput:
