@@ -47,6 +47,7 @@ struct ProvisioningConfiguration: View {
                         
                         TextField("Access Point Name", text: $ssid)
                             .foregroundColor(.secondary)
+                            .submitLabel(.done)
                     }
                 }
             }
