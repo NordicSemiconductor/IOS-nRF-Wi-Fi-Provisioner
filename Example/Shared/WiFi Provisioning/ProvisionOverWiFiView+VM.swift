@@ -141,6 +141,7 @@ extension ProvisionOverWiFiView.ViewModel {
                 }
                 pipelineManager.completed(stage)
             }
+            pipelineManager.success = true
         } catch {
             pipelineManager.onError(error)
             log(error.localizedDescription, level: .error)
