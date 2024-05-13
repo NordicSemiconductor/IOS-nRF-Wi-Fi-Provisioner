@@ -44,7 +44,7 @@ struct ProvisionOverNFCView: View {
             Section("Provisioning Configuration") {
                 HStack {
                     Label("SSID", systemImage: "wifi.circle")
-                        .foregroundStyle(Color.textFieldColor)
+                        .foregroundColor(.primary)
                     
                     TextField("Access Point Name", text: $ssid)
                         .focused($focusedField, equals: .ssid)
@@ -59,11 +59,11 @@ struct ProvisionOverNFCView: View {
                 
                 HStack {
                     Label("Password", systemImage: "key.horizontal")
-                        .foregroundStyle(Color.textFieldColor)
+                        .foregroundColor(.primary)
                     
                     Spacer()
                     
-                    SecureField("Type Here", text: $password)
+                    SecureField("Type here", text: $password)
                         .focused($focusedField, equals: .password)
                         .multilineTextAlignment(.trailing)
                         .submitLabel(.done)
@@ -90,7 +90,7 @@ struct ProvisionOverNFCView: View {
             .frame(maxWidth: .infinity)
             .disabled(ssid.isEmpty)
         }
-        .navigationTitle("Provision Over NFC")
+        .navigationTitle("Provision over NFC")
     }
     
     // MARK: Private
