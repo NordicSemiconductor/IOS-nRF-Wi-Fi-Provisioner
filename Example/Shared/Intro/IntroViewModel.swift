@@ -5,7 +5,7 @@
 import SwiftUI
 import Markdown
 
-class IntroViewModel: ObservableObject {
+final class IntroViewModel: ObservableObject {
     @Published var image: String = "nRF70-Series-nobg"
     @Published(initialValue: []) var markdown: [String]
     @Published var version: String = ""

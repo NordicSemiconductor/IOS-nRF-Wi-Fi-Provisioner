@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import iOS_Common_Libraries
 
 // MARK: - IntroView
 
@@ -30,37 +31,38 @@ struct IntroView: View {
                     Image(viewModel.image)
                         .resizable()
                         .scaledToFit()
-                        .frame(width: 200, height: 200)
-                        .listRowSeparator(.hidden)
+                        .frame(width: 200, height: 180)
+                        .centered()
+                    
+                    Text("nRF Wi-Fi Provisioner")
+                        .font(.title)
+                        .centered()
                     
                     Text("Version: \(viewModel.version)")
                         .font(.caption)
-                        .frame(maxWidth: .infinity)
-                }
-                
-                Section {
-                    VStack(alignment: .leading) {
-                        Text("Features:")
-                            .bold()
-                            .font(.title2)
-                        
-                        Text("• Provision of a device over BLE (Bluetooth Low Energy), Wi-Fi (Access Point) or NFC (Near-Field Communication)")
-                        Text("• (Optionally) verify correct provisioning of the device.")
-                        Text("• Re-provision already provisioned devices to an alternate network.")
-                    }
-                    
-                    VStack(alignment: .leading) {
-                        Text("Requirements:")
-                            .bold()
-                            .font(.title2)
-                        
-                        Text("• [nRF700x DK](https://nordicsemi.no)")
-                        Text("• Corresponding provisioning application running on device (each provisioning method requires a specific firmware)")
-                    }
-                    
-                    Text("Make sure the device is powered ON, in range and correct firmware is flashed.")
+                        .centered()
                 }
                 .listRowSeparator(.hidden)
+                
+                Section("Features") {
+                    Label("Provision of a device over BLE (Bluetooth Low Energy), Wi-Fi (Access Point) or NFC (Near-Field Communication)", systemImage: "smallcircle.filled.circle")
+                    
+                    Label("(Optionally) Verify correct provisioning of the device.", systemImage: "smallcircle.filled.circle")
+                    
+                    Label("Re-provision already provisioned devices to an alternate network.", systemImage: "smallcircle.filled.circle")
+                }
+                .listRowSeparator(.hidden)
+                 
+                Section("Requirements") {
+                    Label("[nRF700x-powered device](https://nordicsemi.no)", systemImage: "target")
+                    
+                    Label("Corresponding provisioning application running on device (each provisioning method requires a specific firmware)", systemImage: "target")
+                }
+                .bold()
+                .listRowSeparator(.hidden)
+                
+                
+//            Text("Make sure the device is powered ON, in range and correct firmware is flashed.")
                 
                 HStack {
                     Toggle("Don't show again", isOn: $dontShowAgain)
