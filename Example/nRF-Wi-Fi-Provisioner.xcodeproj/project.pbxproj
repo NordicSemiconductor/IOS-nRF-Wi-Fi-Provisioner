@@ -46,10 +46,8 @@
 		01A43DEC2886FECB0025A5C4 /* DeviceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A43DEA2886FECB0025A5C4 /* DeviceView.swift */; };
 		01A43DEE2886FED80025A5C4 /* DeviceView+ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A43DED2886FED80025A5C4 /* DeviceView+ViewModel.swift */; };
 		01A43DEF2886FED80025A5C4 /* DeviceView+ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A43DED2886FED80025A5C4 /* DeviceView+ViewModel.swift */; };
-		01A9469328ECD20D00F40D1D /* SnapshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A9469228ECD20D00F40D1D /* SnapshotHelper.swift */; };
 		01C0F0FA287DE864008BBE46 /* ScannerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C0F0F9287DE864008BBE46 /* ScannerViewModel.swift */; };
 		01C0F0FB287DE864008BBE46 /* ScannerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C0F0F9287DE864008BBE46 /* ScannerViewModel.swift */; };
-		01C1BF6E28E70BB200FDD841 /* nRF_Wi_Fi_ProvisionerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C1BF6D28E70BB200FDD841 /* nRF_Wi_Fi_ProvisionerUITests.swift */; };
 		01D26B56286DA3D400FD069D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 01D26B55286DA3D400FD069D /* Localizable.strings */; };
 		01D26B57286DA3D400FD069D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 01D26B55286DA3D400FD069D /* Localizable.strings */; };
 		01D26B5B286DAE9800FD069D /* LocalizationKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D26B5A286DAE9800FD069D /* LocalizationKey.swift */; };
@@ -99,16 +97,6 @@
 		AAB9CD2C2BECEF4D005C303A /* NFCProvisioningSessionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB9CD2B2BECEF4D005C303A /* NFCProvisioningSessionDelegate.swift */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		01C1BF7128E70BB200FDD841 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 01481A8D2852092F00925FAB /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 01481A982852093000925FAB;
-			remoteInfo = "nRF-Wi-Fi-Provisioner (iOS)";
-		};
-/* End PBXContainerItemProxy section */
-
 /* Begin PBXFileReference section */
 		01062AD928B6592700BB41FD /* View+Mod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Mod.swift"; sourceTree = "<group>"; };
 		0107FEA928F827A200693317 /* ScanResultRaw.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanResultRaw.swift; sourceTree = "<group>"; };
@@ -135,7 +123,6 @@
 		01A43DED2886FED80025A5C4 /* DeviceView+ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DeviceView+ViewModel.swift"; sourceTree = "<group>"; };
 		01A9469228ECD20D00F40D1D /* SnapshotHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SnapshotHelper.swift; path = fastlane/SnapshotHelper.swift; sourceTree = SOURCE_ROOT; };
 		01C0F0F9287DE864008BBE46 /* ScannerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerViewModel.swift; sourceTree = "<group>"; };
-		01C1BF6B28E70BB200FDD841 /* nRF-Wi-Fi-ProvisionerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "nRF-Wi-Fi-ProvisionerUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		01C1BF6D28E70BB200FDD841 /* nRF_Wi_Fi_ProvisionerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = nRF_Wi_Fi_ProvisionerUITests.swift; sourceTree = "<group>"; };
 		01D26B55286DA3D400FD069D /* Localizable.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
 		01D26B5A286DAE9800FD069D /* LocalizationKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizationKey.swift; sourceTree = "<group>"; };
@@ -195,13 +182,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		01C1BF6828E70BB200FDD841 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -257,7 +237,6 @@
 			children = (
 				01481A992852093000925FAB /* nRF-Wi-Fi-Provisioner.app */,
 				01481A9F2852093000925FAB /* nRF-Wi-Fi-Provisioner.app */,
-				01C1BF6B28E70BB200FDD841 /* nRF-Wi-Fi-ProvisionerUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -359,6 +338,7 @@
 		01D26B58286DAE6A00FD069D /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				AA0F8E1F2BF36C3C0036B2D4 /* Tips */,
 				01FCADCA292571B30044904B /* Mock */,
 				0183EFCB2897C42E002E79A5 /* Views */,
 				01682618287F16B20040C97E /* Extensions */,
@@ -422,6 +402,13 @@
 				52DA7AFC9F0E3A8631B800CC /* Pods-nRF-Wi-Fi-Provisioner (iOS).release.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		AA0F8E1F2BF36C3C0036B2D4 /* Tips */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Tips;
 			sourceTree = "<group>";
 		};
 		AA2C11992B7A61D8003AF3E0 /* WiFi Provisioning */ = {
@@ -498,24 +485,6 @@
 			productReference = 01481A9F2852093000925FAB /* nRF-Wi-Fi-Provisioner.app */;
 			productType = "com.apple.product-type.application";
 		};
-		01C1BF6A28E70BB200FDD841 /* nRF-Wi-Fi-ProvisionerUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 01C1BF7328E70BB200FDD841 /* Build configuration list for PBXNativeTarget "nRF-Wi-Fi-ProvisionerUITests" */;
-			buildPhases = (
-				01C1BF6728E70BB200FDD841 /* Sources */,
-				01C1BF6828E70BB200FDD841 /* Frameworks */,
-				01C1BF6928E70BB200FDD841 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				01C1BF7228E70BB200FDD841 /* PBXTargetDependency */,
-			);
-			name = "nRF-Wi-Fi-ProvisionerUITests";
-			productName = "nRF-Wi-Fi-ProvisionerUITests";
-			productReference = 01C1BF6B28E70BB200FDD841 /* nRF-Wi-Fi-ProvisionerUITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -533,10 +502,6 @@
 						CreatedOnToolsVersion = 13.2.1;
 						DevelopmentTeam = APP_STORE_CONNECT_TEAM_ID;
 						ProvisioningStyle = Automatic;
-					};
-					01C1BF6A28E70BB200FDD841 = {
-						CreatedOnToolsVersion = 14.0;
-						TestTargetID = 01481A982852093000925FAB;
 					};
 				};
 			};
@@ -559,7 +524,6 @@
 			targets = (
 				01481A982852093000925FAB /* nRF-Wi-Fi-Provisioner (iOS) */,
 				01481A9E2852093000925FAB /* nRF-Wi-Fi-Provisioner (macOS) */,
-				01C1BF6A28E70BB200FDD841 /* nRF-Wi-Fi-ProvisionerUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -581,13 +545,6 @@
 			files = (
 				01481ABF2852093000925FAB /* Assets.xcassets in Resources */,
 				01D26B57286DA3D400FD069D /* Localizable.strings in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		01C1BF6928E70BB200FDD841 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -749,24 +706,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		01C1BF6728E70BB200FDD841 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				01C1BF6E28E70BB200FDD841 /* nRF_Wi_Fi_ProvisionerUITests.swift in Sources */,
-				01A9469328ECD20D00F40D1D /* SnapshotHelper.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		01C1BF7228E70BB200FDD841 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 01481A982852093000925FAB /* nRF-Wi-Fi-Provisioner (iOS) */;
-			targetProxy = 01C1BF7128E70BB200FDD841 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		01481AC02852093000925FAB /* Debug */ = {
@@ -1029,47 +969,6 @@
 			};
 			name = Release;
 		};
-		01C1BF7428E70BB200FDD841 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = P3R8YQEV4L;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.nordicsemi.nRF-Wi-Fi-ProvisionerUITests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = "nRF-Wi-Fi-Provisioner (iOS)";
-			};
-			name = Debug;
-		};
-		01C1BF7528E70BB200FDD841 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = P3R8YQEV4L;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.nordicsemi.nRF-Wi-Fi-ProvisionerUITests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = "nRF-Wi-Fi-Provisioner (iOS)";
-				VALIDATE_PRODUCT = YES;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1096,15 +995,6 @@
 			buildConfigurations = (
 				01481AC62852093000925FAB /* Debug */,
 				01481AC72852093000925FAB /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		01C1BF7328E70BB200FDD841 /* Build configuration list for PBXNativeTarget "nRF-Wi-Fi-ProvisionerUITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				01C1BF7428E70BB200FDD841 /* Debug */,
-				01C1BF7528E70BB200FDD841 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
