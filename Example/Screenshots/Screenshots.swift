@@ -9,6 +9,7 @@ import XCTest
 
 final class Screenshots: XCTestCase {
 
+    @MainActor
     func testStartInfo() throws {
         // UI tests must launch the application that they test.
         let app = XCUIApplication()
@@ -20,6 +21,7 @@ final class Screenshots: XCTestCase {
         snapshot("01-launch")
     }
     
+    @MainActor
     func testSelectorView() throws {
         let app = XCUIApplication()
         setupSnapshot(app)
@@ -30,6 +32,7 @@ final class Screenshots: XCTestCase {
         snapshot("02-selector")
     }
     
+    @MainActor
     func testProvisionOverBleView() throws {
         let app = XCUIApplication()
         setupSnapshot(app)
@@ -44,6 +47,7 @@ final class Screenshots: XCTestCase {
         snapshot("03-bleProvisioning")
     }
     
+    @MainActor
     func testProvisionOverWiFiView() throws {
         let app = XCUIApplication()
         setupSnapshot(app)
@@ -58,6 +62,7 @@ final class Screenshots: XCTestCase {
         snapshot("04-wifiProvisioning")
     }
     
+    @MainActor
     func testProvisionOverNFCView() throws {
         let app = XCUIApplication()
         setupSnapshot(app)
