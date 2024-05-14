@@ -25,6 +25,9 @@ final class AppViewModel: ObservableObject {
     // MARK: Init
     
     init() {
+        if CommandLine.arguments.contains("always-show-intro") {
+            introViewShown = false
+        }
         self.showStartInfo = !introViewShown
         self.version = readVersion()
     }

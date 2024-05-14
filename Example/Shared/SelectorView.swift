@@ -26,6 +26,7 @@ struct SelectorView: View {
                 } label: {
                     Label("Provision over BLE", image: "bluetooth")
                 }
+                .accessibilityIdentifier("selector_ble_provisioning_btn")
                 
                 Text("""
                 This mode uses secure Bluetooth LE link to transfer Wi-Fi credentials to the provisionee and verify provisioning status.
@@ -39,6 +40,7 @@ struct SelectorView: View {
                 } label: {
                     Label("Provision over Wi-Fi", systemImage: "wifi")
                 }
+                .accessibilityIdentifier("selector_wifi_provisioning_btn")
                 
                 Text("""
                 This mode uses a temporary Wi-Fi network (Soft AP) created by the provisionee to send Wi-Fi credentials. Communication is encrypted using TLS.
@@ -52,6 +54,7 @@ struct SelectorView: View {
                 } label: {
                     Label("Provision over NFC", systemImage: "tag.fill")
                 }
+                .accessibilityIdentifier("selector_nfc_provisioning_btn")
                 
                 Text("""
                 This mode sends SSID and network credentials over NFC (Near Field Communication). It does not give any feedback on whether the device successfully connected to the desired network.
