@@ -67,10 +67,8 @@
 		339760D65C7C44D873D948A8 /* DeviceViewModel+Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = 339761CA515EDED3B38AB2F3 /* DeviceViewModel+Types.swift */; };
 		339761E5D6992A0548A2B051 /* AdoptiveDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33976123FD83A0EF2122EE5E /* AdoptiveDetailView.swift */; };
 		339764A344D60772B8354BA1 /* CoreBluetoothTypeAliases.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33976DF4DDFF808ED30D6140 /* CoreBluetoothTypeAliases.swift */; };
-		339766E1F365F51C4CD49F6D /* IntroViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33976A539401C3999098986C /* IntroViewModel.swift */; };
 		3397673EF437823851596518 /* AdoptiveDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33976123FD83A0EF2122EE5E /* AdoptiveDetailView.swift */; };
 		339769E1197BCCAF98D480E9 /* NavigationLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 339767EA454996E6D30A9621 /* NavigationLink.swift */; };
-		33976BAEC7C5753351244397 /* IntroViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33976A539401C3999098986C /* IntroViewModel.swift */; };
 		33976D6784AE1F2745318CFA /* NavigationLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 339767EA454996E6D30A9621 /* NavigationLink.swift */; };
 		33976EF1DCD95ADC4A0807C9 /* DeviceViewModel+Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = 339761CA515EDED3B38AB2F3 /* DeviceViewModel+Types.swift */; };
 		6C67FF808DFB822C6DA82348 /* Pods_nRF_Wi_Fi_Provisioner__iOS_.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDE5F19186647A484BC6DD82 /* Pods_nRF_Wi_Fi_Provisioner__iOS_.framework */; };
@@ -150,7 +148,6 @@
 		33976123FD83A0EF2122EE5E /* AdoptiveDetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdoptiveDetailView.swift; sourceTree = "<group>"; };
 		339761CA515EDED3B38AB2F3 /* DeviceViewModel+Types.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "DeviceViewModel+Types.swift"; sourceTree = "<group>"; };
 		339767EA454996E6D30A9621 /* NavigationLink.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationLink.swift; sourceTree = "<group>"; };
-		33976A539401C3999098986C /* IntroViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntroViewModel.swift; sourceTree = "<group>"; };
 		33976DF4DDFF808ED30D6140 /* CoreBluetoothTypeAliases.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreBluetoothTypeAliases.swift; sourceTree = "<group>"; };
 		52DA7AFC9F0E3A8631B800CC /* Pods-nRF-Wi-Fi-Provisioner (iOS).release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-nRF-Wi-Fi-Provisioner (iOS).release.xcconfig"; path = "Target Support Files/Pods-nRF-Wi-Fi-Provisioner (iOS)/Pods-nRF-Wi-Fi-Provisioner (iOS).release.xcconfig"; sourceTree = "<group>"; };
 		5B02622BD480F3162A9947BF /* Pods-Tests iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests iOS.debug.xcconfig"; path = "Target Support Files/Pods-Tests iOS/Pods-Tests iOS.debug.xcconfig"; sourceTree = "<group>"; };
@@ -386,7 +383,6 @@
 			isa = PBXGroup;
 			children = (
 				01481A932852092F00925FAB /* IntroView.swift */,
-				33976A539401C3999098986C /* IntroViewModel.swift */,
 			);
 			path = Intro;
 			sourceTree = "<group>";
@@ -709,7 +705,6 @@
 				01994A742B852F7800953465 /* ProvisionOverWiFiView+VM.swift in Sources */,
 				339764A344D60772B8354BA1 /* CoreBluetoothTypeAliases.swift in Sources */,
 				33976EF1DCD95ADC4A0807C9 /* DeviceViewModel+Types.swift in Sources */,
-				33976BAEC7C5753351244397 /* IntroViewModel.swift in Sources */,
 				339761E5D6992A0548A2B051 /* AdoptiveDetailView.swift in Sources */,
 				339769E1197BCCAF98D480E9 /* NavigationLink.swift in Sources */,
 			);
@@ -748,7 +743,6 @@
 				01FCADCD292571C30044904B /* Mock.swift in Sources */,
 				339760CF1C795330A945D8CA /* CoreBluetoothTypeAliases.swift in Sources */,
 				339760D65C7C44D873D948A8 /* DeviceViewModel+Types.swift in Sources */,
-				339766E1F365F51C4CD49F6D /* IntroViewModel.swift in Sources */,
 				3397673EF437823851596518 /* AdoptiveDetailView.swift in Sources */,
 				01FCADD0292577DB0044904B /* WiFiInfo+Ext.swift in Sources */,
 				33976D6784AE1F2745318CFA /* NavigationLink.swift in Sources */,

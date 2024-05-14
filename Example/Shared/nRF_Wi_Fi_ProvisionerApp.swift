@@ -37,7 +37,8 @@ struct nRF_Wi_Fi_ProvisionerApp: App {
                     }
             }
             .sheet(isPresented: $viewModel.showStartInfo) {
-                IntroView(show: $viewModel.showStartInfo)
+                IntroView()
+                    .environmentObject(viewModel)
             }
         }
     }

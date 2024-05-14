@@ -17,9 +17,8 @@ struct IntroView: View {
     @State private var animationAmount = 1.0
     @State private var selection: Int? = nil
     
-    @StateObject var viewModel = IntroViewModel()
-    
-    @Binding var show: Bool
+    @Environment(\.presentationMode) var presentationMode
+    @EnvironmentObject private var viewModel: AppViewModel
     
     // MARK: View
     
@@ -27,7 +26,7 @@ struct IntroView: View {
         NavigationView {
             List {
                 Section {
-                    Image(viewModel.image)
+                    Image("nRF70-Series-nobg")
                         .resizable()
                         .scaledToFit()
                         .frame(width: 200, height: 180)
@@ -64,7 +63,7 @@ struct IntroView: View {
                 .listRowSeparator(.hidden)
                 
                 Button("START_PROVISIONING_BTN") {
-                    show = false
+                    presentationMode.wrappedValue.dismiss()
                 }
                 .buttonStyle(.borderedProminent)
                 .frame(maxWidth: .infinity)
@@ -74,7 +73,9 @@ struct IntroView: View {
                 .accessibilityIdentifier("start_provisioning_btn")
             }
             .navigationTitle("Welcome")
-            .onAppear { try? viewModel.readInfo() }
+            .onAppear {
+                viewModel.introViewShown = true
+            }
         }
     }
 }
