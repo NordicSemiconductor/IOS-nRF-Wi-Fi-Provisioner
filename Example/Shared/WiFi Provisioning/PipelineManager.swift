@@ -41,6 +41,10 @@ public class PipelineManager<Stage: PipelineStage>: ObservableObject {
         currentStage != nil
     }
     
+    var finishedWithError: Bool {
+        !success && error != nil
+    }
+    
     var isIndeterminate: Bool {
         currentStage?.isIndeterminate ?? true
     }
@@ -78,6 +82,11 @@ public extension PipelineManager {
             return []
         }
         return stages.suffix(from: limitIndex)
+    }
+    
+    func isCompleted(_ stage: Stage) -> Bool {
+        guard let index = stages.firstIndex(where: { $0.id == stage.id }) else { return false }
+        return stages[index].completed
     }
     
     func inProgress(_ stage: Stage, speed: Double? = nil) {

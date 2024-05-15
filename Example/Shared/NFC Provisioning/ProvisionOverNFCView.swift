@@ -94,7 +94,6 @@ struct ProvisionOverNFCView: View {
     }
     
     // TODO:
-    // 3. Show 'Provisioning might've been succesful' in Pipeline View if only Verification failed.
     // 4. Update test Assignment documentation
     
     // MARK: Private

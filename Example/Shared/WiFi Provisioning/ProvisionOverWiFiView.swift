@@ -46,9 +46,16 @@ struct ProvisionOverWiFiView: View {
                 }
             case .showingStages:
                 List {
-                    Section("Steps") {
+                    Section("Progress") {
                         ForEach(viewModel.pipelineManager.stages) { stage in
                             PipelineView(stage: stage, logLine: viewModel.logLine)
+                        }
+                    }
+                    
+                    if viewModel.pipelineManager.isCompleted(.provision), viewModel.pipelineManager.finishedWithError {
+                        Section("Provisioning Verification") {
+                            Label("Even if Provisioning Verification fails, your device might've still been provisioned successfully.", systemImage: "info.bubble.fill")
+                            .labeledContentStyle(.accented)
                         }
                     }
                 }
