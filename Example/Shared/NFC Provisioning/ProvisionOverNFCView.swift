@@ -94,8 +94,6 @@ struct ProvisionOverNFCView: View {
     }
     
     // TODO:
-    // 1. Disable Verification by Default
-    // 2. Provide more information to the SSID in Provision over Wi-Fi
     // 3. Show 'Provisioning might've been succesful' in Pipeline View if only Verification failed.
     // 4. Update test Assignment documentation
     

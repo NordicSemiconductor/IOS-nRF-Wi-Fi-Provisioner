@@ -47,7 +47,7 @@ extension ProvisioningStage: CaseIterable {
     static let scan = ProvisioningStage(symbolName: "waveform.badge.magnifyingglass", todoStatus: "Scan for Available Networks", inProgressStatus: "Scanning for Networks...", completedStatus: "Scanned Available Networks")
     static let provisioningInfo = ProvisioningStage(symbolName: "hand.point.up.left.and.text.fill", todoStatus: "Await for Provisioning Information", inProgressStatus: "Waiting for Provisioning Information...", completedStatus: "User Has Provided Provisioning Information")
     static let provision = ProvisioningStage(symbolName: "keyboard.badge.ellipsis", todoStatus: "Provision Device", inProgressStatus: "Provisioning Device...", completedStatus: "Device Provisioned")
-    static let switchBack = ProvisioningStage(symbolName: "network", todoStatus: "Connect to Access Point", inProgressStatus: "Switching to AP...", completedStatus: "Connected to AP")
+    static let switchBack = ProvisioningStage(symbolName: "network", todoStatus: "Connect to Network", inProgressStatus: "Switching to Network...", completedStatus: "Connected to Network")
     static let verify = ProvisioningStage(symbolName: "flag.checkered", todoStatus: "Verify", inProgressStatus: "Verifying...", completedStatus: "Successfully Provisioned")
     
     // MARK: allCases
