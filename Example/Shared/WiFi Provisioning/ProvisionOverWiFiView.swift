@@ -27,7 +27,7 @@ struct ProvisionOverWiFiView: View {
     @State private var viewStatus: ViewStatus = .setup
     @State private var switchToAccessPoint = true
     @State private var name = Self.DEFAULT_SSID
-    @State private var verify = true
+    @State private var verify = false
     
     enum ViewStatus {
         case setup
