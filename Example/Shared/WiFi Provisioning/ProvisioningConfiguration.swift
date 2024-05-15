@@ -36,16 +36,21 @@ struct ProvisioningConfiguration: View {
                             .multilineTextAlignment(.trailing)
                             .submitLabel(.done)
                     }
+                    
+                    Text("Disable if you're already connected to the device you'd like to provision.")
+                        .font(.caption)
                 }
                 
-                Text("Disable if you're already connected to the device you'd like to provision.")
-                .font(.caption)
-                
-                Button("Open Settings") {
-                    guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
-                    UIApplication.shared.open(url)
+                if !switchToAccessPoint {
+                    Text("Enable to automatically connect to the Device (SoftAP)")
+                        .font(.caption)
+                    
+                    Button("Connect Manually in Settings") {
+                        guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
+                        UIApplication.shared.open(url)
+                    }
+                    .frame(maxWidth: .infinity)
                 }
-                .frame(maxWidth: .infinity)
             }
             
             Section("Verification") {
