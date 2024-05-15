@@ -21,13 +21,24 @@ struct ProvisioningConfiguration: View {
         List {
             Section("Provisioning Configuration") {
                 Toggle(isOn: $switchToAccessPoint) {
-                    Label("Switch to Access Point", systemImage: "cpu")
+                    Label("Connect to Device", systemImage: "cpu")
                 }
                 .tint(.accentColor)
                 
-                Text("""
-                If you're already connected to the Device you'd like to provision, or would rather do it manually, you may disable this.
-                """)
+                if switchToAccessPoint {
+                    HStack {
+                        Label("SSID", systemImage: "wifi.circle")
+                        
+                        Spacer()
+                            .frame(maxWidth: .infinity)
+                        
+                        TextField("Access Point Name", text: $ssid)
+                            .multilineTextAlignment(.trailing)
+                            .submitLabel(.done)
+                    }
+                }
+                
+                Text("Disable if you're already connected to the device you'd like to provision.")
                 .font(.caption)
                 
                 Button("Open Settings") {
@@ -37,21 +48,6 @@ struct ProvisioningConfiguration: View {
                 .frame(maxWidth: .infinity)
             }
             
-            if switchToAccessPoint {
-                Section {
-                    HStack {
-                        Label("SSID", systemImage: "wifi.circle")
-                        
-                        Spacer()
-                            .frame(maxWidth: .infinity)
-                        
-                        TextField("Access Point Name", text: $ssid)
-                            .foregroundColor(.secondary)
-                            .submitLabel(.done)
-                    }
-                }
-            }
-            
             Section("Verification") {
                 Toggle(isOn: $verifyProvisioning) {
                     Label("Enable Post-Provisioning Verification", systemImage: "flag.checkered")
@@ -59,7 +55,7 @@ struct ProvisioningConfiguration: View {
                 .tint(.accentColor)
                 
                 Text("""
-                If Enabled, after successful provisioning we will switch to the network you've provisioned your Device to, and try to find it in that network.
+                Enable to switch to the network you've provisioned your Device to, and try to find it in that network.
                 
                 Note that this adds a couple of extra steps involving Network Configuration changes on your iPhone that might throw errors, but your Device might've still been successfully provisioned.
                 """)
