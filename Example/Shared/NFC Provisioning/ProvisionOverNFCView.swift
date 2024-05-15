@@ -93,6 +93,11 @@ struct ProvisionOverNFCView: View {
         .navigationTitle("Provision over NFC")
     }
     
+    // 1. Disable Verification by Default
+    // 2. Provide more information to the SSID in Provision over Wi-Fi
+    // 3. Show 'Provisioning might've been succesful' in Pipeline View if only Verification failed.
+    // 4. Update test Assignment documentation
+    
     // MARK: Private
     
     private func writeTag() {
