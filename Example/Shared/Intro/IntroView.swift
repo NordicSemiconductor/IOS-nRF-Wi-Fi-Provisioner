@@ -57,7 +57,6 @@ struct IntroView: View {
                     Label("Corresponding provisioning application running on device (each provisioning method requires a specific firmware)", systemImage: "target")
                     
                     Label("Make sure the device is powered ON, in range and correct firmware is flashed.", systemImage: "exclamationmark.triangle")
-                    .labeledContentStyle(.accented)
                 }
                 .bold()
                 .listRowSeparator(.hidden)
