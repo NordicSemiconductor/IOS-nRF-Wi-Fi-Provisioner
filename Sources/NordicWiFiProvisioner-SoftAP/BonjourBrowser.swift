@@ -85,6 +85,9 @@ final public class BonjourBrowser {
                             delegate?.log("Found \(name) Service. Skipping.", level: .debug)
                             continue
                         }
+                        
+                        // Cancel Timeout since we found a Service we're going to return.
+                        timeoutTask.cancel()
                         let netService = NetService(domain: domain, type: type, name: name)
                         if resolveIPAddress {
                             BonjourResolver.resolve(service: netService) { [weak self] result in
@@ -99,7 +102,6 @@ final public class BonjourBrowser {
                             RunLoop.main.run(until: Date(timeIntervalSinceNow: 2.0))
                         }
                         
-                        timeoutTask.cancel()
                         if case .bonjour(let record) = result.metadata {
                             delegate?.log("Found TXT Record for \(service.name)", level: .debug)
                             continuation.resume(returning: record)
