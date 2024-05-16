@@ -40,7 +40,6 @@ struct ProvisioningConfiguration: View {
                     }
                     
                     Label("Disable if you're already connected to the device you'd like to provision.", systemImage: "exclamationmark.triangle.fill")
-                        .labelStyle(.colorIconOnly(.orange))
                 } else {
                     Text("Enable to automatically connect to the Device (SoftAP)")
                         .font(.caption)
