@@ -12,45 +12,45 @@ import iOS_Common_Libraries
 
 struct ProvisioningConfiguration: View {
     
+    // MARK: Properties
+    
     @Binding var switchToAccessPoint: Bool
     @Binding var ssid: String
     @Binding var verifyProvisioning: Bool
     let onStart: () -> Void
     
+    // MARK: View
+    
     var body: some View {
         List {
-            Section("Provisioning Configuration") {
+            Section("Device Connection") {
                 Toggle(isOn: $switchToAccessPoint) {
-                    Label("Connect to Device", systemImage: "cpu")
+                    Label("Connect Automatically", systemImage: "cpu")
                 }
                 .tint(.accentColor)
                 
                 if switchToAccessPoint {
                     HStack {
-                        Label("SSID", systemImage: "wifi.circle")
-                        
-                        Spacer()
-                            .frame(maxWidth: .infinity)
+                        Label("SoftAP SSID", systemImage: "wifi.circle")
                         
                         TextField("Access Point Name", text: $ssid)
+                            .frame(maxWidth: .infinity)
                             .multilineTextAlignment(.trailing)
                             .submitLabel(.done)
                     }
                     
-                    Text("Disable if you're already connected to the device you'd like to provision.")
+                    Label("Disable if you're already connected to the device you'd like to provision.", systemImage: "exclamationmark.triangle.fill")
+                        .labelStyle(.colorIconOnly(.orange))
+                } else {
+                    Text("Enable to automatically connect to the Device (SoftAP)")
                         .font(.caption)
                 }
                 
-                if !switchToAccessPoint {
-                    Text("Enable to automatically connect to the Device (SoftAP)")
-                        .font(.caption)
-                    
-                    Button("Connect Manually in Settings") {
-                        guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
-                        UIApplication.shared.open(url)
-                    }
-                    .frame(maxWidth: .infinity)
+                Button("Open Settings") {
+                    guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
+                    UIApplication.shared.open(url)
                 }
+                .frame(maxWidth: .infinity)
             }
             
             Section("Verification") {
