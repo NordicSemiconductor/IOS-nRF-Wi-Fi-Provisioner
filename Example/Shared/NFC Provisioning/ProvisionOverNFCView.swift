@@ -93,9 +93,6 @@ struct ProvisionOverNFCView: View {
         .navigationTitle("Provision over NFC")
     }
     
-    // TODO:
-    // 4. Update test Assignment documentation
-    
     // MARK: Private
     
     private func writeTag() {

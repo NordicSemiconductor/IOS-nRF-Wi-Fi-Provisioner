@@ -53,7 +53,7 @@ struct ProvisionOverWiFiView: View {
                     }
                     
                     if viewModel.pipelineManager.isCompleted(.provision), viewModel.pipelineManager.finishedWithError {
-                        Section("Provisioning Verification") {
+                        Section("Verification") {
                             Label("Even if Provisioning Verification fails, your device might've still been provisioned successfully.", systemImage: "info.bubble.fill")
                                 .labelStyle(.colorIconOnly(.green))
                         }
