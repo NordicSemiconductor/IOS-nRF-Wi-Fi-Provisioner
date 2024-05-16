@@ -42,12 +42,10 @@ struct IntroView: View {
                 }
                 .listRowSeparator(.hidden)
                 
-                Section("Features") {
-                    Label("Provision of a device over BLE (Bluetooth Low Energy), Wi-Fi (Access Point) or NFC (Near-Field Communication)", systemImage: "smallcircle.filled.circle")
-                    
-                    Label("(Optionally) Verify correct provisioning of the device.", systemImage: "smallcircle.filled.circle")
-                    
-                    Label("Re-provision already provisioned devices to an alternate network.", systemImage: "smallcircle.filled.circle")
+                Section("About") {
+                    Text("""
+                    nRF Wi-Fi Provisioner can be used to securely provision nRF700x devices to Wi-Fi networks over Bluetooth LE, Wi-Fi (SoftAP) or NFC. Some transport methods allow provisioning verification and re-provisioning.
+                    """)
                 }
                 .listRowSeparator(.hidden)
                  
