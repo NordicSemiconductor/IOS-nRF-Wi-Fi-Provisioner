@@ -40,16 +40,17 @@ struct ProvisioningConfiguration: View {
                     }
                     
                     Label("Disable if you're already connected to the device you'd like to provision.", systemImage: "exclamationmark.triangle.fill")
-                } else {
-                    Text("Enable to automatically connect to the Device (SoftAP)")
                         .font(.caption)
+                } else {
+                    Label("Enable to automatically connect to the Device (SoftAP)", systemImage: "info.square.fill")
+                        .font(.caption)
+                    
+                    Button("Set up Wi-Fi in Settings") {
+                        guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
+                        UIApplication.shared.open(url)
+                    }
+                    .frame(maxWidth: .infinity)
                 }
-                
-                Button("Open Settings") {
-                    guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
-                    UIApplication.shared.open(url)
-                }
-                .frame(maxWidth: .infinity)
             }
             
             Section("Verification") {
@@ -69,7 +70,12 @@ struct ProvisioningConfiguration: View {
         
         Spacer()
         
-        Button("Start", action: onStart)
-            .buttonStyle(.borderedProminent)
+        Button(action: onStart) {
+            Label("Start Provisioning", systemImage: "arrowshape.forward.fill")
+                .frame(maxWidth: .infinity)
+        }
+        .buttonStyle(.borderedProminent)
+        .padding(.horizontal, 16)
+        .padding(.vertical)
     }
 }
