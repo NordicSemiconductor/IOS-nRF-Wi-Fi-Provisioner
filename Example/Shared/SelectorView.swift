@@ -43,7 +43,7 @@ struct SelectorView: View {
                 .accessibilityIdentifier("selector_wifi_provisioning_btn")
                 
                 Text("""
-                This mode uses a temporary Wi-Fi network (Soft AP) created by the provisionee to send Wi-Fi credentials. Communication is encrypted using TLS.
+                This mode uses a temporary Wi-Fi network (SoftAP) created by the provisionee to send Wi-Fi credentials. Communication is encrypted using TLS.
                 """)
                 .font(.caption)
             }

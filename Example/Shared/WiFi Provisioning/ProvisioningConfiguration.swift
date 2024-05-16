@@ -23,7 +23,7 @@ struct ProvisioningConfiguration: View {
     
     var body: some View {
         List {
-            Section("Device Connection") {
+            Section("Device Selection") {
                 Toggle(isOn: $switchToAccessPoint) {
                     Label("Connect Automatically", systemImage: "cpu")
                 }
@@ -31,7 +31,7 @@ struct ProvisioningConfiguration: View {
                 
                 if switchToAccessPoint {
                     HStack {
-                        Label("SoftAP SSID", systemImage: "wifi.circle")
+                        Label("Device SSID", systemImage: "wifi.circle")
                         
                         TextField("Access Point Name", text: $ssid)
                             .frame(maxWidth: .infinity)
@@ -39,13 +39,13 @@ struct ProvisioningConfiguration: View {
                             .submitLabel(.done)
                     }
                     
-                    Label("Disable if you're already connected to the device you'd like to provision.", systemImage: "exclamationmark.triangle.fill")
+                    Label("Disable if you're already connected to the Device you'd like to provision or want to connect manually in Settings.", systemImage: "exclamationmark.triangle.fill")
                         .font(.caption)
                 } else {
-                    Label("Enable to automatically connect to the Device (SoftAP)", systemImage: "info.square.fill")
+                    Label("Enable to automatically connect to the Device.", systemImage: "info.square.fill")
                         .font(.caption)
                     
-                    Button("Set up Wi-Fi in Settings") {
+                    Button("Set up Wi-Fi Connection in Settings") {
                         guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
                         UIApplication.shared.open(url)
                     }
@@ -55,15 +55,14 @@ struct ProvisioningConfiguration: View {
             
             Section("Verification") {
                 Toggle(isOn: $verifyProvisioning) {
-                    Label("Enable Post-Provisioning Verification", systemImage: "flag.checkered")
+                    Label("Post-Provisioning Verification", systemImage: "flag.checkered")
                 }
                 .tint(.accentColor)
                 
-                Text("""
-                Enable to switch to the network you've provisioned your Device to, and try to find it in that network.
+                Label("Enable to switch to the network you've provisioned your Device to, and try to find it in that network.", systemImage: "info.square.fill")
+                .font(.caption)
                 
-                Note that this adds a couple of extra steps involving Network Configuration changes on your iPhone that might throw errors, but your Device might've still been successfully provisioned.
-                """)
+                Label("This adds a couple of extra steps involving Network Configuration changes on your iPhone that might throw errors, but your Device might've still been successfully provisioned.", systemImage: "exclamationmark.triangle.fill")
                 .font(.caption)
             }
         }
