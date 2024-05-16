@@ -24,12 +24,12 @@ struct SelectorView: View {
                     ScannerView(viewModel: ScannerViewModel())
                         .environmentObject(vmFactory)
                 } label: {
-                    Label("Provision over BLE", image: "bluetooth")
+                    Label("Provision over Bluetooth LE", image: "bluetooth")
                 }
                 .accessibilityIdentifier("selector_ble_provisioning_btn")
                 
                 Text("""
-                This mode uses secure Bluetooth LE link to transfer Wi-Fi credentials to the provisionee and verify provisioning status.
+                This mode uses secure Bluetooth Low Energy link to transfer Wi-Fi credentials to the provisionee and verify provisioning status.
                 """)
                 .font(.caption)
             }

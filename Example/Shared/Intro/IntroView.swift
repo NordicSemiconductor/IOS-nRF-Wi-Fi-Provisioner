@@ -52,13 +52,12 @@ struct IntroView: View {
                 .listRowSeparator(.hidden)
                  
                 Section("Requirements") {
-                    Label("[nRF700x-powered device](https://nordicsemi.no)", systemImage: "target")
+                    Label("[nRF700x-powered device](https://nordicsemi.no)", systemImage: "cpu")
                     
-                    Label("Corresponding provisioning application running on device (each provisioning method requires a specific firmware)", systemImage: "target")
+                    Label("Provisioning firmware corresponding to selected method flashed & running on Device.", systemImage: "checklist.checked")
                     
-                    Label("Make sure the device is powered ON, in range and correct firmware is flashed.", systemImage: "exclamationmark.triangle")
+                    Label("Device powered ON and in range.", systemImage: "bolt.fill")
                 }
-                .bold()
                 .listRowSeparator(.hidden)
                 
                 Button("START_PROVISIONING_BTN") {
