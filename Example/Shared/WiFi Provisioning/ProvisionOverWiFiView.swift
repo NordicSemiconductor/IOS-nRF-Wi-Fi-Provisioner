@@ -27,7 +27,6 @@ struct ProvisionOverWiFiView: View {
     @State private var viewStatus: ViewStatus = .setup
     @State private var switchToAccessPoint = true
     @State private var name = Self.DEFAULT_SSID
-    @State private var verify = false
     
     enum ViewStatus {
         case setup
@@ -41,7 +40,7 @@ struct ProvisionOverWiFiView: View {
         VStack {
             switch viewStatus {
             case .setup:
-                ProvisioningConfiguration(switchToAccessPoint: $switchToAccessPoint, ssid: $name, verifyProvisioning: $verify) {
+                ProvisioningConfiguration(switchToAccessPoint: $switchToAccessPoint, ssid: $name) {
                     startProvisioning()
                 }
             case .showingStages:
@@ -88,8 +87,7 @@ struct ProvisionOverWiFiView: View {
             showAlert = false
             viewStatus = .showingStages
             do {
-                viewModel.setupPipeline(switchingToDevice: switchToAccessPoint,
-                                        andVerification: verify)
+                viewModel.setupPipeline(switchingToDevice: switchToAccessPoint)
                 let configuration = NEHotspotConfiguration(ssid: name)
                 try await viewModel.pipelineStart(applying: configuration)
                 viewStatus = .awaitingUserInput
@@ -124,7 +122,7 @@ struct ProvisionOverWiFiView: View {
         AsyncButton("Provision") {
             do {
                 viewStatus = .showingStages
-                try await viewModel.provision(ipAddress: ipAddress, withVerification: verify)
+                try await viewModel.provision(ipAddress: ipAddress)
             } catch {
                 alertError = TitleMessageError(error)
                 showAlert = true

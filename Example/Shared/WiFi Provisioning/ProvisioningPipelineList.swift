@@ -31,12 +31,24 @@ struct ProvisioningPipelineList: View {
                 }
             }
             
-            if viewModel.pipelineManager.isCompleted(.provision), viewModel.pipelineManager.finishedWithError {
+            if viewModel.pipelineManager.isCompleted(.provision), 
+                viewModel.pipelineManager.success {
                 Section("Verification") {
-                    Label("Even if Provisioning Verification fails, your device might've still been provisioned successfully.", systemImage: "info.bubble.fill")
-                        .labelStyle(.colorIconOnly(.green))
+                    Label("Verification adds a couple of extra steps involving Network Configuration changes on your iPhone that might throw errors, but your Device might've still been successfully provisioned.", systemImage: "exclamationmark.triangle.fill")
+                    
+                    Button("Verify") {
+                        
+                    }
+                    .centered()
                 }
             }
+            
+//            if viewModel.pipelineManager.isCompleted(.provision), viewModel.pipelineManager.finishedWithError {
+//                Section("Verification") {
+//                    Label("Even if Provisioning Verification fails, your device might've still been provisioned successfully.", systemImage: "info.bubble.fill")
+//                        .labelStyle(.colorIconOnly(.green))
+//                }
+//            }
         }
     }
 }

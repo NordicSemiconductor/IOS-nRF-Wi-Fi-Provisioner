@@ -16,7 +16,6 @@ struct ProvisioningConfiguration: View {
     
     @Binding var switchToAccessPoint: Bool
     @Binding var ssid: String
-    @Binding var verifyProvisioning: Bool
     let onStart: () -> Void
     
     // MARK: View
@@ -51,19 +50,6 @@ struct ProvisioningConfiguration: View {
                     }
                     .frame(maxWidth: .infinity)
                 }
-            }
-            
-            Section("Verification") {
-                Toggle(isOn: $verifyProvisioning) {
-                    Label("Post-Provisioning Verification", systemImage: "flag.checkered")
-                }
-                .tint(.accentColor)
-                
-                Label("Enable to switch to the network you've provisioned your Device to, and try to find it in that network.", systemImage: "info.square.fill")
-                .font(.caption)
-                
-                Label("This adds a couple of extra steps involving Network Configuration changes on your iPhone that might throw errors, but your Device might've still been successfully provisioned.", systemImage: "exclamationmark.triangle.fill")
-                .font(.caption)
             }
         }
         

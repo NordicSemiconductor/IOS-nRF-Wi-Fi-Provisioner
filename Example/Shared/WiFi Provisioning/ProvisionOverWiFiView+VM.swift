@@ -45,15 +45,12 @@ extension ProvisionOverWiFiView.ViewModel {
     
     // MARK: setup
     
-    func setupPipeline(switchingToDevice switchToDevice: Bool, andVerification verify: Bool) {
+    func setupPipeline(switchingToDevice switchToDevice: Bool) {
         cancellables.removeAll()
         
         var stages = ProvisioningStage.allCases
         if !switchToDevice {
             stages.removeAll(where: { $0 == .connect })
-        }
-        if !verify {
-            stages.removeAll(where: { $0 == .switchBack || $0 == .verify })
         }
         pipelineManager = PipelineManager(initialStages: stages)
         manager.delegate = self
@@ -106,7 +103,7 @@ extension ProvisionOverWiFiView.ViewModel {
     
     // MARK: provision
     
-    func provision(ipAddress: String, withVerification verify: Bool) async throws {
+    func provision(ipAddress: String) async throws {
         guard let selectedScan else {
             throw TitleMessageError(message: "SSID is not selected")
         }
@@ -117,25 +114,25 @@ extension ProvisionOverWiFiView.ViewModel {
                 switch stage {
                 case .provision:
                     try await manager.provision(ipAddress: ipAddress, to: selectedScan, with: ssidPassword)
-                case .switchBack:
-                    log("Verification enabled", level: .debug)
-                    log("Switching to \(selectedScan.ssid)...", level: .info)
-                    // Ask the user to switch to the Provisioned Network.
-                    var manager = NEManager()
-                    manager.delegate = self
-                    let configuration = NEHotspotConfiguration(ssid: selectedScan.ssid, passphrase: ssidPassword, isWEP: selectedScan.authentication == .wep)
-                    try await manager.apply(configuration)
-                case .verify:
-                    log("Awaiting network change...", level: .info)
-                    
-                    // Wait a couple of seconds for the firmware to make the connection switch.
-                    try? await Task.sleepFor(seconds: 2)
-                    
-                    log("Searching for provisioned device in network...", level: .info)
-                    let browser = BonjourBrowser()
-                    browser.delegate = self
-                    let txtRecord = try await browser.findBonjourService(.wifiProv)
-                    try verifyTXTRecord(txtRecord)
+//                case .switchBack:
+//                    log("Verification enabled", level: .debug)
+//                    log("Switching to \(selectedScan.ssid)...", level: .info)
+//                    // Ask the user to switch to the Provisioned Network.
+//                    var manager = NEManager()
+//                    manager.delegate = self
+//                    let configuration = NEHotspotConfiguration(ssid: selectedScan.ssid, passphrase: ssidPassword, isWEP: selectedScan.authentication == .wep)
+//                    try await manager.apply(configuration)
+//                case .verify:
+//                    log("Awaiting network change...", level: .info)
+//                    
+//                    // Wait a couple of seconds for the firmware to make the connection switch.
+//                    try? await Task.sleepFor(seconds: 2)
+//                    
+//                    log("Searching for provisioned device in network...", level: .info)
+//                    let browser = BonjourBrowser()
+//                    browser.delegate = self
+//                    let txtRecord = try await browser.findBonjourService(.wifiProv)
+//                    try verifyTXTRecord(txtRecord)
                 default:
                     break
                 }
