@@ -50,36 +50,15 @@ struct ProvisionOverWiFiView: View {
                 
                 Spacer()
                 
-                HStack {
-                    if viewModel.pipelineManager.inProgress {
-                        ProgressView()
-                    } else if viewModel.pipelineManager.error != nil {
-                        Button("Retry") {
-                            startProvisioning()
-                        }
-                        .tint(.nordicRed)
-                        .buttonStyle(.borderedProminent)
-                    }
-                    
-                    if viewModel.pipelineManager.success {
-                        Button {
-                            presentationMode.wrappedValue.dismiss()
-                        } label: {
-                            Label("Success!", systemImage: "fireworks")
-                                .frame(maxWidth: .infinity)
-                        }
-                        .buttonStyle(.borderedProminent)
-                        
-                        Button {
-                            viewStatus = .setup
-                        } label: {
-                            Label("Clear", systemImage: "arrow.circlepath")
-                                .frame(maxWidth: .infinity)
-                        }
-                        .buttonStyle(.bordered)
-                    }
+                ProvisioningPipelineButtons {
+                    startProvisioning()
+                } onSuccess: {
+                    presentationMode.wrappedValue.dismiss()
+                } onClear: {
+                    viewStatus = .setup
                 }
                 .padding()
+                .environmentObject(viewModel)
             case .awaitingUserInput:
                 List(selection: $viewModel.selectedScan) {
                     ssidSection()
