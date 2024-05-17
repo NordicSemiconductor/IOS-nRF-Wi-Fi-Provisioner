@@ -77,7 +77,7 @@ struct ProvisionOverWiFiView: View {
                         Button {
                             presentationMode.wrappedValue.dismiss()
                         } label: {
-                            Text("Success!")
+                            Label("Success!", systemImage: "fireworks")
                                 .frame(maxWidth: .infinity)
                         }
                         .buttonStyle(.borderedProminent)
@@ -85,7 +85,7 @@ struct ProvisionOverWiFiView: View {
                         Button {
                             viewStatus = .setup
                         } label: {
-                            Text("Clear")
+                            Label("Clear", systemImage: "arrow.circlepath")
                                 .frame(maxWidth: .infinity)
                         }
                         .buttonStyle(.bordered)
