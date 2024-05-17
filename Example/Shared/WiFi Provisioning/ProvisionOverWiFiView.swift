@@ -46,8 +46,14 @@ struct ProvisionOverWiFiView: View {
                 }
             case .showingStages:
                 List {
-                    Section("Progress") {
-                        ForEach(viewModel.pipelineManager.stages) { stage in
+                    if let connectionStage = viewModel.pipelineManager.connectionStage {
+                        Section("Connection") {
+                            PipelineView(stage: connectionStage, logLine: viewModel.logLine)
+                        }
+                    }
+                    
+                    Section("Provisioning") {
+                        ForEach(viewModel.pipelineManager.provisioningStages()) { stage in
                             PipelineView(stage: stage, logLine: viewModel.logLine)
                         }
                     }

@@ -201,6 +201,29 @@ enum TXTError: Error, LocalizedError {
     }
 }
 
+// MARK: PipelineManager
+
+extension PipelineManager where Stage == ProvisioningStage {
+    
+    var connectionStage: ProvisioningStage? {
+        stages.first(where: \.id, isEqualsTo: ProvisioningStage.connect.id)
+    }
+    
+    private static let provisioningOnlyStages: Set<ProvisioningStage> = [
+        .browse, .resolve, .scan, .provisioningInfo, .provision
+    ]
+    func provisioningStages() -> [ProvisioningStage] {
+        return stages.filter({
+            Self.provisioningOnlyStages.contains(where: \.id, isEqualsTo: $0.id)
+        })
+    }
+    
+    func verificationStages() -> ArraySlice<ProvisioningStage>? {
+        let stages = stagesFrom(.provisioningInfo)
+        return stages.isEmpty ? nil : stages
+    }
+}
+
 // MARK: ProvisionManager.Delegate
 
 extension ProvisionOverWiFiView.ViewModel: ProvisionManager.Delegate {
