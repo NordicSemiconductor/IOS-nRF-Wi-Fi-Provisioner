@@ -1,5 +1,5 @@
 //
-//  ProvisioningConfiguration.swift
+//  ProvisioningSetupView.swift
 //  nRF-Wi-Fi-Provisioner (iOS)
 //
 //  Created by Dinesh Harjani on 6/5/24.
@@ -8,9 +8,9 @@
 import SwiftUI
 import iOS_Common_Libraries
 
-// MARK: - ProvisioningConfiguration
+// MARK: - ProvisioningSetupView
 
-struct ProvisioningConfiguration: View {
+struct ProvisioningSetupView: View {
     
     // MARK: Properties
     

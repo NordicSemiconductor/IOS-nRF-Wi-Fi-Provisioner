@@ -88,7 +88,7 @@
 		AA4C20FB2BEBA93B00B67741 /* NFCAuthenticationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA4C20FA2BEBA93B00B67741 /* NFCAuthenticationType.swift */; };
 		AA4C20FD2BEBA95700B67741 /* NFCEncryptionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA4C20FC2BEBA95700B67741 /* NFCEncryptionType.swift */; };
 		AA4C20FF2BEBA9B000B67741 /* NFCProvisioningMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA4C20FE2BEBA9B000B67741 /* NFCProvisioningMessage.swift */; };
-		AA4D8F8F2BE91F3000A4EC93 /* ProvisioningConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA4D8F8E2BE91F3000A4EC93 /* ProvisioningConfiguration.swift */; };
+		AA4D8F8F2BE91F3000A4EC93 /* ProvisioningSetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA4D8F8E2BE91F3000A4EC93 /* ProvisioningSetupView.swift */; };
 		AA9ED5C12BC55D4100FAC49D /* WifiScanResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9ED5C02BC55D4100FAC49D /* WifiScanResult.swift */; };
 		AA9ED5C22BC55D4100FAC49D /* WifiScanResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9ED5C02BC55D4100FAC49D /* WifiScanResult.swift */; };
 		AA9ED5C42BC56D1A00FAC49D /* ScannerSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9ED5C32BC56D1A00FAC49D /* ScannerSection.swift */; };
@@ -169,7 +169,7 @@
 		AA4C20FA2BEBA93B00B67741 /* NFCAuthenticationType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFCAuthenticationType.swift; sourceTree = "<group>"; };
 		AA4C20FC2BEBA95700B67741 /* NFCEncryptionType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFCEncryptionType.swift; sourceTree = "<group>"; };
 		AA4C20FE2BEBA9B000B67741 /* NFCProvisioningMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFCProvisioningMessage.swift; sourceTree = "<group>"; };
-		AA4D8F8E2BE91F3000A4EC93 /* ProvisioningConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProvisioningConfiguration.swift; sourceTree = "<group>"; };
+		AA4D8F8E2BE91F3000A4EC93 /* ProvisioningSetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProvisioningSetupView.swift; sourceTree = "<group>"; };
 		AA9ED5C02BC55D4100FAC49D /* WifiScanResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WifiScanResult.swift; sourceTree = "<group>"; };
 		AA9ED5C32BC56D1A00FAC49D /* ScannerSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerSection.swift; sourceTree = "<group>"; };
 		AAA260492BDFA78600BFF2A2 /* certificate.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = certificate.cer; sourceTree = SOURCE_ROOT; };
@@ -454,7 +454,7 @@
 				AA3DE8F42BD127E400CA4B70 /* PipelineManager.swift */,
 				AAAE24112BD01596005C5F90 /* ProvisioningPipeline.swift */,
 				AA49E0552BB584B200CDD6FA /* APWiFiScanView.swift */,
-				AA4D8F8E2BE91F3000A4EC93 /* ProvisioningConfiguration.swift */,
+				AA4D8F8E2BE91F3000A4EC93 /* ProvisioningSetupView.swift */,
 				AA4582AF2BF773F900B755D7 /* ProvisioningPipelineList.swift */,
 				AA4582B12BF77ADC00B755D7 /* ProvisioningPipelineButtons.swift */,
 				AA2C119A2B7A61EF003AF3E0 /* ProvisionOverWiFiView.swift */,
@@ -689,7 +689,7 @@
 				01A43DEE2886FED80025A5C4 /* DeviceView+ViewModel.swift in Sources */,
 				AAAAE6C52B7F813D000BB569 /* AppViewModel.swift in Sources */,
 				AA194BDA2BBD68980000BD63 /* RSSI+Ext.swift in Sources */,
-				AA4D8F8F2BE91F3000A4EC93 /* ProvisioningConfiguration.swift in Sources */,
+				AA4D8F8F2BE91F3000A4EC93 /* ProvisioningSetupView.swift in Sources */,
 				01922CBD28A2713100492E87 /* NavigationView.swift in Sources */,
 				01C0F0FA287DE864008BBE46 /* ScannerViewModel.swift in Sources */,
 				01062ADA28B6592700BB41FD /* View+Mod.swift in Sources */,
