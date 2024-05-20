@@ -63,6 +63,7 @@ struct ProvisioningSetupView: View {
             Label("Start Provisioning", systemImage: "arrowshape.forward.fill")
                 .frame(maxWidth: .infinity)
         }
+        .disabled(switchToAccessPoint && ssid.isEmpty)
         .buttonStyle(.borderedProminent)
         .padding(.horizontal, 16)
         .padding(.vertical)
