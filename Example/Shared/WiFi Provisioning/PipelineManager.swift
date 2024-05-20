@@ -78,7 +78,7 @@ public extension PipelineManager {
     }
     
     func stagesFrom(_ stage: Stage) -> Array<Stage>.SubSequence {
-        guard let limitIndex = stages.firstIndex(of: stage) else {
+        guard let limitIndex = stages.firstIndex(where: { $0.id == stage.id }) else {
             return []
         }
         return stages.suffix(from: limitIndex)
