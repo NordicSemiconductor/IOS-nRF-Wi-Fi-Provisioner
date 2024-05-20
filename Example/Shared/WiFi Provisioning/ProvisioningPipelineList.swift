@@ -42,7 +42,9 @@ struct ProvisioningPipelineList: View {
                             PipelineView(stage: stage, logLine: viewModel.logLine)
                         }
                     } else {
-                        Label("Verification adds a couple of extra steps involving Network Configuration changes on your iPhone that might throw errors, but your Device might've still been successfully provisioned.", systemImage: "exclamationmark.triangle.fill")
+                        Label("Verification is Unreliable", systemImage: "exclamationmark.triangle.fill")
+                        
+                        Text("Verification may fail, but your Device could be correctly provisioned.")
                         
                         Button("Verify", action: onVerify)
                             .centered()

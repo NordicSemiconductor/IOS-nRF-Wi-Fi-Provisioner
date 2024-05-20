@@ -43,7 +43,6 @@ struct ProvisioningSetupView: View {
                         .font(.caption)
                 } else {
                     Label("Enable to automatically connect to the Device.", systemImage: "info.square.fill")
-                        .font(.caption)
                     
                     Button("Set up Wi-Fi Connection in Settings") {
                         guard let url = URL(string: UIApplication.openSettingsURLString) else { return }

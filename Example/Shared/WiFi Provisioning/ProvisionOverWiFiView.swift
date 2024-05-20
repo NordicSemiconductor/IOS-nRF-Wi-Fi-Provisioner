@@ -31,6 +31,8 @@ struct ProvisionOverWiFiView: View {
         case awaitingUserInput
     }
     
+    // MARK: Init
+    
     init(switchToAccessPoint: Bool, ssidName: String) {
         self.switchToAccessPoint = switchToAccessPoint
         self.name = ssidName
