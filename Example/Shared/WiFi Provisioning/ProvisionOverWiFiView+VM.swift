@@ -32,6 +32,7 @@ extension ProvisionOverWiFiView {
         @Published var selectedScan: APWiFiScan?
         @Published var ssidPassword: String = ""
         @Published var volatileMemory = false
+        @Published var attemptedToVerify = false
         
         private let log = Logger(subsystem: Bundle.main.bundleIdentifier!, 
                                  category: "ProvisionOverWiFiView+ViewModel")
@@ -47,6 +48,7 @@ extension ProvisionOverWiFiView.ViewModel {
     
     func setupPipeline(switchingToDevice switchToDevice: Bool) {
         cancellables.removeAll()
+        attemptedToVerify = false
         
         var stages = ProvisioningStage.allCases
         if !switchToDevice {
@@ -101,38 +103,53 @@ extension ProvisionOverWiFiView.ViewModel {
         }
     }
     
-    // MARK: provision
+    // MARK: Provision
     
     func provision(ipAddress: String) async throws {
         guard let selectedScan else {
             throw TitleMessageError(message: "SSID is not selected")
         }
-        let provisioningStages = pipelineManager.stagesFrom(.provision)
+        do {
+            pipelineManager.inProgress(.provision)
+            try await manager.provision(ipAddress: ipAddress, to: selectedScan, with: ssidPassword)
+            pipelineManager.completed(.provision)
+        } catch {
+            pipelineManager.onError(error)
+            log(error.localizedDescription, level: .error)
+            throw error
+        }
+    }
+    
+    // MARK: Verify
+    
+    func verify() async throws {
+        guard let selectedScan else {
+            throw TitleMessageError(message: "SSID is not selected")
+        }
+        let provisioningStages = pipelineManager.verificationStages()
         do {
             for stage in provisioningStages {
                 pipelineManager.inProgress(stage)
                 switch stage {
-                case .provision:
-                    try await manager.provision(ipAddress: ipAddress, to: selectedScan, with: ssidPassword)
-//                case .switchBack:
-//                    log("Verification enabled", level: .debug)
-//                    log("Switching to \(selectedScan.ssid)...", level: .info)
-//                    // Ask the user to switch to the Provisioned Network.
-//                    var manager = NEManager()
-//                    manager.delegate = self
-//                    let configuration = NEHotspotConfiguration(ssid: selectedScan.ssid, passphrase: ssidPassword, isWEP: selectedScan.authentication == .wep)
-//                    try await manager.apply(configuration)
-//                case .verify:
-//                    log("Awaiting network change...", level: .info)
-//                    
-//                    // Wait a couple of seconds for the firmware to make the connection switch.
-//                    try? await Task.sleepFor(seconds: 2)
-//                    
-//                    log("Searching for provisioned device in network...", level: .info)
-//                    let browser = BonjourBrowser()
-//                    browser.delegate = self
-//                    let txtRecord = try await browser.findBonjourService(.wifiProv)
-//                    try verifyTXTRecord(txtRecord)
+                case .switchBack:
+                    log("Verification enabled", level: .debug)
+                    log("Switching to \(selectedScan.ssid)...", level: .info)
+                    // Ask the user to switch to the Provisioned Network.
+                    var manager = NEManager()
+                    manager.delegate = self
+                    let configuration = NEHotspotConfiguration(ssid: selectedScan.ssid, passphrase: ssidPassword, isWEP: selectedScan.authentication == .wep)
+                    try await manager.apply(configuration)
+                case .verify:
+                    log("Awaiting network change...", level: .info)
+
+                    // Wait a couple of seconds for the firmware to make the connection switch.
+                    try? await Task.sleepFor(seconds: 2)
+
+                    log("Searching for provisioned device in network...", level: .info)
+                    let browser = BonjourBrowser()
+                    browser.delegate = self
+                    let txtRecord = try await browser.findBonjourService(.wifiProv)
+                    try verifyTXTRecord(txtRecord)
                 default:
                     break
                 }
@@ -215,9 +232,8 @@ extension PipelineManager where Stage == ProvisioningStage {
         })
     }
     
-    func verificationStages() -> ArraySlice<ProvisioningStage>? {
-        let stages = stagesFrom(.provisioningInfo)
-        return stages.isEmpty ? nil : stages
+    func verificationStages() -> ArraySlice<ProvisioningStage> {
+        return stagesFrom(.switchBack)
     }
 }
 

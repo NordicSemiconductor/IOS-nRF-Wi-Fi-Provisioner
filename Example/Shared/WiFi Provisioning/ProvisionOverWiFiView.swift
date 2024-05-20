@@ -44,8 +44,10 @@ struct ProvisionOverWiFiView: View {
                     startProvisioning()
                 }
             case .showingStages:
-                ProvisioningPipelineList()
-                    .environmentObject(viewModel)
+                ProvisioningPipelineList {
+                    verifyProvisioning()
+                }
+                .environmentObject(viewModel)
                 
                 Spacer()
                 
@@ -91,6 +93,20 @@ struct ProvisionOverWiFiView: View {
                 let configuration = NEHotspotConfiguration(ssid: name)
                 try await viewModel.pipelineStart(applying: configuration)
                 viewStatus = .awaitingUserInput
+            } catch {
+                viewStatus = .showingStages
+                alertError = TitleMessageError(error)
+                showAlert = true
+            }
+        }
+    }
+    
+    private func verifyProvisioning() {
+        Task { @MainActor in
+            do {
+                viewModel.attemptedToVerify = true
+                viewModel.objectWillChange.send()
+                try await viewModel.verify()
             } catch {
                 viewStatus = .showingStages
                 alertError = TitleMessageError(error)

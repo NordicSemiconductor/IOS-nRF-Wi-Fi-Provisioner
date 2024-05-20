@@ -25,24 +25,24 @@ struct ProvisioningPipelineButtons: View {
         HStack {
             if viewModel.pipelineManager.inProgress {
                 ProgressView()
-            } else if viewModel.pipelineManager.error != nil {
-                Button("Retry", action: onRetry)
-                .tint(.nordicRed)
-                .buttonStyle(.borderedProminent)
-            }
-            
-            if viewModel.pipelineManager.success {
-                Button(action: onSuccess) {
-                    Label("Success!", systemImage: "fireworks")
-                        .frame(maxWidth: .infinity)
+            } else {
+                if viewModel.pipelineManager.isCompleted(.provision) {
+                    Button(action: onSuccess) {
+                        Label("Success!", systemImage: "fireworks")
+                            .frame(maxWidth: .infinity)
+                    }
+                    .buttonStyle(.borderedProminent)
+                    
+                    Button(action: onClear) {
+                        Label("Clear", systemImage: "arrow.circlepath")
+                            .frame(maxWidth: .infinity)
+                    }
+                    .buttonStyle(.bordered)
+                } else {
+                    Button("Retry", action: onRetry)
+                    .tint(.nordicRed)
+                    .buttonStyle(.borderedProminent)
                 }
-                .buttonStyle(.borderedProminent)
-                
-                Button(action: onClear) {
-                    Label("Clear", systemImage: "arrow.circlepath")
-                        .frame(maxWidth: .infinity)
-                }
-                .buttonStyle(.bordered)
             }
         }
     }
