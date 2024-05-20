@@ -34,6 +34,7 @@ struct ProvisioningSetupView: View {
                         Label("Device SSID", systemImage: "wifi.circle")
                         
                         TextField("Access Point Name", text: $ssid)
+                            .foregroundColor(Color.universalAccentColor)
                             .frame(maxWidth: .infinity)
                             .multilineTextAlignment(.trailing)
                             .submitLabel(.done)
