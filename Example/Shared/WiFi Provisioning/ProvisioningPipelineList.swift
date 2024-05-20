@@ -45,6 +45,7 @@ struct ProvisioningPipelineList: View {
                         Label("Verification is Unreliable", systemImage: "exclamationmark.triangle.fill")
                         
                         Text("Verification may fail, but your Device could be correctly provisioned.")
+                            .font(.caption)
                         
                         Button("Verify", action: onVerify)
                             .centered()
