@@ -41,7 +41,7 @@ extension ProvisioningStage: CaseIterable {
     
     // MARK: Cases
     
-    static let connect = ProvisioningStage(symbolName: "cpu", todoStatus: "Connect to Device", inProgressStatus: "Switching to Device...", completedStatus: "Connected to Device")
+    static let connect = ProvisioningStage(symbolName: "cpu", todoStatus: "Connect to Device", inProgressStatus: "Connecting to Device...", completedStatus: "Connected to Device")
     static let browse = ProvisioningStage(symbolName: "phone.arrow.up.right.fill", todoStatus: "Find Provisioning Service", inProgressStatus: "Browsing mDNS Services...", completedStatus: "Found Provisioning Service")
     static let resolve = ProvisioningStage(symbolName: "phone.arrow.down.left.fill", todoStatus: "Resolve IP Address", inProgressStatus: "Attempting to Resolve IP Address...", completedStatus: "Resolved IP Address")
     static let scan = ProvisioningStage(symbolName: "waveform.badge.magnifyingglass", todoStatus: "Scan for Available Networks", inProgressStatus: "Scanning for Networks...", completedStatus: "Scanned Available Networks")
