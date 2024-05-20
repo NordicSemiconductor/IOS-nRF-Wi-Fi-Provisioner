@@ -35,6 +35,8 @@ struct ProvisioningSetupView: View {
                         
                         TextField("Access Point Name", text: $ssid)
                             .foregroundColor(Color.universalAccentColor)
+                            .textInputAutocapitalization(.never)
+                            .disableAllAutocorrections()
                             .frame(maxWidth: .infinity)
                             .multilineTextAlignment(.trailing)
                             .submitLabel(.done)
