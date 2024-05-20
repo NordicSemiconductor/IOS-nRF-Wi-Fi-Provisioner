@@ -14,8 +14,6 @@ import NetworkExtension
 
 struct ProvisionOverWiFiView: View {
     
-    private static let DEFAULT_SSID = "nrf-wifiprov"
-    
     // MARK: Properties
     
     @Environment(\.presentationMode) var presentationMode
@@ -24,14 +22,18 @@ struct ProvisionOverWiFiView: View {
     
     @State private var alertError: TitleMessageError? = nil
     @State private var showAlert = false
-    @State private var viewStatus: ViewStatus = .setup
-    @State private var switchToAccessPoint = true
-    @State private var name = Self.DEFAULT_SSID
+    @State private var viewStatus: ViewStatus = .showingStages
+    @State private var switchToAccessPoint: Bool
+    @State private var name: String
     
     enum ViewStatus {
-        case setup
         case showingStages
         case awaitingUserInput
+    }
+    
+    init(switchToAccessPoint: Bool, ssidName: String) {
+        self.switchToAccessPoint = switchToAccessPoint
+        self.name = ssidName
     }
     
     // MARK: View
@@ -39,10 +41,6 @@ struct ProvisionOverWiFiView: View {
     var body: some View {
         VStack {
             switch viewStatus {
-            case .setup:
-                ProvisioningConfiguration(switchToAccessPoint: $switchToAccessPoint, ssid: $name) {
-                    startProvisioning()
-                }
             case .showingStages:
                 ProvisioningPipelineList {
                     verifyProvisioning()
@@ -55,8 +53,6 @@ struct ProvisionOverWiFiView: View {
                     startProvisioning()
                 } onSuccess: {
                     presentationMode.wrappedValue.dismiss()
-                } onClear: {
-                    viewStatus = .setup
                 }
                 .padding()
                 .environmentObject(viewModel)
@@ -74,6 +70,9 @@ struct ProvisionOverWiFiView: View {
         }
         .background(Color.formBackground)
         .navigationTitle("Provision over Wi-Fi")
+        .doOnce {
+            startProvisioning()
+        }
         .alert(isPresented: $showAlert, error: alertError) {
             Button("OK", role: .cancel) { 
                 alertError = nil

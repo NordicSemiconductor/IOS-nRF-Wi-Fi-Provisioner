@@ -12,11 +12,12 @@ import iOS_Common_Libraries
 
 struct ProvisioningSetupView: View {
     
+    private static let DEFAULT_SSID = "nrf-wifiprov"
+    
     // MARK: Properties
     
-    @Binding var switchToAccessPoint: Bool
-    @Binding var ssid: String
-    let onStart: () -> Void
+    @State var switchToAccessPoint = true
+    @State var ssid = Self.DEFAULT_SSID
     
     // MARK: View
     
@@ -52,10 +53,13 @@ struct ProvisioningSetupView: View {
                 }
             }
         }
+        .navigationTitle("Provision over Wi-Fi")
         
         Spacer()
         
-        Button(action: onStart) {
+        NavigationLink {
+            ProvisionOverWiFiView(switchToAccessPoint: switchToAccessPoint, ssidName: ssid)
+        } label: {
             Label("Start Provisioning", systemImage: "arrowshape.forward.fill")
                 .frame(maxWidth: .infinity)
         }

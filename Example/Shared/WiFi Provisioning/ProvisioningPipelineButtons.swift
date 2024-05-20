@@ -17,7 +17,6 @@ struct ProvisioningPipelineButtons: View {
     
     let onRetry: () -> Void
     let onSuccess: () -> Void
-    let onClear: () -> Void
     
     // MARK: View
     
@@ -32,12 +31,6 @@ struct ProvisioningPipelineButtons: View {
                             .frame(maxWidth: .infinity)
                     }
                     .buttonStyle(.borderedProminent)
-                    
-                    Button(action: onClear) {
-                        Label("Clear", systemImage: "arrow.circlepath")
-                            .frame(maxWidth: .infinity)
-                    }
-                    .buttonStyle(.bordered)
                 } else {
                     Button("Retry", action: onRetry)
                     .tint(.nordicRed)

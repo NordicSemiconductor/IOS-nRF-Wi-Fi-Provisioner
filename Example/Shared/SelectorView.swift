@@ -36,7 +36,7 @@ struct SelectorView: View {
             
             Section {
                 NavigationLink {
-                    ProvisionOverWiFiView()
+                    ProvisioningSetupView()
                 } label: {
                     Label("Provision over Wi-Fi", systemImage: "wifi")
                 }
