@@ -23,6 +23,14 @@ struct ProvisioningPipelineButtons: View {
     
     // MARK: View
     
+    var successButtonString: String {
+        viewModel.pipelineManager.success ? "Success!" : "Done"
+    }
+    
+    var successSystemImageString: String {
+        viewModel.pipelineManager.success ? "fireworks" : "checkmark"
+    }
+    
     var body: some View {
         HStack {
             if viewModel.pipelineManager.inProgress {
@@ -30,7 +38,7 @@ struct ProvisioningPipelineButtons: View {
             } else {
                 if viewModel.pipelineManager.isCompleted(.provision) {
                     Button(action: onSuccess) {
-                        Label("Success!", systemImage: "fireworks")
+                        Label(successButtonString, systemImage: successSystemImageString)
                             .frame(maxWidth: .infinity)
                     }
                     .buttonStyle(.borderedProminent)
