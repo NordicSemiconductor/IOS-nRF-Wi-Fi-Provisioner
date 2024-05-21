@@ -8,6 +8,7 @@
 import SwiftUI
 import NordicWiFiProvisioner_BLE
 import NordicWiFiProvisioner_SoftAP
+import iOS_Common_Libraries
 
 // MARK: AccessPointSection
 
@@ -45,7 +46,7 @@ struct AccessPointSection: View {
                     
                     Spacer()
                     
-                    SecureField("Type Here", text: $password)
+                    PasswordField(binding: $password, enabled: true)
                         .multilineTextAlignment(.trailing)
                         .submitLabel(.done)
                 }
