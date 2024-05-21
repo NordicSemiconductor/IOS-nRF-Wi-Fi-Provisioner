@@ -52,6 +52,8 @@ struct ProvisionOverWiFiView: View {
                 Spacer()
                 
                 ProvisioningPipelineButtons {
+                    presentationMode.wrappedValue.dismiss()
+                } onRetry: {
                     startProvisioning()
                 } onSuccess: {
                     presentationMode.wrappedValue.dismiss()

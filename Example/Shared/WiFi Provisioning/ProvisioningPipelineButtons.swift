@@ -15,6 +15,9 @@ struct ProvisioningPipelineButtons: View {
     
     @EnvironmentObject private var viewModel: ProvisionOverWiFiView.ViewModel
     
+    // MARK: Properties
+    
+    let onClear: () -> Void
     let onRetry: () -> Void
     let onSuccess: () -> Void
     
@@ -32,7 +35,16 @@ struct ProvisioningPipelineButtons: View {
                     }
                     .buttonStyle(.borderedProminent)
                 } else {
-                    Button("Retry", action: onRetry)
+                    Button(action: onClear) {
+                        Label("Clear", systemImage: "arrowshape.backward.fill")
+                            .frame(maxWidth: .infinity)
+                    }
+                    .buttonStyle(.bordered)
+                    
+                    Button(action: onRetry) {
+                        Label("Retry", systemImage: "arrow.counterclockwise")
+                            .frame(maxWidth: .infinity)
+                    }
                     .tint(.nordicRed)
                     .buttonStyle(.borderedProminent)
                 }
