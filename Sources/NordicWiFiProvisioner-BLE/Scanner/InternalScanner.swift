@@ -75,7 +75,8 @@ extension InternalScanner: CBCentralManagerDelegate {
         }
     }
 
-    func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String: Any], rssi RSSI: NSNumber) {
+    func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, 
+                        advertisementData: [String: Any], rssi RSSI: NSNumber) {
         let discoveredDevice = ScanResult(
                 peripheral: peripheral,
                 advertisementData: advertisementData,

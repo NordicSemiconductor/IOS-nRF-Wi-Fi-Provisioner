@@ -147,6 +147,7 @@ class InternalDeviceManager {
 }
 
 // MARK: - Private Methods
+
 extension InternalDeviceManager {
     private func sendRequest(opCode: Proto.OpCode, config: Proto.WifiConfig? = nil, scanParam: Proto.ScanParams? = nil) throws {
         var request = Proto.Request()
