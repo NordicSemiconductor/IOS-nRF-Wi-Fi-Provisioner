@@ -30,32 +30,23 @@
 
 import Foundation
 
-public struct WifiConfig {
-    public var wifi: WifiInfo?
-    public var passphrase: String?
-    public var volatileMemory: Bool?
+/// A protocol that defines a delegate for retrieving Wi-Fi scan results.
+public protocol WiFiScannerDelegate: AnyObject {
+    /// Called when the new Wi-Fi scan result is received.
+    ///
+    /// - parameter wifi: The Wi-Fi Info.
+    /// - parameter rssi: The RSSI value. The value is in dBm.
+    func deviceManager(_ deviceManager: DeviceManager, discoveredAccessPoint wifi: WifiInfo, rssi: Int?)
     
-    public init(wifi: WifiInfo? = nil, passphrase: String? = nil, volatileMemory: Bool? = nil) {
-        self.wifi = wifi
-        self.passphrase = passphrase
-        self.volatileMemory = volatileMemory
-    }
-}
-
-extension WifiConfig: ProtoConvertible {
-    init(proto: Proto.WifiConfig) {
-        self.wifi = proto.hasWifi ? WifiInfo(proto: proto.wifi) : nil
-        self.passphrase = proto.hasPassphrase ? String(data: proto.passphrase, encoding: .utf8) : nil
-        self.volatileMemory = proto.hasVolatileMemory ? proto.volatileMemory : nil
-    }
+    /// Notify delegate that scanning for Access Points started
+    ///
+    /// - Parameters:
+    ///   - error: Error that caused the failure. `nil` if no error occurred.
+    func deviceManagerDidStartScan(_ deviceManager: DeviceManager, error: Error?)
     
-    var proto: Proto.WifiConfig {
-        var proto = Proto.WifiConfig()
-        
-        (self.wifi?.proto).map { proto.wifi = $0 }
-        (self.passphrase?.data(using: .utf8)).map { proto.passphrase = $0 }
-        (self.volatileMemory).map { proto.volatileMemory = $0 }
-        
-        return proto
-    }
+    /// Notify delegate that scanning for Access Points started
+    ///
+    /// - Parameters:
+    ///   - error: Error that caused the failure. `nil` if no error occurred.
+    func deviceManagerDidStopScan(_ deviceManager: DeviceManager, error: Error?)
 }
