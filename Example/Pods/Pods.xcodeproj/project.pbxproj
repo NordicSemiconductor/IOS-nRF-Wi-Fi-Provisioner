@@ -38,7 +38,7 @@
 		288F7E76E8C468CB7A29F6F5E6273E44 /* InternalScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE61CF25E7F8CBFCC0F4B201BC852689 /* InternalScanner.swift */; };
 		28CD4D1BDEA0EF44982237982FC441BD /* Google_Protobuf_ListValue+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D464AB9B1985F2D7FC9E647F7DD8C67 /* Google_Protobuf_ListValue+Extensions.swift */; };
 		2A574050A0F84627963DBB73763651B4 /* ProtoConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 412DA20233FDCD49384989A1CE05BBC4 /* ProtoConvertible.swift */; };
-		2ACFCB4AA2F8398C9A0BC52095A84200 /* WiFiScanerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D22960B2EFC85FFD6BAE6F8C96C2E44 /* WiFiScanerDelegate.swift */; };
+		2ACFCB4AA2F8398C9A0BC52095A84200 /* WiFiScannerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D22960B2EFC85FFD6BAE6F8C96C2E44 /* WiFiScannerDelegate.swift */; };
 		2AE6DC76750D2BCE7426CF9E3A359B25 /* CBMPeripheral.swift in Sources */ = {isa = PBXBuildFile; fileRef = C934F05AD5B0474B20756011ED74E0DD /* CBMPeripheral.swift */; };
 		2BE90FCEB09EFBD367C388A724A467DB /* ScanResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C810C7BD81C2C75A9164A3B83CEDE9B /* ScanResult.swift */; };
 		30046BBEE2C851DC5F491D1FCDEA8EBF /* field_mask.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = 503844F17F408D818F3B8799975841FA /* field_mask.pb.swift */; };
@@ -356,7 +356,7 @@
 		7A31E2FBBF8257C6C0308B46FC694B2A /* NordicWiFiProvisioner-BLE-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "NordicWiFiProvisioner-BLE-dummy.m"; sourceTree = "<group>"; };
 		7B1803105B493BE2658F3572D680C49B /* NordicWiFiProvisioner-SoftAP.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "NordicWiFiProvisioner-SoftAP.release.xcconfig"; sourceTree = "<group>"; };
 		7BE16BEF152A74917B4D169ECDA650F0 /* NordicWiFiProvisioner-BLE-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "NordicWiFiProvisioner-BLE-prefix.pch"; sourceTree = "<group>"; };
-		7D22960B2EFC85FFD6BAE6F8C96C2E44 /* WiFiScanerDelegate.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WiFiScanerDelegate.swift; sourceTree = "<group>"; };
+		7D22960B2EFC85FFD6BAE6F8C96C2E44 /* WiFiScannerDelegate.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WiFiScannerDelegate.swift; sourceTree = "<group>"; };
 		7F7B59FB644D7E4C63B189C577D0C9A9 /* ZigZag.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ZigZag.swift; path = Sources/SwiftProtobuf/ZigZag.swift; sourceTree = "<group>"; };
 		80F0274554DE1C1BF6D666FC482C536E /* NordicWiFiProvisioner-BLE-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "NordicWiFiProvisioner-BLE-Info.plist"; sourceTree = "<group>"; };
 		84121A806D87156B15DBDA92DE375BBF /* DeviceManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DeviceManager.swift; sourceTree = "<group>"; };
@@ -591,7 +591,7 @@
 				3B0F473DC5E34291A1AB8EF40799365D /* ConnectionDelegate.swift */,
 				59362E005820251E78184A9D138A20C4 /* InfoDelegate.swift */,
 				6183113CF6514918CE60E9EB3A8B08E5 /* ProvisionDelegate.swift */,
-				7D22960B2EFC85FFD6BAE6F8C96C2E44 /* WiFiScanerDelegate.swift */,
+				7D22960B2EFC85FFD6BAE6F8C96C2E44 /* WiFiScannerDelegate.swift */,
 			);
 			name = Delegates;
 			path = Delegates;
@@ -1466,7 +1466,7 @@
 				4DB6456D9BBA5479EE800E6977C407A9 /* WifiConfig.swift in Sources */,
 				E321514A3ED94187E928AD45A661BE89 /* WifiInfo.swift in Sources */,
 				4521F7370EA22DA78E4A665D23457870 /* WiFiInfo+Fake.swift in Sources */,
-				2ACFCB4AA2F8398C9A0BC52095A84200 /* WiFiScanerDelegate.swift in Sources */,
+				2ACFCB4AA2F8398C9A0BC52095A84200 /* WiFiScannerDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

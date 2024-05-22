@@ -91,7 +91,7 @@ open class DeviceManager {
     }
 
     /// The object that you want to receive Wi-Fi scan results.
-    open var wiFiScanerDelegate: WiFiScanerDelegate? {
+    open var wifiScannerDelegate: WiFiScannerDelegate? {
         get {
             internalProvisioner.provisionerScanDelegate
         }

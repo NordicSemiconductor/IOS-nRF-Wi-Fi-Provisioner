@@ -73,7 +73,7 @@ extension DeviceView {
             self.provisioner.infoDelegate = self
             self.provisioner.connectionDelegate = self
             self.provisioner.provisionerDelegate = self
-            self.provisioner.wiFiScanerDelegate = self
+            self.provisioner.wifiScannerDelegate = self
         }
         
         init(provisioner: DeviceManager) {
@@ -82,7 +82,7 @@ extension DeviceView {
             self.provisioner.infoDelegate = self
             self.provisioner.connectionDelegate = self
             self.provisioner.provisionerDelegate = self
-            self.provisioner.wiFiScanerDelegate = self
+            self.provisioner.wifiScannerDelegate = self
         }
     }
 }
@@ -239,7 +239,7 @@ extension DeviceView.ViewModel: InfoDelegate {
 
 // MARK: - WiFiScanerDelegate
 
-extension DeviceView.ViewModel: WiFiScanerDelegate {
+extension DeviceView.ViewModel: WiFiScannerDelegate {
     
     func deviceManager(_ provisioner: NordicWiFiProvisioner_BLE.DeviceManager, discoveredAccessPoint wifi: NordicWiFiProvisioner_BLE.WifiInfo, rssi: Int?) {
         let scanResult = WifiScanResult(wifi: wifi, rssi: rssi)

@@ -44,7 +44,7 @@ class InternalDeviceManager {
     
     weak var connectionDelegate: ConnectionDelegate?
     weak var infoDelegate: InfoDelegate?
-    weak var provisionerScanDelegate: WiFiScanerDelegate?
+    weak var provisionerScanDelegate: WiFiScannerDelegate?
     weak var provisionerDelegate: ProvisionDelegate?
 
     unowned var provisioner: DeviceManager!
