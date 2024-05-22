@@ -30,6 +30,8 @@
 
 // MARK: - BonjourResolver
 
+import Foundation
+
 final class BonjourResolver: NSObject {
     
     // MARK: Public API
