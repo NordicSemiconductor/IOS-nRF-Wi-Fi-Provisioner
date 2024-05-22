@@ -1,13 +1,36 @@
-//
-//  NSURLSessionPinningDelegate.swift
-//  NordicWiFiProvisioner-SoftAP
-//
-//  Created by Dinesh Harjani on 16/2/24.
-//
+/*
+* Copyright (c) 2024, Nordic Semiconductor
+* All rights reserved.
+*
+* Redistribution and use in source and binary forms, with or without modification,
+* are permitted provided that the following conditions are met:
+*
+* 1. Redistributions of source code must retain the above copyright notice, this
+*    list of conditions and the following disclaimer.
+*
+* 2. Redistributions in binary form must reproduce the above copyright notice, this
+*    list of conditions and the following disclaimer in the documentation and/or
+*    other materials provided with the distribution.
+*
+* 3. Neither the name of the copyright holder nor the names of its contributors may
+*    be used to endorse or promote products derived from this software without
+*    specific prior written permission.
+*
+* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+* ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+* WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+* IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
+* INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+* PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+* WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+* POSSIBILITY OF SUCH DAMAGE.
+*/
 
 import Foundation
 import NetworkExtension
-import OSLog
+import os.log
 
 // MARK: - NSURLSessionPinningDelegate
 
@@ -16,9 +39,6 @@ final class NSURLSessionPinningDelegate: NSObject, URLSessionDelegate {
     // MARK: Private Properties
     
     private let certificateURL: URL
-    
-    private lazy var logger = Logger(subsystem: "com.nordicsemi.NordicWiFiProvisioner-SoftAP",
-                                     category: "NSURLSessionPinningDelegate")
     
     // MARK: Init
     
@@ -56,7 +76,7 @@ final class NSURLSessionPinningDelegate: NSObject, URLSessionDelegate {
         let trust = try secCall { SecTrustCreateWithCertificates(chain as NSArray, policy, $0) }
         let err = SecTrustSetAnchorCertificates(trust, [anchor] as NSArray)
         guard err == errSecSuccess else {
-            logger.error("SecTrustSetAnchorCertificates Error: \(err)")
+            log(level: .error, "SecTrustSetAnchorCertificates Error: \(err)")
             throw NSError(domain: NSOSStatusErrorDomain, code: Int(err), userInfo: nil)
         }
 
@@ -66,11 +86,22 @@ final class NSURLSessionPinningDelegate: NSObject, URLSessionDelegate {
     }
 
     func shouldAllowHTTPSConnection(trust: SecTrust) async -> Bool {
-        guard let chain = SecTrustCopyCertificateChain(trust) as? [SecCertificate] else { return false }
+        var chain: [SecCertificate] = []
+        if #available(iOS 15.0, *) {
+            guard let c = SecTrustCopyCertificateChain(trust) as? [SecCertificate] else { return false }
+            chain = c
+        } else {
+            let count = SecTrustGetCertificateCount(trust)
+            for i in 0..<count {
+                if let cert = SecTrustGetCertificateAtIndex(trust, i) {
+                    chain.append(cert)
+                }
+            }
+        }
         do {
             return try await shouldAllowHTTPSConnection(chain: chain)
         } catch {
-            logger.error("shouldAllowHTTPSConnection Error: \(error.localizedDescription)")
+            log(level: .error, "shouldAllowHTTPSConnection Error: \(error.localizedDescription)")
             return false
         }
     }
@@ -80,7 +111,7 @@ final class NSURLSessionPinningDelegate: NSObject, URLSessionDelegate {
         let err = body(&result)
 
         guard err == errSecSuccess else {
-            logger.error("secCall Error: \(err)")
+            log(level: .error, "secCall Error: \(err)")
             throw NSError(domain: NSOSStatusErrorDomain, code: Int(err), userInfo: nil)
         }
         return result!
@@ -88,12 +119,17 @@ final class NSURLSessionPinningDelegate: NSObject, URLSessionDelegate {
     
     func urlSession(_ session: URLSession, didBecomeInvalidWithError error: Error?) {
         guard let error else { return }
-        logger.debug("\(#function)")
-        logger.error("Error: \(error.localizedDescription)")
+        log(level: .debug, "\(#function)")
+        log(level: .error, "Error: \(error.localizedDescription)")
     }
     
     func urlSessionDidFinishEvents(forBackgroundURLSession session: URLSession) {
-        logger.debug("\(#function)")
-        logger.debug("\(session)")
+        log(level: .debug, "\(#function)")
+        log(level: .debug, "\(session)")
+    }
+    
+    private func log(level: OSLogType, _ message: String) {
+        let category = OSLog(subsystem: "com.nordicsemi.NordicWiFiProvisioner-SoftAP", category: "NSURLSessionPinningDelegate")
+        os_log("%{public}@", log: category, type: level, message)
     }
 }

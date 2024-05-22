@@ -38,7 +38,7 @@
 		288F7E76E8C468CB7A29F6F5E6273E44 /* InternalScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE61CF25E7F8CBFCC0F4B201BC852689 /* InternalScanner.swift */; };
 		28CD4D1BDEA0EF44982237982FC441BD /* Google_Protobuf_ListValue+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D464AB9B1985F2D7FC9E647F7DD8C67 /* Google_Protobuf_ListValue+Extensions.swift */; };
 		2A574050A0F84627963DBB73763651B4 /* ProtoConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 412DA20233FDCD49384989A1CE05BBC4 /* ProtoConvertible.swift */; };
-		2ACFCB4AA2F8398C9A0BC52095A84200 /* WiFiScanerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D22960B2EFC85FFD6BAE6F8C96C2E44 /* WiFiScanerDelegate.swift */; };
+		2ACFCB4AA2F8398C9A0BC52095A84200 /* WiFiScannerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D22960B2EFC85FFD6BAE6F8C96C2E44 /* WiFiScannerDelegate.swift */; };
 		2AE6DC76750D2BCE7426CF9E3A359B25 /* CBMPeripheral.swift in Sources */ = {isa = PBXBuildFile; fileRef = C934F05AD5B0474B20756011ED74E0DD /* CBMPeripheral.swift */; };
 		2BE90FCEB09EFBD367C388A724A467DB /* ScanResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C810C7BD81C2C75A9164A3B83CEDE9B /* ScanResult.swift */; };
 		30046BBEE2C851DC5F491D1FCDEA8EBF /* field_mask.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = 503844F17F408D818F3B8799975841FA /* field_mask.pb.swift */; };
@@ -352,11 +352,11 @@
 		776F2FE7CD856D91C0B34B7523CC693F /* Google_Protobuf_Any+Extensions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "Google_Protobuf_Any+Extensions.swift"; path = "Sources/SwiftProtobuf/Google_Protobuf_Any+Extensions.swift"; sourceTree = "<group>"; };
 		779567A4B02AC0655BAD2A631CED3E38 /* CoreBluetoothMock */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = CoreBluetoothMock; path = CoreBluetoothMock.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		79EA871E23A90E6F47F29A5007702611 /* Scanner.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Scanner.swift; sourceTree = "<group>"; };
-		7A2B804E2B0AAABBD3A0615DEDAEBCE3 /* NordicWiFiProvisioner-SoftAP.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; path = "NordicWiFiProvisioner-SoftAP.podspec"; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		7A2B804E2B0AAABBD3A0615DEDAEBCE3 /* NordicWiFiProvisioner-SoftAP.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; path = "NordicWiFiProvisioner-SoftAP.podspec"; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		7A31E2FBBF8257C6C0308B46FC694B2A /* NordicWiFiProvisioner-BLE-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "NordicWiFiProvisioner-BLE-dummy.m"; sourceTree = "<group>"; };
 		7B1803105B493BE2658F3572D680C49B /* NordicWiFiProvisioner-SoftAP.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "NordicWiFiProvisioner-SoftAP.release.xcconfig"; sourceTree = "<group>"; };
 		7BE16BEF152A74917B4D169ECDA650F0 /* NordicWiFiProvisioner-BLE-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "NordicWiFiProvisioner-BLE-prefix.pch"; sourceTree = "<group>"; };
-		7D22960B2EFC85FFD6BAE6F8C96C2E44 /* WiFiScanerDelegate.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WiFiScanerDelegate.swift; sourceTree = "<group>"; };
+		7D22960B2EFC85FFD6BAE6F8C96C2E44 /* WiFiScannerDelegate.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WiFiScannerDelegate.swift; sourceTree = "<group>"; };
 		7F7B59FB644D7E4C63B189C577D0C9A9 /* ZigZag.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ZigZag.swift; path = Sources/SwiftProtobuf/ZigZag.swift; sourceTree = "<group>"; };
 		80F0274554DE1C1BF6D666FC482C536E /* NordicWiFiProvisioner-BLE-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "NordicWiFiProvisioner-BLE-Info.plist"; sourceTree = "<group>"; };
 		84121A806D87156B15DBDA92DE375BBF /* DeviceManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DeviceManager.swift; sourceTree = "<group>"; };
@@ -379,7 +379,7 @@
 		9C4C78BF4D9A6E98E0301A4ACBA63F27 /* BinaryEncodingOptions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BinaryEncodingOptions.swift; path = Sources/SwiftProtobuf/BinaryEncodingOptions.swift; sourceTree = "<group>"; };
 		9C810C7BD81C2C75A9164A3B83CEDE9B /* ScanResult.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ScanResult.swift; sourceTree = "<group>"; };
 		9CB01203A9A22A1B63B6DCC4594C7581 /* common.pb.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = common.pb.swift; sourceTree = "<group>"; };
-		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		9F91B9F98FEA95F0DAE5B35040B7C5DE /* CBMCentralManagerMock.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CBMCentralManagerMock.swift; path = CoreBluetoothMock/CBMCentralManagerMock.swift; sourceTree = "<group>"; };
 		9FE960E2DDE270A1DEA0FD1C04E27A53 /* NordicWiFiProvisioner-BLE */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = "NordicWiFiProvisioner-BLE"; path = NordicWiFiProvisioner_BLE.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A3EA1B2E97C6802E2A46F66C31C8D1CA /* CoreBluetoothMock-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "CoreBluetoothMock-dummy.m"; sourceTree = "<group>"; };
@@ -404,7 +404,7 @@
 		C541179274ADB20E2BA723140DBBD92C /* ProtobufMap.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ProtobufMap.swift; path = Sources/SwiftProtobuf/ProtobufMap.swift; sourceTree = "<group>"; };
 		C597802BFE384F8FFB5B3E4F943803FF /* Decoder.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Decoder.swift; path = Sources/SwiftProtobuf/Decoder.swift; sourceTree = "<group>"; };
 		C5AAB9D020036F1E11D98CC0D806EE7C /* response.pb.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = response.pb.swift; sourceTree = "<group>"; };
-		C6E503F18064ABD418304DFBB76E1F8B /* Documentation.docc */ = {isa = PBXFileReference; includeInIndex = 1; name = Documentation.docc; path = CoreBluetoothMock/Documentation.docc; sourceTree = "<group>"; };
+		C6E503F18064ABD418304DFBB76E1F8B /* Documentation.docc */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder.documentationcatalog; name = Documentation.docc; path = CoreBluetoothMock/Documentation.docc; sourceTree = "<group>"; };
 		C744497281866FE5B6A2CBC73D9581E4 /* Google_Protobuf_Value+Extensions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "Google_Protobuf_Value+Extensions.swift"; path = "Sources/SwiftProtobuf/Google_Protobuf_Value+Extensions.swift"; sourceTree = "<group>"; };
 		C934F05AD5B0474B20756011ED74E0DD /* CBMPeripheral.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CBMPeripheral.swift; path = CoreBluetoothMock/CBMPeripheral.swift; sourceTree = "<group>"; };
 		CA708DD9514DE66B46DD9BE7384590D8 /* BonjourBrowser.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BonjourBrowser.swift; path = "Sources/NordicWiFiProvisioner-SoftAP/BonjourBrowser.swift"; sourceTree = "<group>"; };
@@ -414,7 +414,7 @@
 		CC8F20168FF80F19949D7B37C6C4D7FB /* CoreBluetoothMock-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "CoreBluetoothMock-prefix.pch"; sourceTree = "<group>"; };
 		CE0836F88D9B13F7E5734F868B4BA666 /* UnsafeBufferPointer+Shims.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "UnsafeBufferPointer+Shims.swift"; path = "Sources/SwiftProtobuf/UnsafeBufferPointer+Shims.swift"; sourceTree = "<group>"; };
 		CE710EC2297188FAE881E139D7959727 /* Data+Extensions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "Data+Extensions.swift"; path = "Sources/SwiftProtobuf/Data+Extensions.swift"; sourceTree = "<group>"; };
-		D0F87BB54CCF432DCACB98A65E70337F /* NordicWiFiProvisioner-BLE.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; path = "NordicWiFiProvisioner-BLE.podspec"; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		D0F87BB54CCF432DCACB98A65E70337F /* NordicWiFiProvisioner-BLE.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; path = "NordicWiFiProvisioner-BLE.podspec"; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		D24BA261C24AFF9E06EEC188421AC8B8 /* APWiFiScan.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = APWiFiScan.swift; sourceTree = "<group>"; };
 		D2A1F3339EE623864DA2E8183FE535B6 /* Pods-Tests iOS.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-Tests iOS.modulemap"; sourceTree = "<group>"; };
 		D48617AC81A5FD85D3BBD000DAF7B6B4 /* Google_Protobuf_NullValue+Extensions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "Google_Protobuf_NullValue+Extensions.swift"; path = "Sources/SwiftProtobuf/Google_Protobuf_NullValue+Extensions.swift"; sourceTree = "<group>"; };
@@ -532,7 +532,6 @@
 				A712AA20A27C2D8E2FABFBFE22A85AD5 /* Enums */,
 				8FB7DF6EBA341B4F85038A08F47E5AAC /* Internal */,
 			);
-			name = PublicModels;
 			path = PublicModels;
 			sourceTree = "<group>";
 		};
@@ -591,9 +590,8 @@
 				3B0F473DC5E34291A1AB8EF40799365D /* ConnectionDelegate.swift */,
 				59362E005820251E78184A9D138A20C4 /* InfoDelegate.swift */,
 				6183113CF6514918CE60E9EB3A8B08E5 /* ProvisionDelegate.swift */,
-				7D22960B2EFC85FFD6BAE6F8C96C2E44 /* WiFiScanerDelegate.swift */,
+				7D22960B2EFC85FFD6BAE6F8C96C2E44 /* WiFiScannerDelegate.swift */,
 			);
-			name = Delegates;
 			path = Delegates;
 			sourceTree = "<group>";
 		};
@@ -606,7 +604,6 @@
 				84AFDD8AC46BEE4EC0EF7612290A9907 /* String+Ext.swift */,
 				257F570269127A8947968B42A183774E /* UUID+CBMUUID.swift */,
 			);
-			name = Extensions;
 			path = Extensions;
 			sourceTree = "<group>";
 		};
@@ -684,7 +681,6 @@
 			children = (
 				08C32911148DD3CDA0CA3EBEDCF3A0DC /* WiFiInfo+Fake.swift */,
 			);
-			name = Devices;
 			path = Devices;
 			sourceTree = "<group>";
 		};
@@ -693,7 +689,6 @@
 			children = (
 				412DA20233FDCD49384989A1CE05BBC4 /* ProtoConvertible.swift */,
 			);
-			name = Internal;
 			path = Internal;
 			sourceTree = "<group>";
 		};
@@ -746,7 +741,6 @@
 				3D0E756DE1B1603123FF1C814402F5D0 /* ConnectionFailureReason.swift */,
 				BE8EAEAFF87E20129727951AAC1A0234 /* ConnectionState.swift */,
 			);
-			name = Enums;
 			path = Enums;
 			sourceTree = "<group>";
 		};
@@ -801,7 +795,6 @@
 				2336B96879D27B8F1DFF7611D47C86B9 /* MockSpecDelegate.swift */,
 				8D9164C8796417A71DA3231A0C97116C /* Devices */,
 			);
-			name = Mock;
 			path = Mock;
 			sourceTree = "<group>";
 		};
@@ -867,7 +860,6 @@
 				9C810C7BD81C2C75A9164A3B83CEDE9B /* ScanResult.swift */,
 				3355ABF2A8A7DA79C100A059327F3A2E /* State.swift */,
 			);
-			name = Models;
 			path = Models;
 			sourceTree = "<group>";
 		};
@@ -901,7 +893,6 @@
 				C6E503F18064ABD418304DFBB76E1F8B /* Documentation.docc */,
 				720114284815CEA8B43DD28F8D681F1A /* Support Files */,
 			);
-			name = CoreBluetoothMock;
 			path = CoreBluetoothMock;
 			sourceTree = "<group>";
 		};
@@ -1014,7 +1005,6 @@
 				7F7B59FB644D7E4C63B189C577D0C9A9 /* ZigZag.swift */,
 				9AB30D4DDDE5A685EEBB2B78DFDA10E5 /* Support Files */,
 			);
-			name = SwiftProtobuf;
 			path = SwiftProtobuf;
 			sourceTree = "<group>";
 		};
@@ -1466,7 +1456,7 @@
 				4DB6456D9BBA5479EE800E6977C407A9 /* WifiConfig.swift in Sources */,
 				E321514A3ED94187E928AD45A661BE89 /* WifiInfo.swift in Sources */,
 				4521F7370EA22DA78E4A665D23457870 /* WiFiInfo+Fake.swift in Sources */,
-				2ACFCB4AA2F8398C9A0BC52095A84200 /* WiFiScanerDelegate.swift in Sources */,
+				2ACFCB4AA2F8398C9A0BC52095A84200 /* WiFiScannerDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
