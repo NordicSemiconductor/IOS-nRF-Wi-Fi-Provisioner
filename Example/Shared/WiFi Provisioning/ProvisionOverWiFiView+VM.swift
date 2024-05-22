@@ -7,6 +7,7 @@
 
 import SwiftUI
 import NordicWiFiProvisioner_SoftAP
+import iOS_Common_Libraries
 import NetworkExtension
 import OSLog
 import Combine
