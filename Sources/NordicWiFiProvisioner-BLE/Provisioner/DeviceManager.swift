@@ -30,10 +30,12 @@
 
 import Foundation
 
-/// `DeviceManager` allows you to cannect to the device, read the device version and status, scan for Wi-Fi networks, and provision / unprovision the device.
+/// `DeviceManager` allows you to connect to the device, read the device version and status, 
+/// scan for Wi-Fi networks, and provision / unprovision the device.
 ///
-/// In order to have full control over connection and provisioning process, you need to set ``connectionDelegate``, ``infoDelegate``, ``provisionerScanDelegate`` and ``provisionerDelegate``.
-/// 
+/// In order to have full control over connection and provisioning process, you need to set 
+/// ``connectionDelegate``, ``infoDelegate``, ``provisionerScanDelegate`` and ``provisionerDelegate``.
+///
 /// Before connecting the device, make sure that ``connectionState-swift.property`` is set to ``ConnectionState/connected``.
 open class DeviceManager {
     lazy private var internalProvisioner = InternalDeviceManager(deviceId: self.deviceId, provisioner: self)
@@ -60,7 +62,8 @@ open class DeviceManager {
     
     /// Bluetooth Connection State.
     ///
-    /// This property represents connection to the nRF-7 device (peripheral). Make sure it's ``ConnectionState-swift.enum/connected`` before try to communicate with the device.
+    /// This property represents connection to the nRF-7 device (peripheral). Make sure it's 
+    /// ``ConnectionState-swift.enum/connected`` before try to communicate with the device.
     ///
     /// - Remark: See also: ``connect()`` and ``ConnectionDelegate/deviceManager(_:changedConnectionState:)``
     open var connectionState: ConnectionState {
@@ -121,7 +124,8 @@ open class DeviceManager {
     
     /// Cancel connection.
     ///
-    /// The connected device will cancel its connection and the result will be delivered to ``ConnectionDelegate/deviceManagerDisconnectedDevice(_:error:)``.
+    /// The connected device will cancel its connection and the result will be delivered to 
+    /// ``ConnectionDelegate/deviceManagerDisconnectedDevice(_:error:)``.
     ///
     /// If there is no connected device, nothing will happen.
     open func disconnect() {
@@ -131,7 +135,8 @@ open class DeviceManager {
     /// Read the device version.
     ///
     /// The result will be delivered to ``InfoDelegate/versionReceived(_:)``
-    /// - Precondition: Make sure that ``connectionState-swift.property`` is ``ConnectionState-swift.enum/connected`` before calling this method.
+    /// - Precondition: Make sure that ``connectionState-swift.property`` is 
+    ///                 ``ConnectionState-swift.enum/connected`` before calling this method.
     /// - Throws: If the version was request but device is not connected, this method throws ``DeviceNotConnectedError``.
     open func readVersion() throws {
         try internalProvisioner.readVersion()
@@ -141,7 +146,8 @@ open class DeviceManager {
     ///
     /// The result of this method is delivered to ``InfoDelegate/deviceStatusReceived(_:)``
     ///
-    /// - Precondition: Make sure that ``connectionState-swift.property`` is ``ConnectionState-swift.enum/connected`` before calling this method.
+    /// - Precondition: Make sure that ``connectionState-swift.property`` is
+    ///                 ``ConnectionState-swift.enum/connected`` before calling this method.
     /// - Throws: If the status was request but device is not connected, this method throws ``DeviceNotConnectedError``.
     open func readDeviceStatus() throws {
         try internalProvisioner.readDeviceStatus()
@@ -149,7 +155,9 @@ open class DeviceManager {
 
     /// Start scan for Wi-Fi networks.
     ///
-    /// The result of this method is delivered to ``WiFiScanerDelegate/deviceManager(_:discoveredAccessPoint:rssi:)``. Also ``WiFiScanerDelegate/deviceManagerDidStartScan(_:error:)`` will be called.
+    /// The result of this method is delivered to 
+    /// ``WiFiScannerDelegate/deviceManager(_:discoveredAccessPoint:rssi:)``.
+    /// Also ``WiFiScannerDelegate/deviceManagerDidStartScan(_:error:)`` will be called.
     ///
     /// - Remark: See also: ``startScan(band:passive:period:groupChannels:)``
     /// - Precondition: Make sure that ``connectionState-swift.property`` is ``ConnectionState-swift.enum/connected`` before calling this method.
@@ -161,9 +169,12 @@ open class DeviceManager {
 
     /// Start scan for Wi-Fi networks
     ///
-    /// The result of this method is delivered to ``WiFiScanerDelegate/deviceManager(_:discoveredAccessPoint:rssi:)``. Also ``WiFiScanerDelegate/deviceManagerDidStartScan(_:error:)`` will be called.
+    /// The result of this method is delivered to 
+    /// ``WiFiScannerDelegate/deviceManager(_:discoveredAccessPoint:rssi:)``.
+    /// Also ``WiFiScannerDelegate/deviceManagerDidStartScan(_:error:)`` will be called.
     ///
-    /// - Precondition: Make sure that ``connectionState-swift.property`` is ``ConnectionState-swift.enum/connected`` before calling this method.
+    /// - Precondition: Make sure that ``connectionState-swift.property`` is 
+    ///                 ``ConnectionState-swift.enum/connected`` before calling this method.
     ///
     /// - Parameters:
     ///   - band: Band to scan
@@ -181,9 +192,10 @@ open class DeviceManager {
     
     /// Stop scan for Wi-Fi networks.
     ///
-    /// ``WiFiScanerDelegate/deviceManagerDidStopScan(_:error:)`` wil be called.
+    /// ``WiFiScannerDelegate/deviceManagerDidStopScan(_:error:)`` will be called.
     ///
-    /// - Precondition: Make sure that ``connectionState-swift.property`` is ``ConnectionState-swift.enum/connected`` before calling this method.
+    /// - Precondition: Make sure that ``connectionState-swift.property`` is 
+    ///                 ``ConnectionState-swift.enum/connected`` before calling this method.
     ///
     /// - Throws: If the `stopScan` was called but device is not connected, this method throws ``DeviceNotConnectedError``.
     open func stopScan() throws {
@@ -192,9 +204,13 @@ open class DeviceManager {
     
     /// Start provisioning.
     ///
-    /// Set Wi-Fi configuration to the device. The result of this method is delivered to ``ProvisionDelegate/deviceManagerDidSetConfig(_:error:)``. If the new configuration is set successfully, the device will try to connect to provided Wi-Fi network. Wi-Fi connection status will be sent to ``ProvisionDelegate/deviceManager(_:didChangeState:)``.
+    /// Set Wi-Fi configuration to the device. The result of this method is delivered to 
+    /// ``ProvisionDelegate/deviceManagerDidSetConfig(_:error:)``.
+    /// If the new configuration is set successfully, the device will try to connect to provided Wi-Fi network.
+    /// Wi-Fi connection status will be sent to ``ProvisionDelegate/deviceManager(_:didChangeState:)``.
     ///
-    /// - Precondition: Make sure that ``connectionState-swift.property`` is ``ConnectionState-swift.enum/connected`` before calling this method.
+    /// - Precondition: Make sure that ``connectionState-swift.property`` is 
+    ///                 ``ConnectionState-swift.enum/connected`` before calling this method.
     ///
     /// - Remark: See also: ``setConfig(wifi:passphrase:volatileMemory:)``
     /// - Parameters:
@@ -206,9 +222,13 @@ open class DeviceManager {
     
     /// Start provisioning.
     ///
-    /// Set Wi-Fi configuration to the device. The result of this method is delivered to ``ProvisionDelegate/deviceManagerDidSetConfig(_:error:)``. If the new configuration is set successfully, the device will try to connect to provided Wi-Fi network. Wi-Fi connection status will be sent to ``ProvisionDelegate/deviceManager(_:didChangeState:)``.
+    /// Set Wi-Fi configuration to the device. The result of this method is delivered to 
+    /// ``ProvisionDelegate/deviceManagerDidSetConfig(_:error:)``.
+    /// If the new configuration is set successfully, the device will try to connect to provided Wi-Fi network. 
+    /// Wi-Fi connection status will be sent to ``ProvisionDelegate/deviceManager(_:didChangeState:)``.
     ///
-    /// - Precondition: Make sure that ``connectionState-swift.property`` is ``ConnectionState-swift.enum/connected`` before calling this method.
+    /// - Precondition: Make sure that ``connectionState-swift.property`` is 
+    ///                 ``ConnectionState-swift.enum/connected`` before calling this method.
     ///
     /// - Remark: See also: ``setConfig(_:)``
     /// - Parameters:
@@ -225,7 +245,8 @@ open class DeviceManager {
     ///
     /// The result of this method is delivered to ``ProvisionDelegate/deviceManagerDidForgetConfig(_:error:)``.
     ///
-    /// - Precondition: Make sure that ``connectionState-swift.property`` is ``ConnectionState-swift.enum/connected`` before calling this method.
+    /// - Precondition: Make sure that ``connectionState-swift.property`` is 
+    ///                 ``ConnectionState-swift.enum/connected`` before calling this method.
     ///
     /// - Throws: If the unprovisioning was requested but device is not connected, this method throws ``DeviceNotConnectedError``.
     open func forgetConfig() throws {

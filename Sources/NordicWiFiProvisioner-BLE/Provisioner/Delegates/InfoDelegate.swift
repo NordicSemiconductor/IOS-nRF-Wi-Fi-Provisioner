@@ -33,7 +33,7 @@ import Foundation
 public enum ProvisionerInfoError: Error {
     /// No Data got from the device
     case emptyData
-    /// Data received but unnable to parse
+    /// Data received but unable to parse
     case badData
 }
 

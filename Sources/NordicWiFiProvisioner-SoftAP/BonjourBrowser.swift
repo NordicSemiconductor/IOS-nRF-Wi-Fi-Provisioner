@@ -56,7 +56,6 @@ final public class BonjourBrowser {
     // MARK: API
     
     public func findBonjourService(_ service: BonjourService, preResolvingIPAddress resolveIPAddress: Bool = false) async throws -> NWTXTRecord? {
-        
         delegate?.log("Warming Up Network Browser...", level: .debug)
         // Wait a couple of seconds for the connection to settle-in.
         try? await Task.sleepFor(seconds: 5)

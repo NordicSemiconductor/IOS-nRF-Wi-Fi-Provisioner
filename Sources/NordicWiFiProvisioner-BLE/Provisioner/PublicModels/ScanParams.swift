@@ -32,7 +32,9 @@ import Foundation
 
 /// Scanning parameters.
 public struct ScanParams {
-    /// Wi-Fi frequency band. It's used as a parameter for the scanning.
+    /// Wi-Fi frequency band. 
+    ///
+    /// It's used as a parameter for the scanning.
     public struct Band: OptionSet {
         public var rawValue: Int
         

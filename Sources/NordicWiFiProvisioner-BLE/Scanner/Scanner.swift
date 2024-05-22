@@ -31,9 +31,12 @@
 import Foundation
 import CoreBluetoothMock
 
-/// An object that uses [CBCentralManager](https://developer.apple.com/documentation/corebluetooth/cbcentralmanager) to scan for peripherals and filter nRF devices.
+/// An object that uses [CBCentralManager](https://developer.apple.com/documentation/corebluetooth/cbcentralmanager) 
+/// to scan for peripherals and filter nRF devices.
 ///
-/// Scanner provides all the necessary methods for scanning nRF-Devices and retrieving data like version or provisioning status, so you even don't need to import  [CoreBluetooth](https://developer.apple.com/documentation/corebluetooth).
+/// Scanner provides all the necessary methods for scanning nRF-Devices 
+/// and retrieving data like version or provisioning status, so you even don't need to import
+/// [CoreBluetooth](https://developer.apple.com/documentation/corebluetooth).
 open class Scanner {
     private var internalScanner: InternalScanner
     

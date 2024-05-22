@@ -30,7 +30,8 @@
 
 import Foundation
 
-/// A struct that cantians all the information about the device status. 
+/// A struct that contains all the information about the device status.
+///
 /// All the fields are optional.
 public struct DeviceStatus {
     public var state: ConnectionState?

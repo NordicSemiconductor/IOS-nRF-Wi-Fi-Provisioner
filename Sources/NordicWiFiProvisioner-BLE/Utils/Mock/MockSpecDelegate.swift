@@ -126,7 +126,7 @@ open class MockDevice {
         
         - parameter id: Identifier of the device. Must be UUID string.
         - parameter name: Name of the device.
-        - parameter deviceStatus: Device status. Contains information about the device state and provisioning info streight after the connection.
+        - parameter deviceStatus: Device status. Contains information about the device state and provisioning info straight after the connection.
         - parameter version: Version of the device firmware.
         - parameter bluetoothRSSI: Bluetooth RSSI of the device. Default value is -50.
         - parameter wifiRSSI: RSSI of the Wi-Fi network to which the device is connected. Default value is -55.

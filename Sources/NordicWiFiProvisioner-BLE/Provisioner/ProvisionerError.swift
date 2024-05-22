@@ -41,7 +41,7 @@ public enum ProvisionerError: Error {
     case notSupported
 
     case unknown
-    /// Data was received but unnable to parse
+    /// Data was received but unable to parse
     case badData
     /// Device failure response
     case deviceFailureResponse
@@ -71,7 +71,7 @@ public enum ProvisionerError: Error {
         case .unknown:
             return "Unknown error"
         case .badData:
-            return "Data was received but unnable to parse"
+            return "Data was received but unable to parse"
         case .deviceFailureResponse:
             return "Device failure response"
         case .emptyResponse:

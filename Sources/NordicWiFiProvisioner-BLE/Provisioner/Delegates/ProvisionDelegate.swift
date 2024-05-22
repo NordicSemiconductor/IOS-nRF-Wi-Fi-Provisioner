@@ -34,7 +34,7 @@ public protocol ProvisionDelegate: AnyObject {
     /// Tells the delegate that the new Wi-Fi configuration was sent to the device.
     ///
     /// - Parameters:
-    ///   - error: Error that caused the failure. `nil` if no error occured.
+    ///   - error: Error that caused the failure. `nil` if no error occurred.
     func deviceManagerDidSetConfig(_ deviceManager: DeviceManager, error: Error?)
 
     /// Tells the delegate that the new Wi-Fi connection status received.
@@ -46,6 +46,6 @@ public protocol ProvisionDelegate: AnyObject {
     /// Tells the delegate that the Wi-Fi configuration was erased from the device.
     ///
     /// - Parameters:
-    ///   - error: Error that caused the failure. `nil` if no error occured.
+    ///   - error: Error that caused the failure. `nil` if no error occurred.
     func deviceManagerDidForgetConfig(_ deviceManager: DeviceManager, error: Error?)
 }
