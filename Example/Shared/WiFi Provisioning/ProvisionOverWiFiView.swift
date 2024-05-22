@@ -94,6 +94,7 @@ struct ProvisionOverWiFiView: View {
             do {
                 viewModel.setupPipeline(switchingToDevice: switchToAccessPoint)
                 let configuration = NEHotspotConfiguration(ssid: name)
+                configuration.joinOnce = true
                 try await viewModel.pipelineStart(applying: configuration)
                 viewStatus = .awaitingUserInput
             } catch {
