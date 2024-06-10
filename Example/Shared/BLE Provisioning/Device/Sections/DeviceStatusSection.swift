@@ -30,7 +30,7 @@ struct DeviceStatusSection: View {
             }
             
             HStack {
-                NordicLabel("Network", systemImage: "network")
+                Label("Network", systemImage: "network")
                 
                 Spacer()
                 
@@ -39,7 +39,7 @@ struct DeviceStatusSection: View {
             }
             
             HStack {
-                NordicLabel("Version", systemImage: "wrench.and.screwdriver")
+                Label("Version", systemImage: "wrench.and.screwdriver")
                 
                 Spacer()
                 
@@ -49,7 +49,7 @@ struct DeviceStatusSection: View {
             
             if viewModel.connectionStatus.showStatus {
                 HStack {
-                    NordicLabel("Wi-Fi Status", systemImage: "wifi")
+                    Label("Wi-Fi Status", systemImage: "wifi")
                     
                     Spacer()
                     
@@ -59,7 +59,7 @@ struct DeviceStatusSection: View {
             }
             
             HStack {
-                NordicLabel("IP Address", systemImage: "network")
+                Label("IP Address", systemImage: "at")
                 
                 Spacer()
                 
