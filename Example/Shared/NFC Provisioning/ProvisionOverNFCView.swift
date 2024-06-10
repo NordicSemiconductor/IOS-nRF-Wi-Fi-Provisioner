@@ -63,7 +63,7 @@ struct ProvisionOverNFCView: View {
                     
                     Spacer()
                     
-                    SecureField("Type here", text: $password)
+                    PasswordField(binding: $password, enabled: true)
                         .focused($focusedField, equals: .password)
                         .multilineTextAlignment(.trailing)
                         .submitLabel(.done)
