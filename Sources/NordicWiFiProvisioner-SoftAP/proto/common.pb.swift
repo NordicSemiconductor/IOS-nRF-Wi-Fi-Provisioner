@@ -156,6 +156,15 @@ struct WifiInfo {
   /// Clears the value of `auth`. Subsequent reads from it will return its default value.
   mutating func clearAuth() {self._auth = nil}
 
+  var timeout: UInt32 {
+    get {return _timeout ?? 0}
+    set {_timeout = newValue}
+  }
+  /// Returns true if `timeout` has been explicitly set.
+  var hasTimeout: Bool {return self._timeout != nil}
+  /// Clears the value of `timeout`. Subsequent reads from it will return its default value.
+  mutating func clearTimeout() {self._timeout = nil}
+
   var unknownFields = SwiftProtobuf.UnknownStorage()
 
   init() {}
@@ -165,6 +174,7 @@ struct WifiInfo {
   fileprivate var _band: Band? = nil
   fileprivate var _channel: UInt32? = nil
   fileprivate var _auth: AuthMode? = nil
+  fileprivate var _timeout: UInt32? = nil
 }
 
 struct WifiConfig {
@@ -280,6 +290,7 @@ extension WifiInfo: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationB
     3: .same(proto: "band"),
     4: .same(proto: "channel"),
     5: .same(proto: "auth"),
+    6: .same(proto: "timeout"),
   ]
 
   public var isInitialized: Bool {
@@ -300,6 +311,7 @@ extension WifiInfo: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationB
       case 3: try { try decoder.decodeSingularEnumField(value: &self._band) }()
       case 4: try { try decoder.decodeSingularUInt32Field(value: &self._channel) }()
       case 5: try { try decoder.decodeSingularEnumField(value: &self._auth) }()
+      case 6: try { try decoder.decodeSingularUInt32Field(value: &self._timeout) }()
       default: break
       }
     }
@@ -325,6 +337,9 @@ extension WifiInfo: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationB
     try { if let v = self._auth {
       try visitor.visitSingularEnumField(value: v, fieldNumber: 5)
     } }()
+    try { if let v = self._timeout {
+      try visitor.visitSingularUInt32Field(value: v, fieldNumber: 6)
+    } }()
     try unknownFields.traverse(visitor: &visitor)
   }
 
@@ -334,6 +349,7 @@ extension WifiInfo: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationB
     if lhs._band != rhs._band {return false}
     if lhs._channel != rhs._channel {return false}
     if lhs._auth != rhs._auth {return false}
+    if lhs._timeout != rhs._timeout {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
