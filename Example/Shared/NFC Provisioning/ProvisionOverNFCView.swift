@@ -44,7 +44,7 @@ struct ProvisionOverNFCView: View {
             Section("Provisioning Configuration") {
                 HStack {
                     Label("SSID", systemImage: "wifi.circle")
-                        .foregroundColor(.primary)
+                        .foregroundColor(.nordicBlue)
                     
                     TextField("Access Point Name", text: $ssid)
                         .focused($focusedField, equals: .ssid)
@@ -59,7 +59,7 @@ struct ProvisionOverNFCView: View {
                 
                 HStack {
                     Label("Password", systemImage: "key.horizontal")
-                        .foregroundColor(.primary)
+                        .foregroundColor(.nordicBlue)
                     
                     Spacer()
                     
@@ -72,7 +72,7 @@ struct ProvisionOverNFCView: View {
                         }
                 }
                 
-                InlinePicker(title: "Authentication", systemImage: "shield.checkered",
+                InlinePicker(title: "Security", systemImage: "shield.checkered",
                              selectedValue: $authentication)
                 
                 InlinePicker(title: "Encryption", systemImage: "lock",
