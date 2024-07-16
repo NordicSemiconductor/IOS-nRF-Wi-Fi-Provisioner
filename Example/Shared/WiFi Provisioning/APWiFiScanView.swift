@@ -71,12 +71,16 @@ struct APWiFiScanView: View {
             
             Spacer()
             
-            RSSIView(rssi: rssi)
-                .frame(maxWidth: 30, maxHeight: 20)
-            
-            Image(systemName: "checkmark")
-                .foregroundColor(.nordicBlue)
-                .isHidden(!isSelected)
+            HStack(alignment: .center, spacing: 0.0) {
+                RSSIView(rssi: rssi)
+                    .frame(maxWidth: 30, maxHeight: 20)
+                
+                if isSelected {
+                    Image(systemName: "checkmark")
+                        .foregroundColor(rssi.color)
+                        .padding(.leading, 10.0)
+                }
+            }
         }
     }
 }
