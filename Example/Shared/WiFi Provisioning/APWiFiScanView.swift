@@ -53,16 +53,20 @@ struct APWiFiScanView: View {
     
     var body: some View {
         HStack(alignment: .firstTextBaseline) {
-            Image(systemName: isOpenNetwork ? "lock.open" : "lock")
-            
-            VStack(alignment: .leading) {
-                Text(ssid).bold() + Text("  ") + Text(band).font(.caption)
-                
-                Text("Channel: \(channel)")
-                    .font(.callout)
-                
-                Text("Security: \(security)")
-                    .font(.callout)
+            Label {
+                VStack(alignment: .leading) {
+                    Text(ssid + " ").bold() + Text(band).bold().font(.caption)
+                    
+                    Text("Channel: \(channel)")
+                        .foregroundStyle(Color.secondarylabel)
+                        .font(.callout)
+                    
+                    Text("Security: \(security)")
+                        .foregroundStyle(Color.secondarylabel)
+                        .font(.callout)
+                }
+            } icon: {
+                Image(systemName: isOpenNetwork ? "lock.open" : "lock")
             }
             
             Spacer()
