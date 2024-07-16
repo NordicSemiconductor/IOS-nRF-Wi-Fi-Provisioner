@@ -9,7 +9,7 @@ import Foundation
 
 // MARK: - NFCAuthenticationType
 
-enum NFCAuthenticationType: UInt8, RawRepresentable, Identifiable, CustomStringConvertible, CaseIterable {
+enum NFCAuthenticationType: UInt8, RawRepresentable, Identifiable, CaseIterable {
     case open = 0x01
     case wpaPersonal = 0x02
     case shared = 0x04
@@ -22,6 +22,11 @@ enum NFCAuthenticationType: UInt8, RawRepresentable, Identifiable, CustomStringC
     var bytes: [UInt8] {
         [0x00, rawValue]
     }
+}
+
+// MARK: CustomStringConvertible
+
+extension NFCAuthenticationType: CustomStringConvertible {
     
     var description: String {
         switch self {
