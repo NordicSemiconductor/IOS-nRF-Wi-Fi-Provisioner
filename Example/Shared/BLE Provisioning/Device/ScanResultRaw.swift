@@ -27,10 +27,7 @@ struct ScanResultRaw: View {
     
     var body: some View {
         VStack {
-            HStack {
-                RSSIView(rssi: RSSI(bleLevel: scanResult.rssi))
-                    .frame(maxWidth: 20, maxHeight: 18)
-                
+            Label {
                 Text(scanResult.name)
                 
                 if scanResult.provisioned {
@@ -39,21 +36,27 @@ struct ScanResultRaw: View {
                 
                 Spacer()
                 
-                if scanResult.version != nil {
-                    Text("v\(scanResult.version!)")
+                if let version = scanResult.version {
+                    Text("v\(version)")
                         .foregroundColor(.secondary)
                 }
+            } icon: {
+                RSSIView(rssi: RSSI(bleLevel: scanResult.rssi))
+                    .frame(maxWidth: 20, maxHeight: 18)
             }
             
             if scanResult.connected {
                 HStack {
                     Text("Connected")
                         .font(.caption)
-                    .foregroundColor(.secondary)
+                        .foregroundColor(.secondary)
+                    
                     Spacer()
+                    
                     if scanResult.wifiRSSI != nil {
                         RSSIView(rssi: RSSI(wifiLevel: scanResult.wifiRSSI!))
                             .frame(maxWidth: 16, maxHeight: 12)
+                        
                         Text("\(scanResult.wifiRSSI!) dBm")
                             .font(.caption2)
                             .foregroundColor(.secondary)
