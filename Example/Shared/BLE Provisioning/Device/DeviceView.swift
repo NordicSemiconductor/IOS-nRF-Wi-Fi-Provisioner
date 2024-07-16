@@ -90,6 +90,7 @@ struct DeviceView: View {
                 }
                 .tint(.nordicRed)
                 .buttonStyle(.borderedProminent)
+                .padding(.horizontal, 4)
                 .isHidden(!viewModel.buttonConfiguration.showUnsetButton, remove: true)
                 .disabled(!viewModel.buttonConfiguration.enabledUnsetButton)
                 
@@ -104,6 +105,7 @@ struct DeviceView: View {
                         .frame(maxWidth: .infinity)
                 }
                 .buttonStyle(.borderedProminent)
+                .padding(.horizontal, 4)
                 .disabled(!viewModel.buttonConfiguration.enabledProvisionButton)
                 .accessibilityIdentifier("prov_button")
             }
