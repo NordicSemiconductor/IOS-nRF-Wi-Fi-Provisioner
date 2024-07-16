@@ -74,9 +74,13 @@ struct ProvisionOverNFCView: View {
                 
                 InlinePicker(title: "Security", systemImage: "shield.checkered",
                              selectedValue: $authentication)
+                    .tint(.primarylabel)
+                    .labeledContentStyle(.accentedLabel)
                 
                 InlinePicker(title: "Encryption", systemImage: "lock",
                              selectedValue: $encryption)
+                    .tint(.primarylabel)
+                    .labeledContentStyle(.accentedLabel)
             }
             
             Label("""

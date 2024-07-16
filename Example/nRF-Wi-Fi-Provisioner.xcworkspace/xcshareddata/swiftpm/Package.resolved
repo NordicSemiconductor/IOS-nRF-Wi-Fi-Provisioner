@@ -7,16 +7,16 @@
       "location" : "https://github.com/NordicPlayground/IOS-Common-Libraries",
       "state" : {
         "branch" : "main",
-        "revision" : "3028157dfd64c09b1bd96d07eeffb5e1756b0487"
+        "revision" : "fedcb0e95fd8121e46cbc60e139ea1c592e7d971"
       }
     },
     {
       "identity" : "swift-cmark",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/apple/swift-cmark.git",
+      "location" : "https://github.com/swiftlang/swift-cmark.git",
       "state" : {
         "branch" : "gfm",
-        "revision" : "2c47322cb32cbed555f13bf5cbfaa488cc30a785"
+        "revision" : "fc07ab5da47975c5ef5f336acadfc02e8f706d30"
       }
     },
     {
@@ -25,7 +25,7 @@
       "location" : "https://github.com/apple/swift-markdown.git",
       "state" : {
         "branch" : "main",
-        "revision" : "365bf2d61d5fbca5cbd3b359b203ef6a69d9381f"
+        "revision" : "d21714073e0d16ba78eebdf36724863afc36871d"
       }
     }
   ],
