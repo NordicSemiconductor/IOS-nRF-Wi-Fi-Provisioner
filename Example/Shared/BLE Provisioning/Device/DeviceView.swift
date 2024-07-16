@@ -82,26 +82,32 @@ struct DeviceView: View {
             Spacer()
             
             HStack {
-                Button("Forget") {
+                Button {
                     unprovisionSheet = true
+                } label: {
+                    Text("Forget")
+                        .frame(maxWidth: .infinity)
                 }
                 .tint(.nordicRed)
                 .buttonStyle(.borderedProminent)
                 .isHidden(!viewModel.buttonConfiguration.showUnsetButton, remove: true)
                 .disabled(!viewModel.buttonConfiguration.enabledUnsetButton)
                 
-                Button(viewModel.buttonConfiguration.provisionButtonTitle) {
+                Button {
                     Task {
                         do {
                             try viewModel.startProvision()
                         }
                     }
+                } label: {
+                    Text(viewModel.buttonConfiguration.provisionButtonTitle)
+                        .frame(maxWidth: .infinity)
                 }
                 .buttonStyle(.borderedProminent)
                 .disabled(!viewModel.buttonConfiguration.enabledProvisionButton)
                 .accessibilityIdentifier("prov_button")
             }
-            .padding()
+            .padding(.horizontal)
         }
         .background(Color.formBackground)
     }
