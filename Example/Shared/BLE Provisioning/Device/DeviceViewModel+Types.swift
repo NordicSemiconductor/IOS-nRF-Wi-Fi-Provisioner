@@ -96,7 +96,7 @@ extension DeviceView.ViewModel {
         var provisionButtonTitle: String
         var enabledProvisionButton: Bool
         
-        init(showUnsetButton: Bool = false, enabledUnsetButton: Bool = true, provisionButtonTitle: String = "Set Configuration", enabledProvisionButton: Bool = false) {
+        init(showUnsetButton: Bool = false, enabledUnsetButton: Bool = true, provisionButtonTitle: String = "Set", enabledProvisionButton: Bool = false) {
             self.showUnsetButton = showUnsetButton
             self.enabledUnsetButton = enabledUnsetButton
             self.provisionButtonTitle = provisionButtonTitle

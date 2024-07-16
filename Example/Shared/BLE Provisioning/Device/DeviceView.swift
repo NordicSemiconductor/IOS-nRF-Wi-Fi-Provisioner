@@ -82,7 +82,7 @@ struct DeviceView: View {
             Spacer()
             
             HStack {
-                Button("Forget Configuration") {
+                Button("Forget") {
                     unprovisionSheet = true
                 }
                 .tint(.nordicRed)

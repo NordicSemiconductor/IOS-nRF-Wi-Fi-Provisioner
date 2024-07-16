@@ -328,9 +328,9 @@ private extension DeviceView.ViewModel {
     
     func updateButtonState() {
         if provisioned {
-            buttonConfiguration.provisionButtonTitle = "Update Configuration"
+            buttonConfiguration.provisionButtonTitle = "Update"
         } else {
-            buttonConfiguration.provisionButtonTitle = "Set Configuration"
+            buttonConfiguration.provisionButtonTitle = "Set"
         }
     }
 }
