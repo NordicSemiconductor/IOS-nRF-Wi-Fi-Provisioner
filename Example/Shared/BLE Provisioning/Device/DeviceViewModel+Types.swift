@@ -38,7 +38,7 @@ enum PeripheralConnectionStatus: CustomStringConvertible {
     
     public var isConnected: Bool {
         switch self {
-        case .connected:
+        case .connected, .paired:
             return true
         default:
             return false

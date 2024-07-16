@@ -30,6 +30,7 @@ struct ScannerSection: View {
             AsyncButton("Scan") {
                 viewModel.startScanning()
             }
+            .disabled(!viewModel.peripheralConnectionStatus.isConnected)
             .frame(maxWidth: .infinity)
         }
     }
