@@ -21,7 +21,7 @@ struct DeviceStatusSection: View {
     var body: some View {
         Section("Device Status") {
             HStack {
-                Label("BLE", image: "bluetooth")
+                Label("Bluetooth LE", image: "bluetooth")
                 
                 Spacer()
                 
