@@ -51,8 +51,11 @@ struct DeviceView: View {
                 }
             }
         }
-        .doOnce {
+        .onAppear {
             viewModel.connect()
+        }
+        .onDisappear {
+            viewModel.disconnect()
         }
         .alert(viewModel.error?.title ?? "Error", isPresented: $viewModel.showError) {
             Button("OK", role: .cancel) {

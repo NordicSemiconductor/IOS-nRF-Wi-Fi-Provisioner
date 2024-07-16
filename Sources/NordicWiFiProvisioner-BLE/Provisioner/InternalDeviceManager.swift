@@ -40,7 +40,6 @@ class InternalDeviceManager {
     let deviceId: UUID
     
     let centralManager: CBCentralManager
-    var connectedPeripheral: CBPeripheral?
     
     weak var connectionDelegate: ConnectionDelegate?
     weak var infoDelegate: InfoDelegate?
@@ -93,7 +92,13 @@ class InternalDeviceManager {
     func disconnect() {
         connectionQueue.addOperation { [weak self] in 
             guard let self else { return }
-            self.connectedPeripheral.map(self.centralManager.cancelPeripheralConnection)
+            guard let peripheral = self.centralManager.retrievePeripherals(withIdentifiers: [self.deviceId]).first else {
+                self.connectionDelegate?.deviceManagerDisconnectedDevice(self.provisioner, error: ProvisionerError.noPeripheralFound)
+                return
+            }
+            
+            self.connectionState = .disconnecting
+            self.centralManager.cancelPeripheralConnection(peripheral)
         }
     }
     

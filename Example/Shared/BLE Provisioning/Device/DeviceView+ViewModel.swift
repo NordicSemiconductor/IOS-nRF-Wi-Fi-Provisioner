@@ -96,10 +96,21 @@ extension DeviceView.ViewModel {
         case .disconnected, .disconnecting:
             provisioner.connect()
             peripheralConnectionStatus = .connecting
+        case .connecting:
+            break
         case .connected:
             peripheralConnectionStatus = .connected
-        default:
+        }
+    }
+    
+    func disconnect() {
+        switch provisioner.connectionState {
+        case .connecting, .disconnecting:
             break
+        case .connected:
+            provisioner.disconnect()
+        case .disconnected:
+            peripheralConnectionStatus = .disconnected(.byRequest)
         }
     }
     
