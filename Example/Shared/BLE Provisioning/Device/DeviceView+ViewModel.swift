@@ -105,6 +105,8 @@ extension DeviceView.ViewModel {
     }
     
     func disconnect() {
+        isScanningForAccessPoints = false
+        accessPoints = []
         switch provisioner.connectionState {
         case .connecting, .disconnecting:
             break
