@@ -68,6 +68,7 @@ struct ProvisionOverNFCView: View {
                         .onSubmit {
                             focusedField = nil
                         }
+                        .buttonStyle(.plain)
                 }
                 
                 InlinePicker(title: "Security", systemImage: "shield.checkered",

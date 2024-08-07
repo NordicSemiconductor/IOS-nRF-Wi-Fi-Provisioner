@@ -42,11 +42,11 @@ struct AccessPointSection: View {
                 HStack {
                     Label("Password", systemImage: "key.horizontal")
                     
-                    Spacer()
-                    
                     PasswordField(binding: $password, enabled: true)
+                        .frame(width: .infinity)
                         .multilineTextAlignment(.trailing)
                         .submitLabel(.done)
+                        .buttonStyle(.plain)
                 }
             }
             
