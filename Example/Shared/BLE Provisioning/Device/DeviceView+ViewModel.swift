@@ -252,15 +252,16 @@ extension DeviceView.ViewModel: InfoDelegate {
 
 extension DeviceView.ViewModel: WiFiScannerDelegate {
     
-    func deviceManager(_ provisioner: NordicWiFiProvisioner_BLE.DeviceManager, discoveredAccessPoint wifi: NordicWiFiProvisioner_BLE.WifiInfo, rssi: Int?) {
-        let scanResult = WifiScanResult(wifi: wifi, rssi: rssi)
-        accessPoints.append(scanResult)
-    }
-    
     func deviceManagerDidStartScan(_ provisioner: NordicWiFiProvisioner_BLE.DeviceManager, error: Error?) {
+        accessPoints = []
         if let error {
             self.error = TitleMessageError(error)
         }
+    }
+    
+    func deviceManager(_ provisioner: NordicWiFiProvisioner_BLE.DeviceManager, discoveredAccessPoint wifi: NordicWiFiProvisioner_BLE.WifiInfo, rssi: Int?) {
+        let scanResult = WifiScanResult(wifi: wifi, rssi: rssi)
+        accessPoints.append(scanResult)
     }
     
     func deviceManagerDidStopScan(_ provisioner: NordicWiFiProvisioner_BLE.DeviceManager, error: Error?) {
