@@ -28,7 +28,7 @@ struct AccessPointSection: View {
         Section {
             VStack {
                 HStack {
-                    Label("Access Point", systemImage: "wifi.circle")
+                    Label("SSID", systemImage: "wifi.circle")
                     
                     Spacer()
                     
