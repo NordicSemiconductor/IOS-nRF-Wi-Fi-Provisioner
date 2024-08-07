@@ -26,15 +26,13 @@ struct AccessPointSection: View {
     
     var body: some View {
         Section {
-            VStack {
-                HStack {
-                    Label("SSID", systemImage: "wifi.circle")
-                    
-                    Spacer()
-                    
-                    Text(accessPoint?.ssid ?? "Not Selected")
-                        .foregroundColor(.secondary)
-                }
+            HStack {
+                Label("SSID", systemImage: "wifi.circle")
+                
+                Spacer()
+                
+                Text(accessPoint?.ssid ?? "Not Selected")
+                    .foregroundColor(.secondary)
             }
             .accessibilityIdentifier("access_point_selector")
             
