@@ -13,6 +13,12 @@ import iOS_Common_Libraries
 
 struct DeviceView: View {
     
+    // MARK: ID
+    
+    enum RowID: Hashable {
+        case status
+    }
+    
     // MARK: Properties
     
     @StateObject var viewModel: ViewModel
@@ -69,11 +75,14 @@ struct DeviceView: View {
         }
     }
     
+    // MARK: deviceInfo
+    
     @ViewBuilder
     var deviceInfo: some View {
-        VStack {
+        ScrollViewReader { proxy in
             List {
                 DeviceStatusSection()
+                    .id(RowID.status)
                 
                 ScannerSection()
                 
@@ -98,6 +107,9 @@ struct DeviceView: View {
                 .disabled(!viewModel.buttonConfiguration.enabledUnsetButton)
                 
                 Button {
+                    withAnimation {
+                        proxy.scrollTo(RowID.status, anchor: .top)
+                    }
                     Task {
                         do {
                             try viewModel.startProvision()
