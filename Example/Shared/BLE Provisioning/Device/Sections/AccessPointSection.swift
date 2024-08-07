@@ -117,16 +117,14 @@ private struct DetailView: View {
         HStack {
             ReversedLabel {
                 Text(title)
-                    .font(.caption)
             } image: {
                 EmptyView()
             }
 
             Spacer()
+            
             Text(details)
-                .font(.caption)
                 .foregroundColor(.secondary)
         }
-        .frame(maxHeight: 12)
     }
 }
