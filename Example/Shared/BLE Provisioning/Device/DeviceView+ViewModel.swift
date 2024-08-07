@@ -28,6 +28,7 @@ extension DeviceView {
         
         @Published var showAccessPointList = false
         @Published var showError = false
+        @Published var isScanningForAccessPoints = false
         @Published(initialValue: []) var accessPoints: [WifiScanResult]
         
         @Published var peripheralConnectionStatus = PeripheralConnectionStatus.disconnected(.byRequest)
@@ -116,17 +117,22 @@ extension DeviceView.ViewModel {
     
     func startScanning() {
         do {
+            accessPoints = []
+            isScanningForAccessPoints = true
             try provisioner.startScan(scanParams: ScanParams())
         } catch {
             self.error = TitleMessageError(error)
+            isScanningForAccessPoints = false
         }
     }
     
     func stopScanning() {
         do {
             try provisioner.stopScan()
+            isScanningForAccessPoints = false
         } catch {
             self.error = TitleMessageError(error)
+            isScanningForAccessPoints = false
         }
     }
     
@@ -253,18 +259,20 @@ extension DeviceView.ViewModel: InfoDelegate {
 extension DeviceView.ViewModel: WiFiScannerDelegate {
     
     func deviceManagerDidStartScan(_ provisioner: NordicWiFiProvisioner_BLE.DeviceManager, error: Error?) {
-        accessPoints = []
         if let error {
             self.error = TitleMessageError(error)
+            isScanningForAccessPoints = false
         }
     }
     
     func deviceManager(_ provisioner: NordicWiFiProvisioner_BLE.DeviceManager, discoveredAccessPoint wifi: NordicWiFiProvisioner_BLE.WifiInfo, rssi: Int?) {
         let scanResult = WifiScanResult(wifi: wifi, rssi: rssi)
         accessPoints.append(scanResult)
+        isScanningForAccessPoints = false
     }
     
     func deviceManagerDidStopScan(_ provisioner: NordicWiFiProvisioner_BLE.DeviceManager, error: Error?) {
+        isScanningForAccessPoints = false
         if let error {
             self.error = TitleMessageError(error)
         }

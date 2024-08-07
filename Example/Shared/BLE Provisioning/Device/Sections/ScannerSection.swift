@@ -27,11 +27,16 @@ struct ScannerSection: View {
                     .tag(accessPoint.wifi)
             }
             
-            AsyncButton("Scan") {
+            if viewModel.isScanningForAccessPoints {
+                ProgressView()
+                    .frame(maxWidth: .infinity)
+            }
+            
+            Button("Scan") {
                 viewModel.startScanning()
             }
-            .disabled(!viewModel.peripheralConnectionStatus.isConnected)
             .frame(maxWidth: .infinity)
+            .disabled(!viewModel.peripheralConnectionStatus.isConnected || viewModel.isScanningForAccessPoints)
         }
     }
 }
