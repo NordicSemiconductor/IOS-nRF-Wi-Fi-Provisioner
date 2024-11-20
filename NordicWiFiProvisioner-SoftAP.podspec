@@ -10,13 +10,6 @@ Pod::Spec.new do |s|
   s.name             = 'NordicWiFiProvisioner-SoftAP'
   s.version          = '2.1.1'
   s.summary          = 'Library for provisioning nRF-7 devices to a Wi-Fi network.'
-
-# This description is used to generate tags and improve search results.
-#   * Think: What does it do? Why did you write it? What is the focus?
-#   * Try to keep it short, snappy and to the point.
-#   * Write the description between the DESC delimiters below.
-#   * Finally, don't worry about the indent, CocoaPods strips it!
-
   s.description      = <<-DESC
 This is a library (and an example application) for scanning and provisioning nRF-7 devices to a Wi-Fi network. 
 It contains all the necessary components to scan for nRF-7 devices, connect to them, read the device's information, scan for Wi-Fi networks and provision them to the device.
