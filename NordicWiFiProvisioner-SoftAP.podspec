@@ -16,7 +16,7 @@ It contains all the necessary components to scan for nRF-7 devices, connect to t
                        DESC
 
   s.homepage         = 'https://github.com/NordicSemiconductor/IOS-nRF-Wi-Fi-Provisioner'
-  s.license      = { :type => 'Apache License, Version 2.0', :text => <<-LICENSE
+  s.license          = { :type => 'BSD 3-Clause', :text => <<-LICENSE
     BSD 3-Clause License
 
     Copyright (c) 2024, Nordic Semiconductor
