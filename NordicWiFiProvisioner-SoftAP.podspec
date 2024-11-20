@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'NordicWiFiProvisioner-SoftAP'
-  s.version          = '2.0.0'
+  s.version          = '2.1.1'
   s.summary          = 'Library for provisioning nRF-7 devices to a Wi-Fi network.'
 
 # This description is used to generate tags and improve search results.
@@ -24,7 +24,7 @@ It contains all the necessary components to scan for nRF-7 devices, connect to t
 
   s.homepage         = 'https://github.com/NordicSemiconductor/IOS-nRF-Wi-Fi-Provisioner'
   s.license          = { :type => 'BSD 3-Clause', :file => 'LICENSE' }
-  s.author           = { 'Nick Kibish' => 'nick.kibysh@nordicsemi.no', 'Dinesh Harjani' => 'dinesh.harjani@nordicsemi.no' }
+  s.author           = { "Dinesh Harjani" => "dinesh.harjani@nordicsemi.no", 'Nick Kibish' => 'nick.kibysh@nordicsemi.no' }
   s.source           = { :git => 'https://github.com/NordicSemiconductor/IOS-nRF-Wi-Fi-Provisioner.git', :tag => s.version.to_s }
 
   s.ios.deployment_target = '13.0'
