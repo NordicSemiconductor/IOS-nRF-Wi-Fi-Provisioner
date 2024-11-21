@@ -1,5 +1,15 @@
 {
+  "originHash" : "8613aa7fbfcd2cbac3792f17bf591698d3419feda089cc20aac29ede964307f6",
   "pins" : [
+    {
+      "identity" : "ios-common-libraries",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/NordicPlayground/IOS-Common-Libraries",
+      "state" : {
+        "branch" : "main",
+        "revision" : "7fba417198e23b0acb26107bc13205a4d6b9f812"
+      }
+    },
     {
       "identity" : "swift-cmark",
       "kind" : "remoteSourceControl",
@@ -19,5 +29,5 @@
       }
     }
   ],
-  "version" : 2
+  "version" : 3
 }
