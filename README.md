@@ -4,6 +4,11 @@ You can use it to connect to a device, read the information from it, and set the
 
 ## Installation
 
+Currently, the Provisioner library has been split into two independent variants. It's possible to import and use both within the same project / app, as exemplified by our own 'Example' app. The reason for the split is to not force customers of our API to deal with APIs and callbacks they don't wish to know about. But we have under heavy consideration the urge to merge them.
+
+* **`NordicWiFiProvisioner-BLE`**: Scans for devices via Bluetooth LE, connect to a device, & provision it.
+* **`NordicWiFiProvisioner-SoftAP`**: Scans for devices via Wi-Fi, connects to the target device, and makes a URL Request with the provisioning details. **Requires IP Address of the target device.** Our Example app includes a lot of resources & code to help in your endeavor.
+
 The library can be installed via [Swift Package Manager](https://swift.org/package-manager/) or [CocoaPods](https://cocoapods.org/).
 
 ### Swift Package Manager
@@ -15,9 +20,12 @@ If you have Swift.package file, include the following dependency:
 ```swift
 dependencies: [
     // [...]
-    .package(name: "NordicWiFiProvisioner", 
+    .package(name: "NordicWiFiProvisioner-BLE", 
              url: "https://github.com/NordicSemiconductor/IOS-nRF-Wi-Fi-Provisioner.git", 
-             .upToNextMajor(from: "x.y")) // Replace x.y with your required version
+             .upToNextMajor(from: "x.y"))
+    .package(name: "NordicWiFiProvisioner-SoftAP", 
+             url: "https://github.com/NordicSemiconductor/IOS-nRF-Wi-Fi-Provisioner.git", 
+             .upToNextMajor(from: "x.y"))
 ]
 ```
 
@@ -25,14 +33,20 @@ dependencies: [
 You can install the library using [CocoaPods](https://cocoapods.org/). Add the following line to your `Podfile`:
 
 ```ruby
-pod 'NordicWiFiProvisioner'
+pod 'NordicWiFiProvisioner-BLE'
+pod 'NordicWiFiProvisioner-SoftAP'
 ```
 
 and run `pod install` in the directory containing your `Podfile`.
 
 ## Usage
+
 Check out the [DOCUMENTATION](https://nordicsemiconductor.github.io/IOS-nRF-Wi-Fi-Provisioner/documentation/nordicwifiprovisioner/) for more details.
-### Scanning for devices
+
+### Provisioning over Bluetooth LE (**NordicWiFiProvisioner-BLE**)
+
+#### Scanning for devices
+
 The library provides `Scanner` that allows to scan for nRF-7 Devices. If filters discovered devices by service UUID and returns only devices that have the wifi service, so you can use it to scan for devices that support Wi-Fi provisioning and don't warry about filtering them.
 
 ```swift
@@ -55,6 +69,7 @@ class ScannerDelegate {
 ```
 
 ### Connecting to a device
+
 To connect to a device, you need to create a `DeviceManager` and call `connect` method.
 
 ```swift
@@ -155,6 +170,27 @@ class MyProvisionDelegate: ProvisionDelegate {
         // Configuration was removed
     }
  }
+```
+
+### Provisioning over Wi-Fi (**NordicWiFiProvisioner-SoftAP**)
+
+```swift
+// SSL Requirement
+let cert: URL = // Certificate URL 
+let manager = ProvisionManager(certificateURL: cert)
+
+// Scan Wi-Fi Networks you'd like to provision the device to.
+let scans = try await manager.getScans(ipAddress: ipAddress)
+let selectedScan = scans.filter { 
+    // Logic to choose which Wi-Fi Network we'd like to provision our device to.
+}
+
+let targetDeviceIPAddress: String = // ...
+let networkPassword: String = // ...
+
+// Provision
+try await manager.provision(ipAddress: targetDeviceIPAddress, to: selectedScan, with: networkPassword)
+
 ```
 
 # Services and Characteristics
