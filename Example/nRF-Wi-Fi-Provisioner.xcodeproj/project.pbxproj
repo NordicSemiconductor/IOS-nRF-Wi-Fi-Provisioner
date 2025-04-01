@@ -358,7 +358,6 @@
 		01D26B58286DAE6A00FD069D /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				AA0F8E1F2BF36C3C0036B2D4 /* Tips */,
 				01FCADCA292571B30044904B /* Mock */,
 				0183EFCB2897C42E002E79A5 /* Views */,
 				01682618287F16B20040C97E /* Extensions */,
@@ -422,13 +421,6 @@
 				52DA7AFC9F0E3A8631B800CC /* Pods-nRF-Wi-Fi-Provisioner (iOS).release.xcconfig */,
 			);
 			path = Pods;
-			sourceTree = "<group>";
-		};
-		AA0F8E1F2BF36C3C0036B2D4 /* Tips */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Tips;
 			sourceTree = "<group>";
 		};
 		AA17A6662BF37A34002B0286 /* Screenshots */ = {
