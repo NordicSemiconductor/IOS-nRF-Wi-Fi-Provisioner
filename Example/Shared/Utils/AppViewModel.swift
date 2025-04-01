@@ -7,7 +7,7 @@
 
 import Foundation
 import SwiftUI
-import Markdown
+import iOS_Common_Libraries
 
 // MARK: - AppViewModel
 
@@ -29,16 +29,6 @@ final class AppViewModel: ObservableObject {
             introViewShown = false
         }
         self.showStartInfo = !introViewShown
-        self.version = readVersion()
-    }
-    
-    // MARK: Private
-    
-    private func readVersion() -> String {
-        // Read the version from the Info.plist.
-        let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
-        // Read the build number from the Info.plist.
-        let build = Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? ""
-        return "\(version) (Build #\(build))"
+        self.version = Constant.appVersion(forBundleWithClass: Self.self)
     }
 }
