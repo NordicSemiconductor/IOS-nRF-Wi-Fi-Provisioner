@@ -118,8 +118,20 @@ open class DeviceManager {
     ///
     /// - Remark: See also: ``connectionState-swift.property`` and ``ConnectionDelegate``
     /// - Precondition: Make sure that iOS or MacOS device supports bluetooth and it's turned on and ready to use.
-    open func connect() {
-        internalProvisioner.connect()
+    ///
+    /// - Parameters:
+    ///   - wifiServiceId: Optional custom Wi-Fi Provisioning Service UUID to use instead of the default one.
+    ///   - versionCharacteristicId: Optional custom Version Information Characteristic UUID to use instead of the default one.
+    ///   - controlPointCharacteristicId: Optional custom Operation Control Point Characteristic UUID to use instead of the default one.
+    ///   - dataOutCharacteristicId: Optional custom Data Out Characteristic UUID to use instead of the default one.
+    open func connect(wifiServiceId: UUID? = nil,
+                     versionCharacteristicId: UUID? = nil,
+                     controlPointCharacteristicId: UUID? = nil,
+                     dataOutCharacteristicId: UUID? = nil) {
+        internalProvisioner.connect(wifiServiceId: wifiServiceId,
+                                   versionCharacteristicId: versionCharacteristicId,
+                                   controlPointCharacteristicId: controlPointCharacteristicId,
+                                   dataOutCharacteristicId: dataOutCharacteristicId)
     }
     
     /// Cancel connection.

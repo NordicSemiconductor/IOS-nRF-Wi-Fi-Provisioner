@@ -55,6 +55,27 @@ class InternalDeviceManager {
         }
     }
  
+    private var overrideWifiServiceId: UUID?
+    private var overrideVersionCharacteristicId: UUID?
+    private var overrideControlPointCharacteristicId: UUID?
+    private var overrideDataOutCharacteristicId: UUID?
+
+    private var wifiServiceId: UUID {
+        return overrideWifiServiceId ?? ServiceID.wifi
+    }
+
+    private var versionCharacteristicId: UUID {
+        return overrideVersionCharacteristicId ?? CharacteristicID.version
+    }
+
+    private var controlPointCharacteristicId: UUID {
+        return overrideControlPointCharacteristicId ?? CharacteristicID.controlPoint
+    }
+
+    private var dataOutCharacteristicId: UUID {
+        return overrideDataOutCharacteristicId ?? CharacteristicID.dataOut
+    }
+
     let logger = Logger(
         subsystem: Bundle(for: InternalDeviceManager.self).bundleIdentifier ?? "",
         category: "provisioner.internal-provisioner"
@@ -71,7 +92,16 @@ class InternalDeviceManager {
         self.provisioner = provisioner
     }
 
-    func connect() {
+    func connect(wifiServiceId: UUID? = nil,
+                versionCharacteristicId: UUID? = nil,
+                controlPointCharacteristicId: UUID? = nil,
+                dataOutCharacteristicId: UUID? = nil) {
+
+        self.overrideWifiServiceId = wifiServiceId
+        self.overrideVersionCharacteristicId = versionCharacteristicId
+        self.overrideControlPointCharacteristicId = controlPointCharacteristicId
+        self.overrideDataOutCharacteristicId = dataOutCharacteristicId
+
         connectionQueue.cancelAllOperations()
         connectionQueue.addOperation { [weak self] in 
             guard let self = self else { return }
@@ -189,7 +219,7 @@ extension InternalDeviceManager: CBCentralManagerDelegate {
     func centralManager(_ central:   CBMCentralManager, didConnect peripheral: CBMPeripheral) {
         self.connectionInfo = BluetoothConnectionInfo(peripheral: peripheral)
         peripheral.delegate = self
-        peripheral.discoverServices([ServiceID.wifi.cbm])
+        peripheral.discoverServices([wifiServiceId.cbm])
     }
 
     func centralManager(_ central: CBMCentralManager, didFailToConnect peripheral: CBMPeripheral, error: Error?) {
@@ -214,21 +244,21 @@ extension InternalDeviceManager: CBPeripheralDelegate {
             return
         }
 
-        guard let wifiService = peripheral.services?.first(where: { $0.uuid == ServiceID.wifi.cbm }) else {
+        guard let wifiService = peripheral.services?.first(where: { $0.uuid == wifiServiceId.cbm }) else {
             return
         }
         peripheral.discoverCharacteristics([
-            CharacteristicID.version.cbm,
-            CharacteristicID.controlPoint.cbm,
-            CharacteristicID.dataOut.cbm
+            versionCharacteristicId.cbm,
+            controlPointCharacteristicId.cbm,
+            dataOutCharacteristicId.cbm
         ], for: wifiService)
     }
 
     func peripheral(_ peripheral: CBMPeripheral, didDiscoverCharacteristicsFor service: CBMService, error: Error?) {
-        guard let versionCharacteristic = service.characteristics?.first(where: { $0.uuid == CharacteristicID.version.cbm }) else { return }
-        guard let controlPointCharacteristic = service.characteristics?.first(where: { $0.uuid == CharacteristicID.controlPoint.cbm }) else { return }
-        guard let dataOutCharacteristic = service.characteristics?.first(where: { $0.uuid == CharacteristicID.dataOut.cbm }) else { return }
-        
+        guard let versionCharacteristic = service.characteristics?.first(where: { $0.uuid == versionCharacteristicId.cbm }) else { return }
+        guard let controlPointCharacteristic = service.characteristics?.first(where: { $0.uuid == controlPointCharacteristicId.cbm }) else { return }
+        guard let dataOutCharacteristic = service.characteristics?.first(where: { $0.uuid == dataOutCharacteristicId.cbm }) else { return }
+
         self.connectionInfo?.versionCharacteristic = versionCharacteristic
         self.connectionInfo?.controlPointCharacteristic = controlPointCharacteristic
         self.connectionInfo?.dataOutCharacteristic = dataOutCharacteristic
@@ -240,19 +270,19 @@ extension InternalDeviceManager: CBPeripheralDelegate {
     }
     
     func peripheral(_ peripheral: CBMPeripheral, didUpdateValueFor characteristic: CBMCharacteristic, error: Error?) {
-        if characteristic.uuid == connectionInfo?.versionCharacteristic.uuid {
+        if characteristic.uuid == versionCharacteristicId.cbm {
             if let data = characteristic.value {
                 parseVersionData(data: data)
             } else {
                 infoDelegate?.versionReceived(.failure(.emptyData))
             }
-        } else if characteristic.uuid == connectionInfo?.controlPointCharacteristic.uuid {
+        } else if characteristic.uuid == controlPointCharacteristicId.cbm {
             if let data = characteristic.value {
                 parseControlPointResponse(data: data)
             } else {
                 // TODO: Handle empty data
             }
-        } else if characteristic.uuid == connectionInfo?.dataOutCharacteristic.uuid {
+        } else if characteristic.uuid == dataOutCharacteristicId.cbm {
             if let data = characteristic.value {
                 parseDataOutResult(data: data)
             } else {
