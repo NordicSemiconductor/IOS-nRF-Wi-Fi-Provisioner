@@ -20,7 +20,7 @@ It contains all the necessary components to scan for nRF-7 devices, connect to t
   s.author           = { "Dinesh Harjani" => "dinesh.harjani@nordicsemi.no", 'Nick Kibish' => 'nick.kibysh@nordicsemi.no' }
   s.source           = { :git => 'https://github.com/NordicSemiconductor/IOS-nRF-Wi-Fi-Provisioner.git', :tag => s.version.to_s }
 
-  s.ios.deployment_target = '11.0'
+  s.ios.deployment_target = '12.0'
   s.osx.deployment_target = '10.13'
 
   s.swift_versions = ['5.0', '5.1', '5.2', '5.3', '5.4', '5.5', '5.6']
