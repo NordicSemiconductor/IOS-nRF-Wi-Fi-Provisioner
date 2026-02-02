@@ -17,7 +17,7 @@ struct ScannerView: View {
     @EnvironmentObject var vmFactory: DeviceViewModelFactory
     @StateObject var viewModel: ScannerViewModel
     
-    // MARK: View
+    // MARK: view
     
     var body: some View {
         Group {
@@ -102,25 +102,3 @@ struct ScannerView: View {
         .listStyle(.insetGrouped)
     }
 }
-
-// MARK: - Preview
-
-#if DEBUG
-import NordicWiFiProvisioner_BLE
-
-struct ScannerView_Previews: PreviewProvider {
-    class DummyScanViewModel: ScannerViewModel {
-        
-        override var state: ScannerViewModel.State {
-            .scanning
-        }
-    }
-    
-    static var previews: some View {
-        ScannerView(viewModel: DummyScanViewModel())
-            .previewDisplayName("iPhone 14 Pro")
-            .previewDevice(PreviewDevice(rawValue: "iPhone 14 Pro"))
-//            .tint(.nordicBlue)
-    }
-}
-#endif
