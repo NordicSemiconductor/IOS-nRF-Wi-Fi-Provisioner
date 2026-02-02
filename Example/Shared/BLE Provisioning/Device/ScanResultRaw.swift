@@ -17,7 +17,7 @@ struct ScanResultRaw: View {
     
     private let scanResult: ScanResult
     
-    // MARK: Init
+    // MARK: init
     
     init(scanResult: ScanResult) {
         self.scanResult = scanResult
@@ -67,25 +67,3 @@ struct ScanResultRaw: View {
         }
     }
 }
-
-// MARK: - Preview
-
-#if DEBUG
-struct ScanResultRaw_Previews: PreviewProvider {
-    struct MockScanResult  {
-        static let unprov = ScanResult(id: UUID(), name: "Unprovisioned Device", rssi: -58, provisioned: false, connected: false)
-        static let provUnconnected = ScanResult(id: UUID(), name: "Provisioned Unconnected", rssi: -68, provisioned: true, connected: false)
-        static let provConnected = ScanResult(id: UUID(), name: "Provisioned Connected", rssi: -88, provisioned: true, connected: true, wifiRSSI: -48)
-    }
-    
-    static var previews: some View {
-        List {
-            Section("Preview") {
-                ScanResultRaw(scanResult: MockScanResult.unprov)
-                ScanResultRaw(scanResult: MockScanResult.provUnconnected)
-                ScanResultRaw(scanResult: MockScanResult.provConnected)
-            }
-        }
-    }
-}
-#endif
