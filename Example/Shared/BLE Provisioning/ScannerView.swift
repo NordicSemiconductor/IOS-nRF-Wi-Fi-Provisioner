@@ -84,7 +84,7 @@ struct ScannerView: View {
                         DeviceView(viewModel: vmFactory.viewModel(for: scanResult.sr.id.uuidString))
                             .navigationTitle(scanResult.name)
                     } label: {
-                        ScanResultRaw(scanResult: scanResult.sr)
+                        ScanResultRaw(scanResult.sr)
                     }
                     .deviceAdoptiveDetail()
                 }
