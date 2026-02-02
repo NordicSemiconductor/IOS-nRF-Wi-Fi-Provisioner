@@ -43,7 +43,7 @@ struct AccessPointSection: View {
                     Label("Password", systemImage: "key.horizontal")
                     
                     PasswordField(binding: $password, enabled: true)
-                        .frame(width: .infinity)
+                        .frame(maxWidth: .infinity)
                         .multilineTextAlignment(.trailing)
                         .submitLabel(.done)
                         .buttonStyle(.plain)
