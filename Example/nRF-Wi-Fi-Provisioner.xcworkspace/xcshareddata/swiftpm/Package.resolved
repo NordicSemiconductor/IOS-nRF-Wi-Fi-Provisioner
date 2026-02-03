@@ -7,7 +7,7 @@
       "location" : "https://github.com/NordicPlayground/IOS-Common-Libraries",
       "state" : {
         "branch" : "main",
-        "revision" : "fedcb0e95fd8121e46cbc60e139ea1c592e7d971"
+        "revision" : "8740609b2704b7ac9d5e610ee6eef9ff719dbe86"
       }
     },
     {
@@ -16,7 +16,7 @@
       "location" : "https://github.com/swiftlang/swift-cmark.git",
       "state" : {
         "branch" : "gfm",
-        "revision" : "fc07ab5da47975c5ef5f336acadfc02e8f706d30"
+        "revision" : "924936d0427cb25a61169739a7660230bffa6ea6"
       }
     },
     {
@@ -25,7 +25,7 @@
       "location" : "https://github.com/apple/swift-markdown.git",
       "state" : {
         "branch" : "main",
-        "revision" : "d21714073e0d16ba78eebdf36724863afc36871d"
+        "revision" : "55d66d9a9e8d4fd3f48d111b0d437e82fe451903"
       }
     }
   ],
