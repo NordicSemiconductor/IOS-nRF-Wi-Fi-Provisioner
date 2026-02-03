@@ -49,7 +49,7 @@ class InternalDeviceManager {
     unowned var provisioner: DeviceManager!
 
     private var connectionInfo: BluetoothConnectionInfo?
-    private (set) var connectionState: DeviceManager.ConnectionState = .disconnected {
+    private(set) var connectionState: DeviceManager.ConnectionState = .disconnected {
         didSet {
             connectionDelegate?.deviceManager(provisioner, changedConnectionState: connectionState)
         }

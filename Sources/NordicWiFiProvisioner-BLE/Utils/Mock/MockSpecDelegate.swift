@@ -163,7 +163,7 @@ open class MockDevice {
     
     private var timer: Timer!
     
-    private (set) lazy var spec: CoreBluetoothMock.CBMPeripheralSpec = CBMPeripheralSpec
+    private(set) lazy var spec: CoreBluetoothMock.CBMPeripheralSpec = CBMPeripheralSpec
         .simulatePeripheral(
             identifier: UUID(uuidString: id)!,
             proximity: .near
