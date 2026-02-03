@@ -129,37 +129,3 @@ struct DeviceView: View {
         .background(Color.formBackground)
     }
 }
-
-// MARK: - Preview
-
-#if DEBUG
-class MockDeviceViewModel: DeviceView.ViewModel {
-    override var version: String {
-        get { "14" }
-        set { }
-    }
-    
-    override var peripheralConnectionStatus: PeripheralConnectionStatus {
-        get { .connected }
-        set { }
-    }
-    
-    override var provisioned: Bool {
-        get { true }
-        set { }
-    }
-}
-
-struct DeviceView_Previews: PreviewProvider {
-    static var previews: some View {
-        NavigationView {
-            DeviceView(
-                viewModel: MockDeviceViewModel(deviceId: "")
-            )
-            .navigationTitle("Device Name")
-        }
-        .previewDisplayName("iPhone 14 Pro")
-        .previewDevice(PreviewDevice(rawValue: "iPhone 14 Pro"))
-    }
-}
-#endif
