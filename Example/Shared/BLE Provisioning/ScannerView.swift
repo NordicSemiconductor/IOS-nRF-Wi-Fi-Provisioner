@@ -89,13 +89,12 @@ struct ScannerView: View {
                     .deviceAdoptiveDetail()
                 }
             } header: {
-                HStack {
-                    Text("Devices")
-                    
-                    Spacer()
-                    
+                LabeledContent {
                     ProgressView()
                         .isHidden((viewModel.state != .scanning), remove: true)
+                } label: {
+                    Text("Devices")
+                        .font(.caption)
                 }
             }
         }
