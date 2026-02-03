@@ -24,12 +24,20 @@ struct ProvisioningSetupView: View {
     var body: some View {
         VStack {
             List {
-                Section("Device Selection") {
+                Section("Connection") {
                     Toggle(isOn: $switchToAccessPoint) {
                         Label("Connect Automatically", systemImage: "cpu")
                     }
-                    .tint(.accentColor)
+                    .tint(.universalAccentColor)
                     
+                    Text(switchToAccessPoint
+                         ? "Disable if you're already connected to the Device you'd like to provision or want to connect manually in Settings."
+                         : "Enable to automatically connect to the Device."
+                    )
+                    .foregroundStyle(.secondary)
+                }
+                 
+                Section("Device Selection") {
                     if switchToAccessPoint {
                         HStack {
                             Label("Device SSID", systemImage: "wifi.circle")
@@ -42,12 +50,7 @@ struct ProvisioningSetupView: View {
                                 .multilineTextAlignment(.trailing)
                                 .submitLabel(.done)
                         }
-                        
-                        Label("Disable if you're already connected to the Device you'd like to provision or want to connect manually in Settings.", systemImage: "exclamationmark.triangle.fill")
-                            .font(.caption)
                     } else {
-                        Label("Enable to automatically connect to the Device.", systemImage: "info.square.fill")
-                        
                         Button("Set up Wi-Fi Connection in Settings") {
                             guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
                             UIApplication.shared.open(url)
