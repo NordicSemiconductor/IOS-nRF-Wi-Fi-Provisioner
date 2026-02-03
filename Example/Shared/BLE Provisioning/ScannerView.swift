@@ -36,14 +36,8 @@ struct ScannerView: View {
                     }
                 )
                 .padding()
-            case .scanning:
-                if viewModel.scanResults.isEmpty {
-                    scanningPlaceholder
-                } else {
-                    listView()
-                }
-            case .waiting:
-                scanningPlaceholder
+            case .waiting, .scanning:
+                listView()
             case .turnedOff:
                 Placeholder(
                     text: "Bluetooth is turned off",
@@ -63,16 +57,6 @@ struct ScannerView: View {
         .onAppear {
             viewModel.startScan()
         }
-    }
-    
-    @ViewBuilder
-    private var scanningPlaceholder: some View {
-        Placeholder(
-            text: "Scanning for devices",
-            message: "If you don't see your device check if it is turned on",
-            image: "bluetooth_searching"
-        )
-        .padding()
     }
     
     @ViewBuilder
