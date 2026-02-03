@@ -29,7 +29,7 @@ extension ProvisionOverWiFiView {
         }()
         var ipAddress: String!
         
-        @Published private (set) var scans: [APWiFiScan] = []
+        @Published private(set) var scans: [APWiFiScan] = []
         @Published var selectedScan: APWiFiScan?
         @Published var ssidPassword: String = ""
         @Published var volatileMemory = false
