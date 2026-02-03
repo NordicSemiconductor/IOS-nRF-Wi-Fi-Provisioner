@@ -25,8 +25,6 @@
 		0183EFCA2897C196002E79A5 /* Status.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0183EFC82897C196002E79A5 /* Status.swift */; };
 		0183EFCD2897C446002E79A5 /* ReversedLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0183EFCC2897C446002E79A5 /* ReversedLabel.swift */; };
 		0183EFCE2897C446002E79A5 /* ReversedLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0183EFCC2897C446002E79A5 /* ReversedLabel.swift */; };
-		018F20CA2B8772CD00D5A351 /* NoContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 018F20C92B8772CD00D5A351 /* NoContentView.swift */; };
-		018F20CB2B8772CD00D5A351 /* NoContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 018F20C92B8772CD00D5A351 /* NoContentView.swift */; };
 		01922CBD28A2713100492E87 /* NavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01922CBC28A2713100492E87 /* NavigationView.swift */; };
 		01922CBE28A2713100492E87 /* NavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01922CBC28A2713100492E87 /* NavigationView.swift */; };
 		01994A6E2B8521A900953465 /* AsyncButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01994A6D2B8521A900953465 /* AsyncButton.swift */; };
@@ -122,7 +120,6 @@
 		015D60A22875A1530048F065 /* ScannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerView.swift; sourceTree = "<group>"; };
 		0183EFC82897C196002E79A5 /* Status.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Status.swift; sourceTree = "<group>"; };
 		0183EFCC2897C446002E79A5 /* ReversedLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReversedLabel.swift; sourceTree = "<group>"; };
-		018F20C92B8772CD00D5A351 /* NoContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoContentView.swift; sourceTree = "<group>"; };
 		01922CBC28A2713100492E87 /* NavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationView.swift; sourceTree = "<group>"; };
 		01994A6D2B8521A900953465 /* AsyncButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncButton.swift; sourceTree = "<group>"; };
 		01994A732B852F7800953465 /* ProvisionOverWiFiView+VM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProvisionOverWiFiView+VM.swift"; sourceTree = "<group>"; };
@@ -297,7 +294,6 @@
 				339762DB6A20E141289014FD /* Modifiers */,
 				339767EA454996E6D30A9621 /* NavigationLink.swift */,
 				01994A6D2B8521A900953465 /* AsyncButton.swift */,
-				018F20C92B8772CD00D5A351 /* NoContentView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -696,7 +692,6 @@
 				AA4C20FB2BEBA93B00B67741 /* NFCAuthenticationType.swift in Sources */,
 				0183EFCD2897C446002E79A5 /* ReversedLabel.swift in Sources */,
 				AA3806D22BBACC8D003C8256 /* Placeholder.swift in Sources */,
-				018F20CA2B8772CD00D5A351 /* NoContentView.swift in Sources */,
 				019D1D3129128F3E000D8BD4 /* ConnectionState+Ext.swift in Sources */,
 				01FCADBD291D482B0044904B /* DeviceStatusSection.swift in Sources */,
 				AAAE24122BD01596005C5F90 /* ProvisioningPipeline.swift in Sources */,
@@ -725,7 +720,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				AAAAE6C62B7F813D000BB569 /* AppViewModel.swift in Sources */,
-				018F20CB2B8772CD00D5A351 /* NoContentView.swift in Sources */,
 				AA9ED5C52BC56D1A00FAC49D /* ScannerSection.swift in Sources */,
 				01481ABD2852093000925FAB /* IntroView.swift in Sources */,
 				AA3806D32BBACC8D003C8256 /* Placeholder.swift in Sources */,
