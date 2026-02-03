@@ -26,18 +26,15 @@ struct AccessPointSection: View {
     
     var body: some View {
         Section {
-            HStack {
-                Label("SSID", systemImage: "wifi.circle")
-                
-                Spacer()
-                
+            LabeledContent {
                 Text(accessPoint?.ssid ?? "Not Selected")
-                    .foregroundColor(.secondary)
+            } label: {
+                Label("SSID", systemImage: "wifi.circle")
             }
             .accessibilityIdentifier("access_point_selector")
             
             if let accessPoint {
-                additionalInfo(accessPoint)
+                accessPoint
                 
                 HStack {
                     Label("Password", systemImage: "key.horizontal")
@@ -67,16 +64,6 @@ struct AccessPointSection: View {
             Text(footer)
         }
     }
-    
-    @ViewBuilder
-    func additionalInfo(_ accessPoint: AccessPointInfo) -> some View {
-        VStack {
-            DetailView(title: "Channel", details: accessPoint.channel)
-            DetailView(title: "BSSID", details: accessPoint.bssid)
-            DetailView(title: "Band", details: accessPoint.band)
-            DetailView(title: "Security", details: accessPoint.security)
-        }
-    }
 }
 
 // MARK: - AccessPointInfo
@@ -90,6 +77,19 @@ struct AccessPointInfo {
     let security: String
 }
 
+extension AccessPointInfo: View {
+    
+    var body: some View {
+        LabeledContent("Channel", value: channel)
+        
+        LabeledContent("BSSID", value: bssid)
+        
+        LabeledContent("Band", value: band)
+        
+        LabeledContent("Security", value: security)
+    }
+}
+
 extension WifiInfo {
     
     func accessPoint() -> AccessPointInfo {
@@ -101,28 +101,5 @@ extension APWiFiScan {
     
     func accessPoint() -> AccessPointInfo {
         AccessPointInfo(ssid: ssid, bssid: bssidString(), channel: "\(channel)", band: band.description, security: authentication.description)
-    }
-}
-
-// MARK: - DetailView
-
-private struct DetailView: View {
-    
-    let title: String
-    let details: String
-    
-    var body: some View {
-        HStack {
-            ReversedLabel {
-                Text(title)
-            } image: {
-                EmptyView()
-            }
-
-            Spacer()
-            
-            Text(details)
-                .foregroundColor(.secondary)
-        }
     }
 }
