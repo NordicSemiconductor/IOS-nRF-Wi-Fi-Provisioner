@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'NordicWiFiProvisioner-SoftAP'
-  s.version          = '2.1.1'
+  s.version          = '2.1.2'
   s.summary          = 'Library for provisioning nRF-7 devices to a Wi-Fi network.'
   s.description      = <<-DESC
 This is a library (and an example application) for scanning and provisioning nRF-7 devices to a Wi-Fi network. 
