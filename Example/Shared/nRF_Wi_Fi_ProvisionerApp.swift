@@ -7,6 +7,7 @@
 
 import SwiftUI
 import NordicWiFiProvisioner_BLE
+import iOS_Common_Libraries
 
 @main
 struct nRF_Wi_Fi_ProvisionerApp: App {

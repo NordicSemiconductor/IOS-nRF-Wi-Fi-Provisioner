@@ -36,6 +36,8 @@ struct SelectorView: View {
                 This mode uses secure Bluetooth Low Energy link to transfer Wi-Fi credentials to the provisionee and verify provisioning status.
                 """)
             }
+            .setAccent(.universalAccentColor)
+            .tint(.primarylabel)
             
             Section {
                 NavigationLink {
@@ -49,6 +51,8 @@ struct SelectorView: View {
                 This mode uses a temporary Wi-Fi network (SoftAP) created by the provisionee to send Wi-Fi credentials. Communication is encrypted using TLS.
                 """)
             }
+            .setAccent(.universalAccentColor)
+            .tint(.primarylabel)
             
             Section {
                 NavigationLink {
@@ -62,6 +66,8 @@ struct SelectorView: View {
                 This mode sends SSID and network credentials over NFC (Near Field Communication). It does not give any feedback on whether the device successfully connected to the desired network.
                 """)
             }
+            .setAccent(.universalAccentColor)
+            .tint(.primarylabel)
             
             Section {
                 Button {
@@ -86,5 +92,6 @@ struct SelectorView: View {
             .setAccent(.universalAccentColor)
             .tint(.primarylabel)
         }
+        .setupTranslucentBackground()
     }
 }
