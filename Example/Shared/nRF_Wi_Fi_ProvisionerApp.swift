@@ -28,13 +28,9 @@ struct nRF_Wi_Fi_ProvisionerApp: App {
         WindowGroup {
             NavigationView {
                 SelectorView()
+                    .environmentObject(viewModel)
                     .environmentObject(vmFactory)
                     .navigationTitle("nRF Wi-Fi Provisioner")
-                    .toolbar {
-                        Button("", systemImage: "info.circle") {
-                            viewModel.showStartInfo = true
-                        }
-                    }
             }
             .sheet(isPresented: $viewModel.showStartInfo) {
                 IntroView()
