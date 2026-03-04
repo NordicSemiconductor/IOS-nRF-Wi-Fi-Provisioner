@@ -1,4 +1,5 @@
-# NordicWiFiProvisioner library
+# nRF Wi-Fi Provisioner for iOS
+
 `NordicWiFiProvisioner` is a library that allows to communicate with [nRF 7 devices](https://www.nordicsemi.com/Products/nRF7002).
 You can use it to connect to a device, read the information from it, and set the Wi-Fi configuration.
 
